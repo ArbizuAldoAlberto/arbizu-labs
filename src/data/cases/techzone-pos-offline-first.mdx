@@ -1,0 +1,37 @@
+---
+title: "Cómo TechZone redujo 22% las ventas perdidas con SQLite WAL"
+client: "TechZone"
+industry: "Retail POS"
+stack: ["React Native", "Expo Bare", "SQLite WAL", "Zustand", "Stripe Elements"]
+metrics: [
+  { label: "Ventas perdidas", value: "-22%" },
+  { label: "Sync success rate", value: "99.7%" },
+  { label: "Tiempo de reconciliación", value: "< 800ms" }
+]
+testimonial: "Arbizu Labs transformó nuestra operación. Ahora podemos vender incluso sin internet."
+date: "2026-06-18"
+---
+
+# El Desafío
+
+TechZone opera en 12 ubicaciones retail con conectividad intermitente. El antiguo sistema POS basado en web se desconectaba continuamente, impidiendo procesar ventas y perdiendo ingresos por un valor del 22% de la facturación diaria en horas pico.
+
+# La Solución
+
+Migramos todo el stack a una aplicación nativa React Native.
+Implementamos una arquitectura **Offline-First** utilizando `SQLite` en modo WAL (Write-Ahead Logging). Esto permite operaciones asíncronas de lectura/escritura concurrentes sin bloqueo.
+Los carritos de compra, el inventario y las transacciones se almacenan localmente en memoria y en disco, conciliándose en segundo plano con el servidor de la nube (vía colas de resiliencia ZMQ) tan pronto se recupera la conexión.
+
+# Resultados
+
+- **22% de aumento** en ingresos netos (reducción total de ventas perdidas).
+- **99.7%** tasa de éxito en sincronización de facturación remota.
+- **< 800ms** de tiempo de reconciliación por ticket procesado.
+
+# Arquitectura Técnica
+
+Nuestra implementación garantiza que la interfaz de usuario corra siempre a 60 FPS. El hilo principal (Main Thread) delega la escritura del SQLite a un hilo nativo en C++, manteniendo la UI ultra responsiva. 
+
+# Conclusión
+
+Una conectividad inestable no debe traducirse en pérdida económica. TechZone comprobó que la arquitectura Offline-First no es un "nice to have", sino un requerimiento crítico de negocio en mercados emergentes.

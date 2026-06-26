@@ -1,0 +1,38 @@
+---
+title: "TitanFlow: Latencia Sub-10ms en Trading Algorítmico DeFi"
+client: "TitanFlow"
+industry: "DeFi / Web3"
+stack: ["Node.js", "Redis", "WebSockets", "PM2", "Docker"]
+metrics: [
+  { label: "Latencia de Ejecución", value: "< 10ms" },
+  { label: "Volumen Procesado", value: "$1.2M/día" },
+  { label: "Costo de Infraestructura", value: "-40%" }
+]
+testimonial: "El ROI fue inmediato. Arbizu Labs optimizó nuestra infraestructura hasta el límite de la física de red."
+date: "2026-06-19"
+---
+
+# El Desafío
+
+TitanFlow requería una terminal de ejecución de estrategias DeFi donde el milisegundo marcaba la diferencia entre el éxito del arbitraje o el fracaso por *slippage*. Sus servidores AWS se atascaban en picos de volatilidad debido al polleo continuo de RPCs REST.
+
+# La Solución
+
+Reescribimos completamente la capa de red del motor de trading:
+- Eliminamos llamadas REST, migrando el 100% de la ingesta de precios a túneles **WebSocket persistentes**.
+- Integramos **Redis** en memoria ultra-rápida para manejar el estado atómico del order book sin tocar el disco.
+- Desplegamos nodos directos en la misma zona de disponibilidad (AZ) que los validadores de la blockchain para reducir saltos de red TCP.
+
+# Resultados
+
+- La latencia promedio de ejecución cayó de 250ms a **< 10ms**.
+- Volumen procesado estabilizado en más de **$1.2M diarios** sin fugas de memoria.
+- Optimización de instancias redujo el costo de AWS en un **40%**.
+
+# Arquitectura Técnica
+
+Se implementó el enrutador L7 `NEXUS Gateway` con soporte nativo de sockets y una capa PM2 en clúster mode, permitiendo procesar y balancear 15,000 requests/sec sin penalidad de performance.
+
+# Conclusión
+
+En entornos financieros algorítmicos, el rendimiento de la red y el manejo asíncrono determinan la vida o la muerte del producto. TitanFlow es hoy uno de los bots más rápidos del mercado privado.
