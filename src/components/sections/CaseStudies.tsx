@@ -6,12 +6,6 @@ import { ArrowRight } from 'lucide-react';
 export default function CaseStudies() {
   const cases = [
     {
-      title: "TechZone: POS Resiliente",
-      metric: "-22%",
-      label: "ventas perdidas con SQLite WAL",
-      slug: "techzone-pos-offline-first"
-    },
-    {
       title: "TitanFlow: DeFi Algorítmico",
       metric: "< 10ms",
       label: "latencia en trading automático",
@@ -22,6 +16,36 @@ export default function CaseStudies() {
       metric: "99.9%",
       label: "sync success rate offline",
       slug: "sentinelos-security-dispatch"
+    },
+    {
+      title: "Aureus: Wealth OS",
+      metric: "5+ hrs",
+      label: "ahorro mensual en conciliaciones",
+      slug: "aureus-wealth-os"
+    },
+    {
+      title: "TechZone: POS Resiliente",
+      metric: "-22%",
+      label: "ventas perdidas con SQLite WAL",
+      slug: "techzone-pos-offline-first"
+    },
+    {
+      title: "AeroShot: Drones & Web3",
+      metric: "< 2 min",
+      label: "tiempo de licenciamiento de stock",
+      slug: "aeroshot-drone-marketplace"
+    },
+    {
+      title: "AgroMarket Pro: AgTech Ops",
+      metric: "100%",
+      label: "operatividad rural offline",
+      slug: "agromarket-pro"
+    },
+    {
+      title: "CannaSavias: Retail Compliance",
+      metric: "100%",
+      label: "cumplimiento REPROCANN auto",
+      slug: "cannasavias"
     }
   ];
 
