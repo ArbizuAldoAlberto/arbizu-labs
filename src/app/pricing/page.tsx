@@ -30,14 +30,14 @@ export default function PricingPage() {
       ]
     },
     {
-      title: "TechZone POS",
-      icon: <CreditCard className="w-8 h-8 text-violet-400" />,
+      title: "AeroShot Drone SaaS",
+      icon: <Zap className="w-8 h-8 text-violet-400" />,
       themeColor: "from-violet-500 to-indigo-600",
       glowColor: "shadow-violet-500/20",
       tiers: [
-        { name: "Starter Kit", price: "$49", desc: "Código fuente del e-commerce móvil listo para usar.", features: ["Plantilla React Native", "Zustand persistencia", "Algoritmo Luhn local", "Soporte Expo Go"] },
-        { name: "SaaS Merchant", price: "$25", desc: "Servicio en la nube administrado para tu comercio.", features: ["$25 USD mensuales por sucursal", "Sync en la nube automática", "Soporte Web3 y tarjetas", "Panel de métricas de ventas"], recommended: true },
-        { name: "Custom POS", price: "$499", desc: "Despliegue a medida con marca blanca para tu negocio.", features: ["Instalación física", "Código de marca blanca", "Integraciones ERP", "Actualizaciones de por vida"] }
+        { name: "Lite Operator", price: "$49", desc: "Para pilotos individuales que licencian tomas aéreas.", features: ["50GB almacenamiento R2", "100 licencias Web3 al mes", "Sync en background básica", "Soporte comunitario"] },
+        { name: "Pro Fleet", price: "$99", desc: "Para agencias de filmación y mapeo aéreo con múltiples drones.", features: ["500GB almacenamiento R2", "Licenciamiento Web3 ilimitado", "Amortiguación haptics en telemetría", "Soporte prioritario"], recommended: true },
+        { name: "Enterprise Custom", price: "$499", desc: "Para operaciones industriales y corporativas de alta escala.", features: ["Almacenamiento R2 ilimitado", "Integraciones GIS personalizadas", "Garantía de SLA 99.9%", "Soporte dedicado 24/7"] }
       ]
     }
   ];

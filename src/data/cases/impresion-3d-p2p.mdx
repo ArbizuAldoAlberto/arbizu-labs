@@ -1,0 +1,34 @@
+---
+title: "Impresión 3D P2P & PetLock: Manufactura Local y Telemetría Distribuida"
+client: "MakerPrint Network / PawHero"
+industry: "Manufactura Aditiva / IoT"
+stack: ["Kotlin", "Jetpack Compose", "Room SQLite", "Gemini API", "Solidity (Base L2)"]
+metrics: [
+  { label: "Comisión Intermediación", value: "0%" },
+  { label: "Análisis STL con IA", value: "< 15s" },
+  { label: "Costo Collares GPS", value: "$0.00" }
+]
+testimonial: "La integración de Web3 Escrow y la cotización volumétrica local con IA nos permitió descentralizar la producción física de repuestos de forma 100% confiable."
+date: "2026-06-25"
+---
+
+# El Desafío
+
+Las plataformas tradicionales de impresión 3D cobran comisiones abusivas a los creadores (makers) y obligan a los clientes a depender de cadenas de suministro centralizadas muy lentas. Por otro lado, la telemetría de mascotas (rastreadores GPS) exige costosas suscripciones mensuales y hardware privativo que no todos los dueños u ONGs de rescate pueden financiar.
+
+# La Solución
+
+Diseñamos e implementamos **Impresión 3D P2P & PetLock**:
+- Un marketplace descentralizado donde los diseñadores y makers de impresión 3D cooperan localmente. El flujo de fondos está asegurado mediante un fideicomiso (**Escrow**) en contratos inteligentes de Base L2.
+- Un motor "WASM Slicer" e integración con **Gemini API** que estima el volumen de filamento y tiempo de impresión directamente desde archivos STL en el móvil, auditando fallos geométricos antes del minteo.
+- **PetLock Engine**: Chapas identificatorias QR de mascotas en formato STL de descarga gratuita. La comunidad las imprime en 3D localmente a costo cero, y el reencuentro de mascotas perdidas se gestiona mediante una red P2P de alerta vecinal.
+
+# Resultados
+
+- Reducción de comisiones centralizadas al **0% neto** a través del Escrow Web3 en Base L2.
+- Estimación y cotización instantánea de archivos STL en **menos de 15 segundos**.
+- **Costo mensual de rastreo celular reducido a cero** para miles de usuarios mediante chapas impresas en 3D y códigos QR cifrados.
+
+# Arquitectura Técnica
+
+La solución móvil está programada nativamente en Android con Kotlin. Combina base de datos local SQLite para el almacenamiento de archivos STL y modelos en caché, llamadas directas RPC a la red de Base L2 mediante firmas criptográficas en el dispositivo, y procesamiento de imágenes con el SDK de Gemini local.

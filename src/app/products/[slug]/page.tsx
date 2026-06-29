@@ -144,63 +144,63 @@ const PRODUCTS: Record<string, ProductContent> = {
       { q: "¿Se puede integrar con mi sistema de monitoreo?", a: "Sí. SentinelOS expone webhooks y endpoints REST para sincronizar datos con cualquier CRM o central de monitoreo preexistente." }
     ]
   },
-  techzone: {
-    title: "TechZone POS",
-    subtitle: "Punto de Venta E-commerce Premium y Gestión de Inventarios Offline-First",
+  aeroshot: {
+    title: "AeroShot Drone SaaS",
+    subtitle: "Procesamiento de Imágenes, Mapeo Agrícola y Licenciamiento de Stock Web3",
     themeColor: "from-violet-500 to-indigo-600",
     accentBg: "border-violet-500/30 bg-violet-950/20",
     glowColor: "shadow-violet-500/20",
-    icon: <CreditCard className="w-12 h-12 text-violet-400" />,
-    heroBadge: "Retail eCommerce & Web3 checkout POS",
+    icon: <Zap className="w-12 h-12 text-violet-400" />,
+    heroBadge: "Aereal Media & Precision Agriculture SaaS",
     problem: [
-      "Caídas en el sistema de facturación durante cortes en el enlace de fibra óptica del comercio.",
-      "Comisiones de pasarelas de pago locales que reducen el margen neto de venta.",
-      "Dificultades para aceptar cobros Web3 y tarjetas internacionales de forma fluida."
+      "Falta de conectividad celular en campos remotos para procesar imágenes de parcelas y mapas.",
+      "Lentitud e inseguridad en la adquisición de derechos de autor de tomas aéreas comerciales.",
+      "Visualizaciones cartográficas toscas o lentas que dificultan el análisis agronómico móvil."
     ],
     solution: [
-      "Sincronización desatendida SQLite que permite continuar vendiendo y facturando 100% offline.",
-      "Flujo Web3 nativo para cobros directos en Base L2 USDC al 0% de intermediación comercial.",
-      "Algoritmo de validación de tarjetas Luhn local para agilizar cobros manuales."
+      "Procesamiento Offline-First de imágenes y telemetría con sincronización automática en background al recuperar señal.",
+      "Minteo inmediato de licencias y derechos de imagen inmutables en Base L2 mediante firmas Web3.",
+      "Capas de mapas fluidas con transiciones glassmorphic y respuestas táctiles/hápticas de precisión."
     ],
     features: [
-      { name: "Offline Cart Persistence", desc: "Zustand Store con guardado en disco. El carro de compras nunca se pierde al cerrarse la app." },
-      { name: "Base L2 Web3 Payment", desc: "Detección inteligente de MetaMask para firmar y validar transferencias en USD en la cadena Base." },
-      { name: "Universal Commerce compatible", desc: "Integración optimizada con Universal Cart de Google para checkout instantáneo en un clic." },
-      { name: "Luhn Sanitization", desc: "Limpieza de campos de inyección XSS y validación matemática de tarjetas previo al envío." }
+      { name: "Offline Map Caching", desc: "Almacenamiento local de capas cartográficas y telemetría de vuelo en SQLite para uso off-grid." },
+      { name: "Base L2 IP Licensing", desc: "Registro inmutable de derechos de autor y licencias de tomas aéreas al instante con firma digital." },
+      { name: "Fluid Animated Engine", desc: "Renderizado y amortiguación de telemetría de vuelo mediante transiciones fluidas de hardware." },
+      { name: "Haptic Guidance", desc: "Retroalimentación háptica precisa durante la selección y control de parcelas e imágenes." }
     ],
     useCases: [
-      { title: "Ventas en Ferias o Eventos", scenario: "Cobros en ferias al aire libre o zonas de baja señal telefónica." },
-      { title: "Comercios Minoristas Locales", scenario: "Optimización de stock y cobros rápidos con tablets baratas de Android." },
-      { title: "Cobros Web3 Descentralizados", scenario: "Aceptación de pagos estables internacionales directo a tu wallet personal." }
+      { title: "Inspecciones Agrícolas Off-Grid", scenario: "Análisis y mapeo de lotes en campos sin cobertura celular mediante caché local." },
+      { title: "Venta de Contenido Aéreo", scenario: "Minteo de imágenes y videos comerciales de drones con licenciamiento inmediato." },
+      { title: "Monitoreo de Telemetría", scenario: "Seguimiento de misiones de vuelo con respuestas fluidas y alertas de seguridad hápitcas." }
     ],
     tiers: [
       {
-        name: "Starter Kit",
+        name: "Lite Operator",
         price: "$49",
-        desc: "Código fuente del e-commerce móvil listo para usar y documentado.",
-        features: ["Plantilla React Native", "Zustand persistencia integrada", "Algoritmo Luhn local", "Soporte Expo Go"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-starter"
+        desc: "Para pilotos individuales que licencian tomas aéreas.",
+        features: ["50GB almacenamiento R2", "100 licencias Web3 al mes", "Sync en background básica", "Soporte comunitario"],
+        checkoutUrl: "/api/warroom/checkout?product=aeroshot-lite"
       },
       {
-        name: "SaaS Merchant",
-        price: "$25",
-        desc: "Servicio en la nube administrado para tu comercio.",
-        features: ["$25 USD mensuales por sucursal", "Sincronización en la nube automática", "Soporte de cobros Web3 y tarjetas", "Panel de métricas de ventas"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-merchant"
+        name: "Pro Fleet",
+        price: "$99",
+        desc: "Para agencias de filmación y mapeo aéreo con múltiples drones.",
+        features: ["500GB almacenamiento R2", "Licenciamiento Web3 ilimitado", "Amortiguación haptics en telemetría", "Soporte prioritario"],
+        checkoutUrl: "/api/warroom/checkout?product=aeroshot-pro"
       },
       {
-        name: "Custom POS",
+        name: "Enterprise Custom",
         price: "$499",
-        desc: "Despliegue a medida con marca blanca para tu negocio.",
-        features: ["Instalación física y código de marca blanca", "Integraciones ERP personalizadas", "Soporte優先 24h", "Actualizaciones de por vida"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-custom"
+        desc: "Para operaciones industriales y corporativas de alta escala.",
+        features: ["Almacenamiento R2 ilimitado", "Integraciones GIS personalizadas", "Garantía de SLA 99.9%", "Soporte dedicado 24/7"],
+        checkoutUrl: "/api/warroom/checkout?product=aeroshot-enterprise"
       }
     ],
     faqs: [
-      { q: "¿Es compatible con lectores de códigos de barras?", a: "Sí, utiliza la cámara de tu dispositivo o se conecta con lectores de hardware bluetooth estándar." },
-      { q: "¿Cómo funciona el cobro con cripto?", a: "Genera una solicitud de firma hacia la billetera del cliente (MetaMask, Rabby). Al confirmarse la transferencia en Base L2, se procesa la orden al instante." },
-      { q: "¿Tiene costos ocultos?", a: "Ninguno. En la venta de plantillas el código es tuyo para siempre. En la suscripción SaaS no cobramos comisiones por tus ventas en efectivo o transferencia." },
-      { q: "¿Se puede usar en múltiples terminales?", a: "Sí, el almacén SQLite se sincroniza de forma segura de manera centralizada." }
+      { q: "¿AeroShot funciona sin internet?", a: "Sí. Toda la telemetría de vuelo, procesamiento de parcelas y registro de imágenes se guardan de forma local y se suben al servidor apenas recuperas la señal." },
+      { q: "¿Qué drones son compatibles?", a: "Es compatible con logs de vuelo estándar de DJI, Autel y Pixhawk, importándolos de forma automática." },
+      { q: "¿Qué ventajas tiene el licenciamiento Web3?", a: "Permite certificar la fecha, autoría e inmutabilidad de una toma aérea, facilitando su venta o transferencia sin intermediarios tradicionales." },
+      { q: "¿Cómo se integra con plataformas GIS?", a: "Permite exportar mapas procesados en formatos GeoJSON, KML y Shapefile compatibles con QGIS, ArcGIS y otras plataformas líderes." }
     ]
   }
 };

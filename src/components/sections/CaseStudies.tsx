@@ -18,18 +18,6 @@ export default function CaseStudies() {
       slug: "sentinelos-security-dispatch"
     },
     {
-      title: "Hábitat: Smart Leases",
-      metric: "0%",
-      label: "desintermediación inmobiliaria Base L2",
-      slug: "habitat-smart-leases"
-    },
-    {
-      title: "PawHero: IoT Telemetry",
-      metric: "+40%",
-      label: "eficiencia en rescates con red P2P",
-      slug: "pawhero-iot-telemetry"
-    },
-    {
       title: "AeroShot: Drones & Web3",
       metric: "< 2 min",
       label: "tiempo de licenciamiento de stock",
@@ -46,6 +34,18 @@ export default function CaseStudies() {
       metric: "100%",
       label: "cumplimiento REPROCANN auto",
       slug: "sabiobosque"
+    },
+    {
+      title: "Impresión 3D P2P & PetLock",
+      metric: "0%",
+      label: "comisión Web3 Escrow Base L2",
+      slug: "impresion-3d-p2p"
+    },
+    {
+      title: "NOMAD Tactical Hub",
+      metric: "100%",
+      label: "operatividad off-grid local",
+      slug: "nomad-tactical-hub"
     }
   ];
 

@@ -1,0 +1,34 @@
+---
+title: "NOMAD Tactical Hub: Sistema de Comunicación y Supervivencia Off-Grid"
+client: "Comunidades Locales / Emergencias cívicas"
+industry: "Security / Civil Defense"
+stack: ["Kotlin", "Jetpack Compose", "Room SQLite", "Vigenère Cipher", "Morse Encoder"]
+metrics: [
+  { label: "Operatividad de Red", value: "0% Internet" },
+  { label: "Cálculo de Antenas", value: "< 2s" },
+  { label: "Cifrado de Mensajería", value: "100% Local" }
+]
+testimonial: "NOMAD Tactical Hub demostró ser una herramienta de defensa civil invaluable, permitiendo coordinar ayuda en zonas completamente incomunicadas."
+date: "2026-06-25"
+---
+
+# El Desafío
+
+Durante desastres naturales o colapsos de infraestructura, las redes de comunicación tradicionales (celular, fibra, internet) suelen ser las primeras en fallar. Esto deja a comunidades enteras y equipos de asistencia civil incomunicados, imposibilitando la coordinación de rescates o el reporte de emergencias críticas.
+
+# La Solución
+
+Diseñamos e implementamos **NOMAD Tactical Hub**:
+- Un centro de control y comunicaciones 100% local y offline para dispositivos móviles, implementando mensajería cifrada basada en el cifrado clásico de Vigenère y codificación Morse.
+- Calculadoras electromagnéticas locales para diseñar antenas dipolo de emergencia a partir de materiales reciclados, facilitando el enlace con radios de onda corta.
+- Herramientas de baliza Morse lumínica controlando el flash nativo del terminal y registro de coordenadas de refugios en una base de datos Room SQLite local.
+
+# Resultados
+
+- **100% de independencia de red** para cálculos de radiofrecuencia y cifrado militar clásico.
+- Coordinación logística local directa mediante **ledger geográfico offline** con consumo cero de datos.
+- Activación de alertas de auxilio visuales inmediatas mediante el codificador en caliente de **Morse a Flash**.
+
+# Arquitectura Técnica
+
+Construida de forma nativa en Kotlin y Jetpack Compose, la aplicación utiliza una arquitectura limpia desacoplada de APIs externas. Todo el motor criptográfico y de cálculo de radiofrecuencias opera en hilos locales no bloqueantes, garantizando la resiliencia en dispositivos de gama baja en situaciones extremas.
