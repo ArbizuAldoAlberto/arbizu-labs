@@ -228,21 +228,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Trigger Telegram notification
-    const token = process.env.TELEGRAM_BOT_TOKEN || '8680060888:AAFp9CtsG32i2OStUHzRsuAlq7eTLmlcMN4';
-    const chatId = process.env.TELEGRAM_CHAT_ID || '1064043905';
-    const emoji = method === 'crypto' ? '🪙' : '💳';
-    const telegramMsg = `💰 *Venta Registrada (${isWebhook ? 'Webhook' : 'Manual'})!*\n\n` +
-                        `📦 *Producto:* ${product.toUpperCase()}\n` +
-                        `💵 *Monto:* $${Number(amount).toFixed(2)} USD\n` +
-                        `${emoji} *Método:* ${method.toUpperCase()}\n` +
-                        `📧 *Cliente:* ${email}\n` +
-                        `🔑 *Licencia:* \`${licenseKey}\``;
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    
+    if (token && chatId) {
+      const emoji = method === 'crypto' ? '🪙' : '💳';
+      const telegramMsg = `💰 *Venta Registrada (${isWebhook ? 'Webhook' : 'Manual'})!*\n\n` +
+                          `📦 *Producto:* ${product.toUpperCase()}\n` +
+                          `💵 *Monto:* $${Number(amount).toFixed(2)} USD\n` +
+                          `${emoji} *Método:* ${method.toUpperCase()}\n` +
+                          `📧 *Cliente:* ${email}\n` +
+                          `🔑 *Licencia:* \`${licenseKey}\``;
 
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text: telegramMsg, parse_mode: 'Markdown' })
-    }).catch(() => {});
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: telegramMsg, parse_mode: 'Markdown' })
+      }).catch(() => {});
+    }
 
     return NextResponse.json({
       success: true,
