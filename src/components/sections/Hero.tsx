@@ -18,10 +18,10 @@ export default function Hero() {
             Enterprise Solutions
           </span>
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-bold tracking-tight mb-6 max-w-5xl mx-auto leading-[1.1]">
-            Enterprise-Grade Offline-First Architecture for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-[var(--color-arbizu-teal)]">Mission-Critical</span> Applications
+            High-Resiliency Software & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-[var(--color-arbizu-teal)]">Physical Engineering</span> for Critical Operations.
           </h1>
           <p className="font-mono text-sm md:text-base text-[var(--color-mist-gray)] max-w-3xl mx-auto mb-12 leading-relaxed">
-            We build resilient mobile and blockchain systems that operate in zero-connectivity environments. Trusted by AgTech, DeFi, and logistics companies worldwide.
+            We build secure offline-first mobile systems, automated workflow pipelines, and custom 3D hardware solutions designed to survive and scale in the real world.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/booking" className="btn-primary-enterprise w-full sm:w-auto text-center px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition">

@@ -1,0 +1,35 @@
+---
+title: "AeroShot: Marketplace Descentralizado de Videos y Licencias de Drones"
+client: "AeroShot"
+industry: "Drone SaaS / Web3"
+stack: ["HTML5", "Vanilla JS", "Leaflet Map", "Cloudflare R2", "Base L2"]
+metrics: [
+  { label: "Tiempo de Licenciamiento", value: "< 2 min" },
+  { label: "Costo de Gas de Transacción", value: "< $0.01" },
+  { label: "Ahorro de Comisiones", value: "10% bancario" }
+]
+testimonial: "AeroShot revolucionó la forma en que los turistas contratan pilotos de drones y compran tomas de stock en la Patagonia."
+date: "2026-06-27"
+---
+
+# El Desafío
+
+La compra y venta de contenido de video aéreo turístico (stock) sufría de intermediaciones lentas y altas comisiones de plataformas centralizadas. Además, los turistas necesitaban contratar pilotos certificados en tiempo real en zonas de montaña con conectividad celular inestable o nula.
+
+# La Solución
+
+Diseñamos e implementamos **AeroShot**:
+- Un dashboard modular de alto rendimiento que integra mapeo satelital y filtros dinámicos de cobertura de drones.
+- Un motor de almacenamiento en la nube ultrarrápido y seguro basado en **Cloudflare R2** para la subida y entrega de clips raw.
+- Una pasarela de checkout híbrida: Mercado Pago para pagos fíat estándar, y **Transferencia Directa Galicia con 10% de descuento** integrado mediante carga del comprobante de transferencia (evitando comisiones).
+- Minteo diferido de licencias en la Capa 2 de **Base (ERC-1155)** mediante firmas personales criptográficas en MetaMask (`personal_sign`).
+
+# Resultados
+
+- Reducción del tiempo de licenciamiento y entrega de contenido de días a **menos de 2 minutos**.
+- Riel de cobro optimizado que permite retener el **100% de la ganancia** vía transferencias locales directas.
+- Seguridad legal blindada mediante firmas inmutables on-chain.
+
+# Arquitectura Técnica
+
+El portal utiliza una arquitectura frontend monolítica modular para garantizar velocidad y compatibilidad absoluta, orquestada de forma perimetral en la VPS de Hetzner con enrutamiento SSL seguro mediante Cloudflare.

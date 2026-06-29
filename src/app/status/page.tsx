@@ -17,7 +17,7 @@ export default function StatusPage() {
   const systems = [
     { name: "Arbizu Labs Portal", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
     { name: "TitanFlow Trading Bot Backend", status: "Operational", uptime: "99.98%", color: "text-emerald-400" },
-    { name: "Aureus Wealth OS Engine", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
+    { name: "SentinelOS Command Dispatch", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
     { name: "API Gateways", status: "Operational", uptime: "99.97%", color: "text-emerald-400" }
   ];
 

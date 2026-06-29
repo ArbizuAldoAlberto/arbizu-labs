@@ -1,0 +1,34 @@
+---
+title: "Hábitat: Motor de Alquileres y Generador de Contratos Digitales Criptográficos"
+client: "Hábitat"
+industry: "PropTech / Web3"
+stack: ["HTML5", "Vanilla JS", "CSS Grid", "Base L2", "Ethers.js"]
+metrics: [
+  { label: "Costo de Emisión", value: "-90%" },
+  { label: "Tiempo de Firma", value: "< 5 min" },
+  { label: "Garantía de Depósito", value: "Smart Contract" }
+]
+testimonial: "Hábitat eliminó los costos notariales abusivos y la burocracia de los contratos de alquiler tradicionales mediante firmas criptográficas."
+date: "2026-06-23"
+---
+
+# El Desafío
+
+La validación y firma de contratos de alquiler tradicionales en Argentina conlleva altos costos notariales de escribanía, trámites burocráticos y riesgos de fraude documental o falsificación de firmas. Se requería un motor digital seguro que permitiera firmar contratos de forma inmutable y descentralizada.
+
+# La Solución
+
+Diseñamos e implementamos **Hábitat**:
+- Un editor de contratos de alquiler parametrizado que genera plantillas adaptadas a la legislación local.
+- Integración de firmas digitales multifirma criptográficas que asocian los contratos firmados a un hash único inmutable en **Base L2**.
+- Un fideicomiso en garantía automatizado (*Escrow*) mediante Smart Contracts para asegurar la devolución del depósito al inquilino de forma programática.
+
+# Resultados
+
+- Reducción del **90% de costos** de intermediarios y escribanos.
+- Firma y emisión de contratos completada en **menos de 5 minutos**.
+- Eliminación total de disputas de veracidad contractual gracias al hash inmutable on-chain.
+
+# Arquitectura Técnica
+
+La herramienta opera de forma descentralizada y del lado del cliente, permitiendo a los usuarios firmar mediante MetaMask. Los hashes del documento consolidado se publican directamente en la blockchain de Base L2 para auditoría pública sin exponer los datos sensibles de los inquilinos.

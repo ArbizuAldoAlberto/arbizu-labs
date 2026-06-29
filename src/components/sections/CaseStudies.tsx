@@ -18,16 +18,16 @@ export default function CaseStudies() {
       slug: "sentinelos-security-dispatch"
     },
     {
-      title: "Aureus: Wealth OS",
-      metric: "5+ hrs",
-      label: "ahorro mensual en conciliaciones",
-      slug: "aureus-wealth-os"
+      title: "Hábitat: Smart Leases",
+      metric: "0%",
+      label: "desintermediación inmobiliaria Base L2",
+      slug: "habitat-smart-leases"
     },
     {
-      title: "TechZone: POS Resiliente",
-      metric: "-22%",
-      label: "ventas perdidas con SQLite WAL",
-      slug: "techzone-pos-offline-first"
+      title: "PawHero: IoT Telemetry",
+      metric: "+40%",
+      label: "eficiencia en rescates con red P2P",
+      slug: "pawhero-iot-telemetry"
     },
     {
       title: "AeroShot: Drones & Web3",
@@ -42,10 +42,10 @@ export default function CaseStudies() {
       slug: "agromarket-pro"
     },
     {
-      title: "CannaSavias: Retail Compliance",
+      title: "SabioBosque: Retail Compliance",
       metric: "100%",
       label: "cumplimiento REPROCANN auto",
-      slug: "cannasavias"
+      slug: "sabiobosque"
     }
   ];
 

@@ -1,6 +1,7 @@
 import Hero from '@/components/sections/Hero';
 import SocialProof from '@/components/sections/SocialProof';
 import WhyEnterprise from '@/components/sections/WhyEnterprise';
+import Manifesto from '@/components/sections/Manifesto';
 import Problems from '@/components/sections/Problems';
 import CaseStudies from '@/components/sections/CaseStudies';
 import DeveloperKits from '@/components/sections/DeveloperKits';
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero />
       <SocialProof />
       <WhyEnterprise />
+      <Manifesto />
       <Problems />
       <CaseStudies />
       <DeveloperKits />
