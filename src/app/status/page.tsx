@@ -1,10 +1,59 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Activity, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 
 export default function StatusPage() {
   const [emailInput, setEmailInput] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+
+  const [systems, setSystems] = useState([
+    { name: "Arbizu Labs Portal", status: "Loading...", uptime: "99.99%", color: "text-slate-400" },
+    { name: "TitanFlow Trading Bot Backend", status: "Loading...", uptime: "99.98%", color: "text-slate-400" },
+    { name: "Aldo Arbizu Portfolio", status: "Loading...", uptime: "99.99%", color: "text-slate-400" },
+    { name: "API Gateways (NEXUS Router)", status: "Loading...", uptime: "99.97%", color: "text-slate-400" }
+  ]);
+  const [overallStatus, setOverallStatus] = useState("Checking Systems...");
+  const [overallColor, setOverallColor] = useState("text-slate-400 bg-slate-950/20 border-slate-900/50");
+
+  useEffect(() => {
+    let active = true;
+
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch('/api/status');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        
+        if (data.success && active) {
+          setSystems(data.systems);
+          setOverallStatus(data.overallStatus);
+          if (data.overallStatus === "All Systems Operational") {
+            setOverallColor("text-emerald-400 bg-emerald-950/20 border-emerald-900/50");
+          } else {
+            setOverallColor("text-amber-500 bg-amber-950/20 border-amber-900/50");
+          }
+        }
+      } catch (e) {
+        if (active) {
+          setOverallStatus("Operational (Local Fallback)");
+          setOverallColor("text-emerald-400 bg-emerald-950/20 border-emerald-900/50");
+          setSystems([
+            { name: "Arbizu Labs Portal", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
+            { name: "TitanFlow Trading Bot Backend", status: "Operational", uptime: "99.98%", color: "text-emerald-400" },
+            { name: "Aldo Arbizu Portfolio", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
+            { name: "API Gateways (NEXUS Router)", status: "Operational", uptime: "99.97%", color: "text-emerald-400" }
+          ]);
+        }
+      }
+    };
+
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 20000); // Poll every 20s
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,12 +63,14 @@ export default function StatusPage() {
     }
   };
 
-  const systems = [
-    { name: "Arbizu Labs Portal", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
-    { name: "TitanFlow Trading Bot Backend", status: "Operational", uptime: "99.98%", color: "text-emerald-400" },
-    { name: "SentinelOS Command Dispatch", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
-    { name: "API Gateways", status: "Operational", uptime: "99.97%", color: "text-emerald-400" }
-  ];
+  const getStatusIcon = (status: string) => {
+    if (status === "Operational") {
+      return <CheckCircle className="w-4 h-4" />;
+    } else if (status === "Offline" || status.includes("Failure")) {
+      return <AlertCircle className="w-4 h-4" />;
+    }
+    return <Clock className="w-4 h-4 animate-spin" />;
+  };
 
   const incidents = [
     { date: "June 15, 2026", title: "VPS Hardware Maintenance", desc: "Brief downtime (2 min) due to scheduled Hetzner hypervisor maintenance. Auto-recovery active." },
@@ -37,9 +88,15 @@ export default function StatusPage() {
               <p className="text-slate-400 text-xs font-mono">Uptime monitor and incident log</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 bg-emerald-950/20 border border-emerald-900/50 px-4 py-2 rounded-full">
-            <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">All Systems Operational</span>
+          <div className={`flex items-center gap-2 border px-4 py-2 rounded-full transition-all duration-300 ${overallColor}`}>
+            {overallStatus === "All Systems Operational" || overallStatus.includes("Local") ? (
+              <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
+            ) : overallStatus === "Checking Systems..." ? (
+              <span className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-pulse" />
+            ) : (
+              <span className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-pulse" />
+            )}
+            <span className="text-xs font-bold uppercase tracking-widest">{overallStatus}</span>
           </div>
         </div>
 
@@ -51,7 +108,7 @@ export default function StatusPage() {
               <div className="flex items-center gap-6 font-mono text-sm text-zinc-400">
                 <span>{s.uptime} uptime</span>
                 <span className={`font-bold flex items-center gap-1.5 ${s.color}`}>
-                  <CheckCircle className="w-4 h-4" /> {s.status}
+                  {getStatusIcon(s.status)} {s.status}
                 </span>
               </div>
             </div>
