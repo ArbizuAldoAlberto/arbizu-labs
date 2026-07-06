@@ -21,14 +21,20 @@
 
 ---
 
+## 📧 Integración de Resend (Contacto y Leads)
+*   **API Service:** Utilizamos Resend para el envío programático de notificaciones de formularios de contacto corporativo.
+*   **Configuración de Destinatario:** Las notificaciones se envían a la dirección especificada en `RESEND_TO_EMAIL` (configurada en `.env.local`). 
+*   **Flujo Corporativo:** Para mantener el profesionalismo B2B, usamos el correo corporativo `RESEND_TO_EMAIL="aldo@arbizulabs.com"`.
+*   **Recepción y Lectura (Cloudflare Email Routing):** El dominio de Cloudflare intercepta todo el correo enviado a `aldo@arbizulabs.com` y lo reenvía automáticamente a la bandeja de entrada personal `arbizualdoalberto@gmail.com`. De esta forma, gestionamos todo en una sola bandeja de entrada de Gmail sin pagar por infraestructura extra ni tener problemas de rebote por "mailbox not found" en Resend.
+
+---
+
 ## 🔄 Active Lifecycle Phase
-*   **Current Phase:** `MVP / Parcial` (Landing copy ready, leads schema defined in database layer, local Next.js build compiled).
-*   **Production Deployment:** Built locally, Next.js server is not actively running in production yet (Staging/Production deployment pending on VPS).
-*   **Last Audit Date:** 2026-06-26
+*   **Current Phase:** `Deployed / Live` (Active on production VPS, serving corporate services and contact endpoints).
+*   **Production Deployment:** Running on production VPS port 3002 via PM2 (`arbizu-labs`). Mapped to `arbizulabs.com` and `www.arbizulabs.com` via Nexus Router on port 80.
+*   **Last Audit Date:** 2026-07-06
 
 ---
 
 ## 🎯 Next High-Priority Actions (Monetization & Conversion)
-1.  **Staging Deployment:** Upload build to production VPS on port 3000, routable via `vhost_router.js`.
-2.  **Lead Capture Integration:** Connect Resend service API keys to `.env.local` to enable corporate audit requests email alerts.
-3.  **Hormozi ROI Proposal:** Implement the transformation-centric copy layout of the 13 active services, offering the boutique custom development guarantee.
+1.  **Hormozi ROI Proposal:** Implement the transformation-centric copy layout of the 13 active services, offering the boutique custom development guarantee.
