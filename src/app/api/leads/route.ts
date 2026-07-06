@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
           },
           body: JSON.stringify({
             from: 'Arbizu Labs <noreply@arbizulabs.com>',
-            to: ['aldo@arbizulabs.com'],
+            to: [process.env.RESEND_TO_EMAIL || 'aldo@arbizulabs.com'],
             reply_to: email,
             subject: `Nuevo Lead B2B: ${name} - $${lead.total}`,
             html: `
