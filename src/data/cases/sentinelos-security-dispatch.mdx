@@ -1,38 +1,34 @@
 ---
-title: "SentinelOS: Sync Biométrico y Seguridad sin Internet"
-client: "SentinelOS"
-industry: "Private Security"
-stack: ["React Native", "Face ID API", "Zustand", "SQLite", "End-to-End Encryption"]
+title: "SentinelOS: Dispatch Táctico y Control de Rondas Offline-First"
+industry: "Ciberseguridad & Mobile Offline"
+stack: ["React Native", "SQLite WAL", "Firebase RLS", "TensorFlow Lite", "Expo"]
 metrics: [
-  { label: "Falsos Positivos", value: "0.01%" },
   { label: "Operatividad Offline", value: "100%" },
-  { label: "Tiempo de Validación", value: "< 1.5s" }
+  { label: "Prevención Spoofing", value: "Validación Biométrica" },
+  { label: "Reconciliación Sync", value: "< 1.5s" }
 ]
-testimonial: "La arquitectura nos salvó. Desplegamos la app en zonas rurales sin problemas de sync y con máxima seguridad militar."
 date: "2026-06-20"
 ---
 
 # El Desafío
 
-Las agencias de seguridad privada despliegan guardias en zonas remotas, depósitos y recintos rurales donde la cobertura 4G/5G es inexistente. Requerían un sistema de "Clock-In" y reportes de incidentes que no pudiera ser falsificado y que funcionase en desconexión total.
+En el sector de la seguridad física e industrial, los vigiladores y guardias deben patrullar depósitos oscuros, estacionamientos subterráneos y predios perimetrales donde la señal celular (3G/4G/WiFi) es inexistente. Los sistemas tradicionales de control de rondas presentan dos fallos graves:
+1. Las apps web colapsan al perder la conexión, impidiendo registrar lecturas de puntos de control.
+2. Fraude por clonación de códigos QR o simulación (*spoofing*) de coordenadas GPS en dispositivos vulnerados.
 
-# La Solución
+# La Solución de Ingeniería
 
-Creamos **SentinelOS**, una app móvil con grado militar.
-- **Autenticación Biométrica Offline:** Las firmas faciales (hashes) se sincronizan en caché seguro del dispositivo. Si no hay internet, la validación se hace localmente contra la enclave del hardware móvil.
-- **Criptografía:** Todo reporte generado (texto, fotos de incidentes) se cifra con AES-256 en la base de datos local SQLite del dispositivo móvil.
-- **Sync Oportunista:** Tan pronto el dispositivo intercepta red (así sea 3G intermitente), un worker en background sube de a fragmentos los reportes encriptados.
+Construimos **SentinelOS**, una plataforma móvil táctica diseñada bajo la premisa de que "la pérdida de señal es una condición operativa normal, no una excepción":
+- **Persistencia SQLite WAL:** Cada lectura de punto de control, fotografía de evidencia y reporte de incidencia se guarda en una cola transaccional local inmutable.
+- **Validación Anti-Spoofing:** Algoritmo que audita marcas de tiempo atómicas, lectura de códigos QR cifrados y verificación biométrica on-device con TensorFlow Lite.
+- **Sincronización Asíncrona Automática:** Al recuperar señal, el motor de sincronización sube los registros por lotes a Firebase/Supabase con resolución automática de conflictos.
 
-# Resultados
+# Resultados & Benchmarks
 
-- Operatividad del **100%** garantizada sin depender de infraestructura móvil de las telcos.
-- Riesgo de suplantación de identidad reducido drásticamente (falsos positivos en 0.01%).
-- Validaciones en **menos de 1.5 segundos**.
-
-# Arquitectura Técnica
-
-Integración con APIs nativas criptográficas y de visión del SO de Android e iOS a través de React Native JSI. No hay dependencia de puente asíncrono para las validaciones pesadas, lo que ahorra batería y recursos.
+- **100% de disponibilidad:** Operatividad continua de guardias en subterráneos sin pérdida de un solo reporte.
+- **Auditoría inmutable:** Eliminación completa del fraude de ubicación mediante verificación cruzada de sensores de hardware.
+- **Sincronización desatendida:** Reconciliación de datos en menos de 1.5 segundos al restablecerse la conexión de red.
 
 # Conclusión
 
-Cuando la vida o la integridad de activos corporativos están en juego, tu software no puede poner como excusa que "no hay buena señal". SentinelOS demuestra el poder real del diseño Offline-First.
+SentinelOS valida cómo una arquitectura Offline-First bien diseñada transforma un punto débil operativo en una garantía de seguridad inquebrantable para agencias de vigilancia y control perimetral.

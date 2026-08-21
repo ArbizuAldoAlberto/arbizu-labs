@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Space_Mono } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Space_Mono, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -22,35 +23,48 @@ const space = Space_Mono({
   variable: "--font-space",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 export const metadata: Metadata = {
-  title: "Arbizu Labs | Enterprise Software Agency — Offline-First & B2B SaaS",
-  description: "Agencia de desarrollo de software enterprise especializada en arquitecturas Offline-First, SaaS B2B, y automatizaciones con IA. Soluciones resilientes que resisten el mundo real.",
+  title: "Arbizu Labs | Boutique de Ingeniería de Software — Offline-First, B2B SaaS & AI Automation",
+  description: "Boutique de ingeniería de producto híbrido fundada por Aldo Arbizu. Especialistas en arquitecturas móviles Offline-First (React Native, SQLite WAL), plataformas SaaS B2B, automatizaciones de misión crítica con n8n/IA y prototipado físico 3D.",
   keywords: [
     "Arbizu Labs",
-    "Enterprise Software Agency",
+    "Aldo Arbizu",
+    "Boutique de Ingeniería de Software",
     "Offline-First Development",
-    "B2B SaaS",
-    "React Native Agency",
-    "Mobile App Development Argentina",
-    "SQLite WAL Expert",
-    "n8n Automation",
-    "Stripe Integration",
-    "Base L2 Payments"
+    "React Native SQLite WAL",
+    "B2B SaaS Architecture",
+    "n8n Automation Agency",
+    "Ciberseguridad Móvil OWASP",
+    "AgTech Software",
+    "TitanFlow Trading Bot",
+    "SentinelOS",
+    "Base L2 Blockchain"
   ],
-  authors: [{ name: "Aldo Arbizu", url: "https://arbizulabs.com" }],
+  authors: [{ name: "Aldo Alberto Arbizu", url: "https://aldoarbizu.com" }],
+  creator: "Aldo Alberto Arbizu",
+  publisher: "Arbizu Labs",
   metadataBase: new URL("https://arbizulabs.com"),
+  alternates: {
+    canonical: "https://arbizulabs.com",
+  },
   openGraph: {
-    title: "Arbizu Labs — Enterprise Software Agency",
-    description: "Software que resiste el mundo real. Arquitecturas Offline-First, SaaS B2B, y automatizaciones con IA.",
+    title: "Arbizu Labs — Software de Alta Resiliencia para Operaciones Críticas",
+    description: "Diseñamos y desplegamos sistemas móviles Offline-First, plataformas SaaS B2B y pipelines autónomos de IA que sobreviven al estrés del mundo real. Del bit al átomo.",
     url: "https://arbizulabs.com",
     siteName: "Arbizu Labs",
     type: "website",
-    locale: "es_AR",
+    locale: "es_ES",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arbizu Labs — Enterprise Software Agency",
-    description: "Software resiliente para negocios que no pueden permitirse fallar.",
+    title: "Arbizu Labs — High-Resiliency Software Engineering",
+    description: "Sistemas móviles Offline-First, SaaS B2B y automatización inteligente.",
+    creator: "@ArbizuAldo",
   },
 };
 
@@ -60,28 +74,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${cormorant.variable} ${jetbrains.variable} ${space.variable}`}>
+    <html lang="es" className={`${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`}>
       <body className="bg-[var(--color-space-black)] text-[var(--color-mist-gray)] font-mono antialiased selection:bg-[var(--color-arbizu-teal)]/30">
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID_ARBIZU}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID_ARBIZU}');
-          `}
-        </Script>
-        <Script
-          src="https://plausible.io/js/script.js"
-          data-domain="arbizulabs.com"
-          strategy="afterInteractive"
-        />
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
+        {process.env.NEXT_PUBLIC_GA_ID_ARBIZU && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID_ARBIZU}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID_ARBIZU}');
+              `}
+            </Script>
+          </>
+        )}
+        <LanguageProvider>
+          <Navigation />
+          <main>{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

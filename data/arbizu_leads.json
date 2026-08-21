@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "lead_1787268000656_8pp6736lv",
+    "timestamp": "2026-08-20T23:20:00.656Z",
+    "name": "Test User",
+    "email": "test@example.com",
+    "company": "Test Co",
+    "services": [
+      "booking_inquiry"
+    ],
+    "total": 0,
+    "message": "Need a Next.js 16 B2B SaaS platform with local DB offline sync",
+    "source": "arbizulabs.com"
+  },
+  {
+    "id": "lead_1787341276067_ayr1yxzqo",
+    "timestamp": "2026-08-21T19:41:16.067Z",
+    "name": "Test User",
+    "email": "test@example.com",
+    "company": "Test Company",
+    "services": [
+      "direct_contact_form"
+    ],
+    "total": 0,
+    "message": "Hello, this is a test message to verify the contact form works properly on the site. Let's make sure it handles submissions correctly without issues.",
+    "source": "arbizulabs.com"
+  }
+]

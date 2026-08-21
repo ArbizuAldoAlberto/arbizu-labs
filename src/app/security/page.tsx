@@ -1,87 +1,146 @@
 'use client';
 import React from 'react';
-import { Shield, Lock, FileText, CheckCircle } from 'lucide-react';
+import { Shield, Lock, FileText, CheckCircle, Server, Key, Terminal, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SecurityPage() {
+  const { locale } = useLanguage();
+
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-slate-100 py-24 px-6">
+    <div className="min-h-screen bg-[var(--color-space-black)] text-slate-200 py-32 px-6">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8 border-b border-slate-900 pb-6">
-          <Shield className="w-12 h-12 text-blue-500" />
+        
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-12 border-b border-white/10 pb-8">
+          <div className="p-3.5 bg-[var(--color-arbizu-teal)]/10 border border-[var(--color-arbizu-teal)]/30 rounded-2xl">
+            <Shield className="w-10 h-10 text-[var(--color-arbizu-teal)]" />
+          </div>
           <div>
-            <h1 className="text-4xl font-extrabold text-white">Security & Compliance Portal</h1>
-            <p className="text-slate-400 mt-1 font-mono text-sm">Enterprise-grade security controls for mission-critical apps</p>
+            <span className="badge-enterprise mb-2">Security & Trust</span>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-serif">
+              {locale === 'es' ? "Portal de Seguridad & Soberanía de Datos" : "Security & Data Sovereignty Portal"}
+            </h1>
+            <p className="text-slate-400 mt-1 font-mono text-xs">
+              {locale === 'es'
+                ? "Directrices de arquitectura, cifrado y controles de seguridad para aplicaciones críticas."
+                : "Architectural guidelines, cryptography, and security controls for mission-critical apps."}
+            </p>
           </div>
         </div>
 
-        <section className="mb-12">
-          <h2 className="text-2xl font-serif text-white font-bold mb-4">Our Security Commitment</h2>
-          <p className="text-slate-400 leading-relaxed mb-6">
-            At Arbizu Labs, security is built into every layer of our systems—from local database persistence to global L2 smart contracts. We utilize industry-standard practices to protect your data and execution logic 24/7.
+        {/* Commitment Statement */}
+        <section className="mb-14">
+          <h2 className="text-2xl font-serif text-white font-bold mb-4">
+            {locale === 'es' ? "Nuestro Compromiso: Seguridad por Diseño" : "Our Commitment: Security by Design"}
+          </h2>
+          <p className="text-slate-300 font-mono text-sm leading-relaxed mb-6">
+            {locale === 'es'
+              ? "En Arbizu Labs, la seguridad no es una capa superficial agregada al final del desarrollo; está integrada en cada línea de código desde la persistencia de datos local hasta las firmas criptográficas en blockchain. Siguiendo las directrices internacionales OWASP MASVS (Mobile Application Security Verification Standard), blindamos la integridad operativa y la privacidad de tu negocio."
+              : "At Arbizu Labs, security is not an afterthought added at the end of development; it is baked into every layer of code from local database persistence to blockchain cryptographic signatures. Following international OWASP MASVS guidelines, we protect operational integrity and business privacy."}
           </p>
         </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <div className="p-6 rounded-2xl bg-zinc-950/60 border border-zinc-900">
-            <Lock className="w-8 h-8 text-blue-500 mb-4" />
-            <h3 className="text-lg font-bold text-white mb-2">End-to-End Encryption</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              All data is encrypted in transit using TLS 1.3 and at rest with AES-256 keys managed via secure vaults.
+        {/* 4 Pillars Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          <div className="glass-surface-enterprise p-8">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/5 w-fit mb-4">
+              <Lock className="w-6 h-6 text-[var(--color-arbizu-teal)]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2 font-serif">
+              {locale === 'es' ? "Cifrado de Extremo a Extremo" : "End-to-End Encryption"}
+            </h3>
+            <p className="text-slate-400 text-xs font-mono leading-relaxed">
+              {locale === 'es'
+                ? "Todos los datos en tránsito se encriptan bajo TLS 1.3 con certificados gestionados por Cloudflare. Las bases de datos locales móviles emplean SQLCipher / SQLite WAL con claves derivadas en reposo."
+                : "All data in transit is encrypted under TLS 1.3 via Cloudflare proxy. Mobile local databases use SQLCipher / SQLite WAL with derived keys at rest."}
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-zinc-950/60 border border-zinc-900">
-            <CheckCircle className="w-8 h-8 text-blue-500 mb-4" />
-            <h3 className="text-lg font-bold text-white mb-2">SOC 2 Type II Compliance</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Our workflows, infrastructure, and deployment processes are designed to meet SOC 2 Type II audit standards.
+          <div className="glass-surface-enterprise p-8">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/5 w-fit mb-4">
+              <CheckCircle className="w-6 h-6 text-[#00D4FF]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2 font-serif">
+              {locale === 'es' ? "Auditoría OWASP MASVS en Pre-Build" : "Pre-Build OWASP MASVS Audits"}
+            </h3>
+            <p className="text-slate-400 text-xs font-mono leading-relaxed">
+              {locale === 'es'
+                ? "Ejecutamos escaneos estáticos automáticos antes de cada compilación para prevenir fuga de claves API, endpoints no sanitizados, inyecciones de datos o vectores de spoofing GPS/NFC."
+                : "We execute static analysis in CI/CD before every compilation to prevent API key leakage, unsanitized endpoints, data injection, or GPS spoofing vectors."}
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-zinc-950/60 border border-zinc-900">
-            <Shield className="w-8 h-8 text-blue-500 mb-4" />
-            <h3 className="text-lg font-bold text-white mb-2">Immutable Audit Trails</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Every operation on SentinelOS and TitanFlow writes to encrypted audit logs, providing tamper-evident operational traces.
+          <div className="glass-surface-enterprise p-8">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/5 w-fit mb-4">
+              <Key className="w-6 h-6 text-[#7F77DD]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2 font-serif">
+              {locale === 'es' ? "Trazabilidad Criptográfica Inmutable" : "Immutable Cryptographic Audit Trails"}
+            </h3>
+            <p className="text-slate-400 text-xs font-mono leading-relaxed">
+              {locale === 'es'
+                ? "Los registros críticos de auditoría en SentinelOS y TitanFlow se sellan mediante hashes criptográficos en Base L2, garantizando pistas de auditoría que no pueden ser alteradas por ningún atacante."
+                : "Critical audit records in SentinelOS and TitanFlow are anchored with cryptographic hashes on Base L2, guaranteeing tamper-proof audit trails."}
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-zinc-950/60 border border-zinc-900">
-            <FileText className="w-8 h-8 text-blue-500 mb-4" />
-            <h3 className="text-lg font-bold text-white mb-2">GDPR & CCPA Alignment</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Full data minimization controls, right-to-be-forgotten endpoints, and localized database hosting in EU regions.
+          <div className="glass-surface-enterprise p-8">
+            <div className="p-3 rounded-xl bg-black/40 border border-white/5 w-fit mb-4">
+              <FileText className="w-6 h-6 text-[#EF9F27]" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2 font-serif">
+              {locale === 'es' ? "Políticas Row-Level Security (RLS)" : "Row-Level Security (RLS) Policies"}
+            </h3>
+            <p className="text-slate-400 text-xs font-mono leading-relaxed">
+              {locale === 'es'
+                ? "Aislamiento estricto de datos multi-tenant en PostgreSQL / Supabase, asegurando que ningún usuario ni aplicación pueda consultar registros de terceros fuera de su esquema autorizado."
+                : "Strict multi-tenant isolation in PostgreSQL / Supabase, guaranteeing that no user or app can access unauthorized third-party records."}
             </p>
           </div>
         </div>
 
-        <section className="p-8 rounded-2xl bg-zinc-950 border border-zinc-900 mb-12">
-          <h3 className="text-xl font-bold text-white mb-4">Infrastructure Specs</h3>
-          <ul className="space-y-3 text-sm font-mono text-zinc-400">
-            <li className="flex justify-between border-b border-zinc-900 pb-2">
-              <span>Hosting Providers</span>
-              <span className="text-white">Hetzner (EU) & DigitalOcean (US)</span>
+        {/* Infrastructure Specs */}
+        <section className="p-8 rounded-2xl bg-black/40 border border-white/10 mb-14">
+          <h3 className="text-xl font-bold text-white mb-6 font-serif flex items-center gap-2">
+            <Server className="w-5 h-5 text-[var(--color-arbizu-teal)]" />
+            {locale === 'es' ? "Especificaciones de Infraestructura" : "Infrastructure Specifications"}
+          </h3>
+          <ul className="space-y-4 text-xs font-mono text-zinc-400">
+            <li className="flex justify-between border-b border-white/5 pb-2.5">
+              <span>{locale === 'es' ? "Hosting & Nodos" : "Hosting & Nodes"}</span>
+              <span className="text-white font-bold">VPS Hetzner (Falkenstein, EU) & DigitalOcean (US)</span>
             </li>
-            <li className="flex justify-between border-b border-zinc-900 pb-2">
-              <span>DDoS Mitigation</span>
-              <span className="text-white">Cloudflare Enterprise Proxy</span>
+            <li className="flex justify-between border-b border-white/5 pb-2.5">
+              <span>{locale === 'es' ? "Protección Perimetral" : "Perimeter Security"}</span>
+              <span className="text-white font-bold">Cloudflare Enterprise Edge Proxy & WAF</span>
             </li>
-            <li className="flex justify-between border-b border-zinc-900 pb-2">
-              <span>Data Persistence</span>
-              <span className="text-white">SQLite WAL / Encrypted PostgreSQL</span>
+            <li className="flex justify-between border-b border-white/5 pb-2.5">
+              <span>{locale === 'es' ? "Motor de Persistencia" : "Persistence Engine"}</span>
+              <span className="text-white font-bold">SQLite WAL / Encrypted PostgreSQL / Turso LibSQL</span>
             </li>
             <li className="flex justify-between">
-              <span>Backup Routine</span>
-              <span className="text-white">Encrypted daily push to Backblaze B2</span>
+              <span>{locale === 'es' ? "Monitoreo & Logs" : "Telemetry & Monitoring"}</span>
+              <span className="text-white font-bold">Daemon interno de telemetría & Ping Responders cada 5 min</span>
             </li>
           </ul>
         </section>
 
-        <section className="border-t border-slate-900 pt-8 text-center">
-          <p className="text-slate-500 text-xs">
-            To report a vulnerability or coordinate a penetration test, contact <a href="mailto:security@arbizulabs.com" className="text-blue-500 hover:underline">security@arbizulabs.com</a>.
+        {/* Vulnerability report contact */}
+        <section className="border-t border-white/10 pt-8 text-center font-mono text-xs text-slate-400">
+          <p className="mb-4">
+            {locale === 'es'
+              ? "Para coordinar una auditoría de seguridad o reportar una vulnerabilidad, contáctanos directamente a:"
+              : "To coordinate a security audit or report a vulnerability, contact us directly at:"}
           </p>
+          <a 
+            href="mailto:aldo@arbizulabs.com" 
+            className="text-[var(--color-arbizu-teal)] hover:underline font-bold text-sm inline-flex items-center gap-1"
+          >
+            aldo@arbizulabs.com
+          </a>
         </section>
+
       </div>
     </div>
   );

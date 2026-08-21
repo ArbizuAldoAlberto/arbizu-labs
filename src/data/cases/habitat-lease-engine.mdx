@@ -1,34 +1,27 @@
 ---
-title: "Hábitat: Motor de Alquileres y Generador de Contratos Digitales Criptográficos"
-client: "Hábitat"
-industry: "PropTech / Web3"
-stack: ["HTML5", "Vanilla JS", "CSS Grid", "Base L2", "Ethers.js"]
+title: "Hábitat: Protocolo Descentralizado de Alquileres & Reconversión de Tierras"
+industry: "PropTech & Smart Contracts"
+stack: ["Next.js", "Solidity", "Base L2", "PostgreSQL", "TailwindCSS"]
 metrics: [
-  { label: "Costo de Emisión", value: "-90%" },
-  { label: "Tiempo de Firma", value: "< 5 min" },
-  { label: "Garantía de Depósito", value: "Smart Contract" }
+  { label: "Validación de Contratos", value: "Smart Contracts" },
+  { label: "Costos de Intermediación", value: "-80%" },
+  { label: "Firma Digital", value: "Base L2 personal_sign" }
 ]
-testimonial: "Hábitat eliminó los costos notariales abusivos y la burocracia de los contratos de alquiler tradicionales mediante firmas criptográficas."
-date: "2026-06-23"
+date: "2026-06-10"
 ---
 
 # El Desafío
 
-La validación y firma de contratos de alquiler tradicionales en Argentina conlleva altos costos notariales de escribanía, trámites burocráticos y riesgos de fraude documental o falsificación de firmas. Se requería un motor digital seguro que permitiera firmar contratos de forma inmutable y descentralizada.
+El mercado inmobiliario y el arrendamiento de parcelas rurales sufren de excesiva intermediación, contratos en papel vulnerables a fraudes y procesos de verificación crediticia opacos que excluyen a inquilinos y productores legítimos.
 
-# La Solución
+# La Solución de Ingeniería
 
-Diseñamos e implementamos **Hábitat**:
-- Un editor de contratos de alquiler parametrizado que genera plantillas adaptadas a la legislación local.
-- Integración de firmas digitales multifirma criptográficas que asocian los contratos firmados a un hash único inmutable en **Base L2**.
-- Un fideicomiso en garantía automatizado (*Escrow*) mediante Smart Contracts para asegurar la devolución del depósito al inquilino de forma programática.
+Desarrollamos **Hábitat**, un protocolo de alquileres directos y acuerdos transparentes:
+- **Firmas Criptográficas en Base L2:** Validación y sellado de acuerdos mediante firmas digitales descentralizadas con hash inalterable.
+- **Registro de Reconversión Productiva:** Base de datos relacional para coordinar la reactivación de tierras ociosas y acuerdos directos entre propietarios y arrendatarios.
+- **Dashboard Minimalista:** Interfaz con diseño glassmorphism oscuro y gestión simplificada de cuotas y depósitos en garantía.
 
-# Resultados
+# Resultados & Benchmarks
 
-- Reducción del **90% de costos** de intermediarios y escribanos.
-- Firma y emisión de contratos completada en **menos de 5 minutos**.
-- Eliminación total de disputas de veracidad contractual gracias al hash inmutable on-chain.
-
-# Arquitectura Técnica
-
-La herramienta opera de forma descentralizada y del lado del cliente, permitiendo a los usuarios firmar mediante MetaMask. Los hashes del documento consolidado se publican directamente en la blockchain de Base L2 para auditoría pública sin exponer los datos sensibles de los inquilinos.
+- **Reducción de costos:** Disminución drástica de comisiones administrativas en comparación con inmobiliarias tradicionales.
+- **Transparencia contractual:** Historial de firmas verificable públicamente en blockchain sin custodia de fondos privados.

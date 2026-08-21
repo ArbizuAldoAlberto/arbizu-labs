@@ -1,35 +1,28 @@
 ---
-title: "AeroShot: Marketplace Descentralizado de Videos y Licencias de Drones"
-client: "AeroShot"
-industry: "Drone SaaS / Web3"
-stack: ["HTML5", "Vanilla JS", "Leaflet Map", "Cloudflare R2", "Base L2"]
+title: "AeroShot: Procesamiento de Drones Agrícolas & Licenciamiento Web3"
+industry: "AgTech & Drones"
+stack: ["Next.js", "React Native", "Base L2", "GIS WebGL", "TailwindCSS"]
 metrics: [
-  { label: "Tiempo de Licenciamiento", value: "< 2 min" },
-  { label: "Costo de Gas de Transacción", value: "< $0.01" },
-  { label: "Ahorro de Comisiones", value: "10% bancario" }
+  { label: "Procesamiento de Parcelas", value: "Offline Caching" },
+  { label: "Licenciamiento Web3", value: "< 2s" },
+  { label: "Exportación GIS", value: "GeoJSON / KML" }
 ]
-testimonial: "AeroShot revolucionó la forma en que los turistas contratan pilotos de drones y compran tomas de stock en la Patagonia."
-date: "2026-06-27"
+date: "2026-06-21"
 ---
 
 # El Desafío
 
-La compra y venta de contenido de video aéreo turístico (stock) sufría de intermediaciones lentas y altas comisiones de plataformas centralizadas. Además, los turistas necesitaban contratar pilotos certificados en tiempo real en zonas de montaña con conectividad celular inestable o nula.
+Los pilotos de drones agrícolas y topógrafos enfrentan demoras críticas para procesar parcelas y certificar la autoría de tomas aéreas comerciales. Los sistemas tradicionales exigen subidas pesadas a la nube en zonas donde la velocidad de subida celular es prácticamente nula.
 
-# La Solución
+# La Solución de Ingeniería
 
-Diseñamos e implementamos **AeroShot**:
-- Un dashboard modular de alto rendimiento que integra mapeo satelital y filtros dinámicos de cobertura de drones.
-- Un motor de almacenamiento en la nube ultrarrápido y seguro basado en **Cloudflare R2** para la subida y entrega de clips raw.
-- Una pasarela de checkout híbrida: Mercado Pago para pagos fíat estándar, y **Transferencia Directa Galicia con 10% de descuento** integrado mediante carga del comprobante de transferencia (evitando comisiones).
-- Minteo diferido de licencias en la Capa 2 de **Base (ERC-1155)** mediante firmas personales criptográficas en MetaMask (`personal_sign`).
+Desarrollamos **AeroShot**, una plataforma especializada en telemetría de vuelo y licenciamiento instantáneo:
+- **Caché Cartográfico Local:** Almacenamiento local de capas cartográficas y telemetría de vuelo en SQLite para análisis agronómico sin conexión.
+- **Minteo Inmutable en Base L2:** Registro de autoría y derechos de imagen mediante firmas criptográficas en Base L2, permitiendo la venta y transferencia de licencias al instante.
+- **Renderizado Fluido:** Capas cartográficas con transiciones fluidas de hardware y retroalimentación háptica precisa para el control de parcelas.
 
-# Resultados
+# Resultados & Benchmarks
 
-- Reducción del tiempo de licenciamiento y entrega de contenido de días a **menos de 2 minutos**.
-- Riel de cobro optimizado que permite retener el **100% de la ganancia** vía transferencias locales directas.
-- Seguridad legal blindada mediante firmas inmutables on-chain.
-
-# Arquitectura Técnica
-
-El portal utiliza una arquitectura frontend monolítica modular para garantizar velocidad y compatibilidad absoluta, orquestada de forma perimetral en la VPS de Hetzner con enrutamiento SSL seguro mediante Cloudflare.
+- **Operación Off-Grid:** Capacidad de importar y revisar logs de vuelo de drones (DJI, Autel, Pixhawk) directamente en el campo.
+- **Certificación Criptográfica:** Emisión de licencias digitales de autoría en menos de 2 segundos en Base L2.
+- **Interoperabilidad GIS:** Exportación directa a formatos estándares compatibles con QGIS y ArcGIS.

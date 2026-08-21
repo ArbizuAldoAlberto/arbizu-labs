@@ -1,197 +1,382 @@
 'use client';
 import React, { useState } from "react";
-import { Shield, Bot, CreditCard, Check, ArrowRight, Zap, Lock } from "lucide-react";
-import ROICalculator from "@/components/ui/ROICalculator";
+import { Shield, Bot, CreditCard, Check, ArrowRight, Zap, Lock, Smartphone, Cloud, Cpu, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import RoiCalculator from "@/components/sections/RoiCalculator";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PricingPage() {
-  const [checkoutModal, setCheckoutModal] = useState<{ isOpen: boolean; product: string; tierName: string; price: string } | null>(null);
+  const [cryptoModalOpen, setCryptoModalOpen] = useState(false);
+  const { locale, t } = useLanguage();
 
-  const products = [
+  const developerKits = [
     {
-      title: "TitanFlow Pro",
-      icon: <Bot className="w-8 h-8 text-cyan-400" />,
-      themeColor: "from-cyan-500 to-blue-600",
-      glowColor: "shadow-cyan-500/20",
-      tiers: [
-        { name: "Starter (Simulated)", price: "$49", desc: "Ideal para familiarizarse con el flujo cuantitativo y backtesting.", features: ["Ejecución simulada", "Backtesting ilimitado", "Historial de 30 días", "Alertas a Telegram"] },
-        { name: "Pro Live", price: "$99", desc: "Para traders individuales activos que conectan su propio Exchange.", features: ["Ejecución Maker en Binance", "Auditoría en Caliente con IA", "Soporte Multi-Estrategia", "EAS Cloud logs & alerts"], recommended: true },
-        { name: "Enterprise Custom", price: "$149", desc: "Para fondos de inversión pequeños con soporte dedicado.", features: ["Estrategias a medida", "Instancia VPS dedicada", "Garantía de SLA 99.9%", "Soporte prioritario 24/7"] }
+      title: "React Native Offline-First Starter",
+      price: "$29",
+      period: locale === 'es' ? "Pago único / Licencia perpetua" : "One-time purchase / Perpetual license",
+      desc: locale === 'es' 
+        ? "Boilerplate de producción para apps móviles que deben funcionar sin internet. SQLite con WAL mode y Zustand auto-sync."
+        : "Production boilerplate for mobile apps that must operate off-grid. SQLite with WAL mode and Zustand sync queue.",
+      url: "https://arbizualdo.gumroad.com/l/offline-starter",
+      badge: "Mobile Boilerplate",
+      features: locale === 'es' ? [
+        "Código fuente completo en TypeScript",
+        "Configuración Expo SDK 54+ / Bare Workflow",
+        "Base de datos SQLite local con WAL mode",
+        "Cola de sincronización automática en background",
+        "Adaptadores listos para Supabase y Firebase"
+      ] : [
+        "Complete TypeScript source codebase",
+        "Expo SDK 54+ / Bare Workflow ready",
+        "Local SQLite database in WAL mode",
+        "Background fault-tolerant sync queues",
+        "Ready adapters for Supabase & Firebase"
       ]
     },
     {
-      title: "SentinelOS",
-      icon: <Shield className="w-8 h-8 text-green-400" />,
-      themeColor: "from-green-500 to-emerald-600",
-      glowColor: "shadow-green-500/20",
-      tiers: [
-        { name: "Starter Kit", price: "$290", desc: "Licencia de código fuente base y tutorial de despliegue.", features: ["Código fuente React Native completo", "Configuración de Expo básica", "Base de datos local preinstalada", "Docs de desarrollo"] },
-        { name: "SaaS Enterprise", price: "$10", desc: "SaaS administrado por usuario activo. Ideal para agencias.", features: ["$10 USD por guardia/mes", "Consola de control web", "Hosting y BD incluidos", "Soporte técnico directo"], recommended: true },
-        { name: "SaaS Unlimited", price: "$990", desc: "Instancia dedicada y dominio propio sin límites.", features: ["Usuarios ilimitados", "Código personalizado", "Facturación local", "Backup diario automático"] }
+      title: "n8n CRM Lead Scoring con Gemini AI",
+      price: "$19",
+      period: locale === 'es' ? "Pago único / Licencia perpetua" : "One-time purchase / Perpetual license",
+      desc: locale === 'es'
+        ? "Workflow n8n exportable para captura y calificación automática de leads con Google Gemini AI y alertas en tiempo real."
+        : "Exportable n8n workflow for automated lead capture & scoring with Google Gemini AI and real-time alerts.",
+      url: "https://arbizualdo.gumroad.com/l/n8n-crm",
+      badge: "Workflow Automation",
+      features: locale === 'es' ? [
+        "Archivo JSON exportable listo para importar",
+        "Prompts de Gemini AI optimizados para conversión",
+        "Enrutamiento automático a Slack y Telegram",
+        "Conectores para Google Sheets, Notion y CRMs",
+        "Guía de configuración paso a paso"
+      ] : [
+        "Exportable JSON workflow ready to import",
+        "Calibrated Gemini AI conversion prompts",
+        "Automated routing to Slack & Telegram",
+        "Connectors for Google Sheets, Notion & CRMs",
+        "Step-by-step video configuration guide"
       ]
     },
     {
-      title: "AeroShot Drone SaaS",
-      icon: <Zap className="w-8 h-8 text-violet-400" />,
-      themeColor: "from-violet-500 to-indigo-600",
-      glowColor: "shadow-violet-500/20",
-      tiers: [
-        { name: "Lite Operator", price: "$49", desc: "Para pilotos individuales que licencian tomas aéreas.", features: ["50GB almacenamiento R2", "100 licencias Web3 al mes", "Sync en background básica", "Soporte comunitario"] },
-        { name: "Pro Fleet", price: "$99", desc: "Para agencias de filmación y mapeo aéreo con múltiples drones.", features: ["500GB almacenamiento R2", "Licenciamiento Web3 ilimitado", "Amortiguación haptics en telemetría", "Soporte prioritario"], recommended: true },
-        { name: "Enterprise Custom", price: "$499", desc: "Para operaciones industriales y corporativas de alta escala.", features: ["Almacenamiento R2 ilimitado", "Integraciones GIS personalizadas", "Garantía de SLA 99.9%", "Soporte dedicado 24/7"] }
+      title: "TitanFlow Alerts Lite (Python)",
+      price: "$14",
+      period: locale === 'es' ? "Pago único / Licencia perpetua" : "One-time purchase / Perpetual license",
+      desc: locale === 'es'
+        ? "Monitoreo en tiempo real de spreads y volatilidad en Binance Futures mediante WebSockets con notificaciones al instante."
+        : "Real-time spread & volatility monitoring on Binance Futures powered by persistent WebSockets and Telegram bot.",
+      url: "https://arbizualdo.gumroad.com/l/titan-alerts",
+      badge: "Python WebSockets",
+      features: locale === 'es' ? [
+        "Script Python 3.10+ producción-ready",
+        "Conexión continua por WebSockets a Binance",
+        "Bot de Telegram preconfigurado para alertas",
+        "Cálculo de spread neto considerando fees Maker",
+        "Bajo consumo (< 50MB RAM en VPS)"
+      ] : [
+        "Production-ready Python 3.10+ script",
+        "Persistent WebSocket stream to Binance Futures",
+        "Pre-configured Telegram alert bot",
+        "Net spread calculation including Maker fees",
+        "Ultra-low resource usage (< 50MB RAM on VPS)"
       ]
     }
   ];
 
-  const handleCheckoutClick = (productName: string, tierName: string, price: string) => {
-    setCheckoutModal({ isOpen: true, product: productName, tierName, price });
-  };
+  const engineeringSprints = [
+    {
+      title: locale === 'es' ? "Mobile App Offline-First Sprint" : "Offline-First Mobile Sprint",
+      price: "$4,500",
+      period: locale === 'es' ? "Desde / Sprint de 4 a 6 semanas" : "Starting at / 4 to 6-week sprint",
+      desc: locale === 'es'
+        ? "Diseño y desarrollo llave en mano de una aplicación móvil nativa resiliente en React Native con base de datos local."
+        : "Turnkey engineering of resilient native React Native mobile apps with embedded offline persistence.",
+      badge: locale === 'es' ? "Especialidad Core" : "Core Specialty",
+      recommended: true,
+      features: locale === 'es' ? [
+        "Desarrollo completo en React Native CLI / Expo",
+        "Arquitectura SQLite WAL con sincronización cloud",
+        "Auditoría de seguridad y escaneo OWASP previo a release",
+        "Configuración de notificaciones push y permisos nativos",
+        "Despliegue en tiendas App Store y Google Play"
+      ] : [
+        "Full-cycle React Native CLI / Expo development",
+        "SQLite WAL architecture with cloud auto-sync",
+        "OWASP MASVS security audit before release",
+        "Push notifications and native hardware permissions",
+        "Deployment to Apple App Store & Google Play"
+      ]
+    },
+    {
+      title: locale === 'es' ? "B2B SaaS & Arquitectura Cloud" : "B2B SaaS & Cloud Architecture",
+      price: "$6,000",
+      period: locale === 'es' ? "Desde / Sprint de 6 a 8 semanas" : "Starting at / 6 to 8-week sprint",
+      desc: locale === 'es'
+        ? "Construcción de plataforma SaaS multi-tenant con Next.js 16 App Router, PostgreSQL, autenticación y pasarelas de pago."
+        : "End-to-end multi-tenant SaaS engineering with Next.js 16 App Router, PostgreSQL, authentication & payments.",
+      badge: "Enterprise SaaS",
+      recommended: false,
+      features: locale === 'es' ? [
+        "Arquitectura Next.js 16 App Router + TailwindCSS v4",
+        "Modelado de base de datos PostgreSQL / Supabase RLS",
+        "Integración de pasarelas Stripe / UCP / Web3",
+        "Panel de administración, métricas y gestión de usuarios",
+        "Despliegue contenerizado en Docker / VPS dedicado"
+      ] : [
+        "Next.js 16 App Router + TailwindCSS v4 architecture",
+        "PostgreSQL schema with Supabase Row-Level Security",
+        "Payment gateways integration (Stripe / UCP / Web3)",
+        "Admin control panel with telemetry & metrics",
+        "Containerized deployment on Docker / Dedicated VPS"
+      ]
+    },
+    {
+      title: locale === 'es' ? "Pipeline de Automatización n8n & IA" : "n8n & AI Automation Pipeline",
+      price: "$1,200",
+      period: locale === 'es' ? "Desde / Sprint de 1 a 2 semanas" : "Starting at / 1 to 2-week sprint",
+      desc: locale === 'es'
+        ? "Automatización integral de procesos comerciales, captura de prospectos e integración de modelos LLM en tu flujo de trabajo."
+        : "Automated business operations, lead qualification pipelines, and local/cloud LLM orchestration.",
+      badge: "AI Automation",
+      recommended: false,
+      features: locale === 'es' ? [
+        "Despliegue de instancia n8n autohospedada",
+        "Conexión con Gemini API, Claude u Ollama",
+        "Sincronización bidireccional de leads y facturación",
+        "Alertas automáticas en Telegram / Slack 24/7",
+        "Capacitación técnica y documentación de flujos"
+      ] : [
+        "Dedicated self-hosted n8n deployment",
+        "Frontier AI integration (Gemini, Claude, Ollama)",
+        "Bidirectional sync with CRM, ERP, and databases",
+        "24/7 automated alerts in Telegram / Slack",
+        "Full technical training and flow documentation"
+      ]
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-[#08090f] text-slate-100 font-sans antialiased overflow-x-hidden pt-32 pb-24">
-      {/* Glow Background */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-500/5 blur-[150px] pointer-events-none" />
+    <div className="min-h-screen bg-[var(--color-space-black)] text-slate-200 font-sans antialiased overflow-x-hidden pt-32 pb-24">
+      
+      {/* Atmosphere glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-[var(--color-arbizu-teal)]/5 blur-[160px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16 relative z-10">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400 mb-6">
-          <Zap className="w-3.5 h-3.5 text-yellow-500" />
-          Precios Transparentes & Licencias Enterprise
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20 relative z-10">
+        <span className="badge-enterprise mb-4">
+          <Zap className="w-3.5 h-3.5" />
+          {locale === 'es' ? "Precios Transparentes & Entregables Verificables" : "Transparent Pricing & Guaranteed Deliverables"}
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-white font-bold mb-6">
-          Nuestras Licencias y Servicios
+        <h1 className="font-serif text-4xl sm:text-6xl text-white font-bold tracking-tight mb-6">
+          {locale === 'es' ? "Planes, Kits de Código & Sprints de Ingeniería" : "Plans, Developer Kits & Engineering Sprints"}
         </h1>
-        <p className="font-mono text-sm text-[var(--color-mist-gray)] max-w-2xl mx-auto leading-relaxed">
-          Encuentra el plan ideal para automatizar, asegurar o escalar tus operaciones con el respaldo tecnológico de Arbizu Labs.
+        <p className="font-mono text-sm text-[var(--color-mist-gray)] max-w-3xl mx-auto leading-relaxed">
+          {locale === 'es' 
+            ? "Sin tarifas ocultas ni cotizaciones opacas. Elige kits listos para usar o contrata un sprint de ingeniería dedicado con Arbizu Labs."
+            : "No hidden fees or opaque quotes. Choose production-ready developer kits or book a dedicated engineering sprint."}
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28 relative z-10">
         
-        {/* Render products */}
-        {products.map((p, pIdx) => (
-          <div key={pIdx} className="border-b border-slate-900 pb-16 last:border-0 last:pb-0">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-                {p.icon}
-              </div>
-              <h2 className="font-serif text-3xl text-white font-bold">{p.title}</h2>
+        {/* SECTION 1: Developer Kits */}
+        <div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="font-space text-xs uppercase tracking-widest text-[var(--color-arbizu-teal)] font-bold block mb-1">
+                {locale === 'es' ? "Kits Descargables Inmediatos" : "Instant Download Kits"}
+              </span>
+              <h2 className="font-serif text-3xl text-white font-bold">
+                {locale === 'es' ? "Boilerplates & Scripts de Producción" : "Production Boilerplates & Scripts"}
+              </h2>
             </div>
+            <p className="font-mono text-xs text-zinc-400 max-w-md">
+              {locale === 'es' 
+                ? "Descarga directa en Gumroad o adquisición mediante USDC en Base L2. Código listo para usar en tus proyectos."
+                : "Direct download on Gumroad or on-chain settlement with USDC on Base L2. Production code ready to deploy."}
+            </p>
+          </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {p.tiers.map((t, tIdx) => (
-                <div 
-                  key={tIdx} 
-                  className={`p-8 rounded-3xl bg-slate-950 border relative flex flex-col justify-between ${
-                    t.recommended ? "border-indigo-500/50 shadow-lg shadow-indigo-500/5" : "border-slate-900"
-                  }`}
-                >
-                  {t.recommended && (
-                    <span className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${p.themeColor} text-white`}>
-                      Recomendado
-                    </span>
-                  )}
-                  <div>
-                    <h3 className="font-bold text-xl mb-2 text-white">{t.name}</h3>
-                    <p className="text-slate-400 text-sm mb-6 min-h-[40px]">{t.desc}</p>
-                    <div className="flex items-baseline gap-1 mb-8">
-                      <span className="text-4xl font-black text-white">{t.price}</span>
-                      <span className="text-slate-400 text-sm">USD</span>
-                    </div>
-                    <ul className="space-y-4 mb-8">
-                      {t.features.map((f, fIdx) => (
-                        <li key={fIdx} className="flex gap-2.5 text-sm text-slate-300">
-                          <Check className="w-5 h-5 text-indigo-400 shrink-0" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {developerKits.map((k, idx) => (
+              <div 
+                key={idx} 
+                className="glass-surface-enterprise p-8 flex flex-col justify-between hover:border-[var(--color-arbizu-teal)]/40 hover:-translate-y-1.5 transition-all duration-300 group"
+              >
+                <div>
+                  <span className="font-space text-[10px] uppercase tracking-widest text-[var(--color-arbizu-teal)] bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 font-bold block w-fit mb-4">
+                    {k.badge}
+                  </span>
+                  
+                  <h3 className="font-serif text-2xl font-bold text-white mb-2">
+                    {k.title}
+                  </h3>
+
+                  <div className="flex items-baseline gap-1.5 mb-1">
+                    <span className="font-space text-4xl font-black text-white">{k.price}</span>
+                    <span className="font-mono text-xs text-[var(--color-mist-gray)]/60">USD</span>
                   </div>
-                  <button 
-                    onClick={() => handleCheckoutClick(p.title, t.name, t.price)}
-                    className={`w-full py-3 rounded-xl font-bold transition ${
-                      tIdx === 2
-                        ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg"
-                        : t.recommended 
-                          ? `bg-gradient-to-r ${p.themeColor} text-white shadow-lg ${p.glowColor}`
-                          : "bg-slate-900 hover:bg-slate-800 text-slate-200"
-                    }`}
+                  <p className="font-mono text-[10px] text-zinc-500 mb-4">{k.period}</p>
+
+                  <p className="font-mono text-xs text-[var(--color-mist-gray)]/85 leading-relaxed mb-6">
+                    {k.desc}
+                  </p>
+
+                  <div className="space-y-2 pt-4 border-t border-white/5 mb-8">
+                    {k.features.map((f, fIdx) => (
+                      <div key={fIdx} className="flex items-start gap-2 text-xs font-mono text-white/80">
+                        <Check className="w-3.5 h-3.5 text-[var(--color-arbizu-teal)] shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2 pt-4 mt-auto">
+                  <a 
+                    href={k.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3.5 rounded-xl font-bold bg-white text-black hover:bg-[var(--color-arbizu-teal)] hover:text-black flex items-center justify-center gap-2 font-space text-xs tracking-wider uppercase transition-all duration-300"
                   >
-                    {tIdx === 2 ? "Contactar Ventas" : `Adquirir ${t.name}`}
+                    <span>{locale === 'es' ? "Comprar en Gumroad" : "Purchase on Gumroad"}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+
+                  <button
+                    onClick={() => setCryptoModalOpen(true)}
+                    className="w-full py-2.5 rounded-xl font-mono text-[11px] text-zinc-400 hover:text-white bg-black/40 hover:bg-black/60 border border-white/5 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Lock className="w-3 h-3 text-[var(--color-arbizu-teal)]" />
+                    <span>{locale === 'es' ? "Pagar con USDC en Base L2" : "Pay with USDC on Base L2"}</span>
                   </button>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        ))}
-
-        {/* ROI Calculator Section */}
-        <div className="pt-12">
-          <div className="text-center mb-12">
-            <h3 className="font-serif text-3xl text-white font-bold mb-4">Calcula tu Retorno de Inversión (ROI)</h3>
-            <p className="font-mono text-sm text-slate-400">Comprueba numéricamente el impacto de integrar nuestras soluciones.</p>
-          </div>
-          <ROICalculator />
         </div>
+
+        {/* SECTION 2: Dedicated Engineering Sprints */}
+        <div className="border-t border-white/10 pt-20">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="font-space text-xs uppercase tracking-widest text-[var(--color-arbizu-teal)] font-bold block mb-1">
+                {locale === 'es' ? "Servicios Boutique Personalizados" : "Bespoke Boutique Services"}
+              </span>
+              <h2 className="font-serif text-3xl text-white font-bold">
+                {locale === 'es' ? "Sprints de Ingeniería Dedicada" : "Dedicated Engineering Sprints"}
+              </h2>
+            </div>
+            <p className="font-mono text-xs text-zinc-400 max-w-md">
+              {locale === 'es'
+                ? "Desarrollo llave en mano con alcance cerrado, entregables cada 14 días y transferencia total del código fuente."
+                : "Turnkey engineering with fixed scope, bi-weekly deliverables, and full intellectual property transfer."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {engineeringSprints.map((s, idx) => (
+              <div 
+                key={idx} 
+                className={`glass-surface-enterprise p-8 flex flex-col justify-between relative hover:-translate-y-1.5 transition-all duration-300 ${
+                  s.recommended 
+                    ? 'border-[var(--color-arbizu-teal)]/50 shadow-[0_0_30px_rgba(29,158,117,0.15)] bg-gradient-to-b from-[var(--color-deep-space)] to-black' 
+                    : 'hover:border-[var(--color-arbizu-teal)]/30'
+                }`}
+              >
+                {s.recommended && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-space font-bold uppercase tracking-widest bg-[var(--color-arbizu-teal)] text-black shadow-md">
+                    {locale === 'es' ? "Más Solicitado" : "Most Requested"}
+                  </span>
+                )}
+
+                <div>
+                  <span className="font-space text-[10px] uppercase tracking-widest text-[var(--color-arbizu-teal)] bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 font-bold block w-fit mb-4">
+                    {s.badge}
+                  </span>
+                  
+                  <h3 className="font-serif text-2xl font-bold text-white mb-2">
+                    {s.title}
+                  </h3>
+
+                  <div className="flex items-baseline gap-1.5 mb-1">
+                    <span className="font-space text-4xl font-black text-white">{s.price}</span>
+                    <span className="font-mono text-xs text-[var(--color-mist-gray)]/60">USD</span>
+                  </div>
+                  <p className="font-mono text-[10px] text-zinc-500 mb-4">{s.period}</p>
+
+                  <p className="font-mono text-xs text-[var(--color-mist-gray)]/85 leading-relaxed mb-6">
+                    {s.desc}
+                  </p>
+
+                  <div className="space-y-2 pt-4 border-t border-white/5 mb-8">
+                    {s.features.map((f, fIdx) => (
+                      <div key={fIdx} className="flex items-start gap-2 text-xs font-mono text-white/80">
+                        <Check className="w-3.5 h-3.5 text-[var(--color-arbizu-teal)] shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <Link 
+                  href="/booking"
+                  className={`w-full py-3.5 rounded-xl font-bold font-space text-xs tracking-wider uppercase flex items-center justify-center gap-2 transition-all duration-300 ${
+                    s.recommended
+                      ? 'btn-primary-enterprise'
+                      : 'btn-outline-enterprise'
+                  }`}
+                >
+                  <span>{t.nav.bookCall}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* SECTION 3: ROI Calculator Embedded */}
+        <RoiCalculator />
 
       </div>
 
-      {/* ── CHECKOUT GATEWAY DIALOG ── */}
-      {checkoutModal?.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-3xl bg-[#0d0e16] border border-slate-800 p-8 shadow-2xl relative">
-            <h3 className="text-2xl font-black text-white mb-2">Comprar {checkoutModal.product}</h3>
-            <p className="text-slate-400 text-sm mb-6">Estás adquiriendo el plan <span className="text-white font-bold">{checkoutModal.tierName}</span> por <span className="text-white font-black">{checkoutModal.price} USD</span>.</p>
-            
-            <div className="space-y-4 mb-8">
-              <button 
-                onClick={() => {
-                  alert("Redirigiendo a pasarela Paddle (Fiat)...");
-                  setCheckoutModal(null);
-                }}
-                className="w-full py-4 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 transition"
-              >
-                <Zap className="w-5 h-5" /> Pagar con Tarjeta (Paddle)
-              </button>
-              
-              <button 
-                onClick={() => {
-                  alert("Redirigiendo a pasarela Lemon Squeezy (Fiat)...");
-                  setCheckoutModal(null);
-                }}
-                className="w-full py-4 rounded-xl font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center gap-2 transition"
-              >
-                <Zap className="w-5 h-5" /> Pagar con Lemon Squeezy
-              </button>
-              
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-900 text-center">
-                <div className="text-xs text-indigo-400 font-bold mb-2">Pagar en Web3 Base L2 (USDC)</div>
-                <div className="text-[10px] text-slate-500 font-mono select-all bg-slate-900 py-1.5 px-3 rounded-lg border border-slate-850 break-all mb-3">
-                  0x71C2496B21F3A9008985208985209852071C3A90
-                </div>
-                <button 
-                  onClick={() => {
-                    alert("Abre tu billetera MetaMask conectada a la red Base L2 y transfiere el monto indicado.");
-                    setCheckoutModal(null);
-                  }}
-                  className="w-full py-2.5 rounded-lg font-bold bg-slate-900 hover:bg-slate-850 text-slate-200 border border-slate-850 flex items-center justify-center gap-2 text-xs transition"
-                >
-                  <Lock className="w-4 h-4 text-indigo-400" /> Confirmar Pago Cripto
-                </button>
-              </div>
+      {/* ── CRYPTO BASE L2 MODAL ── */}
+      {cryptoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="w-full max-w-md rounded-2xl bg-[#0d0e16] border border-white/10 p-8 shadow-2xl relative font-mono text-left">
+            <div className="flex items-center gap-2 text-[var(--color-arbizu-teal)] text-xs font-space uppercase tracking-widest font-bold mb-2">
+              <Lock className="w-4 h-4" />
+              <span>{locale === 'es' ? "Pago Criptográfico en Base L2" : "Cryptographic Settlement on Base L2"}</span>
+            </div>
 
-              <div className="p-4 rounded-2xl bg-green-950/10 border border-green-900/30 text-center">
-                <div className="text-xs text-green-400 font-bold mb-1">¿Resides en Argentina?</div>
-                <div className="text-xs text-slate-400 mb-2">Obtén 10% OFF pagando por Transferencia Directa</div>
-                <div className="text-[10px] text-slate-500 font-mono select-all bg-slate-900/50 py-1.5 px-3 rounded-lg border border-green-950 break-all mb-2">
-                  Alias: arbizu.galicia.ar (Banco Galicia)
-                </div>
+            <h3 className="text-xl font-bold text-white font-serif mb-2">
+              {locale === 'es' ? "Adquisición en USDC (Base Network)" : "Settlement in USDC (Base Network)"}
+            </h3>
+            
+            <p className="text-xs text-[var(--color-mist-gray)] leading-relaxed mb-6">
+              {locale === 'es'
+                ? "Transfiere el monto correspondiente a la siguiente dirección de wallet en la red Base L2 y envía el comprobante tx hash a aldo@arbizulabs.com para recibir el repositorio o kit de inmediato:"
+                : "Transfer the corresponding amount to the following wallet address on Base L2 network and email the transaction hash to aldo@arbizulabs.com to receive the kit access immediately:"}
+            </p>
+
+            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 select-all font-mono text-[11px] text-cyan-400 break-all mb-4">
+              0x71C2496B21F3A9008985208985209852071C3A90
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[var(--color-arbizu-teal)]/10 border border-[var(--color-arbizu-teal)]/20 text-xs text-white/80 space-y-1 mb-6">
+              <div className="font-bold text-[var(--color-arbizu-teal)]">
+                {locale === 'es' ? "¿Resides en Argentina?" : "Bank Wire Options"}
+              </div>
+              <div>
+                {locale === 'es'
+                  ? "Transferencia directa bancaria con cotización dólar MEP/Cripto. Alias: arbizu.galicia.ar"
+                  : "Direct wire settlement available for international accounts."}
               </div>
             </div>
 
             <button 
-              onClick={() => setCheckoutModal(null)}
-              className="w-full py-3 rounded-xl font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 text-sm transition"
+              onClick={() => setCryptoModalOpen(false)}
+              className="w-full py-3 rounded-xl font-bold bg-white/10 hover:bg-white/20 text-white text-xs uppercase tracking-wider font-space transition"
             >
-              Cancelar
+              {locale === 'es' ? "Cerrar Ventana" : "Close Dialog"}
             </button>
           </div>
         </div>

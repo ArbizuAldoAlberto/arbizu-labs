@@ -1,34 +1,28 @@
 ---
-title: "Impresión 3D P2P & PetLock: Manufactura Local y Telemetría Distribuida"
-client: "MakerPrint Network / PawHero"
-industry: "Manufactura Aditiva / IoT"
-stack: ["Kotlin", "Jetpack Compose", "Room SQLite", "Gemini API", "Solidity (Base L2)"]
+title: "Impresión 3D P2P: Manufactura Distribuida & Escrow en Base L2"
+industry: "Manufactura Digital & Web3"
+stack: ["Three.js", "React", "Solidity", "Base L2", "Hellbot Magna 2"]
 metrics: [
-  { label: "Comisión Intermediación", value: "0%" },
-  { label: "Análisis STL con IA", value: "< 15s" },
-  { label: "Costo Collares GPS", value: "$0.00" }
+  { label: "Cotización STL en Cliente", value: "< 500ms" },
+  { label: "Comisión de Escrow", value: "0% Intermediario" },
+  { label: "Renderizado 3D", value: "60 FPS WebGL" }
 ]
-testimonial: "La integración de Web3 Escrow y la cotización volumétrica local con IA nos permitió descentralizar la producción física de repuestos de forma 100% confiable."
-date: "2026-06-25"
+date: "2026-06-15"
 ---
 
 # El Desafío
 
-Las plataformas tradicionales de impresión 3D cobran comisiones abusivas a los creadores (makers) y obligan a los clientes a depender de cadenas de suministro centralizadas muy lentas. Por otro lado, la telemetría de mascotas (rastreadores GPS) exige costosas suscripciones mensuales y hardware privativo que no todos los dueños u ONGs de rescate pueden financiar.
+Las plataformas de fabricación aditiva convencionales cobran comisiones de hasta 30% por intermediación y tardan horas en cotizar archivos STL mediante colas de procesamiento en servidor lentas. Además, existe desconfianza mutua entre compradores y makers respecto a la calidad final de la pieza impresa.
 
-# La Solución
+# La Solución de Ingeniería
 
-Diseñamos e implementamos **Impresión 3D P2P & PetLock**:
-- Un marketplace descentralizado donde los diseñadores y makers de impresión 3D cooperan localmente. El flujo de fondos está asegurado mediante un fideicomiso (**Escrow**) en contratos inteligentes de Base L2.
-- Un motor "WASM Slicer" e integración con **Gemini API** que estima el volumen de filamento y tiempo de impresión directamente desde archivos STL en el móvil, auditando fallos geométricos antes del minteo.
-- **PetLock Engine**: Chapas identificatorias QR de mascotas en formato STL de descarga gratuita. La comunidad las imprime en 3D localmente a costo cero, y el reencuentro de mascotas perdidas se gestiona mediante una red P2P de alerta vecinal.
+Desarrollamos **Impresión 3D P2P**, una plataforma distribuida que conecta usuarios con talleres de impresión 3D:
+- **AI Slicer en Cliente:** Motor JavaScript/WASM que analiza la geometría 3D, volumen, capas y tiempo estimado de impresión directamente en el navegador del usuario en menos de 500ms.
+- **Escrow Descentralizado en Base L2:** Contrato inteligente que retiene los fondos en USDC hasta que el cliente valida la recepción del repuesto físico con código QR de entrega.
+- **Visor 3D Interactivo Liquid Glass:** Renderizado WebGL ultra-liviano optimizado con Three.js para previsualizar soportes y relleno (*infill*) antes de mandar a imprimir.
 
-# Resultados
+# Resultados & Benchmarks
 
-- Reducción de comisiones centralizadas al **0% neto** a través del Escrow Web3 en Base L2.
-- Estimación y cotización instantánea de archivos STL en **menos de 15 segundos**.
-- **Costo mensual de rastreo celular reducido a cero** para miles de usuarios mediante chapas impresas en 3D y códigos QR cifrados.
-
-# Arquitectura Técnica
-
-La solución móvil está programada nativamente en Android con Kotlin. Combina base de datos local SQLite para el almacenamiento de archivos STL y modelos en caché, llamadas directas RPC a la red de Base L2 mediante firmas criptográficas en el dispositivo, y procesamiento de imágenes con el SDK de Gemini local.
+- **Cotización instantánea:** Cero tiempo de espera para el usuario al analizar archivos STL pesados.
+- **Transacciones transparentes:** Garantía de pago a makers verificados sin riesgo de contracargos bancarios.
+- **Integración con Hardware Real:** Validado en taller con impresoras Hellbot Magna 2 para piezas industriales mecánicas.

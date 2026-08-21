@@ -1,37 +1,32 @@
 ---
 title: "AgroMarket Pro: Trazabilidad y Control de Acopio Sin Conectividad"
-client: "AgroMarket Pro"
-industry: "AgTech / Grain Logistics"
+industry: "AgTech & Logística Rural"
 stack: ["React Native", "SQLite WAL", "n8n Automation", "Supabase", "Expo"]
 metrics: [
   { label: "Trazabilidad Offline", value: "100%" },
   { label: "Reducción de Merma", value: "15%" },
   { label: "Reconciliación de Datos", value: "< 1.2s" }
 ]
-testimonial: "El sistema offline-first de Arbizu Labs resolvió el problema más grande de nuestros silos: la falta de señal en medio del campo."
 date: "2026-06-22"
 ---
 
 # El Desafío
 
-Los acopios de granos y silos se encuentran frecuentemente en zonas rurales profundas de Argentina, donde la señal móvil (3G/4G) es nula o sumamente inestable. Los operarios necesitaban registrar ingresos de camiones, toneladas de cereal, humedad y calidad de granos en tiempo real, pero el software basado en web tradicional causaba duplicación de registros y pérdida constante de datos al perderse la conexión.
+Los acopios de granos y silobolsas se encuentran frecuentemente en zonas rurales profundas de Argentina, donde la señal móvil es nula o sumamente inestable. Los operarios necesitaban registrar ingresos de camiones, toneladas de cereal, humedad y calidad de granos en tiempo real, pero el software basado en web tradicional causaba duplicación de registros y pérdida constante de datos al perderse la conexión.
 
-# La Solución
+# La Solución de Ingeniería
 
-Desarrollamos **AgroMarket Pro**, una solución móvil robusta adaptada al terreno:
-- **Base de Datos Resiliente:** Arquitectura Offline-First con `SQLite` local y sincronización oportuna hacia `Supabase`. Las transacciones se firman con un timestamp lógico e ID único para resolver conflictos de mezcla automáticamente.
+Desarrollamos **AgroMarket Pro**, una solución móvil robusta adaptada a la realidad física del campo:
+- **Base de Datos Resiliente:** Arquitectura Offline-First con `SQLite WAL` local y sincronización hacia `Supabase`. Las transacciones se firman con timestamps lógicos e IDs únicos para resolver conflictos de concurrencia automáticamente.
 - **Automatización de Notificaciones:** Implementamos flujos en `n8n` que procesan las cargas una vez que el dispositivo móvil detecta conexión, enviando alertas de entrega automáticas a los productores y actualizando el libro contable de la administración.
-- **Hardware Integration:** Uso de APIs nativas de cámara y geolocalización para documentar y certificar las coordenadas geográficas exactas de cada silo de almacenamiento (bolsa de acopio).
+- **Hardware Integration:** Uso de APIs nativas de cámara y geolocalización para documentar y certificar las coordenadas geográficas exactas de cada silobolsa de almacenamiento.
+- **Simulación Térmica FLIR & AgroPool:** Simulación de control térmico en silos y algoritmo de optimización de fletes compartidos para reducir costos de transporte.
 
-# Resultados
+# Resultados & Benchmarks
 
 - **100% de operatividad** de los operarios en silos sin depender de conectividad activa.
 - **15% de reducción** en merma y disputas de inventario por registro tardío.
-- Reconciliación total de datos en la nube en **menos de 1.2 segundos** tras recuperar señal.
-
-# Arquitectura Técnica
-
-Se utilizó un motor de sincronización personalizado sobre React Native, delegando las transacciones pesadas a una base de datos local SQLite configurada con `Write-Ahead Logging (WAL)`. Esto garantiza la velocidad de escritura mientras se ejecutan lecturas para la UI a 60 FPS, evitando interrupciones molestas al operario del silo.
+- **Reconciliación total** de datos en la nube en menos de 1.2 segundos tras recuperar señal.
 
 # Conclusión
 

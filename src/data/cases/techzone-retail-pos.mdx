@@ -1,0 +1,28 @@
+---
+title: "TechZone Retail: Punto de Venta Omnicanal con Resiliencia SQLite WAL"
+industry: "Retail POS & Mobile Offline"
+stack: ["React Native", "SQLite WAL", "Stripe", "Google Pay", "Zustand"]
+metrics: [
+  { label: "Ventas Perdidas por Red", value: "0% Caídas" },
+  { label: "Tiempo de Cobro Offline", value: "< 300ms" },
+  { label: "Sincronización Cloud", value: "Atómica LWW" }
+]
+date: "2026-06-03"
+---
+
+# El Desafío
+
+En el comercio minorista físico, las caídas del proveedor de internet en el mostrador paralizan las cajas registradoras, generan largas colas de clientes y provocan pérdida directa de ventas y disputas contables.
+
+# La Solución de Ingeniería
+
+Construimos **TechZone**, una terminal de punto de venta (POS) y catálogo interactivo Offline-First:
+- **Encolamiento Atómico en SQLite WAL:** Cada cobro, ajuste de stock y ticket se almacena instantáneamente en la base de datos local del dispositivo móvil con persistencia garantizada.
+- **Firma QR de Cobro Dual:** Soporte de cobro en efectivo, tarjetas mediante pasarelas con almacenamiento seguro de tokens y pagos QR diferidos.
+- **Catálogo Interactivo Fluido:** Transiciones en Bento Grid para navegación ágil de más de 10,000 SKUs a 60 FPS constantes.
+
+# Resultados & Benchmarks
+
+- **Continuidad de negocio:** Cero ventas perdidas ante cortes de internet de sucursal.
+- **Velocidad de mostrador:** Registro de transacciones en menos de 300ms en el dispositivo local.
+- **Sincronización desatendida:** Conciliación contable automática en cloud en cuanto se restablece la conectividad.

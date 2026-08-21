@@ -4,24 +4,29 @@
   --font-cormorant: var(--font-cormorant), "Times New Roman", Times, serif;
   --font-jetbrains: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-space: var(--font-space), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-inter: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 :root {
-  /* Tokens compartidos con Dark Orbital */
+  /* Design tokens compartidos con la estética orbital */
   --color-space-black: #050508;
   --color-deep-space: #0a0a0f;
+  --color-slate-black: #0d0e14;
   --color-mist-gray: #C2C0B6;
   --color-space-border: rgba(255, 255, 255, 0.08);
+  --color-space-border-hover: rgba(255, 255, 255, 0.18);
   
-  /* Colores de marca Arbizu Labs (más sobrios que Dark Orbital) */
+  /* Colores de marca Arbizu Labs */
   --color-arbizu-teal: #1D9E75;
+  --color-arbizu-teal-glow: rgba(29, 158, 117, 0.25);
   --color-arbizu-purple: #7F77DD;
   --color-arbizu-gold: #EF9F27;
+  --color-arbizu-cyan: #00D4FF;
   
-  /* Overrides enterprise: menos glow, más whitespace */
-  --glass-blur: 12px;
-  --glass-bg: rgba(10, 10, 15, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* Glassmorphism de alta precisión */
+  --glass-blur: 16px;
+  --glass-bg: rgba(10, 10, 15, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 @layer base {
@@ -31,6 +36,12 @@
     font-family: var(--font-jetbrains);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(29, 158, 117, 0.3);
+    color: #ffffff;
   }
 }
 
@@ -39,40 +50,91 @@
     background-color: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
-    border-radius: 0.75rem;
+    border-radius: 0.875rem;
+    transition: all 300ms ease;
   }
   
+  .glass-surface-enterprise:hover {
+    border-color: var(--color-space-border-hover);
+  }
+
   .btn-primary-enterprise {
-    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
     background-color: var(--color-arbizu-teal);
-    color: black;
+    color: #050508;
     font-family: var(--font-space);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    border-radius: 0.5rem;
+    border-radius: 0.625rem;
+    box-shadow: 0 0 20px rgba(29, 158, 117, 0.2);
     transition: all 300ms ease;
+    cursor: pointer;
   }
 
   .btn-primary-enterprise:hover {
-    background-color: rgba(29, 158, 117, 0.9);
+    background-color: #24b889;
+    box-shadow: 0 0 30px rgba(29, 158, 117, 0.4);
+    transform: translateY(-1px);
   }
   
   .btn-outline-enterprise {
-    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
     border: 1px solid var(--color-space-border);
-    color: white;
+    background-color: rgba(255, 255, 255, 0.02);
+    color: #ffffff;
     font-family: var(--font-space);
     font-size: 0.75rem;
+    font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    border-radius: 0.5rem;
+    border-radius: 0.625rem;
+    backdrop-filter: blur(8px);
     transition: all 300ms ease;
+    cursor: pointer;
   }
 
   .btn-outline-enterprise:hover {
     border-color: rgba(29, 158, 117, 0.5);
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(29, 158, 117, 0.05);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .badge-enterprise {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-family: var(--font-space);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(29, 158, 117, 0.08);
+    border: 1px solid rgba(29, 158, 117, 0.25);
+    color: var(--color-arbizu-teal);
+  }
+
+  .gradient-text-teal {
+    background: linear-gradient(135deg, #ffffff 0%, #1D9E75 70%, #00D4FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-purple {
+    background: linear-gradient(135deg, #ffffff 0%, #7F77DD 70%, #EF9F27 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

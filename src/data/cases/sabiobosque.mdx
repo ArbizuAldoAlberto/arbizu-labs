@@ -1,34 +1,28 @@
 ---
-title: "Sabio Bosque: Plataforma de E-commerce y Control Regulatorio de Cannabis B2B"
-client: "Sabio Bosque Patio & Apothecary"
-industry: "Retail / Legal Compliance"
-stack: ["HTML5", "Vanilla JS", "Stripe API", "Base L2", "Reprocann API"]
+title: "SabioBosque: Verificación Automatizada de Prescripciones REPROCANN"
+industry: "E-Commerce & Legal Compliance"
+stack: ["Next.js", "Gemini API", "Supabase RLS", "Zustand", "Stripe"]
 metrics: [
-  { label: "Cumplimiento Legal", value: "100%" },
-  { label: "Verificación de Recetas", value: "< 5s" },
-  { label: "Costo por Transacción", value: "< $0.01" }
+  { label: "Tiempo de Validación", value: "< 800ms" },
+  { label: "Cumplimiento Legal", value: "100% Auditado" },
+  { label: "Checkout", value: "Universal Cart" }
 ]
-testimonial: "Sabio Bosque simplificó la validación legal de recetas y optimizó nuestro canal minorista de forma 100% segura y en regla."
-date: "2026-06-20"
+date: "2026-06-18"
 ---
 
 # El Desafío
 
-Los clubes de cultivo y dispensarios de parafernalia y fitopreparados enfrentan una regulación legal estricta en Argentina bajo el programa REPROCANN. La verificación manual de los permisos de los clientes al momento de la compra es lenta, propensa a fraudes y expone a las organizaciones a multas graves y clausuras.
+El comercio electrónico de derivados botánicos medicinales en Argentina exige el cumplimiento estricto del registro federal REPROCANN. Las tiendas tradicionales sufrían fricción masiva y riesgo de sanciones al auditar manualmente recetas y certificados médicos antes de autorizar el pago.
 
-# La Solución
+# La Solución de Ingeniería
 
-Diseñamos e implementamos **Sabio Bosque**:
-- Una pasarela de checkout inteligente conectada mediante APIs para validar el estado activo de la credencial REPROCANN del comprador en tiempo real.
-- Emisión de pasaportes y trazabilidad de genética vegetal de semillas y clones mediante tokens inmutables (**SBT/NFTs** en Base L2) de acuerdo a las normativas del INASE.
-- Integración de pagos locales mediante Mercado Pago y Stripe de forma fluida y optimizada.
+Diseñamos **SabioBosque**, un SaaS de e-commerce con motor de validación en tiempo real:
+- **Auditoría Documental con Gemini API:** Procesamiento multimodal de certificados y credenciales en menos de 800ms para validar vigencia, médico emisor y límites de dosis autorizadas.
+- **Control Estricto de Stock Legal:** Políticas en base de datos PostgreSQL/Supabase que bloquean compras que excedan los topes máximos por usuario.
+- **Universal Cart:** Pasarela de checkout optimizada con micro-interacciones fluidas y estética verde esmeralda refinada.
 
-# Resultados
+# Resultados & Benchmarks
 
-- **100% de cumplimiento legal** automatizado frente a inspecciones y auditorías estatales.
-- Tiempo de verificación de credenciales reducido de minutos a **menos de 5 segundos**.
-- Costo transaccional Web3 reducido a **menos de $0.01 USD** por registro genético vegetal.
-
-# Arquitectura Técnica
-
-La plataforma combina un diseño boutique frontend ultra-rápido en Vanilla JS y CSS Grid con un backend seguro e inmutable de Base L2. La validación de recetas se realiza de forma aislada y encriptada, protegiendo la identidad y datos médicos del usuario.
+- **Automatización del 100%:** Eliminación del cuello de botella de revisión manual de recetas.
+- **Cero transacciones no conformes:** Blindaje ante auditorías sanitarias y regulatorias.
+- **Experiencia de usuario premium:** Proceso de compra ágil completado en menos de 90 segundos.

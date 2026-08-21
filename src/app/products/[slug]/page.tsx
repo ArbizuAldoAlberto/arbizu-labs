@@ -24,6 +24,8 @@ interface ProductContent {
   faqs: { q: string; a: string }[];
 }
 
+const CHECKOUT_WALLET_ADDRESS = "0x71C2496B21F3A9008985208985209852071C3A90";
+
 const PRODUCTS: Record<string, ProductContent> = {
   titanflow: {
     title: "TitanFlow",
@@ -201,6 +203,183 @@ const PRODUCTS: Record<string, ProductContent> = {
       { q: "¿Qué drones son compatibles?", a: "Es compatible con logs de vuelo estándar de DJI, Autel y Pixhawk, importándolos de forma automática." },
       { q: "¿Qué ventajas tiene el licenciamiento Web3?", a: "Permite certificar la fecha, autoría e inmutabilidad de una toma aérea, facilitando su venta o transferencia sin intermediarios tradicionales." },
       { q: "¿Cómo se integra con plataformas GIS?", a: "Permite exportar mapas procesados en formatos GeoJSON, KML y Shapefile compatibles con QGIS, ArcGIS y otras plataformas líderes." }
+    ]
+  },
+  "offline-starter": {
+    title: "Offline Starter Kit",
+    subtitle: "Boilerplate React Native + SQLite WAL + Zustand — Listo para producción Offline-First",
+    themeColor: "from-emerald-500 to-teal-600",
+    accentBg: "border-emerald-500/30 bg-emerald-950/20",
+    glowColor: "shadow-emerald-500/20",
+    icon: <Database className="w-12 h-12 text-emerald-400" />,
+    heroBadge: "React Native Offline-First Boilerplate",
+    problem: [
+      "Implementar sincronización offline desde cero consume semanas de desarrollo y debugging.",
+      "SQLite en React Native tiene configuraciones WAL, journal modes y migraciones complejas que generan errores silenciosos.",
+      "Los boilerplates gratuitos no incluyen manejo de conflictos, cola de operaciones ni estado global sincronizado."
+    ],
+    solution: [
+      "Arquitectura pre-configurada con SQLite WAL mode, migraciones automáticas y Zustand como state manager.",
+      "Cola de operaciones offline persistente que sincroniza automáticamente al recuperar conexión.",
+      "Estructura de carpetas production-ready con TypeScript strict, ESLint y patrones probados en 5+ apps reales."
+    ],
+    features: [
+      { name: "SQLite WAL Mode", desc: "Base de datos local con Write-Ahead Logging para lecturas/escrituras concurrentes de alta velocidad." },
+      { name: "Zustand State Sync", desc: "Estado global reactivo sincronizado con la capa de persistencia offline automáticamente." },
+      { name: "Conflict Resolution", desc: "Motor de resolución de conflictos last-write-wins con timestamps vectoriales." },
+      { name: "Background Sync Queue", desc: "Cola de operaciones pendientes que procesa automáticamente cuando vuelve la conectividad." }
+    ],
+    useCases: [
+      { title: "Apps de Campo", scenario: "Aplicaciones para zonas rurales o industriales con conectividad intermitente o nula." },
+      { title: "Inventarios Móviles", scenario: "Gestión de stock en depósitos sin WiFi confiable con sincronización al server central." },
+      { title: "Formularios Offline", scenario: "Recolección de datos en terreno con envío diferido y validación local." }
+    ],
+    tiers: [
+      {
+        name: "Starter Kit",
+        price: "$29",
+        desc: "Código fuente completo del boilerplate listo para producción.",
+        features: ["Proyecto React Native + Expo completo", "SQLite WAL + Zustand configurados", "Cola de sync offline incluida", "Documentación técnica"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-starter"
+      },
+      {
+        name: "Pro Bundle",
+        price: "$79",
+        desc: "Starter Kit + componentes UI premium y soporte por email.",
+        features: ["Todo lo del Starter Kit", "15+ componentes UI offline-ready", "Ejemplos de CRUD completo", "30 días de soporte por email"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-starter-pro"
+      },
+      {
+        name: "Enterprise Architecture",
+        price: "$299",
+        desc: "Consultoría de arquitectura offline-first para tu equipo.",
+        features: ["Todo lo del Pro Bundle", "Sesión de arquitectura 1-on-1 (60 min)", "Code review de tu implementación", "Soporte prioritario 90 días"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Con qué versión de Expo es compatible?", a: "Está optimizado para Expo SDK 54+ con soporte para el New Architecture (Fabric/TurboModules)." },
+      { q: "¿Puedo usarlo con Firebase o Supabase?", a: "Sí. El kit está diseñado para funcionar con cualquier backend. Incluye adaptadores de ejemplo para Firebase y Supabase." },
+      { q: "¿Incluye migraciones de base de datos?", a: "Sí. Incluye un sistema de migraciones versionadas que se ejecutan automáticamente al iniciar la app." },
+      { q: "¿Qué pasa si ya tengo un proyecto existente?", a: "Puedes integrar los módulos individuales (SQLite, Zustand store, sync queue) en tu proyecto existente siguiendo la guía de integración incluida." }
+    ]
+  },
+  "n8n-crm": {
+    title: "n8n CRM Workflow",
+    subtitle: "Automatización Inteligente de Lead Scoring con Gemini AI & n8n",
+    themeColor: "from-orange-500 to-red-600",
+    accentBg: "border-orange-500/30 bg-orange-950/20",
+    glowColor: "shadow-orange-500/20",
+    icon: <Cpu className="w-12 h-12 text-orange-400" />,
+    heroBadge: "AI-Powered Lead Scoring Automation",
+    problem: [
+      "Evaluar leads manualmente consume horas y está sujeto a sesgos humanos inconsistentes.",
+      "Las integraciones CRM tradicionales requieren desarrollo custom costoso y frágil.",
+      "Sin scoring automático, los equipos de ventas pierden tiempo en leads de baja calidad."
+    ],
+    solution: [
+      "Workflow n8n pre-configurado que conecta formularios, emails y CRMs con scoring por IA en minutos.",
+      "Gemini AI analiza cada lead y asigna un score de 0-100 basado en criterios personalizables.",
+      "Notificaciones automáticas a Slack, Telegram o email cuando un lead supera el umbral de calificación."
+    ],
+    features: [
+      { name: "Gemini AI Scoring", desc: "Evaluación inteligente de leads usando modelos de lenguaje con prompts optimizados para conversión B2B." },
+      { name: "Multi-Source Intake", desc: "Captura leads desde formularios web, emails, webhooks y APIs de CRM de forma unificada." },
+      { name: "Auto-Routing", desc: "Enrutamiento automático de leads calificados al vendedor correcto según territorio y expertise." },
+      { name: "Analytics Dashboard", desc: "Panel de métricas de conversión, tiempo de respuesta y eficiencia del pipeline." }
+    ],
+    useCases: [
+      { title: "Agencias de Marketing", scenario: "Scoring automático de leads entrantes de campañas multi-canal para priorizar seguimiento." },
+      { title: "SaaS B2B", scenario: "Calificación de trials y demos solicitadas para optimizar el pipeline de ventas." },
+      { title: "Consultorías", scenario: "Filtrado inteligente de consultas entrantes para dedicar tiempo solo a oportunidades reales." }
+    ],
+    tiers: [
+      {
+        name: "Workflow Kit",
+        price: "$19",
+        desc: "Workflow n8n exportable listo para importar y personalizar.",
+        features: ["Archivo JSON de workflow completo", "Documentación de configuración", "Prompts de Gemini optimizados", "Templates de notificación"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-crm"
+      },
+      {
+        name: "Pro Setup",
+        price: "$59",
+        desc: "Kit + sesión de implementación asistida por video.",
+        features: ["Todo lo del Workflow Kit", "Sesión de setup por video (30 min)", "Personalización de scoring criteria", "14 días de soporte"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-crm-pro"
+      },
+      {
+        name: "Enterprise Automation",
+        price: "$199",
+        desc: "Suite completa de automatización CRM con integración custom.",
+        features: ["Todo lo del Pro Setup", "Integración con tu CRM existente", "Workflows adicionales (follow-up, nurture)", "Soporte prioritario 60 días"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Necesito una instancia de n8n?", a: "Sí. Puedes usar n8n Cloud (plan gratuito disponible) o self-hosted en Docker. Incluimos instrucciones para ambos." },
+      { q: "¿Qué CRMs soporta?", a: "El workflow se conecta nativamente con HubSpot, Pipedrive, Notion y Google Sheets. Es extensible a cualquier CRM con API." },
+      { q: "¿Necesito una API key de Gemini?", a: "Sí. Necesitas una API key de Google AI Studio (tier gratuito disponible con 60 requests/minuto)." },
+      { q: "¿Puedo cambiar los criterios de scoring?", a: "Absolutamente. Los prompts de scoring son 100% editables. Incluimos una guía de prompt engineering para optimizarlos." }
+    ]
+  },
+  "titan-alerts": {
+    title: "Titan Alerts",
+    subtitle: "Monitor de Arbitraje Cripto en Tiempo Real con WebSockets & Alertas Telegram",
+    themeColor: "from-yellow-500 to-amber-600",
+    accentBg: "border-yellow-500/30 bg-yellow-950/20",
+    glowColor: "shadow-yellow-500/20",
+    icon: <Activity className="w-12 h-12 text-yellow-400" />,
+    heroBadge: "Real-Time Crypto Arbitrage Scanner",
+    problem: [
+      "Las oportunidades de arbitraje entre exchanges duran milisegundos y son imposibles de detectar manualmente.",
+      "Los bots de alertas comerciales cobran suscripciones mensuales de $50+ sin permitir personalización.",
+      "Sin monitoreo 24/7, pierdes ventanas de ganancia mientras duermes o trabajas."
+    ],
+    solution: [
+      "Script Python liviano que monitorea spreads entre exchanges en tiempo real vía WebSockets.",
+      "Alertas instantáneas a Telegram con datos del spread, volumen y ventana estimada de oportunidad.",
+      "100% self-hosted y personalizable — tú controlas los pares, umbrales y frecuencia de alertas."
+    ],
+    features: [
+      { name: "WebSocket Streams", desc: "Conexión en tiempo real a order books de Binance, Bybit y más exchanges simultáneamente." },
+      { name: "Spread Calculator", desc: "Cálculo automático de spread neto considerando fees maker/taker de cada exchange." },
+      { name: "Telegram Bot", desc: "Alertas formateadas con emoji, spread %, volumen disponible y timestamp preciso." },
+      { name: "Configurable Filters", desc: "Filtros de volumen mínimo, spread threshold y blacklist de pares para reducir ruido." }
+    ],
+    useCases: [
+      { title: "Traders Independientes", scenario: "Monitoreo pasivo de oportunidades de arbitraje mientras trabajas en otras tareas." },
+      { title: "DeFi Operators", scenario: "Detección de desequilibrios entre CEX y DEX pools para arbitraje cross-venue." },
+      { title: "Research & Analysis", scenario: "Logging de spreads históricos para backtesting de estrategias de arbitraje." }
+    ],
+    tiers: [
+      {
+        name: "Alert Script",
+        price: "$14",
+        desc: "Script Python completo con documentación de setup.",
+        features: ["Script Python producción-ready", "Soporte Binance + Bybit", "Bot de Telegram pre-configurado", "Guía de despliegue en VPS"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts"
+      },
+      {
+        name: "Pro Multi-Exchange",
+        price: "$39",
+        desc: "Soporte extendido para 5+ exchanges y filtros avanzados.",
+        features: ["Todo lo del Alert Script", "5 exchanges adicionales", "Filtros de volumen avanzados", "Dashboard web básico"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts-pro"
+      },
+      {
+        name: "Enterprise Suite",
+        price: "$99",
+        desc: "Para operaciones institucionales con API y soporte dedicado.",
+        features: ["Todo lo del Pro", "API REST para integración", "Histórico y analytics", "Soporte prioritario 30 días"],
+        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Qué lenguaje usa?", a: "Python 3.10+. Solo necesitas pip install de 3 dependencias: websockets, python-telegram-bot y aiohttp." },
+      { q: "¿Puedo correrlo en una VPS barata?", a: "Sí. Funciona perfectamente en una VPS de $5/mes (DigitalOcean, Hetzner). Consume menos de 50MB de RAM." },
+      { q: "¿Es un bot de trading automático?", a: "No. Titan Alerts es un sistema de ALERTAS. Te notifica oportunidades pero no ejecuta trades. Para ejecución automática, mira TitanFlow Pro." },
+      { q: "¿Puedo agregar más exchanges?", a: "Sí. El código es modular. Cada exchange es un adaptador independiente. Incluimos documentación para crear adaptadores nuevos." }
     ]
   }
 };
@@ -471,25 +650,25 @@ export default function ProductLanding({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* ── ENGINEERING GUARANTEES ── */}
       <section className="py-20 border-t border-slate-900 bg-slate-950/20 px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-center mb-16">Lo que dicen los integradores</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900 text-sm">
-              <div className="flex gap-1 text-yellow-500 mb-4"><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /></div>
-              <p className="text-slate-300 italic mb-6">\"La arquitectura offline-first nos ahorró cientos de dolores de cabeza en zonas sin señal celular. Recomiendo el Starter Kit al 100%.\"</p>
-              <div className="font-bold text-white">Mateo R. <span className="text-slate-500 text-xs font-normal">(CTO de AgriLogistics - Demo)</span></div>
+          <div className="text-center mb-12">
+            <span className="badge-enterprise mb-3">Estándares de Entrega</span>
+            <h2 className="text-3xl font-extrabold text-white">Garantía de Arquitectura Arbizu Labs</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 font-mono text-xs">
+            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
+              <div className="text-[var(--color-arbizu-teal)] font-bold text-sm font-space mb-2">01. CERO VENDOR LOCK-IN</div>
+              <p className="text-slate-400 leading-relaxed">Código fuente 100% tuyo. Sin suscripciones forzosas de infraestructura propietaria ni dependencias opacas.</p>
             </div>
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900 text-sm">
-              <div className="flex gap-1 text-yellow-500 mb-4"><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /></div>
-              <p className="text-slate-300 italic mb-6">\"Habilitar cobros directos en Base L2 USDC al 0% de comisión del riel fiat local nos transformó el margen neto de venta de hardware.\"</p>
-              <div className="font-bold text-white">Sophia L. <span className="text-slate-500 text-xs font-normal">(Product Manager - Demo)</span></div>
+            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
+              <div className="text-[#00D4FF] font-bold text-sm font-space mb-2">02. VERIFICACIÓN OWASP</div>
+              <p className="text-slate-400 leading-relaxed">Arquitecturas auditadas contra fugas de secrets, inyecciones de datos y vulnerabilidades de red en repositorios locales.</p>
             </div>
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900 text-sm">
-              <div className="flex gap-1 text-yellow-500 mb-4"><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /><Star className="fill-current w-4 h-4" /></div>
-              <p className="text-slate-300 italic mb-6">\"La ejecución de comisiones Maker nos redujo la pérdida operativa mensual casi a cero. Es una pieza de ingeniería de software única.\"</p>
-              <div className="font-bold text-white">Felipe D. <span className="text-slate-500 text-xs font-normal">(DevOps Lead - Demo)</span></div>
+            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
+              <div className="text-[#7F77DD] font-bold text-sm font-space mb-2">03. SOPORTE DE DESPLIEGUE</div>
+              <p className="text-slate-400 leading-relaxed">Acompañamiento directo por parte del Lead Engineer para la integración, configuración de VPS y puesta en producción.</p>
             </div>
           </div>
         </div>
@@ -540,48 +719,47 @@ export default function ProductLanding({ params }: { params: Promise<{ slug: str
             <p className="text-slate-400 text-sm mb-6">Estás adquiriendo el plan <span className="text-white font-bold">{checkoutModal.tierName}</span> por <span className="text-white font-black">{checkoutModal.price} USD</span>.</p>
             
             <div className="space-y-4 mb-8">
+              {/* Primary: Gumroad checkout */}
               <button 
                 onClick={() => {
-                  alert("Redirigiendo a pasarela Paddle (Fiat)...");
+                  const tier = product.tiers.find(t => t.name === checkoutModal.tierName);
+                  if (tier?.checkoutUrl?.startsWith('https://')) {
+                    window.open(tier.checkoutUrl, '_blank');
+                  } else {
+                    window.open(`https://arbizualdo.gumroad.com`, '_blank');
+                  }
                   setCheckoutModal(null);
                 }}
                 className="w-full py-4 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 transition"
               >
-                <Zap className="w-5 h-5" /> Pagar con Tarjeta (Paddle)
+                <CreditCard className="w-5 h-5" /> Pagar con Tarjeta (Gumroad)
               </button>
               
-              <button 
-                onClick={() => {
-                  alert("Redirigiendo a pasarela Lemon Squeezy (Fiat)...");
-                  setCheckoutModal(null);
-                }}
-                className="w-full py-4 rounded-xl font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center gap-2 transition"
-              >
-                <DollarSign className="w-5 h-5" /> Pagar con Lemon Squeezy
-              </button>
-              
+              {/* Crypto: Base L2 USDC */}
               <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-900 text-center">
                 <div className="text-xs text-indigo-400 font-bold mb-2">Pagar en Web3 Base L2 (USDC)</div>
                 <div className="text-[10px] text-slate-500 font-mono select-all bg-slate-900 py-1.5 px-3 rounded-lg border border-slate-850 break-all mb-3">
-                  0x71C2496B21F3A9008985208985209852071C3A90
+                  {CHECKOUT_WALLET_ADDRESS}
                 </div>
-                <button 
-                  onClick={() => {
-                    alert("Abre tu billetera MetaMask conectada a la red Base L2 y transfiere el monto indicado.");
-                    setCheckoutModal(null);
-                  }}
-                  className="w-full py-2.5 rounded-lg font-bold bg-slate-900 hover:bg-slate-850 text-slate-200 border border-slate-850 flex items-center justify-center gap-2 text-xs transition"
+                <p className="text-[10px] text-slate-600 mb-3">Envía {checkoutModal.price} USDC y luego confirma enviando el hash de tx por email.</p>
+                <a 
+                  href={`mailto:arbizualdoalberto@gmail.com?subject=Crypto%20Payment%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Transaction%20Hash:%20%0A%0APlan:%20${encodeURIComponent(checkoutModal.tierName)}%0AAmount:%20${encodeURIComponent(checkoutModal.price)}%20USDC`}
+                  className="w-full py-2.5 rounded-lg font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 flex items-center justify-center gap-2 text-xs transition"
                 >
-                  <Lock className="w-4 h-4 text-indigo-400" /> Confirmar Pago Cripto
-                </button>
+                  <Lock className="w-4 h-4 text-indigo-400" /> Confirmar Pago Cripto por Email
+                </a>
               </div>
 
+              {/* Argentina: Contact-based flow instead of exposed bank alias */}
               <div className="p-4 rounded-2xl bg-green-950/10 border border-green-900/30 text-center">
                 <div className="text-xs text-green-400 font-bold mb-1">¿Resides en Argentina?</div>
                 <div className="text-xs text-slate-400 mb-2">Obtén 10% OFF pagando por Transferencia Directa</div>
-                <div className="text-[10px] text-slate-500 font-mono select-all bg-slate-900/50 py-1.5 px-3 rounded-lg border border-green-950 break-all mb-2">
-                  Alias: arbizu.galicia.ar (Banco Galicia)
-                </div>
+                <a 
+                  href={`mailto:arbizualdoalberto@gmail.com?subject=Compra%20Argentina%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Hola%2C%20quiero%20comprar%20${encodeURIComponent(product.title)}%20(${encodeURIComponent(checkoutModal.tierName)})%20con%20transferencia%20bancaria%20argentina.%0A%0APrecio:%20${encodeURIComponent(checkoutModal.price)}%20USD%20(-10%25)`}
+                  className="w-full py-2.5 rounded-lg font-bold bg-green-900/30 hover:bg-green-900/50 text-green-300 border border-green-900/40 flex items-center justify-center gap-2 text-xs transition"
+                >
+                  <DollarSign className="w-4 h-4" /> Solicitar Datos de Transferencia
+                </a>
               </div>
             </div>
 
