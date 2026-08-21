@@ -93,8 +93,15 @@ export default function RootLayout({
           </>
         )}
         <LanguageProvider>
+          {/* WCAG 2.2 AA Skip to content link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-[var(--color-arbizu-teal)] focus:text-black focus:font-space focus:text-xs focus:font-bold focus:uppercase focus:rounded-lg focus:shadow-[0_0_25px_rgba(29,158,117,0.6)] focus:outline-none"
+          >
+            Saltar al contenido principal / Skip to content
+          </a>
           <Navigation />
-          <main>{children}</main>
+          <main id="main-content">{children}</main>
           <Footer />
         </LanguageProvider>
       </body>

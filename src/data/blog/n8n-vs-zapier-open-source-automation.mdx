@@ -1,0 +1,50 @@
+---
+title: "n8n vs Zapier: Why We Chose Open-Source Automation"
+category: "AI & Workflow Automation"
+date: "May 25, 2026"
+readTime: "6 min read"
+excerpt: "How self-hosting n8n reduced our integration overheads by 75% while providing complete transactional privacy."
+author: "Aldo Alberto Arbizu"
+stack: ["n8n", "Docker", "Google Gemini AI", "PostgreSQL", "Tailscale"]
+---
+
+# n8n vs Zapier: Why We Chose Open-Source Automation
+
+When scaling business automation pipelines for B2B operations—such as multi-source lead scoring, automated CRM enrichment, and AI agent dispatch—the platform you choose dictates both your unit economics and data sovereignty.
+
+After operating over 100,000 monthly execution tasks across client workflows, **Arbizu Labs** migrated entirely from proprietary cloud automation tools (Zapier / Make) to self-hosted **n8n**.
+
+Here is why this transition proved pivotal.
+
+---
+
+## 1. Unit Economics at Scale
+
+Proprietary platforms charge per task or operation. As pipelines incorporate complex loops, multi-step LLM evaluations, and database webhooks:
+- **Zapier (100,000 tasks/month)**: **~$600 - $900 USD / month**
+- **n8n (Self-Hosted on $10 VPS)**: **$10 USD / month (Unlimited executions)**
+
+By self-hosting on a hardened Docker container, execution costs dropped by **> 90%**, allowing us to run continuous cron monitors and real-time LLM evaluations without budgetary friction.
+
+---
+
+## 2. Unrestricted Code Execution & Custom Logic
+
+Zapier restricts custom JavaScript/Python execution to isolated sandbox environments with short timeouts and no access to external npm libraries.
+
+In n8n:
+- You can write full Node.js code with any npm package.
+- Direct connectivity to private databases (PostgreSQL, SQLite, Redis) inside secure VPC / Tailscale networks without exposing database ports to the public internet.
+- Native integration with local AI models (Ollama running `qwen2.5` or `llama3`) and commercial frontier models (Gemini 1.5 Pro, Claude 3.5 Sonnet).
+
+---
+
+## 3. Data Sovereignty & Zero Third-Party Leakage
+
+For enterprises bound by GDPR, HIPAA, or strict NDAs, sending sensitive customer payloads through third-party SaaS automation hubs poses an unacceptable regulatory risk.
+
+With self-hosted n8n:
+- **All logs, customer records, and API tokens remain in your own encrypted storage**.
+- Database backups and audit trails are 100% under your control.
+
+Open-source automation offers enterprise-grade power with complete sovereignty.

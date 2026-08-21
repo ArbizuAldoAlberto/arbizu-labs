@@ -1,0 +1,85 @@
+---
+title: "Building Multi-Chain DeFi Apps with Ethers.js"
+category: "Web3 & Blockchain"
+date: "June 03, 2026"
+readTime: "7 min read"
+excerpt: "Best practices for MetaMask connections, Base L2 RPC management, and transaction gas estimations in decentralized interfaces."
+author: "Aldo Alberto Arbizu"
+stack: ["Ethers.js v6", "Base L2", "Smart Contracts", "MetaMask", "TypeScript"]
+---
+
+# Building Multi-Chain DeFi Apps with Ethers.js
+
+Developing resilient Web3 decentralized applications requires more than wrapping smart contract calls with basic RPC libraries. RPC nodes throttle requests, users switch network chains unexpectedly, and gas estimation spikes can cause transactions to stall indefinitely in the mempool.
+
+In this guide, we outline our battle-tested engineering patterns for multi-chain dApps deployed on **Base L2 (Ethereum Layer 2)**.
+
+---
+
+## 1. Fallback RPC Provider Pools
+
+Never rely on a single public RPC endpoint. Public RPCs experience rate limiting and localized downtime.
+
+```typescript
+import { ethers } from 'ethers';
+
+const BASE_RPC_URLS = [
+  'https://mainnet.base.org',
+  'https://base.llamarpc.com',
+  'https://base-mainnet.public.blastapi.io'
+];
+
+export function getResilientProvider(): ethers.FallbackProvider {
+  const providers = BASE_RPC_URLS.map((url, priority) => ({
+    provider: new ethers.JsonRpcProvider(url),
+    priority: priority + 1,
+    weight: 1,
+    stallTimeout: 2000
+  }));
+
+  return new ethers.FallbackProvider(providers);
+}
+```
+
+---
+
+## 2. Dynamic EIP-1559 Gas Estimation with Safety Buffers
+
+On Layer 2 networks like Base, gas consists of execution gas + L1 data security fee. To guarantee transaction inclusion without overpaying:
+
+1. Query current `maxFeePerGas` and `maxPriorityFeePerGas` via `provider.getFeeData()`.
+2. Apply a **+15% safety multiplier** to `maxPriorityFeePerGas` during network congestion.
+3. Validate wallet balance against `gasLimit * maxFeePerGas + txValue` prior to initiating the signing prompt.
+
+---
+
+## 3. Graceful Network Switching
+
+When users connect from a non-supported network, seamlessly prompt MetaMask to switch or auto-add Base L2 configuration without breaking application state:
+
+```typescript
+export async function ensureBaseNetwork(ethereum: any) {
+  const BASE_CHAIN_ID_HEX = '0x2105'; // 8453 in decimal
+  try {
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: BASE_CHAIN_ID_HEX }]
+    });
+  } catch (error: any) {
+    if (error.code === 4902) {
+      await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId: BASE_CHAIN_ID_HEX,
+          chainName: 'Base Mainnet',
+          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+          rpcUrls: ['https://mainnet.base.org'],
+          blockExplorerUrls: ['https://basescan.org']
+        }]
+      });
+    }
+  }
+}
+```
+
+Building resilient Web3 interfaces is about anticipating RPC instability and providing crystal-clear transaction feedback to users.

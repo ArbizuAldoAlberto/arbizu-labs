@@ -90,12 +90,20 @@ export default function WarRoom() {
   // Selected follow-up details
   const [selectedFollowUp, setSelectedFollowUp] = useState<Application | null>(null);
 
-  // Check auth on mount
+  // Check auth on mount via secure API
   useEffect(() => {
-    const isAuth = localStorage.getItem('warroom_auth') === 'true';
-    if (isAuth) {
-      setIsAuthenticated(true);
-    }
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/auth/warroom');
+        const data = await res.json();
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+        }
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    checkSession();
   }, []);
 
   // Fetch data if authenticated
@@ -108,9 +116,7 @@ export default function WarRoom() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/warroom', {
-        headers: { 'x-nexus-auth': 'arbizu2026' }
-      });
+      const res = await fetch('/api/warroom');
       const data = await res.json();
       if (data.success) {
         setApplications(data.applications || []);
@@ -124,21 +130,33 @@ export default function WarRoom() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'arbizu2026') {
-      localStorage.setItem('warroom_auth', 'true');
-      setIsAuthenticated(true);
-      setAuthError(false);
-    } else {
+    try {
+      const res = await fetch('/api/auth/warroom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        setAuthError(false);
+      } else {
+        setAuthError(true);
+      }
+    } catch {
       setAuthError(true);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('warroom_auth');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/warroom', { method: 'DELETE' });
+    } catch {}
     setIsAuthenticated(false);
     setPassword('');
+    window.location.href = '/';
   };
 
   // Drag and Drop handlers
@@ -176,8 +194,7 @@ export default function WarRoom() {
       const res = await fetch('/api/warroom', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'x-nexus-auth': 'arbizu2026'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id, status: targetStatus, date_applied })
       });
@@ -201,8 +218,7 @@ export default function WarRoom() {
       const res = await fetch('/api/warroom', {
         method: 'PUT',
         headers: { 
-          'Content-Type': 'application/json',
-          'x-nexus-auth': 'arbizu2026'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ action: 'trigger-apply', batch: batchSize, minScore })
       });
@@ -223,8 +239,7 @@ export default function WarRoom() {
       const res = await fetch('/api/warroom', {
         method: 'PUT',
         headers: { 
-          'Content-Type': 'application/json',
-          'x-nexus-auth': 'arbizu2026'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ action: 'trigger-scraper' })
       });
@@ -315,8 +330,7 @@ Aldo`;
       await fetch('/api/warroom', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'x-nexus-auth': 'arbizu2026'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id: app.id, status: app.status, followup_stage: nextStage })
       });

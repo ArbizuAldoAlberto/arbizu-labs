@@ -743,7 +743,7 @@ export default function ProductLanding({ params }: { params: Promise<{ slug: str
                 </div>
                 <p className="text-[10px] text-slate-600 mb-3">Envía {checkoutModal.price} USDC y luego confirma enviando el hash de tx por email.</p>
                 <a 
-                  href={`mailto:arbizualdoalberto@gmail.com?subject=Crypto%20Payment%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Transaction%20Hash:%20%0A%0APlan:%20${encodeURIComponent(checkoutModal.tierName)}%0AAmount:%20${encodeURIComponent(checkoutModal.price)}%20USDC`}
+                  href={`mailto:aldo@arbizulabs.com?subject=Crypto%20Payment%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Transaction%20Hash:%20%0A%0APlan:%20${encodeURIComponent(checkoutModal.tierName)}%0AAmount:%20${encodeURIComponent(checkoutModal.price)}%20USDC`}
                   className="w-full py-2.5 rounded-lg font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 flex items-center justify-center gap-2 text-xs transition"
                 >
                   <Lock className="w-4 h-4 text-indigo-400" /> Confirmar Pago Cripto por Email
@@ -755,7 +755,7 @@ export default function ProductLanding({ params }: { params: Promise<{ slug: str
                 <div className="text-xs text-green-400 font-bold mb-1">¿Resides en Argentina?</div>
                 <div className="text-xs text-slate-400 mb-2">Obtén 10% OFF pagando por Transferencia Directa</div>
                 <a 
-                  href={`mailto:arbizualdoalberto@gmail.com?subject=Compra%20Argentina%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Hola%2C%20quiero%20comprar%20${encodeURIComponent(product.title)}%20(${encodeURIComponent(checkoutModal.tierName)})%20con%20transferencia%20bancaria%20argentina.%0A%0APrecio:%20${encodeURIComponent(checkoutModal.price)}%20USD%20(-10%25)`}
+                  href={`mailto:aldo@arbizulabs.com?subject=Compra%20Argentina%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Hola%2C%20quiero%20comprar%20${encodeURIComponent(product.title)}%20(${encodeURIComponent(checkoutModal.tierName)})%20con%20transferencia%20bancaria%20argentina.%0A%0APrecio:%20${encodeURIComponent(checkoutModal.price)}%20USD%20(-10%25)`}
                   className="w-full py-2.5 rounded-lg font-bold bg-green-900/30 hover:bg-green-900/50 text-green-300 border border-green-900/40 flex items-center justify-center gap-2 text-xs transition"
                 >
                   <DollarSign className="w-4 h-4" /> Solicitar Datos de Transferencia

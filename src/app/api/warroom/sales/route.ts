@@ -3,12 +3,14 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { getDb } from '../../../../lib/db';
+import { verifyWarroomSession } from '@/lib/auth';
 
 const INVOICES_ROOT = 'e:/01_DESARROLLO/2026/01_ACTIVE/nexus/nexus/career-ops/output/invoices';
 
 function checkAuth(req: NextRequest): boolean {
-  const authHeader = req.headers.get('x-nexus-auth');
-  return authHeader === 'arbizu2026';
+  const cookieValue = req.cookies.get('warroom_session')?.value;
+  const authHeader = req.headers.get('x-warroom-auth') || req.headers.get('x-nexus-auth') || req.headers.get('authorization')?.replace('Bearer ', '');
+  return verifyWarroomSession(cookieValue, authHeader);
 }
 
 // ── PADDLE WEBHOOK SIGNATURE VERIFICATION ────────────────────

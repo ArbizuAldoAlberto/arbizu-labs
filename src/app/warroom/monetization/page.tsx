@@ -39,21 +39,38 @@ export default function MonetizationDashboard() {
 
   // Check auth
   useEffect(() => {
-    const isAuth = localStorage.getItem("warroom_auth") === "true";
-    setIsAuthenticated(isAuth);
-    if (isAuth) {
-      fetchSales();
-    }
+    const checkSession = async () => {
+      try {
+        const res = await fetch("/api/auth/warroom");
+        const data = await res.json();
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+          fetchSales();
+        }
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    checkSession();
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === "arbizu2026") {
-      localStorage.setItem("warroom_auth", "true");
-      setIsAuthenticated(true);
-      setAuthError(false);
-      fetchSales();
-    } else {
+    try {
+      const res = await fetch("/api/auth/warroom", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        setAuthError(false);
+        fetchSales();
+      } else {
+        setAuthError(true);
+      }
+    } catch {
       setAuthError(true);
     }
   };
@@ -61,9 +78,7 @@ export default function MonetizationDashboard() {
   const fetchSales = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/warroom/sales", {
-        headers: { 'x-nexus-auth': 'arbizu2026' }
-      });
+      const res = await fetch("/api/warroom/sales");
       const data = await res.json();
       if (data.success) {
         setSales(data.sales || []);
@@ -86,8 +101,7 @@ export default function MonetizationDashboard() {
       const res = await fetch("/api/warroom/sales", {
         method: "POST",
         headers: { 
-          "Content-Type": "application/json",
-          "x-nexus-auth": "arbizu2026"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           product: formProduct,
