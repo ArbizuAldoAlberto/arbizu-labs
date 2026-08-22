@@ -128,3 +128,4 @@ curl -I https://arbizulabs.com/blog/why-offline-first-is-critical  # Debe ser 20
 |---|---|---|---|
 | 2026-08-21 | `bd74d16` | fix(security): patch warroom auth, add blog slug route, inject security headers | Aldo Arbizu |
 | 2026-08-21 | `ad26a15` | docs: add DEPLOY.md runbook and update NEXUS.md post-security-patch | Aldo Arbizu |
+| 2026-08-21 | `7f902fc` | deploy: live release on VPS /var/www/arbizu-labs with 40 SSG routes & OWASP headers | Aldo Arbizu |

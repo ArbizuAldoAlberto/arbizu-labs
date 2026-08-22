@@ -40,9 +40,9 @@
 ---
 
 ## 🔄 Active Lifecycle Phase
-*   **Current Phase:** `Deployed / Live — Post-Security Patch`
-*   **Production Deployment:** PM2 (`arbizu-labs`) en puerto 3002 via Nexus Router.
-*   **Last Deploy:** 2026-08-21 — Commit `bd74d16`
+*   **Current Phase:** `Deployed / Live — Verified in Production`
+*   **Production Deployment:** PM2 (`arbizu-labs`) en puerto 3002 via Nexus Router (`/var/www/arbizu-labs`).
+*   **Last Deploy:** 2026-08-21 — Commit `7f902fc`
 *   **Last Audit Date:** 2026-08-21
 *   **Deploy Guide:** Ver [`DEPLOY.md`](./DEPLOY.md) para el runbook completo de actualización, provisioning y rollback.
 
