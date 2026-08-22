@@ -1,29 +1,28 @@
-# ?? DEPLOY RUNBOOK ó Arbizu Labs (arbizulabs.com)
+# üöÄ DEPLOY RUNBOOK ‚Äî Arbizu Labs (arbizulabs.com)
 
-> **PropÛsito:** GuÌa oficial de despliegue, actualizaciÛn y rollback para el VPS de producciÛn de `arbizulabs.com`.
-> **Mantenida por:** Aldo Alberto Arbizu ó `aldo@arbizulabs.com`
-> **⁄ltima actualizaciÛn:** 2026-08-21
+> **Prop√≥sito:** Gu√≠a oficial de despliegue, actualizaci√≥n y rollback para el VPS de producci√≥n de `arbizulabs.com`.  
+> **Mantenida por:** Aldo Alberto Arbizu ‚Äî `aldo@arbizulabs.com`  
+> **√öltima actualizaci√≥n:** 2026-08-21
 
 ---
 
-## ?? Õndice
+## üìã √çndice
 
 1. [Variables de Entorno Requeridas](#variables-de-entorno-requeridas)
 2. [Infraestructura del Servidor](#infraestructura-del-servidor)
-3. [ActualizaciÛn Est·ndar](#actualizaciÛn-est·ndar-deploy-desde-github)
-4. [Primer Despliegue desde Cero](#primer-despliegue-provisioning-desde-cero)
-5. [Rollback de Emergencia](#rollback-de-emergencia)
-6. [VerificaciÛn Post-Deploy](#verificaciÛn-post-deploy)
-7. [Comandos de DiagnÛstico](#comandos-de-diagnÛstico-˙tiles)
-8. [Historial de Versiones](#historial-de-versiones-desplegadas)
+3. [Actualizaci√≥n Est√°ndar (Deploy desde GitHub)](#actualizaci√≥n-est√°ndar-deploy-desde-github)
+4. [Rollback de Emergencia](#rollback-de-emergencia)
+5. [Verificaci√≥n Post-Deploy](#verificaci√≥n-post-deploy)
+6. [Comandos de Diagn√≥stico](#comandos-de-diagn√≥stico-√∫tiles)
+7. [Historial de Versiones](#historial-de-versiones-desplegadas)
 
 ---
 
-## ?? Variables de Entorno Requeridas
+## üîê Variables de Entorno Requeridas
 
-Archivo en el servidor: `/root/arbizu-labs/.env.local`
+Archivo en el servidor: `/var/www/arbizu-labs/.env.local`
 
-> ?? **NUNCA** subas este archivo a Git. Est· en `.gitignore`.
+> ‚ö†Ô∏è **NUNCA** subas este archivo a Git. Est√° en `.gitignore`.
 
 ```env
 # CORREO TRANSACCIONAL
@@ -46,29 +45,29 @@ ARBIZU_LEADS_WEBHOOK=http://localhost:3002/api/leads
 
 ---
 
-## ??? Infraestructura del Servidor
+## üèóÔ∏è Infraestructura del Servidor
 
 | Componente | Detalle |
 |---|---|
-| **Directorio del proyecto** | `/root/arbizu-labs` |
+| **Directorio del proyecto** | `/var/www/arbizu-labs` |
 | **Runtime** | Node.js 20 LTS |
 | **Process Manager** | PM2 (nombre del proceso: `arbizu-labs`) |
 | **Puerto interno** | `3002` |
-| **Reverse Proxy** | Nexus Router (80/443 ? 3002) |
+| **Reverse Proxy** | Nexus Router (80/443 ‚Üí 3002) |
 | **Dominio** | `arbizulabs.com` + `www.arbizulabs.com` |
 | **DNS/CDN** | Cloudflare (proxied) |
-| **Email Routing** | Cloudflare ? aldo@arbizulabs.com ? Gmail |
+| **Email Routing** | Cloudflare ‚Üí aldo@arbizulabs.com ‚Üí Gmail |
 
 ---
 
-## ?? ActualizaciÛn Est·ndar (Deploy desde GitHub)
+## üîÑ Actualizaci√≥n Est√°ndar (Deploy desde GitHub)
 
 ```bash
 # 1. Conectarse al VPS
 ssh root@TU_IP_DE_VPS
 
 # 2. Ir al directorio del proyecto
-cd /root/arbizu-labs
+cd /var/www/arbizu-labs
 
 # 3. Traer cambios desde GitHub
 git pull origin main
@@ -77,153 +76,55 @@ git pull origin main
 npm install --omit=dev
 
 # 5. Verificar que WARROOM_SECRET_KEY existe en .env.local
-grep -q "WARROOM_SECRET_KEY" .env.local && echo "OK - Key presente" || echo "FALTA - ver secciÛn Variables de Entorno"
+grep -q "WARROOM_SECRET_KEY" .env.local && echo "OK - Key presente" || echo "FALTA - ver secci√≥n Variables de Entorno"
 
-# 5b. Si NO existe la key, agregarla (reemplaza con tu clave real):
-# echo "WARROOM_SECRET_KEY=CLAVE_GENERADA_CON_OPENSSL" >> .env.local
-
-# 6. Compilar la versiÛn de producciÛn
+# 6. Compilar la versi√≥n de producci√≥n
 npm run build
 
 # 7. Reiniciar el proceso PM2
 pm2 restart arbizu-labs
 
-# 8. Verificar que el servidor arrancÛ correctamente
+# 8. Verificar que el servidor arranc√≥ correctamente
 pm2 logs arbizu-labs --lines 20 --nostream
 
 # 9. Smoke test - verificar headers de seguridad
 curl -I https://arbizulabs.com
 ```
 
-**Resultado esperado del curl -I:**
-```
-HTTP/2 200
-x-frame-options: DENY
-x-content-type-options: nosniff
-strict-transport-security: max-age=63072000; includeSubDomains; preload
-```
-
 ---
 
-## ?? Primer Despliegue (Provisioning desde Cero)
+## ‚è™ Rollback de Emergencia
 
 ```bash
-# 1. Conectarse al VPS
-ssh root@TU_IP_DE_VPS
+cd /var/www/arbizu-labs
 
-# 2. Instalar Node.js 20 LTS via NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.bashrc
-nvm install 20 && nvm use 20 && nvm alias default 20
-node --version  # v20.x.x
-
-# 3. Instalar PM2 globalmente
-npm install -g pm2
-
-# 4. Clonar el repositorio
-cd /root
-git clone https://github.com/ArbizuAldoAlberto/arbizu-labs.git
-cd arbizu-labs
-
-# 5. Crear .env.local con las variables de entorno (editar valores reales)
-nano .env.local
-
-# 6. Instalar dependencias
-npm install --omit=dev
-
-# 7. Compilar
-npm run build
-
-# 8. Iniciar con PM2 en puerto 3002
-PORT=3002 pm2 start npm --name "arbizu-labs" -- start
-pm2 save
-pm2 startup  # Ejecutar el comando que imprime para persistencia en reboot
-```
-
----
-
-## ? Rollback de Emergencia
-
-```bash
-cd /root/arbizu-labs
-
-# Ver ˙ltimos commits
+# Ver √∫ltimos commits
 git log --oneline -10
 
-# OpciÛn A: ReversiÛn segura (crea nuevo commit ó recomendado)
+# Opci√≥n A: Reversi√≥n segura (crea nuevo commit ‚Äî recomendado)
 git revert HEAD --no-edit
 npm run build
 pm2 restart arbizu-labs
-
-# OpciÛn B: Reset duro a commit especÌfico (DESTRUCTIVO)
-# git reset --hard <HASH_DEL_COMMIT_BUENO>
-# npm run build
-# pm2 restart arbizu-labs
-
-pm2 logs arbizu-labs --lines 15 --nostream
 ```
 
 ---
 
-## ? VerificaciÛn Post-Deploy
+## ‚úÖ Verificaci√≥n Post-Deploy
 
 ```bash
 pm2 status
 pm2 logs arbizu-labs --lines 20 --nostream
 curl -I https://arbizulabs.com
 curl https://arbizulabs.com/sitemap.xml | head -20
-curl -I https://arbizulabs.com/warroom          # Debe devolver 302 ? /
+curl -I https://arbizulabs.com/warroom          # Debe devolver 302/307 -> /
 curl -I https://arbizulabs.com/blog/why-offline-first-is-critical  # Debe ser 200
 ```
 
-| Security Header | Valor Esperado |
-|---|---|
-| `x-frame-options` | `DENY` |
-| `x-content-type-options` | `nosniff` |
-| `strict-transport-security` | `max-age=63072000; includeSubDomains; preload` |
-| `referrer-policy` | `strict-origin-when-cross-origin` |
-
 ---
 
-## ?? Comandos de DiagnÛstico ⁄tiles
+## üìã Historial de Versiones Desplegadas
 
-```bash
-# PM2
-pm2 status                                        # Estado de procesos
-pm2 logs arbizu-labs                              # Logs en tiempo real
-pm2 logs arbizu-labs --lines 50 --nostream        # ⁄ltimas 50 lÌneas
-pm2 restart arbizu-labs                           # Restart
-pm2 reload arbizu-labs                            # 0-downtime reload (producciÛn)
-pm2 monit                                         # Monitor CPU/RAM en tiempo real
-pm2 save                                          # Persistir configuraciÛn
-
-# Git
-git log --oneline -10
-git status
-git diff HEAD~1 HEAD --name-only
-
-# Sistema
-node --version
-df -h                                             # Espacio en disco
-free -h                                           # RAM disponible
-ss -tlnp | grep 3002                              # Verificar puerto activo
-curl http://localhost:3002/api/status             # Health check interno
-```
-
----
-
-## ?? Historial de Versiones Desplegadas
-
-| Fecha | Commit Hash | DescripciÛn | Autor |
+| Fecha | Commit Hash | Descripci√≥n | Autor |
 |---|---|---|---|
 | 2026-08-21 | `bd74d16` | fix(security): patch warroom auth, add blog slug route, inject security headers | Aldo Arbizu |
-
-> Actualizar esta tabla en cada deploy de producciÛn para trazabilidad completa.
-
----
-
-## ?? Contacto
-
-- **Responsable:** Aldo Alberto Arbizu
-- **Email:** aldo@arbizulabs.com
-- **Repositorio:** https://github.com/ArbizuAldoAlberto/arbizu-labs
+| 2026-08-21 | `ad26a15` | docs: add DEPLOY.md runbook and update NEXUS.md post-security-patch | Aldo Arbizu |
