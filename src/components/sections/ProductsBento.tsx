@@ -19,7 +19,8 @@ import {
   Sparkles,
   CheckCircle2,
   AlertTriangle,
-  Play,
+  ExternalLink,
+  Eye,
   X
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -36,14 +37,14 @@ export interface ProjectData {
   metrics: string;
   liveUrl?: string;
   caseSlug?: string;
-  demoVideoUrl?: string;
+  imageFile?: string;
   span: string;
   data: any;
 }
 
 export default function ProductsBento() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [videoModal, setVideoModal] = useState<{ isOpen: boolean; title: string; url: string } | null>(null);
+  const [previewModal, setPreviewModal] = useState<{ isOpen: boolean; title: string; image: string; liveUrl?: string; desc: string; metrics: string } | null>(null);
   const { locale, t } = useLanguage();
 
   const filterCategories = [
@@ -67,7 +68,7 @@ export default function ProductsBento() {
       metrics: "< 10ms Latencia",
       liveUrl: "https://titanflow.aldoarbizu.com",
       caseSlug: "titanflow-defi-low-latency",
-      demoVideoUrl: "https://www.loom.com/share/placeholder",
+      imageFile: "titanflow.png",
       span: "md:col-span-2 lg:col-span-2",
       data: t.products.items.titanflow
     },
@@ -80,8 +81,9 @@ export default function ProductsBento() {
       badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-950/30",
       stack: ["React Native", "SQLite WAL", "Firebase RLS", "TensorFlow Lite"],
       metrics: "100% Offline",
+      liveUrl: "https://sentinelos.aldoarbizu.com",
       caseSlug: "sentinelos-security-dispatch",
-      demoVideoUrl: "https://www.loom.com/share/placeholder",
+      imageFile: "sentinelos.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.sentinelos
     },
@@ -94,7 +96,9 @@ export default function ProductsBento() {
       badgeColor: "text-amber-400 border-amber-500/30 bg-amber-950/30",
       stack: ["React Native", "SQLite WAL", "n8n", "Supabase"],
       metrics: "Sync < 1.2s",
+      liveUrl: "https://agromarket.aldoarbizu.com",
       caseSlug: "agromarket-pro",
+      imageFile: "agromarket.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.agromarket
     },
@@ -107,7 +111,9 @@ export default function ProductsBento() {
       badgeColor: "text-sky-400 border-sky-500/30 bg-sky-950/30",
       stack: ["Next.js", "React Native", "Base L2", "GIS WebGL"],
       metrics: "Mint < 2s",
+      liveUrl: "https://aeroshot.aldoarbizu.com",
       caseSlug: "aeroshot-drone-marketplace",
+      imageFile: "aeroshot.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.aeroshot
     },
@@ -120,7 +126,9 @@ export default function ProductsBento() {
       badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-950/30",
       stack: ["Next.js", "Gemini API", "Supabase", "Zustand"],
       metrics: "Audit < 800ms",
+      liveUrl: "https://sabiobosque.aldoarbizu.com",
       caseSlug: "sabiobosque",
+      imageFile: "sabiobosque.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.sabiobosque
     },
@@ -133,7 +141,9 @@ export default function ProductsBento() {
       badgeColor: "text-purple-400 border-purple-500/30 bg-purple-950/30",
       stack: ["Three.js", "Solidity", "Base L2", "Hellbot Magna 2"],
       metrics: "0% Intermediación",
+      liveUrl: "https://impresion3d.aldoarbizu.com",
       caseSlug: "impresion-3d-p2p",
+      imageFile: "impresion3d.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.impresion3d
     },
@@ -146,7 +156,9 @@ export default function ProductsBento() {
       badgeColor: "text-zinc-300 border-zinc-500/30 bg-zinc-950/30",
       stack: ["React Native", "SQLite", "LoRa P2P", "Vector Maps"],
       metrics: "100% Off-Grid",
+      liveUrl: "https://nomadhub.aldoarbizu.com",
       caseSlug: "nomad-tactical-hub",
+      imageFile: "nomadhub.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.nomad
     },
@@ -159,7 +171,9 @@ export default function ProductsBento() {
       badgeColor: "text-teal-400 border-teal-500/30 bg-teal-950/30",
       stack: ["Next.js", "Sentinel-2 API", "Base L2 SBT", "Three.js"],
       metrics: "Sentinel-2 NDVI",
+      liveUrl: "https://ecoconnect.aldoarbizu.com",
       caseSlug: "ecoconnect-esg-registry",
+      imageFile: "ecoconnect.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.ecoconnect
     },
@@ -172,7 +186,9 @@ export default function ProductsBento() {
       badgeColor: "text-amber-400 border-amber-500/30 bg-amber-950/30",
       stack: ["React Native", "3D STL", "WebSockets", "Base L2"],
       metrics: "$0 USD STL",
+      liveUrl: "https://pawhero.aldoarbizu.com",
       caseSlug: "pawhero-pet-tracking",
+      imageFile: "pawhero.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.pawhero
     },
@@ -185,7 +201,9 @@ export default function ProductsBento() {
       badgeColor: "text-yellow-400 border-yellow-500/30 bg-yellow-950/30",
       stack: ["Next.js 16", "Vercel AI SDK", "WASM", "PostgreSQL"],
       metrics: "TTFT < 120ms",
+      liveUrl: "https://aureus.aldoarbizu.com",
       caseSlug: "aureus-wealth-os",
+      imageFile: "aureus.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.aureus
     },
@@ -198,7 +216,9 @@ export default function ProductsBento() {
       badgeColor: "text-blue-400 border-blue-500/30 bg-blue-950/30",
       stack: ["React Native", "SQLite WAL", "Stripe", "Google Pay"],
       metrics: "Cobro < 300ms",
+      liveUrl: "https://techzone.aldoarbizu.com",
       caseSlug: "techzone-retail-pos",
+      imageFile: "techzone.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.techzone
     },
@@ -211,7 +231,9 @@ export default function ProductsBento() {
       badgeColor: "text-violet-400 border-violet-500/30 bg-violet-950/30",
       stack: ["Next.js", "Solidity", "Base L2", "PostgreSQL"],
       metrics: "Smart personal_sign",
+      liveUrl: "https://habitat.aldoarbizu.com",
       caseSlug: "habitat-lease-engine",
+      imageFile: "habitat.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.habitat
     },
@@ -224,7 +246,9 @@ export default function ProductsBento() {
       badgeColor: "text-rose-400 border-rose-500/30 bg-rose-950/30",
       stack: ["Next.js", "n8n", "Gemini AI", "SQLite"],
       metrics: "< 3s por Copy",
+      liveUrl: "https://marketingadvisor.aldoarbizu.com",
       caseSlug: "smart-marketing-advisor",
+      imageFile: "marketingadvisor.png",
       span: "md:col-span-1 lg:col-span-1",
       data: t.products.items.smartmarketing
     }
@@ -284,6 +308,7 @@ export default function ProductsBento() {
           <AnimatePresence>
             {filteredApps.map((app) => {
               const Icon = app.icon;
+              const imgName = app.imageFile || `${app.id}.png`;
               return (
                 <motion.div
                   layout
@@ -292,7 +317,7 @@ export default function ProductsBento() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.35 }}
                   key={app.id}
-                  className={`glass-surface-enterprise p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 group border border-white/5 ${app.borderColor} ${app.span} relative overflow-hidden`}
+                  className={`glass-surface-enterprise p-6 sm:p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 group border border-white/5 ${app.borderColor} ${app.span} relative overflow-hidden`}
                 >
                   {/* Subtle Inner Glow */}
                   <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-br ${app.accentColor} blur-3xl opacity-30 pointer-events-none group-hover:opacity-60 transition-opacity`} />
@@ -313,13 +338,42 @@ export default function ProductsBento() {
                       </span>
                     </div>
 
+                    {/* Screenshot Preview Thumbnail */}
+                    <div 
+                      onClick={() => setPreviewModal({
+                        isOpen: true,
+                        title: app.data.title,
+                        image: `/projects/${imgName}`,
+                        liveUrl: app.liveUrl,
+                        desc: app.data.desc,
+                        metrics: app.metrics
+                      })}
+                      className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black/60 border border-white/10 mb-4 cursor-pointer group/img shadow-md"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`/projects/${imgName}`}
+                        alt={app.data.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-top opacity-85 group-hover/img:opacity-100 group-hover/img:scale-105 transition-all duration-500"
+                      />
+                      <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/80 border border-emerald-500/40 text-[9px] font-mono text-emerald-400 font-bold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                        <span>LIVE · 200 OK</span>
+                      </div>
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1.5 font-space text-[11px] text-white font-bold bg-black/50 backdrop-blur-[2px]">
+                        <Eye className="w-4 h-4 text-[var(--color-arbizu-teal)]" />
+                        <span>{locale === 'es' ? "Ampliar Dashboard" : "Expand Dashboard"}</span>
+                      </div>
+                    </div>
+
                     {/* App Title */}
                     <h3 className="font-serif text-2xl font-bold text-white mb-2 group-hover:text-[var(--color-arbizu-teal)] transition-colors">
                       {app.data.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="font-mono text-xs text-[var(--color-mist-gray)]/85 mb-5 leading-relaxed">
+                    <p className="font-mono text-xs text-[var(--color-mist-gray)]/85 mb-4 leading-relaxed">
                       {app.data.desc}
                     </p>
 
@@ -359,26 +413,32 @@ export default function ProductsBento() {
                   {/* Actions Footer */}
                   <div className="pt-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-3 mt-auto">
                     <div className="flex flex-wrap items-center gap-2">
-                      {/* Demo Video (60s) Button */}
-                      {app.demoVideoUrl && (
-                        <button
-                          onClick={() => setVideoModal({ isOpen: true, title: app.data.title, url: app.demoVideoUrl! })}
-                          type="button"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-arbizu-teal)]/15 hover:bg-[var(--color-arbizu-teal)]/25 border border-[var(--color-arbizu-teal)]/40 text-[var(--color-arbizu-teal)] font-space text-[11px] font-bold transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
-                        >
-                          <Play className="w-3 h-3 fill-current" />
-                          <span>{locale === 'es' ? "Ver Demo en Vivo (60s)" : "Watch Live Demo (60s)"}</span>
-                        </button>
-                      )}
+                      {/* Vista Previa Modal Button */}
+                      <button
+                        onClick={() => setPreviewModal({
+                          isOpen: true,
+                          title: app.data.title,
+                          image: `/projects/${imgName}`,
+                          liveUrl: app.liveUrl,
+                          desc: app.data.desc,
+                          metrics: app.metrics
+                        })}
+                        type="button"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 font-space text-[11px] font-bold transition-all cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5 text-[var(--color-arbizu-teal)]" />
+                        <span>{locale === 'es' ? "Vista Previa" : "Preview"}</span>
+                      </button>
 
+                      {/* Live System Link */}
                       {app.liveUrl ? (
                         <a
                           href={app.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 font-space text-xs font-bold text-white/80 hover:text-white transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-arbizu-teal)] text-black font-space text-[11px] font-bold hover:bg-[var(--color-arbizu-teal)]/90 transition-all shadow-[0_0_15px_rgba(29,158,117,0.3)] cursor-pointer"
                         >
-                          <span>{(app.data as any).btnLive || t.products.labels.liveDemo}</span>
+                          <span>{locale === 'es' ? "Sistema en Vivo" : "Live System"}</span>
                           <ArrowUpRight className="w-3 h-3" />
                         </a>
                       ) : (
@@ -392,7 +452,7 @@ export default function ProductsBento() {
                       )}
                     </div>
 
-                    <span className="font-space text-[9px] text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded uppercase tracking-wider">
+                    <span className="font-space text-[9px] text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
                       {app.data.status}
                     </span>
                   </div>
@@ -405,53 +465,65 @@ export default function ProductsBento() {
 
       </div>
 
-      {/* Loom Demo Video Modal */}
+      {/* High-Resolution Screenshot Lightbox Modal */}
       <AnimatePresence>
-        {videoModal?.isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        {previewModal?.isOpen && (
+          <div 
+            onClick={() => setPreviewModal(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-6"
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl rounded-2xl bg-[#090a10] border border-white/10 p-6 shadow-2xl relative"
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-4xl rounded-2xl bg-[#080b12] border border-white/10 p-5 sm:p-7 shadow-2xl relative max-h-[90vh] flex flex-col"
             >
               <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
-                <div className="flex items-center gap-2">
-                  <Play className="w-4 h-4 text-[var(--color-arbizu-teal)] fill-current" />
-                  <h4 className="font-serif text-lg font-bold text-white">
-                    {videoModal.title} — {locale === 'es' ? "Demostración en 60s" : "60-Second Demo"}
-                  </h4>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-[var(--color-arbizu-teal)]/10 text-[var(--color-arbizu-teal)]">
+                    <Eye className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-xl font-bold text-white">
+                      {previewModal.title} — Dashboard en Vivo
+                    </h4>
+                    <span className="font-mono text-xs text-zinc-400">{previewModal.metrics}</span>
+                  </div>
                 </div>
                 <button
-                  onClick={() => setVideoModal(null)}
-                  className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
+                  onClick={() => setPreviewModal(null)}
+                  className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Loom Video Embed Player Area */}
-              <div className="aspect-video w-full rounded-xl bg-black border border-white/5 flex flex-col items-center justify-center text-center p-8 relative overflow-hidden">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-arbizu-teal)]/20 border border-[var(--color-arbizu-teal)]/40 flex items-center justify-center text-[var(--color-arbizu-teal)] mb-4 animate-pulse">
-                  <Play className="w-8 h-8 fill-current ml-1" />
-                </div>
-                <p className="font-serif text-xl font-bold text-white mb-2">
-                  {videoModal.title} Loom Demo Walkthrough
+              {/* High-Res Viewport */}
+              <div className="relative rounded-xl overflow-hidden bg-black border border-white/10 flex-1 min-h-[300px] mb-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={previewModal.image}
+                  alt={previewModal.title}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <p className="font-mono text-xs text-zinc-400 max-w-lg leading-relaxed">
+                  {previewModal.desc}
                 </p>
-                <p className="font-mono text-xs text-zinc-400 max-w-md mb-6 leading-relaxed">
-                  {locale === 'es'
-                    ? "Grabación técnica de 60 segundos demostrando la ejecución de arquitectura y rendimiento en tiempo real."
-                    : "60-second walkthrough demonstrating runtime architecture and latency benchmarks."}
-                </p>
-                <a
-                  href={videoModal.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary-enterprise text-xs py-2.5 px-5"
-                >
-                  <span>{locale === 'es' ? "Abrir en Loom" : "Open on Loom"}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+                {previewModal.liveUrl && (
+                  <a
+                    href={previewModal.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-arbizu-teal)] text-black font-space text-xs font-bold hover:bg-[var(--color-arbizu-teal)]/90 transition-all shadow-[0_0_20px_rgba(29,158,117,0.4)]"
+                  >
+                    <span>{locale === 'es' ? "Abrir Sistema en Nueva Pestaña" : "Open System in New Tab"}</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </motion.div>
           </div>

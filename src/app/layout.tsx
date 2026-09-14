@@ -59,12 +59,21 @@ export const metadata: Metadata = {
     siteName: "Arbizu Labs",
     type: "website",
     locale: "es_ES",
+    images: [
+      {
+        url: "/api/og?title=Software%20de%20Alta%20Resiliencia&subtitle=Offline-First%20%7C%20SaaS%20B2B%20%7C%20Zero-Downtime",
+        width: 1200,
+        height: 630,
+        alt: "Arbizu Labs — Enterprise Software Engineering",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Arbizu Labs — High-Resiliency Software Engineering",
     description: "Sistemas móviles Offline-First, SaaS B2B y automatización inteligente.",
     creator: "@ArbizuAldo",
+    images: ["/api/og?title=High-Resiliency%20Software%20Engineering&subtitle=Offline-First%20Mobile%20%26%20Enterprise%20SaaS"],
   },
 };
 
@@ -92,6 +101,32 @@ export default function RootLayout({
             </Script>
           </>
         )}
+
+        {/* Schema.org Organization JSON-LD */}
+        <Script
+          id="schema-organization"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Arbizu Labs",
+              "url": "https://arbizulabs.com",
+              "logo": "https://arbizulabs.com/logo-arbizu.svg",
+              "founder": {
+                "@type": "Person",
+                "name": "Aldo Alberto Arbizu",
+                "url": "https://aldoarbizu.com"
+              },
+              "sameAs": [
+                "https://github.com/ArbizuAldoAlberto",
+                "https://linkedin.com/in/aldoarbizu"
+              ],
+              "description": "Boutique de ingeniería de software de alta resiliencia especializada en sistemas móviles Offline-First, trading cuantitativo y arquitecturas distribuidas Zero-Downtime."
+            })
+          }}
+        />
+
         <LanguageProvider>
           {/* WCAG 2.2 AA Skip to content link */}
           <a
