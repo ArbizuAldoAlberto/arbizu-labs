@@ -15,6 +15,22 @@ interface CaseItem {
 export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
   const { locale } = useLanguage();
 
+  const caseAssetMap: Record<string, { image: string; subDomain: string }> = {
+    "titanflow-defi-low-latency": { image: "/projects/titanflow.png", subDomain: "titanflow.aldoarbizu.com" },
+    "sentinelos-security-dispatch": { image: "/projects/sentinelos.png", subDomain: "sentinelos.aldoarbizu.com" },
+    "agromarket-pro": { image: "/projects/agromarket.png", subDomain: "agromarket.aldoarbizu.com" },
+    "aeroshot-drone-marketplace": { image: "/projects/aeroshot.png", subDomain: "aeroshot.aldoarbizu.com" },
+    "sabiobosque": { image: "/projects/sabiobosque.png", subDomain: "sabiobosque.aldoarbizu.com" },
+    "impresion-3d-p2p": { image: "/projects/impresion3d.png", subDomain: "impresion3d.aldoarbizu.com" },
+    "nomad-tactical-hub": { image: "/projects/nomadhub.png", subDomain: "nomadhub.aldoarbizu.com" },
+    "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", subDomain: "ecoconnect.aldoarbizu.com" },
+    "pawhero-pet-tracking": { image: "/projects/pawhero.png", subDomain: "pawhero.aldoarbizu.com" },
+    "aureus-wealth-os": { image: "/projects/aureus.png", subDomain: "aureus.aldoarbizu.com" },
+    "techzone-retail-pos": { image: "/projects/techzone.png", subDomain: "techzone.aldoarbizu.com" },
+    "habitat-lease-engine": { image: "/projects/habitat.png", subDomain: "habitat.aldoarbizu.com" },
+    "smart-marketing-advisor": { image: "/projects/marketingadvisor.png", subDomain: "marketingadvisor.aldoarbizu.com" },
+  };
+
   // Bilingual titles, industries & metrics map
   const caseTranslations: Record<string, {
     titleEn: string;
@@ -168,45 +184,79 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
             const industry = locale === 'en' && trans ? trans.industryEn : c.industry;
             const metrics = locale === 'en' && trans ? trans.metricsEn : c.metrics;
 
+            const asset = caseAssetMap[c.slug];
+
             return (
               <Link href={`/cases/${c.slug}`} key={i} className="group">
-                <div className="glass-surface-enterprise p-8 h-full flex flex-col justify-between hover:border-[var(--color-arbizu-teal)]/40 hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden">
-                  <div>
-                    <span className="text-[var(--color-arbizu-teal)] font-space text-[10px] uppercase tracking-widest font-bold bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 mb-4 inline-block">
-                      {industry}
-                    </span>
-                    
-                    <h2 className="font-serif text-2xl text-white font-bold mb-6 group-hover:text-[var(--color-arbizu-teal)] transition-colors leading-snug">
-                      {title}
-                    </h2>
-                    
-                    {/* Metrics */}
-                    {metrics && metrics.length > 0 && (
-                      <div className="space-y-3 mb-6 p-4 rounded-xl bg-black/40 border border-white/5">
-                        {metrics.map((m: any, idx: number) => (
-                          <div key={idx} className="flex justify-between items-center text-xs">
-                            <span className="font-mono text-[var(--color-mist-gray)]/80">{m.label}</span>
-                            <span className="font-space font-bold text-white group-hover:text-[var(--color-arbizu-teal)] transition-colors">{m.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Stack pills */}
-                    {c.stack && c.stack.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-6">
-                        {c.stack.slice(0, 4).map((tech: string, idx: number) => (
-                          <span key={idx} className="px-2 py-0.5 rounded bg-white/5 font-mono text-[10px] text-white/60">
-                            {tech}
+                <div className="glass-surface-enterprise p-0 h-full flex flex-col justify-between hover:border-[var(--color-arbizu-teal)]/40 hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden rounded-2xl">
+                  {/* Screenshot Thumbnail Mockup */}
+                  {asset && (
+                    <div className="border-b border-white/10 bg-black/60 overflow-hidden">
+                      <div className="flex items-center justify-between px-3 py-2 bg-black/80 border-b border-white/5 text-[10px] font-mono text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-amber-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                          <span className="text-slate-400 text-[9px] ml-1.5 hidden sm:inline">
+                            https://{asset.subDomain}
                           </span>
-                        ))}
+                        </div>
+                        <div className="flex items-center gap-1 text-emerald-400 font-bold text-[9px]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                          <span>200 OK</span>
+                        </div>
                       </div>
-                    )}
-                  </div>
+                      <div className="relative aspect-[16/10] overflow-hidden bg-[#06080e]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={asset.image}
+                          alt={`${title} Preview`}
+                          loading="lazy"
+                          className="w-full h-full object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 ease-out"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                      </div>
+                    </div>
+                  )}
 
-                  <div className="pt-4 border-t border-white/5 flex items-center text-white/70 group-hover:text-white font-mono text-xs transition-colors">
-                    <span>{locale === 'es' ? "Leer desglose de arquitectura" : "Read architecture breakdown"}</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <div className="p-6 flex flex-col flex-1 justify-between">
+                    <div>
+                      <span className="text-[var(--color-arbizu-teal)] font-space text-[10px] uppercase tracking-widest font-bold bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 mb-4 inline-block">
+                        {industry}
+                      </span>
+                      
+                      <h2 className="font-serif text-2xl text-white font-bold mb-5 group-hover:text-[var(--color-arbizu-teal)] transition-colors leading-snug">
+                        {title}
+                      </h2>
+                      
+                      {/* Metrics */}
+                      {metrics && metrics.length > 0 && (
+                        <div className="space-y-2.5 mb-5 p-3.5 rounded-xl bg-black/40 border border-white/5">
+                          {metrics.map((m: any, idx: number) => (
+                            <div key={idx} className="flex justify-between items-center text-xs">
+                              <span className="font-mono text-[var(--color-mist-gray)]/80">{m.label}</span>
+                              <span className="font-space font-bold text-white group-hover:text-[var(--color-arbizu-teal)] transition-colors">{m.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Stack pills */}
+                      {c.stack && c.stack.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-6">
+                          {c.stack.slice(0, 4).map((tech: string, idx: number) => (
+                            <span key={idx} className="px-2 py-0.5 rounded bg-white/5 font-mono text-[10px] text-white/60">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-4 border-t border-white/5 flex items-center text-white/70 group-hover:text-white font-mono text-xs transition-colors">
+                      <span>{locale === 'es' ? "Leer desglose de arquitectura" : "Read architecture breakdown"}</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
               </Link>

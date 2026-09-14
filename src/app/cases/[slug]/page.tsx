@@ -5,8 +5,24 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, ArrowRight, Activity, Terminal } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ArrowRight, Activity, Terminal, ExternalLink } from 'lucide-react';
 import { notFound } from 'next/navigation';
+
+const caseAssetMap: Record<string, { image: string; liveUrl?: string; subDomain?: string }> = {
+  "titanflow-defi-low-latency": { image: "/projects/titanflow.png", liveUrl: "https://titanflow.aldoarbizu.com", subDomain: "titanflow.aldoarbizu.com" },
+  "sentinelos-security-dispatch": { image: "/projects/sentinelos.png", liveUrl: "https://sentinelos.aldoarbizu.com", subDomain: "sentinelos.aldoarbizu.com" },
+  "agromarket-pro": { image: "/projects/agromarket.png", liveUrl: "https://agromarket.aldoarbizu.com", subDomain: "agromarket.aldoarbizu.com" },
+  "aeroshot-drone-marketplace": { image: "/projects/aeroshot.png", liveUrl: "https://aeroshot.aldoarbizu.com", subDomain: "aeroshot.aldoarbizu.com" },
+  "sabiobosque": { image: "/projects/sabiobosque.png", liveUrl: "https://sabiobosque.aldoarbizu.com", subDomain: "sabiobosque.aldoarbizu.com" },
+  "impresion-3d-p2p": { image: "/projects/impresion3d.png", liveUrl: "https://impresion3d.aldoarbizu.com", subDomain: "impresion3d.aldoarbizu.com" },
+  "nomad-tactical-hub": { image: "/projects/nomadhub.png", liveUrl: "https://nomadhub.aldoarbizu.com", subDomain: "nomadhub.aldoarbizu.com" },
+  "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", liveUrl: "https://ecoconnect.aldoarbizu.com", subDomain: "ecoconnect.aldoarbizu.com" },
+  "pawhero-pet-tracking": { image: "/projects/pawhero.png", liveUrl: "https://pawhero.aldoarbizu.com", subDomain: "pawhero.aldoarbizu.com" },
+  "aureus-wealth-os": { image: "/projects/aureus.png", liveUrl: "https://aureus.aldoarbizu.com", subDomain: "aureus.aldoarbizu.com" },
+  "techzone-retail-pos": { image: "/projects/techzone.png", liveUrl: "https://techzone.aldoarbizu.com", subDomain: "techzone.aldoarbizu.com" },
+  "habitat-lease-engine": { image: "/projects/habitat.png", liveUrl: "https://habitat.aldoarbizu.com", subDomain: "habitat.aldoarbizu.com" },
+  "smart-marketing-advisor": { image: "/projects/marketingadvisor.png", liveUrl: "https://marketingadvisor.aldoarbizu.com", subDomain: "marketingadvisor.aldoarbizu.com" },
+};
 
 export async function generateStaticParams() {
   const casesDir = path.join(process.cwd(), 'src/data/cases');
@@ -79,6 +95,52 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
             </div>
           )}
         </header>
+
+        {/* Real Product Architecture Hero Banner */}
+        {(() => {
+          const asset = caseAssetMap[resolvedParams.slug];
+          if (!asset) return null;
+          return (
+            <div className="mb-14 rounded-2xl border border-white/10 bg-black/80 overflow-hidden shadow-2xl">
+              <div className="flex items-center justify-between px-4 py-3 bg-black/90 border-b border-white/10 text-xs font-mono text-slate-400">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  <span className="text-slate-400 text-xs ml-2 hidden sm:inline">
+                    https://{asset.subDomain || 'arbizulabs.com'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5 text-emerald-400 font-bold text-xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    <span>PRODUCCIÓN · 200 OK</span>
+                  </div>
+                  {asset.liveUrl && (
+                    <a
+                      href={asset.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[var(--color-arbizu-teal)]/20 text-[var(--color-arbizu-teal)] hover:bg-[var(--color-arbizu-teal)] hover:text-black font-mono text-xs font-bold transition-colors border border-[var(--color-arbizu-teal)]/30"
+                    >
+                      <span>Lanzar Demo</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+              </div>
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#06080e]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={asset.image}
+                  alt={`${data.title} Interface`}
+                  className="w-full h-full object-cover object-top opacity-95 hover:scale-102 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </div>
+          );
+        })()}
 
         <article className="prose prose-invert prose-p:font-mono prose-p:text-sm prose-p:text-[var(--color-mist-gray)] prose-p:leading-relaxed prose-headings:font-serif prose-h1:text-3xl prose-h1:font-bold prose-h1:text-white prose-h1:mt-12 prose-h1:mb-6 prose-h2:text-2xl prose-h2:font-bold prose-h2:text-white prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-xl prose-h3:font-bold prose-h3:text-white prose-li:font-mono prose-li:text-sm prose-li:text-[var(--color-mist-gray)] prose-strong:text-white max-w-none">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
