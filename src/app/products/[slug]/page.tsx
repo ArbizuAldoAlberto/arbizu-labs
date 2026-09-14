@@ -4,7 +4,8 @@ import React, { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { 
   Bot, Shield, CreditCard, Check, ArrowRight, Star, Cpu, Lock, 
-  Smartphone, Database, Code, Zap, DollarSign, Activity, AlertTriangle 
+  Smartphone, Database, Code, Zap, DollarSign, Activity, AlertTriangle,
+  Leaf, Coins, ShoppingBag, Trees
 } from "lucide-react";
 import ROICalculator from "@/components/ui/ROICalculator";
 
@@ -380,6 +381,297 @@ const PRODUCTS: Record<string, ProductContent> = {
       { q: "¿Puedo correrlo en una VPS barata?", a: "Sí. Funciona perfectamente en una VPS de $5/mes (DigitalOcean, Hetzner). Consume menos de 50MB de RAM." },
       { q: "¿Es un bot de trading automático?", a: "No. Titan Alerts es un sistema de ALERTAS. Te notifica oportunidades pero no ejecuta trades. Para ejecución automática, mira TitanFlow Pro." },
       { q: "¿Puedo agregar más exchanges?", a: "Sí. El código es modular. Cada exchange es un adaptador independiente. Incluimos documentación para crear adaptadores nuevos." }
+    ]
+  },
+  agromarket: {
+    title: "AgroMarket Pro",
+    subtitle: "Plataforma B2B Agropecuaria Offline-First con Subastas de Granos/Ganado & Liquidación Segura",
+    themeColor: "from-amber-500 to-yellow-600",
+    accentBg: "border-amber-500/30 bg-amber-950/20",
+    glowColor: "shadow-amber-500/20",
+    icon: <Smartphone className="w-12 h-12 text-amber-400" />,
+    heroBadge: "AgTech Offline-First B2B Marketplace",
+    problem: [
+      "Pérdida de conectividad celular constante en zonas rurales y silos de acopio.",
+      "Asimetría de precios de cereales y hacienda que perjudica al productor primario.",
+      "Cierres de contratos manuales vulnerables a demoras administrativas y default crediticio."
+    ],
+    solution: [
+      "Operación 100% Offline-First con SQLite WAL y sincronización automática en milisegundos.",
+      "Libro de ofertas y subastas transparentes en tiempo real para cereales, oleaginosas y hacienda.",
+      "Liquidación inteligente y contratos digitales con trazabilidad de lotes verificable."
+    ],
+    features: [
+      { name: "Offline Sync Engine", desc: "Registro local de lotes, pesajes y remates con sync instantánea al detectar señal de red." },
+      { name: "Live Grain & Cattle Auctions", desc: "Pizarra de ofertas en vivo con cotizaciones actualizadas de puertos y mercados concentradores." },
+      { name: "Dual-Rail Settlements", desc: "Pasarela dual de liquidaciones: moneda fiduciaria (MercadoPago/Stripe) y crypto (USDC en Base L2)." },
+      { name: "Field Batch Traceability", desc: "Trazabilidad de origen y calidad de granos mediante códigos QR inmutables." }
+    ],
+    useCases: [
+      { title: "Acopios & Cooperativas", scenario: "Recepción de granos en tolva sin depender de internet y sincronización al servidor central." },
+      { title: "Remates Ganaderos en Campo", scenario: "Cierre de pujas y ofertas en corrales con registro offline y liquidación inmediata." },
+      { title: "Proveedores de Insumos", scenario: "Venta directa de fertilizantes y semillas con canje de cereal en plataforma única." }
+    ],
+    tiers: [
+      {
+        name: "Productor / Trader",
+        price: "$49",
+        desc: "Para productores individuales y comisionistas de granos.",
+        features: ["App móvil offline completa", "Subastas y cotizaciones en vivo", "Historial de remates ilimitado", "Soporte comunitario"],
+        checkoutUrl: "/api/warroom/checkout?product=agromarket-producer"
+      },
+      {
+        name: "Acopio & Cooperativa",
+        price: "$199",
+        desc: "Para cooperativas agrícolas y plantas de silo con múltiples balanzas.",
+        features: ["Hasta 25 balanzas y usuarios", "Módulo de liquidación automática", "Trazabilidad QR de camiones", "Soporte prioritario 24/7"],
+        checkoutUrl: "/api/warroom/checkout?product=agromarket-coop"
+      },
+      {
+        name: "Enterprise Multi-Planta",
+        price: "$699",
+        desc: "Para exportadores y cadenas agroindustriales con SLA dedicado.",
+        features: ["Instancia dedicada y dominio propio", "Integración SAP/ERP a medida", "Garantía de SLA 99.9%", "Auditoría de lotes en Base L2"],
+        checkoutUrl: "/api/warroom/checkout?product=agromarket-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Funciona en zonas rurales sin señal celular?", a: "Sí. Toda la aplicación opera 100% offline. Puedes cargar camiones, lotes y ofertas sin señal; los datos se encolan y sincronizan automáticamente al reconectar." },
+      { q: "¿Qué métodos de pago admite para la liquidación?", a: "Admite transferencias bancarias fiduciarias automatizadas y pagos instantáneos en USDC vía Base L2 con comisiones de menos de $0.01." },
+      { q: "¿Se puede conectar con balanzas de camiones?", a: "Sí, la app soporta integración con protocolos seriales e indicadores de pesaje industriales vía Bluetooth y WiFi local." },
+      { q: "¿Cómo se auditan los contratos?", a: "Cada contrato genera un hash criptográfico inmutable que garantiza que las condiciones pactadas no fueron adulteradas." }
+    ]
+  },
+  ecoconnect: {
+    title: "EcoConnect",
+    subtitle: "Trazabilidad Satelital NDVI & Registro de Créditos de Carbono / Economía Circular",
+    themeColor: "from-teal-500 to-emerald-600",
+    accentBg: "border-teal-500/30 bg-teal-950/20",
+    glowColor: "shadow-teal-500/20",
+    icon: <Leaf className="w-12 h-12 text-teal-400" />,
+    heroBadge: "ESG & Satellite NDVI Verification Engine",
+    problem: [
+      "Greenwashing y falta de comprobación científica auditable en créditos de carbono.",
+      "Auditorías presenciales de biomasa costosas, lentas y propensas a fraude documental.",
+      "Dificultad de los productores agroforestales para certificar prácticas regenerativas."
+    ],
+    solution: [
+      "Verificación continua mediante análisis multiespectral satelital Sentinel-2 (NDVI/EVI).",
+      "Tokenización inmutable de créditos de carbono y sellos ESG en Base L2 (Soulbound Tokens).",
+      "Dashboard interactivo 3D para inversores y compradores corporativos de créditos."
+    ],
+    features: [
+      { name: "Sentinel-2 Multi-Spectral Pipeline", desc: "Descarga y procesamiento autónomo de imágenes satelitales cada 5 días para medir biomasa." },
+      { name: "Soulbound ESG Certificates", desc: "Acreditaciones ambientales no transferibles que certifican la absorción real de CO2." },
+      { name: "NDVI Growth Tracking", desc: "Algoritmos de visión computacional que detectan deforestación, rebrote y salud foliar." },
+      { name: "Corporate ESG API", desc: "Integración con reportes corporativos de sustentabilidad (GRI, SASB y normativas europeas)." }
+    ],
+    useCases: [
+      { title: "Campos de Siembra Directa", scenario: "Certificación de fijación de carbono en suelos para exportación a la Unión Europea." },
+      { title: "Reservas Forestales Privadas", scenario: "Monitoreo satelital anti-desmonte y monetización de biomasa conservada." },
+      { title: "Empresas con Meta Net-Zero", scenario: "Compra de créditos de carbono con prueba satelital de impacto en tiempo real." }
+    ],
+    tiers: [
+      {
+        name: "Lote Familiar",
+        price: "$79",
+        desc: "Monitoreo satelital para establecimientos de hasta 500 hectáreas.",
+        features: ["Actualización satelital cada 5 días", "Cálculo de índice NDVI/EVI", "Reportes PDF para bancos y aseguradoras", "Alertas por anomalías"],
+        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-starter"
+      },
+      {
+        name: "Pro Agroforestal",
+        price: "$249",
+        desc: "Para campos de hasta 5,000 hectáreas con certificación de créditos.",
+        features: ["Cobertura multi-parcela", "Certificación on-chain en Base L2", "API de telemetría ambiental", "Soporte técnico preferencial"],
+        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-pro"
+      },
+      {
+        name: "Enterprise ESG",
+        price: "$890",
+        desc: "Para fondos de inversión verde y corporaciones multinacionales.",
+        features: ["Monitoreo ilimitado de hectáreas", "Modelos predictivos de biomasa con IA", "SLA 99.9% y soporte legal", "Dashboard White-label"],
+        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Cómo se obtienen los datos satelitales?", a: "Nos integramos con la constelación de satélites Sentinel-2 de la Agencia Espacial Europea (ESA), obteniendo pasadas multiespectrales de alta resolución cada 5 días." },
+      { q: "¿Cómo evitan el doble conteo de créditos?", a: "Cada crédito de carbono está respaldado por coordenadas geoespaciales unívocas registradas en la blockchain de Base L2 con hashes de imágenes satelitales." },
+      { q: "¿Requiere instalar sensores físicos en el campo?", a: "No es obligatorio. El análisis primario es 100% satelital. Sin embargo, permite integrar estaciones meteorológicas IoT para mayor precisión." }
+    ]
+  },
+  aureus: {
+    title: "Aureus Capital",
+    subtitle: "Private Wealth & DeFi Yield Vaults con Supervisión de Riesgo por IA",
+    themeColor: "from-yellow-500 to-amber-600",
+    accentBg: "border-yellow-500/30 bg-yellow-950/20",
+    glowColor: "shadow-yellow-500/20",
+    icon: <Coins className="w-12 h-12 text-yellow-400" />,
+    heroBadge: "DeFi Yield Vaults & Quantitative Wealth OS",
+    problem: [
+      "Rendimientos de depósitos bancarios tradicionales que pierden sistemáticamente contra la inflación global.",
+      "Riesgos de descalce o liquidaciones catastróficas en protocolos DeFi desatendidos.",
+      "Falta de interfaces ejecutivas que integren custodia, cálculo impositivo y métricas en tiempo real."
+    ],
+    solution: [
+      "Bóvedas cuantitativas inteligentes que balancean stablecoins y activos líderes en Base L2.",
+      "Agente de IA supervisor de liquidez que retira capital preventivamente ante desvíos de colateral.",
+      "Dashboard institucional con liquidaciones auditadas y reportes de rendimiento auditados."
+    ],
+    features: [
+      { name: "Autonomous Yield Rebalancer", desc: "Rebalanceo algorítmico entre protocolos de lending de primer nivel para maximizar APR." },
+      { name: "Risk Sentinel AI", desc: "Supervisión 24/7 de smart contracts y desvíos de paridad (peg) con ejecución de kill-switch." },
+      { name: "Non-Custodial Architecture", desc: "Control de fondos total en manos del cliente mediante contratos multi-sig transparentes." },
+      { name: "Tax & Performance Reporting", desc: "Generación instantánea de reportes impositivos y contables en formato auditado." }
+    ],
+    useCases: [
+      { title: "Tesorerías de Startups", scenario: "Preservación del runway en dólares digitales con rendimientos superiores al 6-10% anual." },
+      { title: "Family Offices", scenario: "Diversificación institucional en DeFi con parámetros conservadores y auditoría en caliente." },
+      { title: "Inversores Sofisticados", scenario: "Estrategias de delta neutral y provisión de liquidez automatizada sin fricción." }
+    ],
+    tiers: [
+      {
+        name: "Private Tier",
+        price: "$99",
+        desc: "Para patrimonios individuales que buscan rendimientos en stablecoins.",
+        features: ["Acceso a bóvedas de rendimiento conservador", "Auditoría de riesgo en tiempo real", "Alertas Telegram prioritarias", "Dashboard web institucional"],
+        checkoutUrl: "/api/warroom/checkout?product=aureus-private"
+      },
+      {
+        name: "Institutional Vault",
+        price: "$349",
+        desc: "Para tesorerías corporativas y fondos privados con múltiples signatarios.",
+        features: ["Soporte Multi-Sig (Gnosis Safe)", "Estrategias cuantitativas a medida", "Reportes fiscales y contables automatizados", "Account manager dedicado"],
+        checkoutUrl: "/api/warroom/checkout?product=aureus-institutional"
+      },
+      {
+        name: "Family Office Sovereign",
+        price: "$1,200",
+        desc: "Infraestructura dedicada y contratos inteligentes auditados a medida.",
+        features: ["Smart contracts desplegados en nodo privado", "Auditoría de seguridad externa incluida", "SLA 99.99% y soporte telefónico 24/7", "Integración bancaria offshore"],
+        checkoutUrl: "/api/warroom/checkout?product=aureus-sovereign"
+      }
+    ],
+    faqs: [
+      { q: "¿Es un protocolo custodial?", a: "No. Aureus opera sobre una arquitectura no custodial: usted mantiene el control absoluto de sus claves privadas en todo momento." },
+      { q: "¿Cómo protege el capital ante caídas del mercado?", a: "El supervisor algorítmico opera en stablecoins de primera línea (USDC) y cuenta con un kill-switch automatizado que mueve fondos a bóvedas frías ante anomalías de volatilidad." },
+      { q: "¿Qué rendimientos históricos se han obtenido?", a: "Nuestras estrategias de delta neutral y provisión de liquidez en Base L2 generan históricamente entre un 7.5% y un 14.2% APR neto." }
+    ]
+  },
+  techzone: {
+    title: "TechZone Retail POS",
+    subtitle: "Punto de Venta Móvil Offline-First con Impresión Térmica & Sincronización Inmediata",
+    themeColor: "from-blue-500 to-indigo-600",
+    accentBg: "border-blue-500/30 bg-blue-950/20",
+    glowColor: "shadow-blue-500/20",
+    icon: <ShoppingBag className="w-12 h-12 text-blue-400" />,
+    heroBadge: "Retail POS & Ultra-Fast Ingress Gateway",
+    problem: [
+      "Terminales de cobro lentas que generan colas y pérdidas de ventas en picos de demanda.",
+      "Caídas de internet que paralizan las ventas en comercios minoristas y food trucks.",
+      "Dispersión de stock entre depósitos, sucursales físicas y tiendas de e-commerce."
+    ],
+    solution: [
+      "Caja de cobro ultrarrápida con tiempo de checkout inferior a 300ms.",
+      "Operación offline ininterrumpida con persistencia local en SQLite y colas sincronizadas.",
+      "Soporte nativo para impresoras térmicas Bluetooth/USB y lectores de códigos de barras."
+    ],
+    features: [
+      { name: "Sub-Second Checkout Engine", desc: "Escaneo por cámara o láser con validación de precios y stock en menos de 0.3 segundos." },
+      { name: "Thermal Printer ESC/POS", desc: "Impresión de tickets y comandas fiscales/no-fiscales en impresoras térmicas de 58mm y 80mm." },
+      { name: "Unified Stock Sync", desc: "Sincronización multi-sucursal instantánea apenas cualquier dispositivo recupera conexión." },
+      { name: "Multi-Payment Gateway", desc: "Cobros en efectivo, tarjetas mediante QR y pagos crypto instantáneos con conversión automática." }
+    ],
+    useCases: [
+      { title: "Retail y Tiendas de Ropa", scenario: "Atención ágil en mostrador con escaneo de prendas y control de talles y colores." },
+      { title: "Gastronomía y Food Trucks", scenario: "Comandas rápidas en ferias y eventos masivos sin depender de conectividad WiFi." },
+      { title: "Ferreterías y Repuestos", scenario: "Búsqueda instantánea en catálogos de 20,000+ artículos con persistencia local." }
+    ],
+    tiers: [
+      {
+        name: "Comercio Único",
+        price: "$35",
+        desc: "Licencia para una sucursal con hasta 3 terminales de cobro activas.",
+        features: ["App POS offline completa", "Impresión térmica Bluetooth", "Control de stock y caja diaria", "Soporte vía chat"],
+        checkoutUrl: "/api/warroom/checkout?product=techzone-single"
+      },
+      {
+        name: "Cadena Comercial",
+        price: "$89",
+        desc: "Para comercios con hasta 5 sucursales y gestión centralizada.",
+        features: ["Sucursales y terminales ilimitadas", "Sincronización de stock en tiempo real", "Reportes consolidados de ventas", "Soporte prioritario"],
+        checkoutUrl: "/api/warroom/checkout?product=techzone-chain"
+      },
+      {
+        name: "Enterprise Custom",
+        price: "$280",
+        desc: "Para franquicias y grandes cadenas de distribución minorista.",
+        features: ["Integración con ERPs existentes (SAP/Tango)", "Instancia de servidor privada", "SLA 99.9% y guardia de soporte", "Desarrollo de módulos a medida"],
+        checkoutUrl: "/api/warroom/checkout?product=techzone-enterprise"
+      }
+    ],
+    faqs: [
+      { q: "¿Funciona si se corta la luz o internet?", a: "Sí. Si usas una tablet o smartphone a batería, el POS sigue cobrando e imprimiendo normalmente en SQLite local, sincronizando todo al volver internet." },
+      { q: "¿Qué impresoras térmicas soporta?", a: "Soporta el 99% de impresoras térmicas del mercado compatibles con el estándar ESC/POS conectadas por Bluetooth, USB o red local (Ethernet/WiFi)." },
+      { q: "¿Cómo se cargan los productos?", a: "Puedes cargar productos individualmente o importar planillas de Excel/CSV con miles de artículos con un solo clic." }
+    ]
+  },
+  sabiobosque: {
+    title: "Sabio Bosque",
+    subtitle: "Monitoreo Ambiental, Detección Temprana de Incendios y Eco-Turismo Asistido por IA",
+    themeColor: "from-emerald-500 to-green-600",
+    accentBg: "border-emerald-500/30 bg-emerald-950/20",
+    glowColor: "shadow-emerald-500/20",
+    icon: <Trees className="w-12 h-12 text-emerald-400" />,
+    heroBadge: "Eco-Preservation & Forest AI Sentinel",
+    problem: [
+      "Incendios forestales que se detectan demasiado tarde cuando ya son incontrolables.",
+      "Falta de guías interactivos e información botánica en senderos de reservas naturales remotas.",
+      "Dificultades en la administración de reservas ecológicas para financiar la preservación."
+    ],
+    solution: [
+      "Monitoreo térmico e infrarrojo satelital y de cámaras de campo con alertas inmediatas.",
+      "Guía botánico y ornitológico offline con IA para visitantes y senderistas en reservas.",
+      "Módulo de pases de acceso y micro-donaciones Web3 transparentes para conservación."
+    ],
+    features: [
+      { name: "Early Fire Detection", desc: "Detección de focos de calor satelitales (VIIRS/MODIS) con notificación a brigadistas en < 5 min." },
+      { name: "Offline Flora & Fauna AI", desc: "Reconocimiento de especies nativas mediante visión por computadora local en el teléfono." },
+      { name: "Trail Geolocation & Safety", desc: "Mapas topográficos offline con geolocalización de visitantes y botón SOS satelital/LoRa." },
+      { name: "Conservation Crowdfunding", desc: "Plataforma de apadrinamiento de hectáreas de bosque nativo con certificación digital." }
+    ],
+    useCases: [
+      { title: "Parques Nacionales y Reservas", scenario: "Control de senderistas, prevención de incendios y difusión educativa del ecosistema." },
+      { title: "Eco-Lodges y Hotelería Sustentable", scenario: "Experiencia enriquecida para huéspedes con guías de sendero autoguiadas por IA." },
+      { title: "Comunidades Rurales Boscosas", scenario: "Alerta temprana comunitaria contra quemas ilegales o avance del fuego." }
+    ],
+    tiers: [
+      {
+        name: "Reserva Comunitaria",
+        price: "$49",
+        desc: "Para reservas naturales pequeñas y proyectos educativos locales.",
+        features: ["Mapas offline de hasta 10 senderos", "Guía botánico asistido por IA", "Alertas de focos de calor satelitales", "Soporte por email"],
+        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-community"
+      },
+      {
+        name: "Parque / Eco-Lodge",
+        price: "$149",
+        desc: "Para complejos turísticos y reservas privadas con flujo constante de público.",
+        features: ["Senderos y hectáreas ilimitadas", "Módulo de venta de entradas y donaciones", "Monitoreo en vivo de visitantes en mapa", "Soporte prioritario"],
+        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-lodge"
+      },
+      {
+        name: "Provincial / Gubernamental",
+        price: "$490",
+        desc: "Para sistemas integrados de parques provinciales o consorcios de manejo de fuego.",
+        features: ["Integración con cámaras térmicas y torres de vigilancia", "Panel de comando para brigadas de bomberos", "Garantía de SLA 99.9%", "Capacitación técnica en terreno"],
+        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-gov"
+      }
+    ],
+    faqs: [
+      { q: "¿La app requiere internet para identificar plantas y animales?", a: "No. El modelo de reconocimiento visual de especies está optimizado para ejecutarse localmente en el dispositivo sin necesidad de conexión móvil." },
+      { q: "¿Cómo avisa si hay un incendio?", a: "Se conecta automáticamente a los feeds de satélites meteorológicos y ambientales de la NASA y NOAA, enviando alertas por SMS y Telegram a los guardaparques al detectar anomalías térmicas." },
+      { q: "¿Los visitantes pueden descargar los mapas antes de ingresar?", a: "Sí, la app descarga automáticamente la cartografía en alta resolución con curvas de nivel antes de entrar a zonas sin cobertura." }
     ]
   }
 };
