@@ -21,7 +21,8 @@ import {
   AlertTriangle,
   ExternalLink,
   Eye,
-  X
+  X,
+  MessageSquare
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import OfflineSimulator from '@/components/OfflineSimulator';
@@ -80,7 +81,7 @@ export default function ProductsBento() {
       borderColor: "hover:border-emerald-500/50",
       badgeColor: "text-emerald-400 border-emerald-500/30 bg-emerald-950/30",
       stack: ["React Native", "SQLite WAL", "Firebase RLS", "TensorFlow Lite"],
-      metrics: "100% Offline",
+      metrics: "Auditoría $120k ARS",
       liveUrl: "https://sentinelos.aldoarbizu.com",
       caseSlug: "sentinelos-security-dispatch",
       imageFile: "sentinelos.png",
@@ -94,8 +95,8 @@ export default function ProductsBento() {
       accentColor: "from-amber-500/20 to-yellow-500/20",
       borderColor: "hover:border-amber-500/50",
       badgeColor: "text-amber-400 border-amber-500/30 bg-amber-950/30",
-      stack: ["React Native", "SQLite WAL", "n8n", "Supabase"],
-      metrics: "Sync < 1.2s",
+      stack: ["React Native", "SQLite WAL", "FLIR Thermal", "Supabase"],
+      metrics: "8 Tools · FLIR $105k ARS",
       liveUrl: "https://agromarket.aldoarbizu.com",
       caseSlug: "agromarket-pro",
       imageFile: "agromarket.png",
@@ -110,7 +111,7 @@ export default function ProductsBento() {
       borderColor: "hover:border-sky-500/50",
       badgeColor: "text-sky-400 border-sky-500/30 bg-sky-950/30",
       stack: ["Next.js", "React Native", "Base L2", "GIS WebGL"],
-      metrics: "Mint < 2s",
+      metrics: "Relevamiento $60k ARS",
       liveUrl: "https://aeroshot.aldoarbizu.com",
       caseSlug: "aeroshot-drone-marketplace",
       imageFile: "aeroshot.png",
@@ -215,7 +216,7 @@ export default function ProductsBento() {
       borderColor: "hover:border-blue-500/50",
       badgeColor: "text-blue-400 border-blue-500/30 bg-blue-950/30",
       stack: ["React Native", "SQLite WAL", "Stripe", "Google Pay"],
-      metrics: "Cobro < 300ms",
+      metrics: "Licencia $85k ARS",
       liveUrl: "https://techzone.aldoarbizu.com",
       caseSlug: "techzone-retail-pos",
       imageFile: "techzone.png",
@@ -514,15 +515,26 @@ export default function ProductsBento() {
                   {previewModal.desc}
                 </p>
                 {previewModal.liveUrl && (
-                  <a
-                    href={previewModal.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-arbizu-teal)] text-black font-space text-xs font-bold hover:bg-[var(--color-arbizu-teal)]/90 transition-all shadow-[0_0_20px_rgba(29,158,117,0.4)]"
-                  >
-                    <span>{locale === 'es' ? "Abrir Sistema en Nueva Pestaña" : "Open System in New Tab"}</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href={`https://wa.me/5492314489197?text=${encodeURIComponent(`Hola Aldo, me interesa contratar / cotizar el servicio de ${previewModal.title} de Arbizu Labs.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-space text-xs font-bold hover:bg-emerald-500/25 transition-all cursor-pointer"
+                    >
+                      <MessageSquare className="w-4 h-4 text-emerald-400" />
+                      <span>{locale === 'es' ? "Cotizar por WhatsApp" : "Quote via WhatsApp"}</span>
+                    </a>
+                    <a
+                      href={previewModal.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-arbizu-teal)] text-black font-space text-xs font-bold hover:bg-[var(--color-arbizu-teal)]/90 transition-all shadow-[0_0_20px_rgba(29,158,117,0.4)]"
+                    >
+                      <span>{locale === 'es' ? "Abrir Sistema en Nueva Pestaña" : "Open System in New Tab"}</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </div>
                 )}
               </div>
             </motion.div>

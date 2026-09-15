@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
+import FloatingExecutiveDock from "@/components/ui/FloatingExecutiveDock";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const cormorant = Cormorant_Garamond({
@@ -138,6 +139,7 @@ export default function RootLayout({
           <Navigation />
           <main id="main-content">{children}</main>
           <Footer />
+          <FloatingExecutiveDock />
         </LanguageProvider>
       </body>
     </html>

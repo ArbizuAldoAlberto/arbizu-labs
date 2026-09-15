@@ -186,6 +186,21 @@ export default function ContactSection() {
 
               <div className="space-y-3 font-mono text-xs">
                 <a
+                  href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20técnica%20con%20Arbizu%20Labs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 hover:border-emerald-400 flex items-center justify-between transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <MessageSquare className="w-4 h-4 text-emerald-400" />
+                    <span className="font-bold text-white group-hover:text-emerald-300 transition-colors">
+                      +54 9 2314 489197 (WhatsApp B2B)
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400 group-hover:text-white transition-colors" />
+                </a>
+
+                <a
                   href="mailto:aldo@arbizulabs.com"
                   className="p-3.5 rounded-xl bg-black/60 border border-white/10 hover:border-[var(--color-arbizu-teal)]/50 flex items-center justify-between transition-colors group"
                 >
@@ -216,6 +231,10 @@ export default function ContactSection() {
             </div>
 
             <div className="glass-surface-enterprise p-6 rounded-2xl text-xs font-mono text-zinc-400 space-y-2">
+              <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                <span>{locale === 'es' ? "Titular & Facturación:" : "Legal Entity:"}</span>
+                <span className="text-white font-bold">Aldo Alberto Arbizu (CUIT: 20-38362060-1)</span>
+              </div>
               <div className="flex items-center justify-between border-b border-white/5 pb-2">
                 <span>{locale === 'es' ? "Tiempo de respuesta:" : "Response time:"}</span>
                 <span className="text-emerald-400 font-bold">&lt; 12 horas</span>

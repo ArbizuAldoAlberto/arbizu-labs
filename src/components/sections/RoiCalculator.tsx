@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function RoiCalculator() {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
   const [teamSize, setTeamSize] = useState(15);
   const [downtimeHours, setDowntimeHours] = useState(8);
   const [hourlyRate, setHourlyRate] = useState(35);
@@ -38,6 +38,40 @@ export default function RoiCalculator() {
           {/* Sliders Control Box */}
           <div className="lg:col-span-7 glass-surface-enterprise p-8 rounded-2xl space-y-6">
             
+            {/* Industry Reference Presets */}
+            <div className="pb-3 border-b border-white/5">
+              <span className="font-space text-[10px] uppercase tracking-widest text-zinc-400 font-bold block mb-2.5">
+                {locale === 'es' ? "Casos Pre-Configurados de Industria:" : "Industry Reference Presets:"}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { name: locale === 'es' ? "Retail POS Bolívar" : "Retail POS", team: 5, downtime: 12, rate: 25 },
+                  { name: locale === 'es' ? "Acopio Silobolsas" : "AgTech Grain Storage", team: 12, downtime: 18, rate: 35 },
+                  { name: locale === 'es' ? "Seguridad Táctica" : "Security Patrols", team: 30, downtime: 25, rate: 40 }
+                ].map((preset, pIdx) => {
+                  const isActive = teamSize === preset.team && downtimeHours === preset.downtime && hourlyRate === preset.rate;
+                  return (
+                    <button
+                      key={pIdx}
+                      type="button"
+                      onClick={() => {
+                        setTeamSize(preset.team);
+                        setDowntimeHours(preset.downtime);
+                        setHourlyRate(preset.rate);
+                      }}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-[var(--color-arbizu-teal)] text-black font-bold shadow-[0_0_12px_rgba(29,158,117,0.35)]'
+                          : 'bg-white/5 text-zinc-300 hover:text-white hover:bg-white/10 border border-white/5'
+                      }`}
+                    >
+                      {preset.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div>
               <div className="flex justify-between items-center mb-2 font-mono text-xs">
                 <span className="text-zinc-300">{t.roi.labels.teamSize}</span>

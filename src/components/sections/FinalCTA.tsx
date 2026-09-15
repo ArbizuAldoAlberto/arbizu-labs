@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Calendar, Mail } from 'lucide-react';
+import { ArrowRight, Calendar, Mail, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function FinalCTA() {
@@ -31,7 +31,7 @@ export default function FinalCTA() {
             {t.cta.subheading}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
             <Link 
               href="/booking" 
               className="btn-primary-enterprise w-full sm:w-auto text-center"
@@ -46,6 +46,16 @@ export default function FinalCTA() {
             >
               <Mail className="w-4 h-4" />
               <span>{t.cta.btnSecondary}</span>
+            </a>
+
+            <a 
+              href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20técnica%20con%20Arbizu%20Labs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 font-space text-xs font-bold transition-all w-full sm:w-auto text-center"
+            >
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              <span>WhatsApp Direct</span>
             </a>
           </div>
 

@@ -1,0 +1,42 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.arbizulabs.sentinelos",
+      "sha256_cert_fingerprints": [
+        "F3:EE:8D:31:91:42:A1:BD:23:AA:25:F0:CF:51:13:3D:57:BC:71:12:40:D1:3A:F7:0E:40:C1:12:0D:BE:CC:47"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.arbizulabs.agromarket",
+      "sha256_cert_fingerprints": [
+        "F3:EE:8D:31:91:42:A1:BD:23:AA:25:F0:CF:51:13:3D:57:BC:71:12:40:D1:3A:F7:0E:40:C1:12:0D:BE:CC:47"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.arbizulabs.techzone",
+      "sha256_cert_fingerprints": [
+        "F3:EE:8D:31:91:42:A1:BD:23:AA:25:F0:CF:51:13:3D:57:BC:71:12:40:D1:3A:F7:0E:40:C1:12:0D:BE:CC:47"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.arbizu.pawhero",
+      "sha256_cert_fingerprints": [
+        "F3:EE:8D:31:91:42:A1:BD:23:AA:25:F0:CF:51:13:3D:57:BC:71:12:40:D1:3A:F7:0E:40:C1:12:0D:BE:CC:47"
+      ]
+    }
+  }
+]

@@ -30,6 +30,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-space-black);
     color: var(--color-mist-gray);
@@ -39,9 +43,33 @@
     overflow-x: hidden;
   }
 
+  /* Modern Web Guidance: Typographic balance and reading comfort */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   ::selection {
     background-color: rgba(29, 158, 117, 0.3);
     color: #ffffff;
+  }
+
+  /* Sleek modern dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050508;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-arbizu-teal);
   }
 }
 

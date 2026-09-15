@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Shield, Cpu, Zap, Activity } from 'lucide-react';
+import { ArrowRight, Sparkles, Shield, Cpu, Zap, Activity, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Hero() {
@@ -57,7 +57,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 max-w-md mx-auto"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 max-w-xl mx-auto"
         >
           <a 
             href="#ecosystem" 
@@ -74,6 +74,16 @@ export default function Hero() {
             <Activity className="w-4 h-4 text-[var(--color-arbizu-teal)] mr-1" />
             <span>{t.hero.ctaSecondary}</span>
           </Link>
+
+          <a
+            href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20técnica%20con%20Arbizu%20Labs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 font-space text-xs font-bold transition-all w-full sm:w-auto text-center shadow-lg"
+          >
+            <MessageSquare className="w-4 h-4 text-emerald-400" />
+            <span>WhatsApp Direct</span>
+          </a>
         </motion.div>
 
         {/* Verified Quick Stats Bar */}

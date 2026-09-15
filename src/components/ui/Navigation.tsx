@@ -7,15 +7,21 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { locale, toggleLanguage, setLocale, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100)));
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -75,6 +81,13 @@ export default function Navigation() {
             className="font-space text-xs uppercase tracking-wider text-[var(--color-mist-gray)] hover:text-white transition-colors"
           >
             {t.nav.pricing}
+          </Link>
+          <Link 
+            href="/#mobile-apps" 
+            className="font-space text-xs uppercase tracking-wider text-cyan-400 hover:text-cyan-300 font-bold transition-colors flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Apps Mobile
           </Link>
           <a 
             href="https://aldoarbizu.com" 
@@ -185,6 +198,13 @@ export default function Navigation() {
             >
               {t.nav.pricing}
             </Link>
+            <Link 
+              href="/#mobile-apps" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block font-space text-xs uppercase tracking-widest text-cyan-400 font-bold hover:text-cyan-300 py-2 border-b border-white/5"
+            >
+              📱 Apps Mobile (Play Store & App Store)
+            </Link>
             <a 
               href="https://aldoarbizu.com" 
               target="_blank" 
@@ -208,6 +228,14 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Scroll-Driven Reading Progress Bar (modern-web-guidance) */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-transparent overflow-hidden pointer-events-none">
+        <div 
+          className="h-full bg-gradient-to-r from-[var(--color-arbizu-teal)] via-teal-300 to-[var(--color-arbizu-cyan)] transition-all duration-150 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
     </header>
   );
 }

@@ -2,6 +2,7 @@ import Hero from '@/components/sections/Hero';
 import SocialProof from '@/components/sections/SocialProof';
 import WhyEnterprise from '@/components/sections/WhyEnterprise';
 import ProductsBento from '@/components/sections/ProductsBento';
+import MobileAppShowcase from '@/components/sections/MobileAppShowcase';
 import Problems from '@/components/sections/Problems';
 import Services from '@/components/sections/Services';
 import DeveloperKits from '@/components/sections/DeveloperKits';
@@ -20,6 +21,7 @@ export default function Home() {
       <SocialProof />
       <WhyEnterprise />
       <ProductsBento />
+      <MobileAppShowcase />
       <Problems />
       <Services />
       <DeveloperKits />
