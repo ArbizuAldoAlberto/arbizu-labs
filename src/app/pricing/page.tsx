@@ -358,17 +358,30 @@ export default function PricingPage() {
             </p>
 
             <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 select-all font-mono text-[11px] text-cyan-400 break-all mb-4">
-              0x71C2496B21F3A9008985208985209852071C3A90
+              0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[var(--color-arbizu-teal)]/10 border border-[var(--color-arbizu-teal)]/20 text-xs text-white/80 space-y-1 mb-6">
-              <div className="font-bold text-[var(--color-arbizu-teal)]">
-                {locale === 'es' ? "¿Resides en Argentina?" : "Bank Wire Options"}
+            <div className="p-4 rounded-xl bg-[var(--color-arbizu-teal)]/10 border border-[var(--color-arbizu-teal)]/20 text-xs text-white/90 space-y-2 mb-6">
+              <div className="font-bold text-[var(--color-arbizu-teal)] flex items-center justify-between">
+                <span>{locale === 'es' ? "Rieles Oficiales Argentina (10% OFF)" : "Official Argentine Bank / MP Rails"}</span>
+                <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-mono">10% OFF</span>
               </div>
-              <div>
-                {locale === 'es'
-                  ? "Transferencia directa bancaria con cotización dólar MEP/Cripto. Alias: arbizu.galicia.ar"
-                  : "Direct wire settlement available for international accounts."}
+              <div className="text-[11px] space-y-1 font-mono text-zinc-300">
+                <div><span className="text-zinc-500">Banco Galicia:</span> <strong className="text-white select-all">ALDO.ARBIZU.GALICIA</strong></div>
+                <div><span className="text-zinc-500">CBU:</span> <strong className="text-white select-all">0070149130004016919618</strong></div>
+                <div><span className="text-zinc-500">Mercado Pago:</span> <strong className="text-white select-all">aldoarbizu</strong></div>
+                <div><span className="text-zinc-500">Titular:</span> Aldo Alberto Arbizu (CUIT: 20-38362060-1)</div>
+              </div>
+              <div className="pt-2 border-t border-white/10 flex justify-between items-center">
+                <span className="text-[10px] text-zinc-400">Confirmación inmediata:</span>
+                <a 
+                  href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20confirmar%20mi%20pago%20por%20transferencia%20para%20Arbizu%20Labs." 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-bold text-emerald-400 hover:underline inline-flex items-center gap-1"
+                >
+                  WhatsApp Directo →
+                </a>
               </div>
             </div>
 

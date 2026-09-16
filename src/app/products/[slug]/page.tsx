@@ -25,7 +25,7 @@ interface ProductContent {
   faqs: { q: string; a: string }[];
 }
 
-const CHECKOUT_WALLET_ADDRESS = "0x71C2496B21F3A9008985208985209852071C3A90";
+const CHECKOUT_WALLET_ADDRESS = "0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718";
 
 const PRODUCTS: Record<string, ProductContent> = {
   titanflow: {
@@ -1042,16 +1042,29 @@ export default function ProductLanding({ params }: { params: Promise<{ slug: str
                 </a>
               </div>
 
-              {/* Argentina: Contact-based flow instead of exposed bank alias */}
-              <div className="p-4 rounded-2xl bg-green-950/10 border border-green-900/30 text-center">
-                <div className="text-xs text-green-400 font-bold mb-1">¿Resides en Argentina?</div>
-                <div className="text-xs text-slate-400 mb-2">Obtén 10% OFF pagando por Transferencia Directa</div>
-                <a 
-                  href={`mailto:aldo@arbizulabs.com?subject=Compra%20Argentina%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Hola%2C%20quiero%20comprar%20${encodeURIComponent(product.title)}%20(${encodeURIComponent(checkoutModal.tierName)})%20con%20transferencia%20bancaria%20argentina.%0A%0APrecio:%20${encodeURIComponent(checkoutModal.price)}%20USD%20(-10%25)`}
-                  className="w-full py-2.5 rounded-lg font-bold bg-green-900/30 hover:bg-green-900/50 text-green-300 border border-green-900/40 flex items-center justify-center gap-2 text-xs transition"
-                >
-                  <DollarSign className="w-4 h-4" /> Solicitar Datos de Transferencia
-                </a>
+              {/* Argentina: Official Audited Banking & Mercado Pago Rails */}
+              <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-left space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-emerald-400 font-bold">Rieles Oficiales Argentina</span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-mono font-bold">10% OFF</span>
+                </div>
+                <div className="text-[11px] font-mono space-y-1 text-slate-300">
+                  <div><span className="text-slate-500">Banco Galicia:</span> <strong className="text-white select-all">ALDO.ARBIZU.GALICIA</strong></div>
+                  <div><span className="text-slate-500">CBU:</span> <strong className="text-white select-all">0070149130004016919618</strong></div>
+                  <div><span className="text-slate-500">Mercado Pago:</span> <strong className="text-white select-all">aldoarbizu</strong></div>
+                  <div><span className="text-slate-500">Titular:</span> Aldo Alberto Arbizu (CUIT: 20-38362060-1)</div>
+                </div>
+                <div className="pt-2 border-t border-emerald-900/40 flex justify-between items-center">
+                  <span className="text-[10px] text-slate-400">Confirmación directa:</span>
+                  <a 
+                    href={`https://wa.me/5492314489197?text=${encodeURIComponent(`Hola Aldo, realicé la transferencia para comprar ${product.title} (${checkoutModal.tierName}) por ${checkoutModal.price} USD (-10% OFF). Adjunto comprobante.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-emerald-400 hover:underline inline-flex items-center gap-1"
+                  >
+                    Confirmar por WhatsApp →
+                  </a>
+                </div>
               </div>
             </div>
 
