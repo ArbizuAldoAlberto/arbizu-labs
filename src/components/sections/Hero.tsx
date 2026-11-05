@@ -69,7 +69,9 @@ export default function Hero() {
           >
             <span className="btn-label">
               <span>{t.hero.ctaPrimary}</span>
-              <ArrowRight className="w-4 h-4 text-[var(--accent)]" />
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[rgba(9,13,22,0.8)] border border-[var(--accent-border-strong)] text-[var(--accent)] shadow-[0_0_8px_rgba(94,242,224,0.25)]">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </span>
             </span>
             <span className="btn-glow" aria-hidden="true" />
           </a>
@@ -82,7 +84,9 @@ export default function Hero() {
             className="btn-magnetic"
           >
             <span className="btn-label">
-              <Activity className="w-4 h-4 text-[var(--accent)]" />
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[rgba(9,13,22,0.8)] border border-[var(--accent-border-strong)] text-[var(--accent)] shadow-[0_0_8px_rgba(94,242,224,0.25)]">
+                <Activity className="w-3.5 h-3.5" />
+              </span>
               <span>{t.hero.ctaSecondary}</span>
             </span>
             <span className="btn-glow" aria-hidden="true" />
@@ -98,7 +102,9 @@ export default function Hero() {
             className="btn-magnetic"
           >
             <span className="btn-label">
-              <MessageSquare className="w-4 h-4 text-[var(--accent)]" />
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[rgba(9,13,22,0.8)] border border-[var(--accent-border-strong)] text-[var(--accent)] shadow-[0_0_8px_rgba(94,242,224,0.25)]">
+                <MessageSquare className="w-3.5 h-3.5" />
+              </span>
               <span>WhatsApp Direct</span>
             </span>
             <span className="btn-glow" aria-hidden="true" />

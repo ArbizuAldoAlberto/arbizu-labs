@@ -36,8 +36,10 @@ export default function Telemetry3DSection() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mb-10">
-          <span className="badge-enterprise mb-4">
-            <Cpu className="w-3.5 h-3.5" />
+          <span className="badge-enterprise mb-4 inline-flex items-center gap-2">
+            <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent)]">
+              <Cpu className="w-3.5 h-3.5" />
+            </span>
             <span>
               {locale === 'es'
                 ? 'GEMELO DIGITAL INTERACTIVO · WEBGL PBR & SHADER FLIR'

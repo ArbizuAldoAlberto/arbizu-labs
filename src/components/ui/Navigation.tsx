@@ -146,10 +146,12 @@ export default function Navigation() {
           {/* Language Switcher Button [ ES | EN ] */}
           <button
             onClick={toggleLanguage}
-            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-mono tracking-wider transition-all text-[var(--text-primary)] cursor-pointer"
+            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-mono tracking-wider transition-all text-[var(--text-primary)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
             title={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
           >
-            <Globe className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent-soft)]">
+              <Globe className="w-3.5 h-3.5" />
+            </span>
             <span className={locale === 'es' ? 'text-[var(--accent)] font-bold' : 'text-[var(--text-secondary)]'}>
               ES
             </span>
@@ -162,9 +164,11 @@ export default function Navigation() {
           {/* Primary CTA */}
           <Link
             href="/booking"
-            className="hidden sm:inline-flex btn-primary-enterprise text-xs py-2 px-3.5"
+            className="hidden sm:inline-flex btn-primary-enterprise text-xs py-2 px-3.5 items-center gap-2"
           >
-            <Calendar className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent-soft)]">
+              <Calendar className="w-3.5 h-3.5" />
+            </span>
             <span>{t.nav.bookCall}</span>
           </Link>
 

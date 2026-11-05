@@ -335,6 +335,60 @@ html[data-theme="v2"] {
     color: var(--accent);
   }
 
+  /* ==========================================================================
+     STITCH SOVEREIGN ENGINEERING — MICRO-LUMINESCENT ICON PEDESTALS
+     ========================================================================== */
+  .icon-pedestal-sovereign {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(9, 13, 22, 0.85) 0%, rgba(13, 19, 34, 0.65) 100%);
+    border: 1px solid var(--accent-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: var(--accent);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .icon-pedestal-sovereign::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 12px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent) 0%, rgba(212, 175, 55, 0.4) 40%, transparent 70%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.45;
+    transition: opacity 0.25s ease;
+  }
+
+  .group:hover .icon-pedestal-sovereign,
+  .icon-pedestal-sovereign:hover {
+    border-color: var(--accent-strong);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5), 0 0 18px var(--accent-soft), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  .group:hover .icon-pedestal-sovereign::after,
+  .icon-pedestal-sovereign:hover::after {
+    opacity: 1;
+  }
+
+  .icon-pedestal-sovereign svg {
+    filter: drop-shadow(0 0 6px var(--accent-soft));
+    transition: filter 0.25s ease;
+  }
+
+  .group:hover .icon-pedestal-sovereign svg,
+  .icon-pedestal-sovereign:hover svg {
+    filter: drop-shadow(0 0 10px var(--accent));
+  }
+
   .gradient-text-teal {
     background: linear-gradient(135deg, #ecf8f8 0%, #5ef2e0 65%, #6fffe9 100%);
     -webkit-background-clip: text;

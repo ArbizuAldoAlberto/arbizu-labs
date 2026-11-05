@@ -14,25 +14,25 @@
         "file": "terminal-ip67.png",
         "width": 1200,
         "height": 1200,
-        "bytes": 433649
+        "bytes": 426656
       },
       "webp": {
         "file": "terminal-ip67.webp",
         "width": 1000,
         "height": 1000,
-        "bytes": 49888
+        "bytes": 51006
       },
       "bbox_px": {
-        "min_x": 239,
+        "min_x": 251,
         "min_y": 191,
-        "max_x": 960,
+        "max_x": 948,
         "max_y": 1008,
-        "width": 722,
+        "width": 698,
         "height": 818
       },
       "margins_pct": {
-        "left": 19.92,
-        "right": 19.92,
+        "left": 20.92,
+        "right": 20.92,
         "top": 15.92,
         "bottom": 15.92
       },
@@ -44,13 +44,13 @@
         "file": "silo-lidar.png",
         "width": 1200,
         "height": 1200,
-        "bytes": 490434
+        "bytes": 490716
       },
       "webp": {
         "file": "silo-lidar.webp",
         "width": 1000,
         "height": 1000,
-        "bytes": 46064
+        "bytes": 46358
       },
       "bbox_px": {
         "min_x": 279,
@@ -74,27 +74,27 @@
         "file": "neural-n8n.png",
         "width": 1200,
         "height": 1200,
-        "bytes": 448323
+        "bytes": 401547
       },
       "webp": {
         "file": "neural-n8n.webp",
         "width": 1000,
         "height": 1000,
-        "bytes": 89916
+        "bytes": 86010
       },
       "bbox_px": {
         "min_x": 191,
-        "min_y": 228,
+        "min_y": 272,
         "max_x": 1008,
-        "max_y": 971,
+        "max_y": 927,
         "width": 818,
-        "height": 744
+        "height": 656
       },
       "margins_pct": {
         "left": 15.92,
         "right": 15.92,
-        "top": 19.0,
-        "bottom": 19.0
+        "top": 22.67,
+        "bottom": 22.67
       },
       "min_margin_pct": 15.92
     },
@@ -104,13 +104,13 @@
         "file": "flir-optic.png",
         "width": 1200,
         "height": 1200,
-        "bytes": 587127
+        "bytes": 592425
       },
       "webp": {
         "file": "flir-optic.webp",
         "width": 1000,
         "height": 1000,
-        "bytes": 46668
+        "bytes": 47186
       },
       "bbox_px": {
         "min_x": 191,

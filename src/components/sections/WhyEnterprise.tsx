@@ -133,8 +133,8 @@ export default function WhyEnterprise() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className="p-2 rounded-[8px] bg-[var(--bg-btn)] border border-[var(--accent-border)]">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="icon-pedestal-sovereign">
                     <IconComponent className="w-4 h-4 text-[var(--accent)]" />
                   </div>
                   <h3 className="artifact-name !mb-0">{pillar.title}</h3>
