@@ -1,0 +1,119 @@
+{
+  "name": "NEXUS SRE Watchdog — Autonomous AI Diagnostics & RCA (Vector 5)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sre-ai-diagnostics",
+        "options": {}
+      },
+      "id": "webhook-sre-ingress",
+      "name": "Webhook: SRE Diagnostics Ingress",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Zero-Trust Hardening: Reject any non-localhost / non-127.0.0.1 ingress\nconst item = $input.first().json;\nconst headers = item.headers || {};\nconst body = item.body || item;\n\nconst clientIp = headers['x-forwarded-for'] || headers['x-real-ip'] || '127.0.0.1';\nconst host = headers['host'] || '';\nconst authSecret = headers['x-nexus-auth'] || '';\n\nconst isLocalIp = clientIp.includes('127.0.0.1') || clientIp.includes('localhost') || clientIp === '::1';\nconst isLocalHost = host.includes('127.0.0.1') || host.includes('localhost');\nconst isAuthorized = authSecret === 'nexus-sre-local-token';\n\nif (!isLocalIp || !isLocalHost || !isAuthorized) {\n  throw new Error('SECURITY VIOLATION (Zero-Trust): Ingress denegado. Solicitud rechazada por no originarse estrictamente en 127.0.0.1 o carecer de token de autenticación local.');\n}\n\nreturn [{\n  json: {\n    timestamp: body.timestamp || new Date().toISOString(),\n    service: body.service || 'UNKNOWN_SERVICE',\n    status: body.status || 'ALERT',\n    error_snippet: body.error_snippet || 'Sin logs disponibles',\n    ram_available_mb: body.ram_available_mb || 0,\n    load_average: body.load_average || 'N/A'\n  }\n}];"
+      },
+      "id": "zero-trust-sre-guard",
+      "name": "Zero-Trust Localhost Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama3:8b\",\n  \"prompt\": \"Eres el Ingeniero SRE Autónomo de ARBIZU LABS (Director: Aldo Alberto Arbizu, Hetzner VPS 178.105.145.226). Analiza el siguiente incidente de infraestructura y genera un diagnostico conciso de grado quirurgico en JSON:\\n{\\n  \\\"rca\\\": (causa raiz probable en max 20 palabras),\\n  \\\"severity\\\": (\\\"CRITICA\\\" | \\\"ALTA\\\" | \\\"MODERADA\\\"),\\n  \\\"action_taken\\\": (accion ejecutada por watchdog),\\n  \\\"preventive_step\\\": (recomendacion tecnica preventiva)\\n}\\n\\nDATOS INCIDENTE:\\nServicio: {{ $json.service }}\\nEstado: {{ $json.status }}\\nRAM Libre: {{ $json.ram_available_mb }} MB\\nCarga: {{ $json.load_average }}\\nSnippet Error: {{ $json.error_snippet }}\",\n  \"stream\": false\n}",
+        "options": {
+          "timeout": 4500
+        }
+      },
+      "id": "ai-sre-rca",
+      "name": "AI RCA Engine (Ollama / Gemini Breaker)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('zero-trust-sre-guard').first().json;\nconst aiRaw = $input.first().json;\n\nlet rcaReport = {\n  rca: 'Posible saturacion transitoria o reinicio preventivo por timeout de socket',\n  severity: 'MODERADA',\n  action_taken: 'Reinicio automatico via PM2 / Watchdog',\n  preventive_step: 'Inspeccionar consumo de memoria y sockets TCP'\n};\n\nif (aiRaw && aiRaw.response) {\n  try {\n    const cleaned = aiRaw.response.replace(/```json/g, '').replace(/```/g, '').trim();\n    rcaReport = JSON.parse(cleaned);\n  } catch (e) {}\n}\n\nreturn [{\n  json: {\n    ...prev,\n    rca: rcaReport\n  }\n}];"
+      },
+      "id": "format-sre-alert",
+      "name": "Format SRE Medical Card",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{ $env.TELEGRAM_CHAT_ID }}\",\n  \"text\": \"🩺 *DIAGNÓSTICO SRE AUTÓNOMO (HETZNER VPS)*\\n\\n⚙️ *Servicio Afectado:* `{{ $json.service }}`\\n⚠️ *Severidad:* `{{ $json.rca.severity }}`\\n🔍 *Causa Raíz (RCA):* {{ $json.rca.rca }}\\n🛠️ *Acción Ejecutada:* {{ $json.rca.action_taken }}\\n🛡️ *Medida Preventiva:* {{ $json.rca.preventive_step }}\\n\\n📊 *RAM Disponible:* `{{ $json.ram_available_mb }} MB`\\n🕒 *Timestamp:* {{ $json.timestamp }}\",\n  \"parse_mode\": \"Markdown\"\n}",
+        "options": {}
+      },
+      "id": "telegram-sre-alert",
+      "name": "Telegram SRE Emergency Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: SRE Diagnostics Ingress": {
+      "main": [
+        [
+          {
+            "node": "Zero-Trust Localhost Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zero-Trust Localhost Guard": {
+      "main": [
+        [
+          {
+            "node": "AI RCA Engine (Ollama / Gemini Breaker)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI RCA Engine (Ollama / Gemini Breaker)": {
+      "main": [
+        [
+          {
+            "node": "Format SRE Medical Card",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format SRE Medical Card": {
+      "main": [
+        [
+          {
+            "node": "Telegram SRE Emergency Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

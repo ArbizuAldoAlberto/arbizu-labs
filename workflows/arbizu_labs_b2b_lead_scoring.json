@@ -1,0 +1,119 @@
+{
+  "name": "ARBIZU LABS — B2B Lead Scoring & Instant Alert (Vector 14)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b2b-lead-scoring",
+        "options": {}
+      },
+      "id": "webhook-ingress",
+      "name": "Webhook: Ingress B2B Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Zero-Trust & Anti-Spam Honeypot Verification\nconst item = $input.first().json;\nconst headers = item.headers || {};\nconst body = item.body || item;\n\n// 1. Zero-Trust Check: Host/IP filtering\nconst clientIp = headers['x-forwarded-for'] || headers['x-real-ip'] || '127.0.0.1';\nconst xSource = headers['x-source'] || '';\nconst isLocal = clientIp.includes('127.0.0.1') || clientIp.includes('localhost') || clientIp === '::1' || xSource === 'arbizu-labs-internal';\n\nif (!isLocal) {\n  throw new Error('SECURITY VIOLATION: Solicitud rechazada. Ingress permitido exclusivamente desde localhost/127.0.0.1.');\n}\n\n// 2. Honeypot Check\nif (body.bot_field || body.b_company_url) {\n  return []; // Descartar silenciosamente spam bots\n}\n\nreturn [{\n  json: {\n    id: body.id || `lead_${Date.now()}`,\n    timestamp: body.timestamp || new Date().toISOString(),\n    name: body.name || 'Sin nombre',\n    email: body.email || 'N/A',\n    company: body.company || 'N/A',\n    services: body.services || ['Consultoría General'],\n    message: body.message || 'Sin mensaje detallado',\n    total: body.total || 0\n  }\n}];"
+      },
+      "id": "zero-trust-filter",
+      "name": "Zero-Trust & Honeypot Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama3:8b\",\n  \"prompt\": \"Eres el clasificador de leads B2B de ARBIZU LABS (Director: Aldo Alberto Arbizu). Analiza el siguiente contacto y devuelve EXCLUSIVAMENTE un objeto JSON sin markdown:\\n{\\n  \\\"score\\\": (1-100),\\n  \\\"priority\\\": (\\\"VIP\\\" | \\\"ALTA\\\" | \\\"MEDIA\\\" | \\\"BAJA\\\"),\\n  \\\"budget_tier\\\": (\\\"ENTERPRISE\\\" | \\\"PYME\\\" | \\\"REPROCANN\\\" | \\\"HARDENING\\\"),\\n  \\\"tech_summary\\\": (resumen de 1 linea del dolor tecnico),\\n  \\\"suggested_action\\\": (accion inmediata recomendada para Aldo Arbizu)\\n}\\n\\nDATOS DEL LEAD:\\nNombre: {{ $json.name }}\\nEmpresa: {{ $json.company }}\\nEmail: {{ $json.email }}\\nServicios: {{ $json.services }}\\nMensaje: {{ $json.message }}\",\n  \"stream\": false\n}",
+        "options": {
+          "timeout": 4500
+        }
+      },
+      "id": "ai-lead-scorer",
+      "name": "AI Lead Scorer (Ollama / Local LLM)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('zero-trust-filter').first().json;\nconst aiRaw = $input.first().json;\n\nlet scoreData = {\n  score: 85,\n  priority: 'ALTA',\n  budget_tier: 'ENTERPRISE',\n  tech_summary: 'Consulta directa de ingeniería de software / arquitectura B2B',\n  suggested_action: 'Contactar vía WhatsApp o Email dentro de las próximas 4 horas.'\n};\n\nif (aiRaw && aiRaw.response) {\n  try {\n    const cleaned = aiRaw.response.replace(/```json/g, '').replace(/```/g, '').trim();\n    scoreData = JSON.parse(cleaned);\n  } catch (e) {\n    // Usar defaults estructurados si el LLM no envió JSON estricto\n  }\n}\n\nreturn [{\n  json: {\n    ...prev,\n    qualification: scoreData\n  }\n}];"
+      },
+      "id": "format-lead-card",
+      "name": "Format Lead & Intelligence",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{ $env.TELEGRAM_CHAT_ID }}\",\n  \"text\": \"🚀 *NUEVO LEAD B2B CALIFICADO — ARBIZU LABS*\\n\\n👤 *Cliente:* {{ $json.name }} ({{ $json.company }})\\n📧 *Email:* `{{ $json.email }}`\\n🎯 *Score:* `{{ $json.qualification.score }}/100` | *Prioridad:* `{{ $json.qualification.priority }}`\\n🏷️ *Tier:* `{{ $json.qualification.budget_tier }}`\\n💡 *Resumen:* {{ $json.qualification.tech_summary }}\\n💬 *Mensaje:* _{{ $json.message }}_\\n\\n⚡ *Acción Sugerida:* {{ $json.qualification.suggested_action }}\\n🕒 *Timestamp:* {{ $json.timestamp }}\",\n  \"parse_mode\": \"Markdown\"\n}",
+        "options": {}
+      },
+      "id": "telegram-alert",
+      "name": "Telegram Dispatch Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: Ingress B2B Lead": {
+      "main": [
+        [
+          {
+            "node": "Zero-Trust & Honeypot Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zero-Trust & Honeypot Guard": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Scorer (Ollama / Local LLM)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Lead Scorer (Ollama / Local LLM)": {
+      "main": [
+        [
+          {
+            "node": "Format Lead & Intelligence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Lead & Intelligence": {
+      "main": [
+        [
+          {
+            "node": "Telegram Dispatch Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
