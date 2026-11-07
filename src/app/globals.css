@@ -860,16 +860,16 @@ html[data-theme="v2"] .theme-switch a[data-theme-link="v2"],
 
 .depth-gauge {
   position: absolute;
-  right: clamp(1rem, 3vw, 2.75rem);
+  right: clamp(0.75rem, 2.5vw, 2.5rem);
   top: 50%;
   transform: translateY(-50%);
   z-index: 4;
-  width: 3.5rem;
+  width: 5.75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.65rem 0.25rem;
+  padding: 0.65rem 0.35rem;
   color: var(--text-primary);
   font-family: var(--font-space);
   pointer-events: none;
@@ -888,11 +888,12 @@ html[data-theme="v2"] .theme-switch a[data-theme-link="v2"],
 }
 
 .depth-unit {
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .depth-track {

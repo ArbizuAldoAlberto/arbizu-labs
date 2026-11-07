@@ -64,57 +64,57 @@ export default function Navigation() {
         borderBottom: 'none',
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+      <div className="w-full max-w-[1400px] mx-auto px-3 sm:px-4 xl:px-6 flex items-center justify-between gap-2 xl:gap-4">
         {/* Brand Logo */}
-        <Link href={isV2 ? '/v2' : '/'} className="flex items-center gap-2.5 group shrink-0">
+        <Link href={isV2 ? '/v2' : '/'} className="flex items-center gap-2 group shrink-0">
           <div className="w-8 h-8 rounded-[10px] bg-[var(--bg-btn)] border border-[var(--accent-border-strong)] flex items-center justify-center text-[var(--accent)] font-space font-bold text-xs shadow-[0_0_15px_rgba(94,242,224,0.2)] group-hover:scale-105 transition-transform">
             AL
           </div>
           <div className="flex flex-col">
-            <span className="font-serif text-xl text-[var(--text-primary)] font-bold tracking-tight">
+            <span className="font-serif text-lg sm:text-xl text-[var(--text-primary)] font-bold tracking-tight leading-none">
               Arbizu<span className="text-[var(--accent)]">Labs</span>
             </span>
-            <span className="font-space text-[9px] uppercase tracking-widest text-[var(--text-secondary)] -mt-1">
+            <span className="font-space text-[8px] sm:text-[9px] uppercase tracking-widest text-[var(--text-secondary)] mt-0.5 whitespace-nowrap">
               Engineering Boutique
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-6" aria-label="Navegación principal">
+        <nav className="hidden xl:flex items-center gap-2 2xl:gap-4 whitespace-nowrap shrink-0" aria-label="Navegación principal">
           <a
             href="#descenso"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             Inmersión
           </a>
           <a
             href="#artefactos"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             Hardware 3D
           </a>
           <Link
             href="/#ecosystem"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             {t.nav.ecosystem}
           </Link>
           <Link
             href="/#services"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             {t.nav.services}
           </Link>
           <Link
             href="/cases"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             {t.nav.cases}
           </Link>
           <Link
             href="/pricing"
-            className="font-space text-xs uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
             {t.nav.pricing}
           </Link>
@@ -122,7 +122,7 @@ export default function Navigation() {
             href="https://aldoarbizu.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-space text-xs uppercase tracking-wider text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors bg-[var(--bg-btn)] px-2.5 py-1 rounded-[10px] border border-[var(--accent-border)]"
+            className="inline-flex items-center gap-1 font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors bg-[var(--bg-btn)] px-2 py-1 rounded-[10px] border border-[var(--accent-border)] whitespace-nowrap"
           >
             <span>{t.nav.founder}</span>
             <ArrowUpRight className="w-3 h-3" />
@@ -130,7 +130,7 @@ export default function Navigation() {
         </nav>
 
         {/* Controls: Theme Switcher (V1 / V2) + Language Switcher + Call Action */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Selector de Tema Cromático V1 / V2 */}
           <div
             className="theme-switch"
@@ -141,18 +141,16 @@ export default function Navigation() {
             <Link
               href="/"
               data-theme-link="v1"
-              className={activeTheme === 'v1' ? 'is-active' : ''}
+              className={`${activeTheme === 'v1' ? 'is-active' : ''} whitespace-nowrap !min-w-0 !px-2 !py-1 !text-[10px]`}
               aria-current={activeTheme === 'v1' ? 'page' : undefined}
-              style={{ minWidth: '5.2rem' }}
             >
               V1 Bóveda
             </Link>
             <Link
               href="/v2"
               data-theme-link="v2"
-              className={activeTheme === 'v2' ? 'is-active' : ''}
+              className={`${activeTheme === 'v2' ? 'is-active' : ''} whitespace-nowrap !min-w-0 !px-2 !py-1 !text-[10px]`}
               aria-current={activeTheme === 'v2' ? 'page' : undefined}
-              style={{ minWidth: '5.2rem' }}
             >
               V2 Turquesa
             </Link>
@@ -162,7 +160,7 @@ export default function Navigation() {
           <button
             type="button"
             onClick={handleToggleSound}
-            className="flex items-center justify-center w-8 h-8 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs transition-all text-[var(--accent)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            className="hidden sm:flex items-center justify-center w-7 h-7 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs transition-all text-[var(--accent)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)] shrink-0"
             title={soundMuted ? 'Activar audio inmersivo procedural' : 'Silenciar audio'}
             aria-label={soundMuted ? 'Activar audio' : 'Silenciar audio'}
           >
@@ -175,12 +173,9 @@ export default function Navigation() {
               soundEngine.playSwitch();
               toggleLanguage();
             }}
-            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-mono tracking-wider transition-all text-[var(--text-primary)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            className="hidden md:flex items-center gap-1 px-2 py-1 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-[10px] font-mono tracking-wider transition-all text-[var(--text-primary)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)] whitespace-nowrap shrink-0"
             title={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
           >
-            <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent-soft)]">
-              <Globe className="w-3.5 h-3.5" />
-            </span>
             <span className={locale === 'es' ? 'text-[var(--accent)] font-bold' : 'text-[var(--text-secondary)]'}>
               ES
             </span>
@@ -197,31 +192,34 @@ export default function Navigation() {
               soundEngine.playSuccess();
               setIsContractOpen(true);
             }}
-            className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-space font-bold uppercase tracking-wider text-[var(--accent)] transition-all shadow-[0_0_12px_rgba(94,242,224,0.15)]"
+            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-[10px] 2xl:text-[11px] font-space font-bold uppercase tracking-wide text-[var(--accent)] transition-all shadow-[0_0_12px_rgba(94,242,224,0.15)] whitespace-nowrap shrink-0 cursor-pointer"
           >
-            <FileCheck className="w-3.5 h-3.5" />
+            <FileCheck className="w-3 h-3 shrink-0" />
             <span>Contratar B2B</span>
           </button>
 
           {/* Primary CTA */}
-          <Link
-            href="/booking"
-            onClick={() => soundEngine.playClick()}
-            className="hidden sm:inline-flex btn-primary-enterprise text-xs py-2 px-3.5 items-center gap-2"
+          <button
+            type="button"
+            onClick={() => {
+              soundEngine.playClick();
+              setIsContractOpen(true);
+            }}
+            className="hidden sm:inline-flex btn-primary-enterprise !text-[10px] 2xl:!text-[11px] !py-1.5 !px-2.5 2xl:!px-3 items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
           >
             <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent-soft)]">
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-3 h-3 shrink-0" />
             </span>
             <span>{t.nav.bookCall}</span>
-          </Link>
+          </button>
 
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden p-2 rounded-[10px] bg-[var(--bg-btn)] border border-[var(--accent-border)] text-[var(--text-primary)] hover:border-[var(--accent-border-strong)] transition-colors"
+            className="xl:hidden p-2 rounded-[10px] bg-[var(--bg-btn)] border border-[var(--accent-border)] text-[var(--text-primary)] hover:border-[var(--accent-border-strong)] transition-colors shrink-0"
             aria-label="Abrir Menú"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>

@@ -237,7 +237,7 @@ export default function ComparePage() {
                 </span>
                 <iframe
                   ref={frameV1Ref}
-                  src="/"
+                  src="/?force3d=1"
                   title="Versión V1 Bóveda Profunda"
                   className="w-full h-full border-0 block bg-[#03070e]"
                 />
@@ -250,7 +250,7 @@ export default function ComparePage() {
                 </span>
                 <iframe
                   ref={frameV2Ref}
-                  src="/v2"
+                  src="/v2?force3d=1"
                   title="Versión V2 Luz Turquesa Perimetral"
                   className="w-full h-full border-0 block bg-[#072a30]"
                 />
@@ -275,7 +275,7 @@ export default function ComparePage() {
                 </span>
                 <iframe
                   ref={frameV1Ref}
-                  src="/"
+                  src="/?force3d=1"
                   title="Versión V1 Bóveda Profunda"
                   className="w-full h-full border-0 block bg-[#03070e]"
                 />
@@ -286,7 +286,7 @@ export default function ComparePage() {
                 </span>
                 <iframe
                   ref={frameV2Ref}
-                  src="/v2"
+                  src="/v2?force3d=1"
                   title="Versión V2 Luz Turquesa Perimetral"
                   className="w-full h-full border-0 block bg-[#072a30]"
                 />

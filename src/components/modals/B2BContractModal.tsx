@@ -7,33 +7,40 @@ import { useLanguage } from '@/context/LanguageContext';
 export interface B2BContractModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialServiceTitle?: string;
+  initialServicePrice?: string;
 }
 
 const SERVICES_CATALOG = [
   {
     id: 'arch-consulting',
-    title: 'Consultoría de Arquitectura Crítica',
-    desc: 'Auditoría de resiliencia, diseño offline-first y resolución de cuellos de botella.',
+    title: 'Consultoría de Arquitectura Crítica / Licencia Agro',
+    desc: 'Auditoría de resiliencia, diseño offline-first, SQLite WAL y trazabilidad.',
     priceARS: '$75.000 ARS',
-    priceUSD: '$150 USD',
+    priceUSD: '$75 - $150 USD',
   },
   {
     id: 'flir-iot-audit',
-    title: 'Auditoría Térmica FLIR & Telemetría IoT',
-    desc: 'Inspección de silobolsas, hardware embebido y calibración de sensores ópticos.',
-    priceARS: '$120.000 ARS',
-    priceUSD: '$250 USD',
+    title: 'Auditoría Térmica FLIR & Hardening Linux VPS',
+    desc: 'Inspección termográfica FLIR calibrada, telemetría IoT y setup Zero-Downtime.',
+    priceARS: '$120.000 - $150.000 ARS',
+    priceUSD: '$120 - $250 USD',
   },
   {
     id: 'sovereign-platform',
-    title: 'Desarrollo de Plataforma Soberana / Fullstack',
-    desc: 'Construcción integral de microservicios, dashboards cinemáticos y base SQLite WAL.',
-    priceARS: '$250.000 ARS',
-    priceUSD: '$500 USD',
+    title: 'Desarrollo de Plataforma Soberana / Sprint B2B',
+    desc: 'Construcción integral de microservicios, apps móviles Offline-First y automatización IA.',
+    priceARS: 'Desde $250.000 ARS',
+    priceUSD: 'Desde $500 - $3,000 USD',
   },
 ];
 
-export default function B2BContractModal({ isOpen, onClose }: B2BContractModalProps) {
+export default function B2BContractModal({
+  isOpen,
+  onClose,
+  initialServiceTitle,
+  initialServicePrice,
+}: B2BContractModalProps) {
   const { locale } = useLanguage();
   const [selectedService, setSelectedService] = useState(SERVICES_CATALOG[0].id);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -107,8 +114,10 @@ export default function B2BContractModal({ isOpen, onClose }: B2BContractModalPr
   };
 
   const getWhatsAppLink = () => {
+    const label = initialServiceTitle || currentService.title;
+    const price = initialServicePrice || `${currentService.priceARS} / ${currentService.priceUSD}`;
     const text = encodeURIComponent(
-      `Hola Aldo, solicito Discovery Call / Propuesta B2B en Arbizu Labs para "${currentService.title}" (${currentService.priceARS} / ${currentService.priceUSD}).`
+      `Hola Aldo, solicito Discovery Call / Propuesta B2B en Arbizu Labs para "${label}" (${price}).`
     );
     return `https://wa.me/5492314489197?text=${text}`;
   };
@@ -330,3 +339,4 @@ export default function B2BContractModal({ isOpen, onClose }: B2BContractModalPr
     </div>
   );
 }
+

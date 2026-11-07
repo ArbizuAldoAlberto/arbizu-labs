@@ -1,8 +1,10 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { Database, ShieldCheck, Box, Workflow } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { soundEngine } from '@/lib/sound/SoundEngine';
+import B2BContractModal from '@/components/modals/B2BContractModal';
 
 const ARTIFACT_ASSETS = [
   {
@@ -30,6 +32,7 @@ const ARTIFACT_ASSETS = [
 export default function WhyEnterprise() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
+  const [isContractOpen, setIsContractOpen] = useState(false);
   const icons = [Database, Box, ShieldCheck, Workflow];
 
   useEffect(() => {
@@ -107,17 +110,27 @@ export default function WhyEnterprise() {
               <article
                 key={asset.id}
                 data-tilt
+                onPointerEnter={() => soundEngine.playHover()}
                 onPointerMove={handleTiltMove}
                 onPointerLeave={handleTiltLeave}
-                className="artifact-card group relative"
+                className="artifact-card group relative overflow-hidden"
               >
+                {/* Directional Spotlight Halo (--gx, --gy) */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background:
+                      'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(94, 242, 224, 0.16), transparent 72%)',
+                  }}
+                />
                 {/* Mechanical Corner Brackets */}
                 <span className="card-bracket card-bracket--tl" aria-hidden="true" />
                 <span className="card-bracket card-bracket--tr" aria-hidden="true" />
                 <span className="card-bracket card-bracket--bl" aria-hidden="true" />
                 <span className="card-bracket card-bracket--br" aria-hidden="true" />
 
-                <div className="flex items-center justify-between mb-3">
+                <div className="relative z-10 flex items-center justify-between mb-3">
                   <span className="font-space text-[11px] uppercase tracking-widest text-[var(--accent)] bg-[var(--bg-btn)] px-2.5 py-1 rounded-[8px] border border-[var(--accent-border)] font-bold">
                     {pillar.tag}
                   </span>
@@ -127,7 +140,7 @@ export default function WhyEnterprise() {
                 </div>
 
                 {/* 1:1 3D Floating Stage */}
-                <div className="artifact-stage">
+                <div className="artifact-stage relative z-10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={asset.src}
@@ -135,7 +148,9 @@ export default function WhyEnterprise() {
                     data-float={asset.id}
                     width={640}
                     height={640}
-                    decoding="async"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
                   />
                 </div>
 
@@ -166,12 +181,16 @@ export default function WhyEnterprise() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
-            <a
-              href="#contacto"
-              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_16px_rgba(52,211,153,0.4)]"
+            <button
+              type="button"
+              onClick={() => {
+                soundEngine.playSuccess();
+                setIsContractOpen(true);
+              }}
+              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_16px_rgba(52,211,153,0.4)] cursor-pointer"
             >
               Iniciar Consulta Técnica
-            </a>
+            </button>
             <a
               href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20contratar%20servicios%20de%20ingeniería%20con%20Arbizu%20Labs"
               target="_blank"
@@ -183,6 +202,8 @@ export default function WhyEnterprise() {
           </div>
         </div>
       </div>
+
+      <B2BContractModal isOpen={isContractOpen} onClose={() => setIsContractOpen(false)} />
     </section>
   );
 }

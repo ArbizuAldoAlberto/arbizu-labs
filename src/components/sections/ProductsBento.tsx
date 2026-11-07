@@ -25,6 +25,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { soundEngine } from '@/lib/sound/SoundEngine';
 import OfflineSimulator from '@/components/OfflineSimulator';
 
 export interface ProjectData {
@@ -47,6 +48,16 @@ export default function ProductsBento() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [previewModal, setPreviewModal] = useState<{ isOpen: boolean; title: string; image: string; liveUrl?: string; desc: string; metrics: string } | null>(null);
   const { locale, t } = useLanguage();
+
+  const handleCardPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const px = ((e.clientX - rect.left) / rect.width) * 100;
+    const py = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--gx', `${px.toFixed(1)}%`);
+    card.style.setProperty('--gy', `${py.toFixed(1)}%`);
+  };
 
   const filterCategories = [
     { id: 'all', label: t.products.filters.all },
@@ -289,7 +300,11 @@ export default function ProductsBento() {
           {filterCategories.map(cat => (
             <button
               key={cat.id}
-              onClick={() => setActiveFilter(cat.id)}
+              onMouseEnter={() => soundEngine.playHover()}
+              onClick={() => {
+                soundEngine.playSwitch();
+                setActiveFilter(cat.id);
+              }}
               className={`px-4 py-2 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer ${
                 activeFilter === cat.id
                   ? 'bg-[var(--color-arbizu-teal)] text-black font-bold shadow-[0_0_15px_rgba(29,158,117,0.3)]'
@@ -318,8 +333,25 @@ export default function ProductsBento() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.35 }}
                   key={app.id}
+                  onPointerEnter={() => soundEngine.playHover()}
+                  onPointerMove={handleCardPointerMove}
                   className={`glass-surface-enterprise p-6 sm:p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 group border border-white/5 ${app.borderColor} ${app.span} relative overflow-hidden`}
                 >
+                  {/* Directional Spotlight Halo (--gx, --gy) */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background:
+                        'radial-gradient(320px circle at var(--gx, 50%) var(--gy, 50%), rgba(94, 242, 224, 0.14), transparent 72%)',
+                    }}
+                  />
+                  {/* Mechanical Corner Brackets */}
+                  <span className="card-bracket card-bracket--tl" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--tr" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--bl" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--br" aria-hidden="true" />
+
                   {/* Subtle Inner Glow */}
                   <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-br ${app.accentColor} blur-3xl opacity-30 pointer-events-none group-hover:opacity-60 transition-opacity`} />
 

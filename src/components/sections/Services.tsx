@@ -2,16 +2,36 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Smartphone, Cloud, Workflow, ShieldCheck, Box, Check, ArrowRight, Zap, Flame, Terminal, FileCode2 } from 'lucide-react';
-import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import B2BCheckoutModal, { B2BServiceItem } from '@/components/ui/B2BCheckoutModal';
+import { soundEngine } from '@/lib/sound/SoundEngine';
+import B2BContractModal from '@/components/modals/B2BContractModal';
+
+interface B2BServiceItem {
+  id: string;
+  title: string;
+  priceArs: string;
+  priceUsd: string;
+  depositArs?: string;
+  deliverables: string[];
+}
 
 export default function Services() {
   const { t } = useLanguage();
   const icons = [Smartphone, Cloud, Workflow, ShieldCheck, Box];
 
-  const [checkoutService, setCheckoutService] = useState<B2BServiceItem | null>(null);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [selectedTitle, setSelectedTitle] = useState<string | undefined>(undefined);
+  const [selectedPrice, setSelectedPrice] = useState<string | undefined>(undefined);
+  const [isContractOpen, setIsContractOpen] = useState(false);
+
+  const handleCardPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const px = ((e.clientX - rect.left) / rect.width) * 100;
+    const py = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--gx', `${px.toFixed(1)}%`);
+    card.style.setProperty('--gy', `${py.toFixed(1)}%`);
+  };
 
   // Paquetes B2B On-Demand con Checkout Inmediato
   const onDemandPackages: B2BServiceItem[] = [
@@ -57,8 +77,17 @@ export default function Services() {
   ];
 
   const handleOpenCheckout = (pkg: B2BServiceItem) => {
-    setCheckoutService(pkg);
-    setIsCheckoutOpen(true);
+    soundEngine.playSuccess();
+    setSelectedTitle(pkg.title);
+    setSelectedPrice(`${pkg.priceArs} (${pkg.priceUsd})`);
+    setIsContractOpen(true);
+  };
+
+  const handleOpenSprintContract = (title: string, price: string) => {
+    soundEngine.playSuccess();
+    setSelectedTitle(title);
+    setSelectedPrice(price);
+    setIsContractOpen(true);
   };
 
   return (
@@ -110,12 +139,28 @@ export default function Services() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: pIdx * 0.1, duration: 0.4 }}
-                  className={`glass-surface-enterprise p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 relative border ${
+                  onPointerEnter={() => soundEngine.playHover()}
+                  onPointerMove={handleCardPointerMove}
+                  className={`group glass-surface-enterprise p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 relative overflow-hidden border ${
                     isHighlight
                       ? 'border-amber-500/40 shadow-[0_0_25px_rgba(245,158,11,0.08)] bg-gradient-to-b from-amber-500/[0.04] to-transparent'
                       : 'border-white/10 hover:border-[var(--color-arbizu-teal)]/40'
                   }`}
                 >
+                  {/* Halo especular reactivo (--gx, --gy) */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background:
+                        'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(94, 242, 224, 0.14), transparent 72%)',
+                    }}
+                  />
+                  {/* Mechanical Corner Brackets */}
+                  <span className="card-bracket card-bracket--tl" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--tr" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--bl" aria-hidden="true" />
+                  <span className="card-bracket card-bracket--br" aria-hidden="true" />
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-4">
                       <span className="font-space text-[10px] uppercase tracking-widest text-[var(--color-arbizu-teal)] bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 font-bold">
@@ -185,12 +230,28 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 0.5 }}
+                onPointerEnter={() => soundEngine.playHover()}
+                onPointerMove={handleCardPointerMove}
                 className={`glass-surface-enterprise p-8 rounded-2xl flex flex-col justify-between hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden ${
                   isFeatured 
                     ? 'border-[var(--color-arbizu-teal)]/40 shadow-[0_0_30px_rgba(29,158,117,0.1)]' 
                     : 'hover:border-white/20'
                 }`}
               >
+                {/* Halo especular reactivo (--gx, --gy) */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background:
+                      'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(94, 242, 224, 0.14), transparent 72%)',
+                  }}
+                />
+                {/* Mechanical Corner Brackets */}
+                <span className="card-bracket card-bracket--tl" aria-hidden="true" />
+                <span className="card-bracket card-bracket--tr" aria-hidden="true" />
+                <span className="card-bracket card-bracket--bl" aria-hidden="true" />
+                <span className="card-bracket card-bracket--br" aria-hidden="true" />
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <span className="font-space text-[10px] uppercase tracking-widest text-[var(--color-arbizu-teal)] bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 font-bold">
@@ -224,15 +285,16 @@ export default function Services() {
                   </div>
                 </div>
 
-                <Link
-                  href="/booking"
-                  className={`w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider font-space flex items-center justify-center gap-2 transition-all ${
+                <button
+                  type="button"
+                  onClick={() => handleOpenSprintContract(srv.title, srv.price)}
+                  className={`relative z-10 w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider font-space flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     isFeatured ? 'btn-primary-enterprise' : 'btn-outline-enterprise'
                   }`}
                 >
                   <span>{t.nav.bookCall}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </button>
               </motion.div>
             );
           })}
@@ -240,11 +302,12 @@ export default function Services() {
 
       </div>
 
-      {/* Modal B2B Checkout Institucional */}
-      <B2BCheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        service={checkoutService}
+      {/* Modal Maestro Unificado B2B Contract & Checkout */}
+      <B2BContractModal
+        isOpen={isContractOpen}
+        onClose={() => setIsContractOpen(false)}
+        initialServiceTitle={selectedTitle}
+        initialServicePrice={selectedPrice}
       />
     </section>
   );
