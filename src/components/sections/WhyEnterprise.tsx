@@ -1,10 +1,60 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { Database, ShieldCheck, Box, Workflow } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { soundEngine } from '@/lib/sound/SoundEngine';
+import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
 import B2BContractModal from '@/components/modals/B2BContractModal';
+
+function CadBlueprintIcon({ index }: { index: number }) {
+  if (index === 0) {
+    // 1. Arquitectura Offline-First / Bases de Datos Sincronizadas (SQLite WAL)
+    return (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5" stroke="#D4AF37" strokeWidth="1.5" />
+        <path d="M4.5 5.5v6c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6" stroke="#94A3B8" strokeWidth="1.5" />
+        <path d="M4.5 11.5v6.5c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6.5" stroke="#D4AF37" strokeWidth="1.5" />
+        <path d="M9 15.5h6M12 13.5v4" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (index === 1) {
+    // 2. Drones y Telemetría AgTech (LiDAR ToF)
+    return (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="6" cy="6" r="2.75" stroke="#D4AF37" strokeWidth="1.5" />
+        <circle cx="18" cy="6" r="2.75" stroke="#D4AF37" strokeWidth="1.5" />
+        <circle cx="6" cy="18" r="2.75" stroke="#94A3B8" strokeWidth="1.5" />
+        <circle cx="18" cy="18" r="2.75" stroke="#94A3B8" strokeWidth="1.5" />
+        <path d="M8 8l8 8M16 8l-8 8" stroke="#94A3B8" strokeWidth="1.5" />
+        <rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="#070B12" stroke="#D4AF37" strokeWidth="1.5" />
+      </svg>
+    );
+  }
+  if (index === 2) {
+    // 3. Ciberseguridad Defensiva / Zero-Trust
+    return (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 2.75L4.75 6v5.75c0 5.1 3.1 9.65 7.25 11.25 4.15-1.6 7.25-6.15 7.25-11.25V6L12 2.75z"
+          stroke="#D4AF37"
+          strokeWidth="1.5"
+        />
+        <circle cx="12" cy="11.5" r="2.5" stroke="#94A3B8" strokeWidth="1.5" />
+        <path d="M12 14v3" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  // 4. Ingeniería Cuantitativa / Algorítmica
+  return (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M3.5 18.5h17M3.5 5.5v13" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M6 15l4-4.5 3.5 2.5 5.5-6.5" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="10" cy="10.5" r="1.5" fill="#D4AF37" />
+      <circle cx="19" cy="6.5" r="1.5" fill="#D4AF37" />
+    </svg>
+  );
+}
 
 const ARTIFACT_ASSETS = [
   {
@@ -33,7 +83,7 @@ export default function WhyEnterprise() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [isContractOpen, setIsContractOpen] = useState(false);
-  const icons = [Database, Box, ShieldCheck, Workflow];
+  const { playHoverTick, playEngagePulse } = useTacticalAudio();
 
   useEffect(() => {
     const sec = sectionRef.current;
@@ -103,17 +153,19 @@ export default function WhyEnterprise() {
         {/* 4 Floating 3D Artifacts Grid */}
         <div className="artifact-grid">
           {t.whyEnterprise.moats.slice(0, 4).map((pillar, i) => {
-            const IconComponent = icons[i] || Database;
             const asset = ARTIFACT_ASSETS[i] || ARTIFACT_ASSETS[0];
 
             return (
               <article
                 key={asset.id}
                 data-tilt
-                onPointerEnter={() => soundEngine.playHover()}
+                onPointerEnter={() => {
+                  soundEngine.playHover();
+                  playHoverTick();
+                }}
                 onPointerMove={handleTiltMove}
                 onPointerLeave={handleTiltLeave}
-                className="artifact-card group relative overflow-hidden"
+                className="artifact-card group relative overflow-hidden border border-white/[0.08] bg-[#070B12]/85"
               >
                 {/* Directional Spotlight Halo (--gx, --gy) */}
                 <span
@@ -121,7 +173,7 @@ export default function WhyEnterprise() {
                   className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{
                     background:
-                      'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(94, 242, 224, 0.16), transparent 72%)',
+                      'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(212, 175, 55, 0.16), transparent 72%)',
                   }}
                 />
                 {/* Mechanical Corner Brackets */}
@@ -156,7 +208,7 @@ export default function WhyEnterprise() {
 
                 <div className="flex items-center gap-3 mb-2">
                   <div className="icon-pedestal-sovereign">
-                    <IconComponent className="w-4 h-4 text-[var(--accent)]" />
+                    <CadBlueprintIcon index={i} />
                   </div>
                   <h3 className="artifact-name !mb-0">{pillar.title}</h3>
                 </div>
@@ -168,26 +220,28 @@ export default function WhyEnterprise() {
         </div>
 
         {/* B2B Instant Conversion Anchor */}
-        <div className="mt-14 p-6 sm:p-8 rounded-2xl border border-[var(--accent-border)] bg-[var(--bg-card-solid)] flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_12px_36px_rgba(0,0,0,0.4)]">
+        <div className="mt-14 p-6 sm:p-8 rounded-2xl border border-white/[0.08] bg-[#070B12] flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_12px_36px_rgba(0,0,0,0.65)]">
           <div className="space-y-1 text-center md:text-left">
-            <span className="font-space text-[10px] uppercase tracking-widest text-[var(--accent)] font-bold">
+            <span className="font-space text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold">
               ARBIZU LABS // CONTRATACIÓN B2B INMEDIATA
             </span>
-            <h3 className="font-serif text-xl sm:text-2xl text-[var(--text-primary)] font-bold">
+            <h3 className="font-serif text-xl sm:text-2xl text-[#F8FAFC] font-bold">
               ¿Listo para desplegar hardware o software de misión crítica?
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-[var(--text-secondary)]">
+            <p className="font-sans text-xs sm:text-sm text-[#94A3B8]">
               Evaluación de arquitectura en &lt; 12 hs con Aldo Alberto Arbizu. Facturación CUIT 20-38362060-1 y escrow Web3.
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
             <button
               type="button"
+              onMouseEnter={playHoverTick}
               onClick={() => {
                 soundEngine.playSuccess();
+                playEngagePulse();
                 setIsContractOpen(true);
               }}
-              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_16px_rgba(52,211,153,0.4)] cursor-pointer"
+              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-[#D4AF37] text-[#070B12] hover:bg-[#F8FAFC] transition-all shadow-[0_0_20px_rgba(212,175,55,0.35)] cursor-pointer"
             >
               Iniciar Consulta Técnica
             </button>

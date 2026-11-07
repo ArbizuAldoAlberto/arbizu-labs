@@ -162,22 +162,23 @@ export default function Navigation() {
             </span>
           </button>
 
-          {/* B2B Contract / Checkout Button */}
-          <button
-            type="button"
+          {/* Resumen Ejecutivo (PDF) / Executive Resume (PDF) */}
+          <a
+            href="https://aldoarbizu.com/cv-aldo-arbizu.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={playHoverTick}
             onClick={() => {
-              soundEngine.playSuccess();
+              soundEngine.playClick();
               playEngagePulse();
-              setIsContractOpen(true);
             }}
-            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[#D4AF37]/60 border border-[#D4AF37]/35 text-[10px] 2xl:text-[11px] font-space font-bold uppercase tracking-wide text-[#D4AF37] transition-all shadow-[0_0_12px_rgba(212,175,55,0.18)] whitespace-nowrap shrink-0 cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-[#070B12] hover:border-[#D4AF37]/60 border border-[#D4AF37]/35 text-[10px] 2xl:text-[11px] font-space font-bold uppercase tracking-wide text-[#D4AF37] transition-all shadow-[0_0_12px_rgba(212,175,55,0.18)] whitespace-nowrap shrink-0"
           >
             <FileCheck className="w-3 h-3 shrink-0" />
-            <span>Dossier &amp; SLA B2B</span>
-          </button>
+            <span>{locale === 'en' ? 'Executive Resume (PDF)' : 'Resumen Ejecutivo (PDF)'}</span>
+          </a>
 
-          {/* Primary CTA */}
+          {/* Primary CTA (Modal B2B) */}
           <button
             type="button"
             onMouseEnter={playHoverTick}
@@ -282,13 +283,15 @@ export default function Navigation() {
             >
               {t.nav.pricing}
             </Link>
-            <Link
-              href="/compare"
+            <a
+              href="https://aldoarbizu.com/cv-aldo-arbizu.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="block font-space text-xs uppercase tracking-widest text-[var(--accent)] hover:text-[var(--text-primary)] py-2"
+              className="block font-space text-xs uppercase tracking-widest text-[#D4AF37] hover:text-[#F8FAFC] py-2"
             >
-              Comparador V1 vs V2
-            </Link>
+              {locale === 'en' ? 'Executive Resume (PDF)' : 'Resumen Ejecutivo (PDF)'}
+            </a>
             <a
               href="https://aldoarbizu.com"
               target="_blank"

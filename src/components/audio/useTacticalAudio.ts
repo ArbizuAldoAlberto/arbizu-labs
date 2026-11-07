@@ -70,3 +70,4 @@ export function useTacticalAudio() {
 
   return { playHoverTick, playEngagePulse };
 }
+

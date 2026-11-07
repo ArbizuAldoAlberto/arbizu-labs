@@ -64,7 +64,7 @@ export default function QuantumRaymarchGrid({ opacity = 0.35 }: { opacity?: numb
 
         if (t < 18.0) {
           float fog = exp(-t * 0.16);
-          return vec3(0.06, 0.95, 0.88) * fog * 0.85;
+          return vec3(0.831, 0.686, 0.216) * fog * 0.75; // Solar Gold / Warm Bronze (#D4AF37)
         }
         return vec3(0.0);
       }

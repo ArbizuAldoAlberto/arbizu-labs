@@ -56,22 +56,22 @@ export default function Hero() {
         <div className="edge-fuse edge-fuse--bottom" />
       </div>
 
-      {/* Central Optical Content (Zero Pill Capsules, Zero Opaque Boxes Over Video Center) */}
+      {/* Central Optical Content (Paleta Ejecutiva Titanium & Warm Bronze #070B12 / #D4AF37 / #F8FAFC) */}
       <div className="hero-content">
-        <div className="relative z-10 mx-auto max-w-4xl rounded-3xl bg-slate-950/55 px-8 py-6 backdrop-blur-md border border-white/[0.06] shadow-[0_24px_80px_rgba(0,0,0,0.75)] flex flex-col items-center text-center mb-6">
-          <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[#00F0FF]/30 bg-slate-950/80 px-4 py-1.5 font-mono text-[11px] tracking-[0.18em] text-[#00F0FF] uppercase shadow-[0_0_20px_rgba(0,240,255,0.15)]">
-            <span className="h-2 w-2 rounded-full bg-[#00F0FF] animate-pulse shadow-[0_0_8px_#00F0FF]" />
+        <div className="relative z-10 mx-auto max-w-4xl rounded-3xl bg-[#070B12]/72 px-8 py-6 backdrop-blur-md border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.85)] flex flex-col items-center text-center mb-6">
+          <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-[#D4AF37]/35 bg-[#070B12]/90 px-4 py-1.5 font-mono text-[11px] tracking-[0.18em] text-[#D4AF37] uppercase shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_8px_#D4AF37]" />
             [ 99.999% SLA • OFFLINE-FIRST DISTRIBUTED KERNEL ]
           </div>
 
-          <h1 id="hero-title" className="hero-title">
+          <h1 id="hero-title" className="hero-title text-[#F8FAFC]">
             <span className="line">{t.hero.titleMain}</span>{' '}
-            <span className="line [text-shadow:none] font-black bg-gradient-to-r from-[#00F0FF] via-[#FFFFFF] to-[#F59E0B] bg-clip-text text-transparent drop-shadow-[0_2px_24px_rgba(0,240,255,0.45)]">
+            <span className="line [text-shadow:none] font-black bg-gradient-to-r from-[#F8FAFC] via-[#E2E8F0] to-[#D4AF37] bg-clip-text text-transparent drop-shadow-[0_2px_24px_rgba(212,175,55,0.35)]">
               {t.hero.titleHighlight}
             </span>
           </h1>
 
-          <p className="hero-lede">{t.hero.description}</p>
+          <p className="hero-lede text-[#94A3B8]">{t.hero.description}</p>
         </div>
 
         <div className="hero-actions mt-8">
@@ -86,7 +86,7 @@ export default function Hero() {
           >
             <span className="btn-label">
               <span>{t.hero.ctaPrimary}</span>
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[rgba(9,13,22,0.8)] border border-[var(--accent-border-strong)] text-[var(--accent)] shadow-[0_0_8px_rgba(94,242,224,0.25)]">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[#070B12] border border-[#D4AF37]/45 text-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.22)]">
                 <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </span>
@@ -106,7 +106,7 @@ export default function Hero() {
             className="btn-magnetic btn-magnetic--primary cursor-pointer"
           >
             <span className="btn-label flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-950/15 text-slate-950">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[#070B12]/20 text-[#070B12]">
                 <Activity className="w-3.5 h-3.5" />
               </span>
               <span>{t.hero.ctaSecondary}</span>
@@ -126,7 +126,7 @@ export default function Hero() {
             className="btn-magnetic btn-magnetic--tertiary"
           >
             <span className="btn-label">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[rgba(9,13,22,0.8)] border border-emerald-500/40 text-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.25)]">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[#070B12] border border-[#D4AF37]/40 text-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.20)]">
                 <MessageSquare className="w-3.5 h-3.5" />
               </span>
               <span>WhatsApp Direct</span>
