@@ -1,12 +1,14 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import QuantumRaymarchGrid from '@/components/ui/QuantumRaymarchGrid';
+import B2BContractModal from '@/components/modals/B2BContractModal';
 
 export default function Hero() {
   const { t } = useLanguage();
+  const [isContractModalOpen, setIsContractModalOpen] = useState(false);
 
   const handleMagneticMove = (e: React.PointerEvent<HTMLElement>) => {
     const btn = e.currentTarget;
@@ -87,12 +89,13 @@ export default function Hero() {
             <span className="btn-glow" aria-hidden="true" />
           </a>
 
-          <Link
-            href="/booking"
+          <button
+            type="button"
+            onClick={() => setIsContractModalOpen(true)}
             data-magnetic
             onPointerMove={handleMagneticMove}
             onPointerLeave={handleMagneticLeave}
-            className="btn-magnetic btn-magnetic--primary"
+            className="btn-magnetic btn-magnetic--primary cursor-pointer"
           >
             <span className="btn-label flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-950/15 text-slate-950">
@@ -101,7 +104,7 @@ export default function Hero() {
               <span>{t.hero.ctaSecondary}</span>
             </span>
             <span className="btn-glow" aria-hidden="true" />
-          </Link>
+          </button>
 
           <a
             href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20técnica%20con%20Arbizu%20Labs"
@@ -127,6 +130,12 @@ export default function Hero() {
       <a href="#descenso" className="scroll-cue" aria-label="Descender a la bóveda de ingeniería">
         <span />
       </a>
+
+      {/* Console Modal de Contratación B2B */}
+      <B2BContractModal
+        isOpen={isContractModalOpen}
+        onClose={() => setIsContractModalOpen(false)}
+      />
     </section>
   );
 }
