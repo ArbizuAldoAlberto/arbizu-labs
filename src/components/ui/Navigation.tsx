@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowUpRight, Calendar, Globe, Volume2, VolumeX, FileCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { soundEngine } from '@/lib/sound/SoundEngine';
+import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
 import B2BContractModal from '@/components/ui/B2BContractModal';
 
 export default function Navigation() {
@@ -15,6 +16,7 @@ export default function Navigation() {
   const [soundMuted, setSoundMuted] = useState(true);
   const pathname = usePathname();
   const { locale, toggleLanguage, setLocale, t } = useLanguage();
+  const { playHoverTick, playEngagePulse } = useTacticalAudio();
 
   useEffect(() => {
     setSoundMuted(soundEngine.isMuted());
@@ -129,33 +131,8 @@ export default function Navigation() {
           </a>
         </nav>
 
-        {/* Controls: Theme Switcher (V1 / V2) + Language Switcher + Call Action */}
+        {/* Controls: Executive SLA Badge + Language Switcher + Call Action */}
         <div className="flex items-center gap-1.5 shrink-0">
-          {/* Selector de Tema Cromático V1 / V2 */}
-          <div
-            className="theme-switch"
-            data-theme-switch
-            role="group"
-            aria-label="Selector de tema cromático"
-          >
-            <Link
-              href="/"
-              data-theme-link="v1"
-              className={`${activeTheme === 'v1' ? 'is-active' : ''} whitespace-nowrap !min-w-0 !px-2 !py-1 !text-[10px]`}
-              aria-current={activeTheme === 'v1' ? 'page' : undefined}
-            >
-              V1 Bóveda
-            </Link>
-            <Link
-              href="/v2"
-              data-theme-link="v2"
-              className={`${activeTheme === 'v2' ? 'is-active' : ''} whitespace-nowrap !min-w-0 !px-2 !py-1 !text-[10px]`}
-              aria-current={activeTheme === 'v2' ? 'page' : undefined}
-            >
-              V2 Turquesa
-            </Link>
-          </div>
-
           {/* Sound Toggle (Web Audio API Procedural Synth) */}
           <button
             type="button"
@@ -188,21 +165,25 @@ export default function Navigation() {
           {/* B2B Contract / Checkout Button */}
           <button
             type="button"
+            onMouseEnter={playHoverTick}
             onClick={() => {
               soundEngine.playSuccess();
+              playEngagePulse();
               setIsContractOpen(true);
             }}
-            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-[10px] 2xl:text-[11px] font-space font-bold uppercase tracking-wide text-[var(--accent)] transition-all shadow-[0_0_12px_rgba(94,242,224,0.15)] whitespace-nowrap shrink-0 cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[#D4AF37]/60 border border-[#D4AF37]/35 text-[10px] 2xl:text-[11px] font-space font-bold uppercase tracking-wide text-[#D4AF37] transition-all shadow-[0_0_12px_rgba(212,175,55,0.18)] whitespace-nowrap shrink-0 cursor-pointer"
           >
             <FileCheck className="w-3 h-3 shrink-0" />
-            <span>Contratar B2B</span>
+            <span>Dossier &amp; SLA B2B</span>
           </button>
 
           {/* Primary CTA */}
           <button
             type="button"
+            onMouseEnter={playHoverTick}
             onClick={() => {
               soundEngine.playClick();
+              playEngagePulse();
               setIsContractOpen(true);
             }}
             className="hidden sm:inline-flex btn-primary-enterprise !text-[10px] 2xl:!text-[11px] !py-1.5 !px-2.5 2xl:!px-3 items-center gap-1 whitespace-nowrap shrink-0 cursor-pointer"
