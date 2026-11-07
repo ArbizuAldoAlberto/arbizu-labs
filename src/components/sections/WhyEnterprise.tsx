@@ -109,8 +109,14 @@ export default function WhyEnterprise() {
                 data-tilt
                 onPointerMove={handleTiltMove}
                 onPointerLeave={handleTiltLeave}
-                className="artifact-card group"
+                className="artifact-card group relative"
               >
+                {/* Mechanical Corner Brackets */}
+                <span className="card-bracket card-bracket--tl" aria-hidden="true" />
+                <span className="card-bracket card-bracket--tr" aria-hidden="true" />
+                <span className="card-bracket card-bracket--bl" aria-hidden="true" />
+                <span className="card-bracket card-bracket--br" aria-hidden="true" />
+
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-space text-[11px] uppercase tracking-widest text-[var(--accent)] bg-[var(--bg-btn)] px-2.5 py-1 rounded-[8px] border border-[var(--accent-border)] font-bold">
                     {pillar.tag}
@@ -144,6 +150,37 @@ export default function WhyEnterprise() {
               </article>
             );
           })}
+        </div>
+
+        {/* B2B Instant Conversion Anchor */}
+        <div className="mt-14 p-6 sm:p-8 rounded-2xl border border-[var(--accent-border)] bg-[var(--bg-card-solid)] flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_12px_36px_rgba(0,0,0,0.4)]">
+          <div className="space-y-1 text-center md:text-left">
+            <span className="font-space text-[10px] uppercase tracking-widest text-[var(--accent)] font-bold">
+              ARBIZU LABS // CONTRATACIÓN B2B INMEDIATA
+            </span>
+            <h3 className="font-serif text-xl sm:text-2xl text-[var(--text-primary)] font-bold">
+              ¿Listo para desplegar hardware o software de misión crítica?
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-[var(--text-secondary)]">
+              Evaluación de arquitectura en &lt; 12 hs con Aldo Alberto Arbizu. Facturación CUIT 20-38362060-1 y escrow Web3.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+            <a
+              href="#contacto"
+              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 hover:bg-emerald-300 transition-all shadow-[0_0_16px_rgba(52,211,153,0.4)]"
+            >
+              Iniciar Consulta Técnica
+            </a>
+            <a
+              href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20contratar%20servicios%20de%20ingeniería%20con%20Arbizu%20Labs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 rounded-xl font-space text-xs font-bold uppercase tracking-wider bg-[var(--bg-btn)] border border-[var(--accent-border-strong)] text-[var(--text-primary)] hover:border-[var(--accent)] transition-all"
+            >
+              WhatsApp Directo
+            </a>
+          </div>
         </div>
       </div>
     </section>

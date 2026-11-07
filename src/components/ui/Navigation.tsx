@@ -3,14 +3,29 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowUpRight, Calendar, Globe } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Calendar, Globe, Volume2, VolumeX, FileCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { soundEngine } from '@/lib/sound/SoundEngine';
+import B2BContractModal from '@/components/ui/B2BContractModal';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isContractOpen, setIsContractOpen] = useState(false);
+  const [soundMuted, setSoundMuted] = useState(true);
   const pathname = usePathname();
   const { locale, toggleLanguage, setLocale, t } = useLanguage();
+
+  useEffect(() => {
+    setSoundMuted(soundEngine.isMuted());
+    const unsub = soundEngine.subscribe((muted) => setSoundMuted(muted));
+    return unsub;
+  }, []);
+
+  const handleToggleSound = () => {
+    const nextMuted = soundEngine.toggleMute();
+    setSoundMuted(nextMuted);
+  };
 
   const isV2 = pathname?.startsWith('/v2') ?? false;
   const activeTheme = isV2 ? 'v2' : 'v1';
@@ -143,9 +158,23 @@ export default function Navigation() {
             </Link>
           </div>
 
+          {/* Sound Toggle (Web Audio API Procedural Synth) */}
+          <button
+            type="button"
+            onClick={handleToggleSound}
+            className="flex items-center justify-center w-8 h-8 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs transition-all text-[var(--accent)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            title={soundMuted ? 'Activar audio inmersivo procedural' : 'Silenciar audio'}
+            aria-label={soundMuted ? 'Activar audio' : 'Silenciar audio'}
+          >
+            {soundMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-[var(--accent)] animate-pulse" />}
+          </button>
+
           {/* Language Switcher Button [ ES | EN ] */}
           <button
-            onClick={toggleLanguage}
+            onClick={() => {
+              soundEngine.playSwitch();
+              toggleLanguage();
+            }}
             className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-mono tracking-wider transition-all text-[var(--text-primary)] cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
             title={locale === 'es' ? 'Switch to English' : 'Cambiar a Español'}
           >
@@ -161,9 +190,23 @@ export default function Navigation() {
             </span>
           </button>
 
+          {/* B2B Contract / Checkout Button */}
+          <button
+            type="button"
+            onClick={() => {
+              soundEngine.playSuccess();
+              setIsContractOpen(true);
+            }}
+            className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-[var(--bg-btn)] hover:border-[var(--accent-border-strong)] border border-[var(--accent-border)] text-xs font-space font-bold uppercase tracking-wider text-[var(--accent)] transition-all shadow-[0_0_12px_rgba(94,242,224,0.15)]"
+          >
+            <FileCheck className="w-3.5 h-3.5" />
+            <span>Contratar B2B</span>
+          </button>
+
           {/* Primary CTA */}
           <Link
             href="/booking"
+            onClick={() => soundEngine.playClick()}
             className="hidden sm:inline-flex btn-primary-enterprise text-xs py-2 px-3.5 items-center gap-2"
           >
             <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent-soft)]">
@@ -290,6 +333,12 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Modal Interactivo de Contratación & Facturación B2B */}
+      <B2BContractModal
+        isOpen={isContractOpen}
+        onClose={() => setIsContractOpen(false)}
+      />
     </header>
   );
 }
