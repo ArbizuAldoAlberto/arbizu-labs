@@ -115,8 +115,13 @@ export default function AgTechTelemetryCanvas() {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    // Headless / Test Runner bypass to maintain 60 FPS in SwiftShader software rasterizer
-    if (typeof navigator !== 'undefined' && navigator.webdriver) {
+    // Headless / Test Runner bypass only when explicitly requested via ?disable3d=1
+    if (
+      typeof navigator !== 'undefined' &&
+      navigator.webdriver &&
+      typeof window !== 'undefined' &&
+      window.location.search.includes('disable3d=1')
+    ) {
       setLoading(false);
       return;
     }
@@ -140,6 +145,7 @@ export default function AgTechTelemetryCanvas() {
       antialias: true,
       alpha: true,
       powerPreference: 'high-performance',
+      preserveDrawingBuffer: true,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(container.clientWidth, container.clientHeight, false);

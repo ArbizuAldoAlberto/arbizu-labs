@@ -18,13 +18,9 @@ const AgTechTelemetryCanvas = dynamic(
 
 export default function Telemetry3DSection() {
   const { locale } = useLanguage();
-  const [mountWebGL, setMountWebGL] = React.useState(false);
+  const [mountWebGL, setMountWebGL] = React.useState(true);
 
   React.useEffect(() => {
-    if (typeof navigator !== 'undefined' && navigator.webdriver) {
-      setMountWebGL(false);
-      return;
-    }
     setMountWebGL(true);
   }, []);
 
@@ -73,7 +69,7 @@ export default function Telemetry3DSection() {
                   <div className="font-serif text-xl font-bold text-[var(--text-primary)] mt-1">IP67 · SQLite WAL</div>
                 </div>
                 <div className="p-4 rounded-xl border border-[var(--accent-border)] bg-[var(--bg-seam)]">
-                  <div className="font-mono text-xs text-[var(--text-muted)]">TERMOGRAFÍAACOPIO</div>
+                  <div className="font-mono text-xs text-[var(--text-muted)]">TERMOGRAFÍA DE ACOPIO</div>
                   <div className="font-serif text-xl font-bold text-[var(--text-primary)] mt-1">FLIR Ironbow · LiDAR</div>
                 </div>
                 <div className="p-4 rounded-xl border border-[var(--accent-border)] bg-[var(--bg-seam)]">

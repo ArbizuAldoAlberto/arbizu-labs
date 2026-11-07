@@ -470,7 +470,7 @@ export default function VaultDiveSequence() {
           <span className="depth-value" data-depth-readout>
             0
           </span>
-          <span className="depth-unit">m · WAL</span>
+          <span className="depth-unit whitespace-nowrap">SQLITE · WAL</span>
           <div className="depth-track">
             <span className="depth-fill" data-depth-fill />
           </div>
