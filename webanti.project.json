@@ -1,0 +1,12 @@
+{
+  "project": "Arbizu Labs — Engineering Boutique (arbizulabs.com)",
+  "stack": "nextjs-ts-tailwind-gsap-three",
+  "engine": "api",
+  "fallbackEngine": "local-blender-4.5",
+  "frameCount": 240,
+  "heroLoopSeconds": 6,
+  "themes": [
+    "v1-vault-dark",
+    "v2-turquoise-perimeter"
+  ]
+}

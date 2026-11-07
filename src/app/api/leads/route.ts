@@ -6,10 +6,10 @@ import { sendTelegramNotification } from '@/server';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, company, services, total, message, bot_field } = body;
+    const { name, email, company, services, total, message, bot_field, b_company_url } = body;
 
-    // Honeypot check for bots
-    if (bot_field) {
+    // Honeypot check for bots (descarta silenciosamente y responde 200 para confundir scrapers)
+    if (bot_field || b_company_url) {
       return NextResponse.json({ success: true, message: '¡Mensaje enviado! Te contactaré en breve' }, { status: 200 });
     }
 

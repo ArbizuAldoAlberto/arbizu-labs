@@ -1,0 +1,132 @@
+{
+  "version": "1.0.0",
+  "generator": "pipeline/blender/render_portfolio_assets.py",
+  "engine_routing": {
+    "probe_command": "py -3.12 pipeline/engine_a_veo_gemini.py asset --name nautilus",
+    "probe_return_code": 4,
+    "probe_status": "HTTP_429_QUOTA_EXCEEDED",
+    "active_engine": "ab3d-forge (Blender 4.5.15 BLENDER_EEVEE_NEXT)"
+  },
+  "assets": [
+    {
+      "name": "terminal-ip67",
+      "png": {
+        "file": "terminal-ip67.png",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 426656
+      },
+      "webp": {
+        "file": "terminal-ip67.webp",
+        "width": 1000,
+        "height": 1000,
+        "bytes": 51006
+      },
+      "bbox_px": {
+        "min_x": 251,
+        "min_y": 191,
+        "max_x": 948,
+        "max_y": 1008,
+        "width": 698,
+        "height": 818
+      },
+      "margins_pct": {
+        "left": 20.92,
+        "right": 20.92,
+        "top": 15.92,
+        "bottom": 15.92
+      },
+      "min_margin_pct": 15.92
+    },
+    {
+      "name": "silo-lidar",
+      "png": {
+        "file": "silo-lidar.png",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 490716
+      },
+      "webp": {
+        "file": "silo-lidar.webp",
+        "width": 1000,
+        "height": 1000,
+        "bytes": 46358
+      },
+      "bbox_px": {
+        "min_x": 279,
+        "min_y": 191,
+        "max_x": 920,
+        "max_y": 1008,
+        "width": 642,
+        "height": 818
+      },
+      "margins_pct": {
+        "left": 23.25,
+        "right": 23.25,
+        "top": 15.92,
+        "bottom": 15.92
+      },
+      "min_margin_pct": 15.92
+    },
+    {
+      "name": "neural-n8n",
+      "png": {
+        "file": "neural-n8n.png",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 401547
+      },
+      "webp": {
+        "file": "neural-n8n.webp",
+        "width": 1000,
+        "height": 1000,
+        "bytes": 86010
+      },
+      "bbox_px": {
+        "min_x": 191,
+        "min_y": 272,
+        "max_x": 1008,
+        "max_y": 927,
+        "width": 818,
+        "height": 656
+      },
+      "margins_pct": {
+        "left": 15.92,
+        "right": 15.92,
+        "top": 22.67,
+        "bottom": 22.67
+      },
+      "min_margin_pct": 15.92
+    },
+    {
+      "name": "flir-optic",
+      "png": {
+        "file": "flir-optic.png",
+        "width": 1200,
+        "height": 1200,
+        "bytes": 592425
+      },
+      "webp": {
+        "file": "flir-optic.webp",
+        "width": 1000,
+        "height": 1000,
+        "bytes": 47186
+      },
+      "bbox_px": {
+        "min_x": 191,
+        "min_y": 196,
+        "max_x": 1008,
+        "max_y": 1003,
+        "width": 818,
+        "height": 808
+      },
+      "margins_pct": {
+        "left": 15.92,
+        "right": 15.92,
+        "top": 16.33,
+        "bottom": 16.33
+      },
+      "min_margin_pct": 15.92
+    }
+  ]
+}

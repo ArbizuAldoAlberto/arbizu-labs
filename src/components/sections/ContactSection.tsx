@@ -23,6 +23,7 @@ export default function ContactSection() {
       company: formData.get('company'),
       message: formData.get('message'),
       bot_field: formData.get('bot_field'),
+      b_company_url: formData.get('b_company_url'),
       services: ['direct_contact_form'],
       total: 0
     };
@@ -93,8 +94,11 @@ export default function ContactSection() {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
-                {/* Honeypot */}
-                <input type="text" name="bot_field" className="hidden" tabIndex={-1} autoComplete="off" />
+                {/* Anti-Bot Invisible Honeypot Guard */}
+                <div style={{ position: 'absolute', opacity: 0, zIndex: -1, pointerEvents: 'none', height: 0, width: 0, overflow: 'hidden' }} aria-hidden="true">
+                  <input type="text" name="b_company_url" tabIndex={-1} autoComplete="off" defaultValue="" />
+                  <input type="text" name="bot_field" tabIndex={-1} autoComplete="off" defaultValue="" />
+                </div>
 
                 <div>
                   <label className="block font-space text-[10px] uppercase tracking-widest text-[var(--color-mist-gray)] mb-1">

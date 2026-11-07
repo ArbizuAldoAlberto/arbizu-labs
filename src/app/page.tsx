@@ -1,6 +1,8 @@
 import Hero from '@/components/sections/Hero';
-import SocialProof from '@/components/sections/SocialProof';
+import VaultDiveSequence from '@/components/sections/VaultDiveSequence';
 import WhyEnterprise from '@/components/sections/WhyEnterprise';
+import SocialProof from '@/components/sections/SocialProof';
+import Telemetry3DSection from '@/components/sections/Telemetry3DSection';
 import ProductsBento from '@/components/sections/ProductsBento';
 import MobileAppShowcase from '@/components/sections/MobileAppShowcase';
 import Problems from '@/components/sections/Problems';
@@ -18,8 +20,10 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <SocialProof />
+      <VaultDiveSequence />
       <WhyEnterprise />
+      <SocialProof />
+      <Telemetry3DSection />
       <ProductsBento />
       <MobileAppShowcase />
       <Problems />
