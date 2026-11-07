@@ -5,10 +5,12 @@ import { ArrowRight, Activity, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import QuantumRaymarchGrid from '@/components/ui/QuantumRaymarchGrid';
 import B2BContractModal from '@/components/modals/B2BContractModal';
+import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
 
 export default function Hero() {
   const { t } = useLanguage();
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
+  const { playHoverTick, playEngagePulse } = useTacticalAudio();
 
   const handleMagneticMove = (e: React.PointerEvent<HTMLElement>) => {
     const btn = e.currentTarget;
@@ -76,6 +78,8 @@ export default function Hero() {
           <a
             href="#descenso"
             data-magnetic
+            onMouseEnter={playHoverTick}
+            onClick={playEngagePulse}
             onPointerMove={handleMagneticMove}
             onPointerLeave={handleMagneticLeave}
             className="btn-magnetic btn-magnetic--secondary"
@@ -91,7 +95,11 @@ export default function Hero() {
 
           <button
             type="button"
-            onClick={() => setIsContractModalOpen(true)}
+            onMouseEnter={playHoverTick}
+            onClick={() => {
+              playEngagePulse();
+              setIsContractModalOpen(true);
+            }}
             data-magnetic
             onPointerMove={handleMagneticMove}
             onPointerLeave={handleMagneticLeave}
@@ -111,6 +119,8 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             data-magnetic
+            onMouseEnter={playHoverTick}
+            onClick={playEngagePulse}
             onPointerMove={handleMagneticMove}
             onPointerLeave={handleMagneticLeave}
             className="btn-magnetic btn-magnetic--tertiary"
