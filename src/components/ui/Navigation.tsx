@@ -57,9 +57,8 @@ export default function Navigation() {
     <header
       data-header
       data-scrolled={isScrolled ? 'true' : 'false'}
-      className={`site-header fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'is-scrolled py-3' : 'py-4'
-      }`}
+      className={`site-header fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'is-scrolled py-3' : 'py-4'
+        }`}
       style={{
         background:
           'linear-gradient(to bottom, var(--bg-seam) 0%, var(--bg-glass) 62%, transparent 100%)',
@@ -88,13 +87,13 @@ export default function Navigation() {
             href="#descenso"
             className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
-            Inmersión
+            {locale === 'es' ? 'Inmersión' : 'Dive'}
           </a>
           <a
             href="#artefactos"
             className="font-space text-[10px] 2xl:text-[11px] uppercase tracking-wide text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
           >
-            Hardware 3D
+            {locale === 'es' ? 'Hardware 3D' : '3D Hardware'}
           </a>
           <Link
             href="/#ecosystem"
@@ -219,21 +218,19 @@ export default function Navigation() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setLocale('es')}
-                  className={`px-3 py-1 rounded-[8px] text-xs font-mono border ${
-                    locale === 'es'
-                      ? 'bg-[var(--bg-btn)] border-[var(--accent-border-strong)] text-[var(--accent)] font-bold'
-                      : 'bg-[var(--bg-deep)] border-[var(--accent-border)] text-[var(--text-secondary)]'
-                  }`}
+                  className={`px-3 py-1 rounded-[8px] text-xs font-mono border ${locale === 'es'
+                    ? 'bg-[var(--bg-btn)] border-[var(--accent-border-strong)] text-[var(--accent)] font-bold'
+                    : 'bg-[var(--bg-deep)] border-[var(--accent-border)] text-[var(--text-secondary)]'
+                    }`}
                 >
                   Español (ES)
                 </button>
                 <button
                   onClick={() => setLocale('en')}
-                  className={`px-3 py-1 rounded-[8px] text-xs font-mono border ${
-                    locale === 'en'
-                      ? 'bg-[var(--bg-btn)] border-[var(--accent-border-strong)] text-[var(--accent)] font-bold'
-                      : 'bg-[var(--bg-deep)] border-[var(--accent-border)] text-[var(--text-secondary)]'
-                  }`}
+                  className={`px-3 py-1 rounded-[8px] text-xs font-mono border ${locale === 'en'
+                    ? 'bg-[var(--bg-btn)] border-[var(--accent-border-strong)] text-[var(--accent)] font-bold'
+                    : 'bg-[var(--bg-deep)] border-[var(--accent-border)] text-[var(--text-secondary)]'
+                    }`}
                 >
                   English (EN)
                 </button>

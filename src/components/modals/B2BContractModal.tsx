@@ -41,10 +41,34 @@ export default function B2BContractModal({
   initialServiceTitle,
   initialServicePrice,
 }: B2BContractModalProps) {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const [selectedService, setSelectedService] = useState(SERVICES_CATALOG[0].id);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const localizedCatalog = [
+    {
+      id: 'arch-consulting',
+      title: t.b2bModal.service1Title,
+      desc: t.b2bModal.service1Desc,
+      priceARS: '$75.000 ARS',
+      priceUSD: '$75 - $150 USD',
+    },
+    {
+      id: 'flir-iot-audit',
+      title: t.b2bModal.service2Title,
+      desc: t.b2bModal.service2Desc,
+      priceARS: '$120.000 - $150.000 ARS',
+      priceUSD: '$120 - $250 USD',
+    },
+    {
+      id: 'sovereign-platform',
+      title: t.b2bModal.service3Title,
+      desc: t.b2bModal.service3Desc,
+      priceARS: 'Desde $250.000 ARS',
+      priceUSD: 'Desde $500 - $3,000 USD',
+    },
+  ];
 
   const getAudioContext = useCallback(() => {
     if (typeof window === 'undefined') return null;
@@ -102,7 +126,7 @@ export default function B2BContractModal({
 
   if (!isOpen) return null;
 
-  const currentService = SERVICES_CATALOG.find((s) => s.id === selectedService) || SERVICES_CATALOG[0];
+  const currentService = localizedCatalog.find((s) => s.id === selectedService) || localizedCatalog[0];
 
   const handleCopy = (key: string, text: string) => {
     playChime(987, 1318, 0.07); // Doble tono armónico de confirmación
@@ -117,7 +141,9 @@ export default function B2BContractModal({
     const label = initialServiceTitle || currentService.title;
     const price = initialServicePrice || `${currentService.priceARS} / ${currentService.priceUSD}`;
     const text = encodeURIComponent(
-      `Hola Aldo, solicito Discovery Call / Propuesta B2B en Arbizu Labs para "${label}" (${price}).`
+      locale === 'es'
+        ? `Hola Aldo, solicito Discovery Call / Propuesta B2B en Arbizu Labs para "${label}" (${price}).`
+        : `Hello Aldo, I would like to request a Discovery Call / B2B Proposal at Arbizu Labs for "${label}" (${price}).`
     );
     return `https://wa.me/5492314489197?text=${text}`;
   };
@@ -144,10 +170,10 @@ export default function B2BContractModal({
             </div>
             <div>
               <h3 id="b2b-modal-title" className="font-serif text-xl sm:text-2xl text-[#F8FAFC] font-bold tracking-tight">
-                Contratación & Checkout Corporativo
+                {t.b2bModal.title}
               </h3>
               <p className="font-mono text-xs text-[#94A3B8]">
-                Titular: Aldo Alberto Arbizu · CUIT: 20-38362060-1
+                {locale === 'es' ? 'Titular: Aldo Alberto Arbizu · CUIT: 20-38362060-1' : 'Beneficiary: Aldo Alberto Arbizu · Tax ID: 20-38362060-1'}
               </p>
             </div>
           </div>
@@ -158,7 +184,7 @@ export default function B2BContractModal({
               onClose();
             }}
             className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 flex items-center justify-center text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
-            aria-label="Cerrar modal"
+            aria-label={t.b2bModal.closeAria}
           >
             <X className="w-4 h-4" />
           </button>
@@ -167,16 +193,19 @@ export default function B2BContractModal({
         {/* 1. Selector de Servicio */}
         <div className="mb-6">
           <label className="font-mono text-xs uppercase tracking-wider text-[#D4AF37] font-bold block mb-2.5">
-            1. Selecciona el Módulo / Servicio Requerido:
+            {locale === 'es' ? '1. Selecciona el Módulo / Servicio Requerido:' : '1. Select Required Module / Service:'}
           </label>
           <div className="space-y-2.5">
-            {SERVICES_CATALOG.map((srv) => (
+            {localizedCatalog.map((srv) => (
               <button
                 key={srv.id}
                 type="button"
                 onClick={() => {
                   playChime(784, 880, 0.05);
                   setSelectedService(srv.id);
+                  if (typeof window !== 'undefined') {
+                    sessionStorage.setItem('webanti_b2b_plan', srv.title);
+                  }
                 }}
                 className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
                   selectedService === srv.id
@@ -200,7 +229,9 @@ export default function B2BContractModal({
         {/* 2. Coordenadas de Pago Oficiales Auditadas */}
         <div className="mb-6 space-y-3">
           <label className="font-mono text-xs uppercase tracking-wider text-[#D4AF37] font-bold block">
-            2. Coordenadas Financieras Oficiales (Transferencia 3.0 / Cripto L2):
+            {locale === 'es'
+              ? '2. Coordenadas Financieras Oficiales (Transferencia 3.0 / Cripto L2):'
+              : '2. Official Settlement Coordinates (Wire Transfer / Crypto L2):'}
           </label>
 
           {/* Alias Mercado Pago */}
@@ -220,12 +251,12 @@ export default function B2BContractModal({
               {copiedKey === 'mp' ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">COPIADO ✓</span>
+                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Copiar</span>
+                  <span>{t.b2bModal.btnCopy}</span>
                 </>
               )}
             </button>
@@ -248,12 +279,12 @@ export default function B2BContractModal({
               {copiedKey === 'galicia' ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">COPIADO ✓</span>
+                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Copiar</span>
+                  <span>{t.b2bModal.btnCopy}</span>
                 </>
               )}
             </button>
@@ -276,12 +307,12 @@ export default function B2BContractModal({
               {copiedKey === 'cbu' ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">COPIADO ✓</span>
+                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Copiar</span>
+                  <span>{t.b2bModal.btnCopy}</span>
                 </>
               )}
             </button>
@@ -304,12 +335,12 @@ export default function B2BContractModal({
               {copiedKey === 'eth' ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">COPIADO ✓</span>
+                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Copiar</span>
+                  <span>{t.b2bModal.btnCopy}</span>
                 </>
               )}
             </button>
@@ -320,7 +351,7 @@ export default function B2BContractModal({
         <div className="pt-4 border-t border-white/[0.10] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-xs font-mono text-[#94A3B8]">
             <ShieldCheck className="w-4 h-4 text-[#D4AF37] shrink-0" strokeWidth={1.5} />
-            <span>Factura electrónica oficial emitida en el acto.</span>
+            <span>{locale === 'es' ? 'Factura electrónica oficial emitida en el acto.' : 'Official electronic invoice issued on the spot.'}</span>
           </div>
 
           <a
@@ -331,7 +362,7 @@ export default function B2BContractModal({
             className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#D4AF37] hover:bg-[#E09F5A] text-[#070B12] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)]"
           >
             <MessageSquare className="w-4 h-4" strokeWidth={1.5} />
-            <span>Confirmar por WhatsApp (+54 9 2314 489197)</span>
+            <span>{t.b2bModal.btnWhatsApp}</span>
             <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
           </a>
         </div>

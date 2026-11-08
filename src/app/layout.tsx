@@ -5,6 +5,7 @@ import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import FloatingExecutiveDock from "@/components/ui/FloatingExecutiveDock";
+import OfflineTelemetryHUD from "@/components/system/OfflineTelemetryHUD";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const cormorant = Cormorant_Garamond({
@@ -214,6 +215,7 @@ export default function RootLayout({
           <main id="main-content">{children}</main>
           <Footer />
           <FloatingExecutiveDock />
+          <OfflineTelemetryHUD />
         </LanguageProvider>
       </body>
     </html>

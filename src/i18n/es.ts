@@ -450,5 +450,47 @@ export const es = {
     rights: "© 2026 Arbizu Labs. Todos los derechos reservados. San Carlos de Bolívar, Argentina.",
     security: "Seguridad",
     uptime: "Uptime"
+  },
+  vaultDive: {
+    depthAria: "Profundidad de telemetría",
+    depthUnit: "SQLITE · WAL",
+    beat1Title: "Arquitectura Offline-First & Persistencia SQLite WAL",
+    beat1Copy: "Sincronización determinística con colas criptográficas locales, operación 100% autónoma en zonas rurales sin cobertura y reconciliación en milisegundos.",
+    beat2Title: "Telemetría AgTech LiDAR & Termografía FLIR",
+    beat2Copy: "Sensórica embebida IP67, radares láser ToF en silobolsas y visión termográfica calibrada para prevención de ignición y trazabilidad SENASA.",
+    beat3Title: "Orquestación Neural n8n & Liquidación Base L2",
+    beat3Copy: "Pipelines autónomos con LLMs privados, auditoría de smart contracts y ejecución de baja latencia (< 10ms) con disponibilidad continua 99.98%."
+  },
+  hardware3d: {
+    viewportTitle: "// ARBIZU LABS // 3D HARDWARE VIEWPORT",
+    rotateHelp: "ARRASTRA PARA ROTAR 360° // SCROLL O CONTROLES ABAJO",
+    rotateTitle: "Arrastra para orbitar el modelo 3D en tiempo real",
+    loading: "Iniciando Pipeline WebGL Industrial...",
+    terminalTitle: "TERMINAL IoT RUGGED (IP67)",
+    terminalSubtitle: "Hardware embebido para telemetría offline y sincronización SQLite WAL en campo",
+    terminalBadge: "HARDWARE INDUSTRIAL",
+    siloTitle: "SILO INDUSTRIAL AGROMARKET PRO",
+    siloSubtitle: "Acopio inteligente con telemetría LiDAR ToF, sensor FLIR térmico y celdas de carga",
+    siloBadge: "AGTECH AUTOMATION",
+    modePbr: "🎨 PBR",
+    modeWire: "📐 Wire CAD",
+    modeFlir: "🌡 FLIR",
+    exploded: "Despiece CAD",
+    collapsed: "Ensamblado CAD"
+  },
+  b2bModal: {
+    title: "Consola de Contratación & Facturación B2B",
+    closeAria: "Cerrar consola B2B",
+    badge: "ARBIZU LABS B2B // SERVICIO OFICIAL",
+    note: "Reserva de sprint técnico o transferencia directa con facturación oficial (Anticipo 50% para inicio de arquitectura):",
+    btnCopy: "COPIAR COORDENADA",
+    copied: "COPIADO ✓",
+    btnWhatsApp: "WhatsApp Directo (+54 9 2314 489197)",
+    service1Title: "Consultoría de Arquitectura Crítica / Licencia Agro",
+    service1Desc: "Auditoría de resiliencia, diseño offline-first, SQLite WAL y trazabilidad.",
+    service2Title: "Auditoría Térmica FLIR & Hardening Linux VPS",
+    service2Desc: "Inspección termográfica FLIR calibrada, telemetría IoT y setup Zero-Downtime.",
+    service3Title: "Desarrollo de Plataforma Soberana / Sprint B2B",
+    service3Desc: "Construcción integral de microservicios, apps móviles Offline-First y automatización IA."
   }
 };

@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface WebantiState {
   frame: number;
@@ -36,6 +37,7 @@ function clamp(val: number, min: number, max: number): number {
 }
 
 export default function VaultDiveSequence() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -468,11 +470,11 @@ export default function VaultDiveSequence() {
         <div className="edge-fuse edge-fuse--bottom" aria-hidden="true" />
 
         {/* Depth / Telemetry Gauge */}
-        <aside className="depth-gauge" aria-label="Profundidad de telemetría">
+        <aside className="depth-gauge" aria-label={t.vaultDive.depthAria}>
           <span className="depth-value" data-depth-readout>
             0
           </span>
-          <span className="depth-unit whitespace-nowrap">SQLITE · WAL</span>
+          <span className="depth-unit whitespace-nowrap">{t.vaultDive.depthUnit}</span>
           <div className="depth-track">
             <span className="depth-fill" data-depth-fill />
           </div>
@@ -482,31 +484,28 @@ export default function VaultDiveSequence() {
         <div className="beats">
           <article className="beat" data-beat="0.06,0.30">
             <h2 className="beat-title">
-              Arquitectura Offline-First &amp; Persistencia SQLite WAL
+              {t.vaultDive.beat1Title}
             </h2>
             <p className="beat-copy">
-              Sincronización determinística con colas criptográficas locales, operación 100%
-              autónoma en zonas rurales sin cobertura y reconciliación en milisegundos.
+              {t.vaultDive.beat1Copy}
             </p>
           </article>
 
           <article className="beat beat--right" data-beat="0.36,0.62">
             <h2 className="beat-title">
-              Telemetría AgTech LiDAR &amp; Termografía FLIR
+              {t.vaultDive.beat2Title}
             </h2>
             <p className="beat-copy">
-              Sensórica embebida IP67, radares láser ToF en silobolsas y visión termográfica
-              calibrada para prevención de ignición y trazabilidad SENASA.
+              {t.vaultDive.beat2Copy}
             </p>
           </article>
 
           <article className="beat beat--center" data-beat="0.70,0.97">
             <h2 className="beat-title">
-              Orquestación Neural n8n &amp; Liquidación Base L2
+              {t.vaultDive.beat3Title}
             </h2>
             <p className="beat-copy">
-              Pipelines autónomos con LLMs privados, auditoría de smart contracts y ejecución de
-              baja latencia (&lt; 10ms) con disponibilidad continua 99.98%.
+              {t.vaultDive.beat3Copy}
             </p>
           </article>
         </div>

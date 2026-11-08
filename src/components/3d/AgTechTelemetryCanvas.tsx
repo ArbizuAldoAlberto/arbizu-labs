@@ -10,6 +10,7 @@ import {
   createZincSpangleTexture,
 } from '@/lib/3d/pbrTextures';
 import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
+import { useLanguage } from '@/context/LanguageContext';
 
 type ModelKey = 'terminal' | 'silo';
 type VisualMode = 'pbr' | 'wireframe' | 'flir';
@@ -77,6 +78,7 @@ function createABSNormalTexture(): THREE.DataTexture {
 export default function AgTechTelemetryCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { t } = useLanguage();
   const [activeModel, setActiveModel] = useState<ModelKey>('terminal');
   const [visualMode, setVisualMode] = useState<VisualMode>('pbr');
   const [loading, setLoading] = useState(true);
@@ -85,14 +87,16 @@ export default function AgTechTelemetryCanvas() {
   const [metrics, setMetrics] = useState({ tris: 612, fps: 60, drawCalls: 8 });
   const { playHoverTick, playModeSwitch } = useTacticalAudio();
 
-  // Sincronización con query params (?model=silo&mode=flir&exploded=true) para deep linking y auditoría
+  // Sincronización con query params (?model=silo&mode=flir&exploded=true) y sessionStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const sp = new URLSearchParams(window.location.search);
-      const m = sp.get('model');
-      if (m === 'silo' || m === 'terminal') setActiveModel(m);
-      const mode = sp.get('mode');
-      if (mode === 'pbr' || mode === 'wireframe' || mode === 'flir') setVisualMode(mode);
+      const savedModel = sessionStorage.getItem('webanti_hardware3d_model');
+      const m = savedModel || sp.get('model');
+      if (m === 'silo' || m === 'terminal') setActiveModel(m as ModelKey);
+      const savedMode = sessionStorage.getItem('webanti_hardware3d_mode');
+      const mode = savedMode || sp.get('mode');
+      if (mode === 'pbr' || mode === 'wireframe' || mode === 'flir') setVisualMode(mode as VisualMode);
       if (sp.get('exploded') === 'true') setExploded(true);
     }
   }, []);
@@ -116,6 +120,17 @@ export default function AgTechTelemetryCanvas() {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+
+    // WebGL Context Loss Watchdog
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      console.warn('[AgTechTelemetryCanvas] WebGL context lost. Engaging recovery watchdog.');
+    };
+    const handleContextRestored = () => {
+      console.info('[AgTechTelemetryCanvas] WebGL context restored.');
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
 
     // Headless / Test Runner bypass only when explicitly requested via ?disable3d=1
     if (
@@ -821,6 +836,8 @@ export default function AgTechTelemetryCanvas() {
     return () => {
       isDisposed = true;
       cancelAnimationFrame(animId);
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
       container.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
@@ -858,6 +875,20 @@ export default function AgTechTelemetryCanvas() {
     }
   }, [activeModel]);
 
+  const localizedModels: Record<ModelKey, { title: string; subtitle: string; badge: string }> = {
+    terminal: {
+      title: t.hardware3d.terminalTitle,
+      subtitle: t.hardware3d.terminalSubtitle,
+      badge: t.hardware3d.terminalBadge,
+    },
+    silo: {
+      title: t.hardware3d.siloTitle,
+      subtitle: t.hardware3d.siloSubtitle,
+      badge: t.hardware3d.siloBadge,
+    },
+  };
+  const activeMeta = localizedModels[activeModel];
+
   return (
     <div
       ref={containerRef}
@@ -867,7 +898,7 @@ export default function AgTechTelemetryCanvas() {
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
         <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
-          <span className="font-bold tracking-wider">// ARBIZU LABS // 3D HARDWARE VIEWPORT</span>
+          <span className="font-bold tracking-wider">{t.hardware3d.viewportTitle}</span>
         </div>
 
         <div className="flex items-center gap-2 bg-[#070B12]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/[0.10] text-[11px] text-[#94A3B8]">
@@ -888,13 +919,13 @@ export default function AgTechTelemetryCanvas() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing z-0"
-        title="Arrastra para orbitar el modelo 3D en tiempo real"
+        title={t.hardware3d.rotateTitle}
       />
 
       {/* Indicador de Interacción */}
       <div className="absolute top-20 right-6 z-10 pointer-events-none hidden sm:flex items-center gap-2 text-[10px] font-mono text-[#94A3B8] bg-[#070B12]/70 backdrop-blur-sm px-3 py-1 rounded-full border border-white/[0.08]">
         <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
-        <span>ARRASTRA PARA ROTAR 360° // SCROLL O CONTROLES ABAJO</span>
+        <span>{t.hardware3d.rotateHelp}</span>
       </div>
 
       {/* Overlay de Carga */}
@@ -902,7 +933,7 @@ export default function AgTechTelemetryCanvas() {
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#070B12]/85 backdrop-blur-md transition-opacity">
           <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-3 shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
           <span className="text-xs font-mono text-[#D4AF37] tracking-widest uppercase">
-            Iniciando Pipeline WebGL Industrial...
+            {t.hardware3d.loading}
           </span>
         </div>
       )}
@@ -912,14 +943,14 @@ export default function AgTechTelemetryCanvas() {
         <div className="max-w-md">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono text-[#D4AF37] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#D4AF37]/10 border border-[#D4AF37]/30">
-              {MODELS[activeModel].badge}
+              {activeMeta.badge}
             </span>
           </div>
           <h4 className="text-base sm:text-xl font-bold text-[#F8FAFC] font-space tracking-tight">
-            {MODELS[activeModel].title}
+            {activeMeta.title}
           </h4>
           <p className="text-xs text-[#94A3B8] font-mono mt-1 leading-relaxed">
-            {MODELS[activeModel].subtitle}
+            {activeMeta.subtitle}
           </p>
         </div>
 
@@ -933,6 +964,7 @@ export default function AgTechTelemetryCanvas() {
               onClick={() => {
                 playModeSwitch('pbr');
                 setActiveModel('terminal');
+                if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_model', 'terminal');
               }}
               className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 activeModel === 'terminal'
@@ -948,6 +980,7 @@ export default function AgTechTelemetryCanvas() {
               onClick={() => {
                 playModeSwitch('pbr');
                 setActiveModel('silo');
+                if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_model', 'silo');
               }}
               className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 activeModel === 'silo'
@@ -967,6 +1000,7 @@ export default function AgTechTelemetryCanvas() {
               onClick={() => {
                 playModeSwitch('pbr');
                 setVisualMode('pbr');
+                if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'pbr');
               }}
               className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'pbr'
@@ -975,7 +1009,7 @@ export default function AgTechTelemetryCanvas() {
               }`}
               title="Renderizado PBR Físico de Superficies"
             >
-              🎨 PBR
+              {t.hardware3d.modePbr}
             </button>
             <button
               type="button"
@@ -983,6 +1017,7 @@ export default function AgTechTelemetryCanvas() {
               onClick={() => {
                 playModeSwitch('wireframe');
                 setVisualMode('wireframe');
+                if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'wireframe');
               }}
               className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'wireframe'
@@ -991,7 +1026,7 @@ export default function AgTechTelemetryCanvas() {
               }`}
               title="Topología Estructural en Alambre"
             >
-              📐 Wire CAD
+              {t.hardware3d.modeWire}
             </button>
             <button
               type="button"
@@ -999,6 +1034,7 @@ export default function AgTechTelemetryCanvas() {
               onClick={() => {
                 playModeSwitch('xray');
                 setVisualMode('flir');
+                if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'flir');
               }}
               className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'flir'
@@ -1007,7 +1043,7 @@ export default function AgTechTelemetryCanvas() {
               }`}
               title="Cámara Termográfica FLIR Ironbow"
             >
-              🌡 FLIR
+              {t.hardware3d.modeFlir}
             </button>
           </div>
 
@@ -1026,7 +1062,7 @@ export default function AgTechTelemetryCanvas() {
             }`}
             title="Separar componentes mecánicos y circuitos internos con cotas CAD"
           >
-            {exploded ? '💥 Despiece Activo' : '⚙ Despiece CAD'}
+            {exploded ? `✕ ${t.hardware3d.collapsed}` : `⚡ ${t.hardware3d.exploded}`}
           </button>
 
           {/* Botón de Giro Automático */}
