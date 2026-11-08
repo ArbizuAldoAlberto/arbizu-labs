@@ -26,7 +26,6 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
     "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", subDomain: "ecoconnect.aldoarbizu.com" },
     "pawhero-pet-tracking": { image: "/projects/pawhero.png", subDomain: "pawhero.aldoarbizu.com" },
     "aureus-wealth-os": { image: "/projects/aureus.png", subDomain: "aureus.aldoarbizu.com" },
-    "techzone-retail-pos": { image: "/projects/techzone.png", subDomain: "techzone.aldoarbizu.com" },
     "habitat-lease-engine": { image: "/projects/habitat.png", subDomain: "habitat.aldoarbizu.com" },
     "smart-marketing-advisor": { image: "/projects/marketingadvisor.png", subDomain: "marketingadvisor.aldoarbizu.com" },
   };
@@ -125,15 +124,6 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
         { label: "Streaming Latency", value: "< 120ms TTFT" },
         { label: "Cognitive Bias Engine", value: "Local WASM" },
         { label: "Design Language", value: "Wealth OS Glass" }
-      ]
-    },
-    "techzone-retail-pos": {
-      titleEn: "TechZone Retail: Resilient Omnichannel POS with SQLite WAL",
-      industryEn: "Retail POS & Mobile Offline",
-      metricsEn: [
-        { label: "Outage Loss", value: "0% Downtime Loss" },
-        { label: "Offline Checkout Time", value: "< 300ms" },
-        { label: "Cloud Sync", value: "Atomic LWW" }
       ]
     },
     "habitat-lease-engine": {

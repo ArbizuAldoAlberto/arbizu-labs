@@ -68,6 +68,29 @@ export function useTacticalAudio() {
     osc2.stop(now + 0.13);
   }, [getContext]);
 
-  return { playHoverTick, playEngagePulse };
+  const playModeSwitch = useCallback(
+    (_mode?: string) => {
+      const ctx = getContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520, now);
+      osc.frequency.exponentialRampToValueAtTime(1040, now + 0.06);
+
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.075);
+    },
+    [getContext]
+  );
+
+  return { playHoverTick, playEngagePulse, playModeSwitch };
 }
 

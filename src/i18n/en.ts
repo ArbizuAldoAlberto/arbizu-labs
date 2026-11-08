@@ -24,7 +24,7 @@ export const en: typeof es = {
       { value: "100%", label: "Offline Availability", desc: "SQLite WAL + Zero Network Drop" },
       { value: "< 10ms", label: "DeFi / WebSocket Latency", desc: "TitanFlow Trading Engine" },
       { value: "0%", label: "Vendor Lock-in", desc: "100% Proprietary Codebase" },
-      { value: "13", label: "Production Apps", desc: "AgTech, DeFi, Security & SaaS" }
+      { value: "12", label: "Production Apps", desc: "AgTech, DeFi, Security & SaaS" }
     ]
   },
   socialProof: {
@@ -65,10 +65,10 @@ export const en: typeof es = {
   },
   products: {
     badge: "Applications Catalog",
-    heading: "13 Systems Engineered & Deployed in Production",
+    heading: "12 Systems Engineered & Deployed in Production",
     subheading: "Explore our active production platforms. Each system solves a critical business bottleneck through bespoke software architecture.",
     filters: {
-      all: "All Apps (13)",
+      all: "All Apps (12)",
       agtech: "AgTech & Logistics",
       security: "Cybersecurity & Mobile",
       defi: "DeFi & Fintech",
@@ -171,15 +171,6 @@ export const en: typeof es = {
         desc: "Wealth management operating system with sub-120ms streaming AI dialogue and WebAssembly cognitive bias detector.",
         problem: "Impulsive retail investment mistakes and lack of accessible high-end portfolio guidance.",
         solution: "Ultra-fast streaming (TTFT < 120ms) and client-side WASM engine detecting emotional bias traps.",
-        btnCase: "View Technical Case"
-      },
-      techzone: {
-        title: "TechZone Retail POS",
-        category: "Retail POS & Mobile",
-        status: "Deployed",
-        desc: "Resilient retail point-of-sale and interactive catalog with dual offline checkout and SQLite WAL persistence.",
-        problem: "Loss of retail sales and counter congestion triggered by broadband provider outages.",
-        solution: "Uninterrupted local transaction queueing with unattended cloud reconciliation once online.",
         btnCase: "View Technical Case"
       },
       habitat: {

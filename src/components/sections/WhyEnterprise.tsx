@@ -203,6 +203,7 @@ export default function WhyEnterprise() {
                     loading="eager"
                     fetchPriority="high"
                     decoding="sync"
+                    className="sepia-[.82] hue-rotate-[-12deg] saturate-[1.3] contrast-[1.08]"
                   />
                 </div>
 

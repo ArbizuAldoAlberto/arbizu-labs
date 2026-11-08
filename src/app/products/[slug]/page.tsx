@@ -558,64 +558,6 @@ const PRODUCTS: Record<string, ProductContent> = {
       { q: "¿Qué rendimientos históricos se han obtenido?", a: "Nuestras estrategias de delta neutral y provisión de liquidez en Base L2 generan históricamente entre un 7.5% y un 14.2% APR neto." }
     ]
   },
-  techzone: {
-    title: "TechZone Retail POS",
-    subtitle: "Punto de Venta Móvil Offline-First con Impresión Térmica & Sincronización Inmediata",
-    themeColor: "from-blue-500 to-indigo-600",
-    accentBg: "border-blue-500/30 bg-blue-950/20",
-    glowColor: "shadow-blue-500/20",
-    icon: <ShoppingBag className="w-12 h-12 text-blue-400" />,
-    heroBadge: "Retail POS & Ultra-Fast Ingress Gateway",
-    problem: [
-      "Terminales de cobro lentas que generan colas y pérdidas de ventas en picos de demanda.",
-      "Caídas de internet que paralizan las ventas en comercios minoristas y food trucks.",
-      "Dispersión de stock entre depósitos, sucursales físicas y tiendas de e-commerce."
-    ],
-    solution: [
-      "Caja de cobro ultrarrápida con tiempo de checkout inferior a 300ms.",
-      "Operación offline ininterrumpida con persistencia local en SQLite y colas sincronizadas.",
-      "Soporte nativo para impresoras térmicas Bluetooth/USB y lectores de códigos de barras."
-    ],
-    features: [
-      { name: "Sub-Second Checkout Engine", desc: "Escaneo por cámara o láser con validación de precios y stock en menos de 0.3 segundos." },
-      { name: "Thermal Printer ESC/POS", desc: "Impresión de tickets y comandas fiscales/no-fiscales en impresoras térmicas de 58mm y 80mm." },
-      { name: "Unified Stock Sync", desc: "Sincronización multi-sucursal instantánea apenas cualquier dispositivo recupera conexión." },
-      { name: "Multi-Payment Gateway", desc: "Cobros en efectivo, tarjetas mediante QR y pagos crypto instantáneos con conversión automática." }
-    ],
-    useCases: [
-      { title: "Retail y Tiendas de Ropa", scenario: "Atención ágil en mostrador con escaneo de prendas y control de talles y colores." },
-      { title: "Gastronomía y Food Trucks", scenario: "Comandas rápidas en ferias y eventos masivos sin depender de conectividad WiFi." },
-      { title: "Ferreterías y Repuestos", scenario: "Búsqueda instantánea en catálogos de 20,000+ artículos con persistencia local." }
-    ],
-    tiers: [
-      {
-        name: "Comercio Único",
-        price: "$35",
-        desc: "Licencia para una sucursal con hasta 3 terminales de cobro activas.",
-        features: ["App POS offline completa", "Impresión térmica Bluetooth", "Control de stock y caja diaria", "Soporte vía chat"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-single"
-      },
-      {
-        name: "Cadena Comercial",
-        price: "$89",
-        desc: "Para comercios con hasta 5 sucursales y gestión centralizada.",
-        features: ["Sucursales y terminales ilimitadas", "Sincronización de stock en tiempo real", "Reportes consolidados de ventas", "Soporte prioritario"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-chain"
-      },
-      {
-        name: "Enterprise Custom",
-        price: "$280",
-        desc: "Para franquicias y grandes cadenas de distribución minorista.",
-        features: ["Integración con ERPs existentes (SAP/Tango)", "Instancia de servidor privada", "SLA 99.9% y guardia de soporte", "Desarrollo de módulos a medida"],
-        checkoutUrl: "/api/warroom/checkout?product=techzone-enterprise"
-      }
-    ],
-    faqs: [
-      { q: "¿Funciona si se corta la luz o internet?", a: "Sí. Si usas una tablet o smartphone a batería, el POS sigue cobrando e imprimiendo normalmente en SQLite local, sincronizando todo al volver internet." },
-      { q: "¿Qué impresoras térmicas soporta?", a: "Soporta el 99% de impresoras térmicas del mercado compatibles con el estándar ESC/POS conectadas por Bluetooth, USB o red local (Ethernet/WiFi)." },
-      { q: "¿Cómo se cargan los productos?", a: "Puedes cargar productos individualmente o importar planillas de Excel/CSV con miles de artículos con un solo clic." }
-    ]
-  },
   sabiobosque: {
     title: "Sabio Bosque",
     subtitle: "Monitoreo Ambiental, Detección Temprana de Incendios y Eco-Turismo Asistido por IA",

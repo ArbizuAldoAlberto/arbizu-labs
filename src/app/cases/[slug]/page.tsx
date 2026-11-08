@@ -19,7 +19,6 @@ const caseAssetMap: Record<string, { image: string; liveUrl?: string; subDomain?
   "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", liveUrl: "https://ecoconnect.aldoarbizu.com", subDomain: "ecoconnect.aldoarbizu.com" },
   "pawhero-pet-tracking": { image: "/projects/pawhero.png", liveUrl: "https://pawhero.aldoarbizu.com", subDomain: "pawhero.aldoarbizu.com" },
   "aureus-wealth-os": { image: "/projects/aureus.png", liveUrl: "https://aureus.aldoarbizu.com", subDomain: "aureus.aldoarbizu.com" },
-  "techzone-retail-pos": { image: "/projects/techzone.png", liveUrl: "https://techzone.aldoarbizu.com", subDomain: "techzone.aldoarbizu.com" },
   "habitat-lease-engine": { image: "/projects/habitat.png", liveUrl: "https://habitat.aldoarbizu.com", subDomain: "habitat.aldoarbizu.com" },
   "smart-marketing-advisor": { image: "/projects/marketingadvisor.png", liveUrl: "https://marketingadvisor.aldoarbizu.com", subDomain: "marketingadvisor.aldoarbizu.com" },
 };

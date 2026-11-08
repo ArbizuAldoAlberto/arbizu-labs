@@ -30,27 +30,27 @@ export default function Problems() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="glass-surface-enterprise p-8 rounded-2xl flex flex-col justify-between hover:border-red-500/30 transition-all duration-300 relative overflow-hidden"
+              className="glass-surface-enterprise p-8 rounded-2xl flex flex-col justify-between hover:border-[#D4AF37]/40 transition-all duration-300 relative overflow-hidden"
             >
               <div>
-                <div className="flex items-center gap-2 text-rose-400 font-space text-xs uppercase tracking-widest font-bold mb-4">
-                  <AlertCircle className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-[#E09F5A] font-space text-xs uppercase tracking-widest font-bold mb-4">
+                  <AlertCircle className="w-4 h-4" strokeWidth={1.5} />
                   <span>{item.problem}</span>
                 </div>
                 
-                <div className="p-4 rounded-xl bg-black/40 border border-white/5 mb-6">
-                  <p className="font-mono text-xs text-rose-300/90 leading-relaxed">
-                    <strong className="text-white block mb-1">Impacto Negativo:</strong>
+                <div className="p-4 rounded-xl bg-black/40 border border-white/[0.08] mb-6">
+                  <p className="font-mono text-xs text-[#94A3B8] leading-relaxed">
+                    <strong className="text-[#F8FAFC] block mb-1">Impacto Operativo:</strong>
                     {item.impact}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/5 font-mono text-xs text-emerald-300">
-                <span className="font-space text-[10px] uppercase tracking-wider text-[var(--color-arbizu-teal)] block font-bold mb-1">
+              <div className="pt-4 border-t border-white/[0.08] font-mono text-xs text-[#E2E8F0]">
+                <span className="font-space text-[10px] uppercase tracking-wider text-[#D4AF37] block font-bold mb-1">
                   Solución Arbizu Labs:
                 </span>
-                <p className="text-zinc-300 leading-relaxed">{item.solution}</p>
+                <p className="text-[#94A3B8] leading-relaxed">{item.solution}</p>
               </div>
             </motion.div>
           ))}

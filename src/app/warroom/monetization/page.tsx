@@ -245,7 +245,7 @@ export default function MonetizationDashboard() {
                 >
                   <option value="titanflow">TitanFlow ($99)</option>
                   <option value="sentinelos">SentinelOS ($290)</option>
-                  <option value="techzone">TechZone POS ($49)</option>
+                  <option value="sabiobosque">SabioBosque POS ($49)</option>
                   <option value="agromarket">AgroMarket Pro ($99)</option>
                   <option value="aureus">Aureus Premium ($19)</option>
                 </select>
@@ -387,7 +387,7 @@ export default function MonetizationDashboard() {
 const PRODUCTS_ACCENTS: Record<string, string> = {
   titanflow: "bg-cyan-400",
   sentinelos: "bg-green-400",
-  techzone: "bg-violet-400",
+  sabiobosque: "bg-violet-400",
   agromarket: "bg-indigo-400",
   aureus: "bg-rose-400"
 };

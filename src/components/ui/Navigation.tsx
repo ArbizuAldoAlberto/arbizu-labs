@@ -164,9 +164,8 @@ export default function Navigation() {
 
           {/* Resumen Ejecutivo (PDF) / Executive Resume (PDF) */}
           <a
-            href="https://aldoarbizu.com/cv-aldo-arbizu.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/cv/cv-unificado-aldo-arbizu.pdf"
+            download
             onMouseEnter={playHoverTick}
             onClick={() => {
               soundEngine.playClick();
@@ -284,9 +283,8 @@ export default function Navigation() {
               {t.nav.pricing}
             </Link>
             <a
-              href="https://aldoarbizu.com/cv-aldo-arbizu.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/cv/cv-unificado-aldo-arbizu.pdf"
+              download
               onClick={() => setMobileMenuOpen(false)}
               className="block font-space text-xs uppercase tracking-widest text-[#D4AF37] hover:text-[#F8FAFC] py-2"
             >

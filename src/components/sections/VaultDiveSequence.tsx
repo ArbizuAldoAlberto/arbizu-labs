@@ -126,14 +126,14 @@ export default function VaultDiveSequence() {
       const cy = h * 0.48;
       const maxR = Math.max(w, h) * 0.68;
 
-      // Base vault radial background (identical in V1 and V2 so central 55%x55% is unbleached)
+      // Base vault radial background (Titanium & Warm Bronze executive palette)
       const grad = ctx.createRadialGradient(cx, cy, w * 0.02, cx, cy, maxR);
-      const coreR = Math.round(12 + 18 * Math.sin(t * Math.PI));
-      const coreG = Math.round(48 + 42 * Math.sin(t * Math.PI * 1.4));
-      const coreB = Math.round(62 + 36 * Math.cos(t * Math.PI * 0.8));
+      const coreR = Math.round(32 + 28 * Math.sin(t * Math.PI));
+      const coreG = Math.round(26 + 22 * Math.sin(t * Math.PI * 1.4));
+      const coreB = Math.round(18 + 14 * Math.cos(t * Math.PI * 0.8));
       grad.addColorStop(0, `rgb(${coreR}, ${coreG}, ${coreB})`);
-      grad.addColorStop(0.46, '#051320');
-      grad.addColorStop(1, '#03070e');
+      grad.addColorStop(0.46, '#0A0F1A');
+      grad.addColorStop(1, '#070B12');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
@@ -144,7 +144,9 @@ export default function VaultDiveSequence() {
         const phase = ((i / numRings) + t * 2.4) % 1;
         const radius = Math.pow(phase, 1.55) * maxR * 0.85;
         const alpha = (1 - phase) * 0.42;
-        ctx.strokeStyle = `rgba(94, 242, 224, ${alpha.toFixed(3)})`;
+        ctx.strokeStyle = i % 2 === 0
+          ? `rgba(212, 175, 55, ${alpha.toFixed(3)})`
+          : `rgba(226, 232, 240, ${(alpha * 0.75).toFixed(3)})`;
         ctx.lineWidth = Math.max(1, 2.4 * (1 - phase * 0.5));
         ctx.beginPath();
         ctx.ellipse(

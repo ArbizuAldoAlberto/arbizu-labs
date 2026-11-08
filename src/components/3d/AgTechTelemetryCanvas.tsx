@@ -9,6 +9,7 @@ import {
   createAnisotropicRoughnessTexture,
   createZincSpangleTexture,
 } from '@/lib/3d/pbrTextures';
+import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
 
 type ModelKey = 'terminal' | 'silo';
 type VisualMode = 'pbr' | 'wireframe' | 'flir';
@@ -82,6 +83,7 @@ export default function AgTechTelemetryCanvas() {
   const [exploded, setExploded] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [metrics, setMetrics] = useState({ tris: 612, fps: 60, drawCalls: 8 });
+  const { playHoverTick, playModeSwitch } = useTacticalAudio();
 
   // Sincronización con query params (?model=silo&mode=flir&exploded=true) para deep linking y auditoría
   useEffect(() => {
@@ -159,19 +161,19 @@ export default function AgTechTelemetryCanvas() {
     const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = envTexture;
 
-    // 4. Iluminación Cinematográfica de Ingeniería
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    // 4. Iluminación Cinematográfica de Ingeniería (Titanium & Warm Bronze)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0x34d399, 3.5); // Esmeralda de precisión
+    const keyLight = new THREE.DirectionalLight(0xD4AF37, 3.6); // Bronce cálido anodizado
     keyLight.position.set(4, 6, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x06b6d4, 2.8); // Cian aeroespacial
+    const rimLight = new THREE.DirectionalLight(0xE2E8F0, 2.9); // Titanio especular
     rimLight.position.set(-5, -2, -3);
     scene.add(rimLight);
 
-    const backRim = new THREE.DirectionalLight(0xf59e0b, 1.2); // Ambar de contraluz
+    const backRim = new THREE.DirectionalLight(0xE09F5A, 1.4); // Ámbar de contraluz
     backRim.position.set(0, -3, -4);
     scene.add(backRim);
 
@@ -202,9 +204,9 @@ export default function AgTechTelemetryCanvas() {
       }
 
       if (isFlashing) {
-        ctx.fillStyle = '#34d399';
+        ctx.fillStyle = '#D4AF37';
         ctx.fillRect(0, 0, w, h);
-        ctx.fillStyle = '#060f0c';
+        ctx.fillStyle = '#070B12';
         ctx.font = 'bold 22px monospace';
         ctx.fillText('// REFRESCANDO MATRIZ E-INK...', 40, h / 2);
         screenTexture.needsUpdate = true;
@@ -212,11 +214,11 @@ export default function AgTechTelemetryCanvas() {
       }
 
       // Fondo pizarra oscuro industrial
-      ctx.fillStyle = '#060f0c';
+      ctx.fillStyle = '#070B12';
       ctx.fillRect(0, 0, w, h);
 
       // Grilla milimétrica
-      ctx.strokeStyle = 'rgba(16, 185, 129, 0.15)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.16)';
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 32) {
         ctx.beginPath();
@@ -232,19 +234,19 @@ export default function AgTechTelemetryCanvas() {
       }
 
       // Banner Superior
-      ctx.fillStyle = 'rgba(16, 185, 129, 0.18)';
+      ctx.fillStyle = 'rgba(212, 175, 55, 0.18)';
       ctx.fillRect(16, 16, w - 32, 42);
-      ctx.strokeStyle = '#10b981';
+      ctx.strokeStyle = '#D4AF37';
       ctx.lineWidth = 2;
       ctx.strokeRect(16, 16, w - 32, 42);
 
-      ctx.fillStyle = '#34d399';
+      ctx.fillStyle = '#F8FAFC';
       ctx.font = 'bold 18px monospace';
       ctx.fillText('ARBIZU LABS // SENTINEL-OS v4.8', 32, 44);
 
       // Indicador de Latido / Heartbeat
       const pulseAlpha = 0.5 + Math.sin(t * 4.2) * 0.5;
-      ctx.fillStyle = `rgba(52, 211, 153, ${pulseAlpha})`;
+      ctx.fillStyle = `rgba(212, 175, 55, ${pulseAlpha})`;
       ctx.beginPath();
       ctx.arc(w - 45, 37, 7, 0, Math.PI * 2);
       ctx.fill();
@@ -257,7 +259,7 @@ export default function AgTechTelemetryCanvas() {
       const nodeTag = isPampean ? 'BOLÍVAR // NÚCLEO PAMPEANO' : 'CUYO // NODO AGTECH';
 
       // Métricas de Telemetría de Campo
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#94A3B8';
       ctx.font = '14px monospace';
       ctx.fillText(`STATUS: EN LÍNEA // ${nodeTag}`, 24, 94);
       ctx.fillText('ENLACE: LORA 915 MHz [-71 dBm] // SQLITE WAL: OK', 24, 120);
@@ -265,7 +267,7 @@ export default function AgTechTelemetryCanvas() {
       ctx.fillText(coordText, 24, 172);
 
       // Gráfico Oscilante de Humedad y Temperatura en Tiempo Real
-      ctx.strokeStyle = '#06b6d4';
+      ctx.strokeStyle = '#D4AF37';
       ctx.lineWidth = 3;
       ctx.beginPath();
       const graphY = 278;
@@ -284,21 +286,21 @@ export default function AgTechTelemetryCanvas() {
       ctx.lineTo(w - 24, graphY);
       ctx.stroke();
 
-      ctx.fillStyle = '#34d399';
+      ctx.fillStyle = '#E09F5A';
       ctx.font = '12px monospace';
       ctx.fillText('TELEMETRÍA: 41.8% HUMEDAD | 24.2°C SUELO | 1.82 dS/m', 24, 348);
 
       screenTexture.needsUpdate = true;
     }
 
-    // 6. Elementos Holográficos de Base
-    const grid = new THREE.GridHelper(9, 18, 0x10b981, 0x1f2937);
+    // 6. Elementos Holográficos de Base (Bronce & Acero)
+    const grid = new THREE.GridHelper(9, 18, 0xD4AF37, 0x1E293B);
     grid.position.y = -1.9;
     scene.add(grid);
 
     const ringGeo = new THREE.RingGeometry(1.6, 1.68, 64);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: 0x10b981,
+      color: 0xD4AF37,
       transparent: true,
       opacity: 0.45,
       side: THREE.DoubleSide,
@@ -319,7 +321,7 @@ export default function AgTechTelemetryCanvas() {
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0x34d399,
+      color: 0xD4AF37,
       size: 0.038,
       transparent: true,
       opacity: 0.6,
@@ -333,9 +335,9 @@ export default function AgTechTelemetryCanvas() {
     const guideGeometry = new THREE.BufferGeometry();
     guideGeometry.setAttribute('position', new THREE.BufferAttribute(guidePositions, 3));
     const guideMaterial = new THREE.LineBasicMaterial({
-      color: 0x06b6d4,
+      color: 0xD4AF37,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.5,
       depthWrite: false,
     });
     const cadGuideLines = new THREE.LineSegments(guideGeometry, guideMaterial);
@@ -362,7 +364,7 @@ export default function AgTechTelemetryCanvas() {
       new THREE.Vector3(0, 0.35, 0),
     ]);
     const laserBeamMat = new THREE.LineBasicMaterial({
-      color: 0x06b6d4,
+      color: 0xD4AF37,
       transparent: true,
       opacity: 0.9,
       linewidth: 2,
@@ -378,7 +380,7 @@ export default function AgTechTelemetryCanvas() {
 
     const pbrCatalog = {
       housing: new THREE.MeshPhysicalMaterial({
-        color: 0x111615,
+        color: 0x11151C,
         roughness: 0.45,
         metalness: 0.14,
         normalMap: absNormalMap,
@@ -388,7 +390,7 @@ export default function AgTechTelemetryCanvas() {
         envMapIntensity: 1.4,
       }),
       pcb: new THREE.MeshPhysicalMaterial({
-        color: 0x062e1d,
+        color: 0x1E293B,
         roughness: 0.28,
         metalness: 0.45,
         clearcoat: 0.65,
@@ -414,8 +416,8 @@ export default function AgTechTelemetryCanvas() {
         clearcoatRoughness: 0.03,
       }),
       leds: new THREE.MeshPhysicalMaterial({
-        color: 0x10b981,
-        emissive: new THREE.Color(0x34d399),
+        color: 0xD4AF37,
+        emissive: new THREE.Color(0xD4AF37),
         emissiveIntensity: 3.5,
         roughness: 0.05,
         metalness: 0.1,
@@ -859,26 +861,26 @@ export default function AgTechTelemetryCanvas() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[540px] lg:h-[640px] rounded-3xl overflow-hidden border border-emerald-500/25 bg-gradient-to-b from-[#060c0a] via-[#040807] to-[#020404] shadow-[0_20px_60px_-15px_rgba(16,185,129,0.2)] flex flex-col justify-between p-5 sm:p-7 select-none"
+      className="relative w-full h-[540px] lg:h-[640px] rounded-2xl overflow-hidden border border-[#D4AF37]/30 bg-gradient-to-b from-[#070B12] via-[#05080F] to-[#030509] shadow-[0_20px_60px_-15px_rgba(212,175,55,0.18)] flex flex-col justify-between p-5 sm:p-7 select-none"
     >
       {/* HUD Técnico Superior */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
           <span className="font-bold tracking-wider">// ARBIZU LABS // 3D HARDWARE VIEWPORT</span>
         </div>
 
-        <div className="flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-[11px] text-slate-300">
-          <span className="text-slate-400">TRIS:</span>
-          <span className="text-emerald-400 font-bold">{metrics.tris.toLocaleString()}</span>
+        <div className="flex items-center gap-2 bg-[#070B12]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/[0.10] text-[11px] text-[#94A3B8]">
+          <span className="text-[#94A3B8]">TRIS:</span>
+          <span className="text-[#D4AF37] font-bold">{metrics.tris.toLocaleString()}</span>
           <span className="text-white/20">|</span>
-          <span className="text-slate-400">CALLS:</span>
-          <span className="text-white font-bold">{metrics.drawCalls}</span>
+          <span className="text-[#94A3B8]">CALLS:</span>
+          <span className="text-[#F8FAFC] font-bold">{metrics.drawCalls}</span>
           <span className="text-white/20">|</span>
-          <span className="text-slate-400">FPS:</span>
-          <span className="text-emerald-400 font-bold">{metrics.fps}</span>
+          <span className="text-[#94A3B8]">FPS:</span>
+          <span className="text-[#D4AF37] font-bold">{metrics.fps}</span>
           <span className="text-white/20">|</span>
-          <span className="text-cyan-400 font-medium">SQLite WAL</span>
+          <span className="text-[#E09F5A] font-medium">SQLite WAL</span>
         </div>
       </div>
 
@@ -890,33 +892,33 @@ export default function AgTechTelemetryCanvas() {
       />
 
       {/* Indicador de Interacción */}
-      <div className="absolute top-20 right-6 z-10 pointer-events-none hidden sm:flex items-center gap-2 text-[10px] font-mono text-slate-400 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/5">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+      <div className="absolute top-20 right-6 z-10 pointer-events-none hidden sm:flex items-center gap-2 text-[10px] font-mono text-[#94A3B8] bg-[#070B12]/70 backdrop-blur-sm px-3 py-1 rounded-full border border-white/[0.08]">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
         <span>ARRASTRA PARA ROTAR 360° // SCROLL O CONTROLES ABAJO</span>
       </div>
 
       {/* Overlay de Carga */}
       {loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity">
-          <div className="w-10 h-10 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mb-3 shadow-[0_0_15px_rgba(52,211,153,0.4)]" />
-          <span className="text-xs font-mono text-emerald-400 tracking-widest uppercase">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#070B12]/85 backdrop-blur-md transition-opacity">
+          <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-3 shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
+          <span className="text-xs font-mono text-[#D4AF37] tracking-widest uppercase">
             Iniciando Pipeline WebGL Industrial...
           </span>
         </div>
       )}
 
       {/* Dock de Control Técnico Inferior */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mt-auto pt-4 border-t border-white/10 bg-black/50 backdrop-blur-md -mx-5 -mb-5 sm:-mx-7 sm:-mb-7 p-5 sm:p-7 rounded-b-3xl">
+      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mt-auto pt-4 border-t border-white/[0.08] bg-[#070B12]/80 backdrop-blur-md -mx-5 -mb-5 sm:-mx-7 sm:-mb-7 p-5 sm:p-7 rounded-b-2xl">
         <div className="max-w-md">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+            <span className="text-[10px] font-mono text-[#D4AF37] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#D4AF37]/10 border border-[#D4AF37]/30">
               {MODELS[activeModel].badge}
             </span>
           </div>
-          <h4 className="text-base sm:text-xl font-bold text-white font-space tracking-tight">
+          <h4 className="text-base sm:text-xl font-bold text-[#F8FAFC] font-space tracking-tight">
             {MODELS[activeModel].title}
           </h4>
-          <p className="text-xs text-slate-300 font-mono mt-1 leading-relaxed">
+          <p className="text-xs text-[#94A3B8] font-mono mt-1 leading-relaxed">
             {MODELS[activeModel].subtitle}
           </p>
         </div>
@@ -924,25 +926,33 @@ export default function AgTechTelemetryCanvas() {
         {/* Barra de Herramientas de Interacción */}
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           {/* Selector de Activo */}
-          <div className="flex items-center bg-white/5 border border-white/10 rounded-xl p-1">
+          <div className="flex items-center bg-white/[0.04] border border-white/[0.10] rounded-xl p-1">
             <button
               type="button"
-              onClick={() => setActiveModel('terminal')}
-              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all ${
+              onMouseEnter={playHoverTick}
+              onClick={() => {
+                playModeSwitch('pbr');
+                setActiveModel('terminal');
+              }}
+              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 activeModel === 'terminal'
-                  ? 'bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/25'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-[#D4AF37] text-[#070B12] font-bold shadow-[0_0_12px_rgba(212,175,55,0.3)]'
+                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
             >
               📟 Terminal IoT
             </button>
             <button
               type="button"
-              onClick={() => setActiveModel('silo')}
-              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all ${
+              onMouseEnter={playHoverTick}
+              onClick={() => {
+                playModeSwitch('pbr');
+                setActiveModel('silo');
+              }}
+              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 activeModel === 'silo'
-                  ? 'bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/25'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-[#D4AF37] text-[#070B12] font-bold shadow-[0_0_12px_rgba(212,175,55,0.3)]'
+                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
             >
               🏭 Silo AgTech
@@ -950,14 +960,18 @@ export default function AgTechTelemetryCanvas() {
           </div>
 
           {/* Selector de Modo Visual (PBR / Wireframe / FLIR) */}
-          <div className="flex items-center bg-white/5 border border-white/10 rounded-xl p-1">
+          <div className="flex items-center bg-white/[0.04] border border-white/[0.10] rounded-xl p-1">
             <button
               type="button"
-              onClick={() => setVisualMode('pbr')}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all ${
+              onMouseEnter={playHoverTick}
+              onClick={() => {
+                playModeSwitch('pbr');
+                setVisualMode('pbr');
+              }}
+              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'pbr'
-                  ? 'bg-emerald-500 text-black font-bold'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-[#D4AF37] text-[#070B12] font-bold'
+                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
               title="Renderizado PBR Físico de Superficies"
             >
@@ -965,23 +979,31 @@ export default function AgTechTelemetryCanvas() {
             </button>
             <button
               type="button"
-              onClick={() => setVisualMode('wireframe')}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all ${
+              onMouseEnter={playHoverTick}
+              onClick={() => {
+                playModeSwitch('wireframe');
+                setVisualMode('wireframe');
+              }}
+              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'wireframe'
-                  ? 'bg-cyan-500 text-black font-bold'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-[#E2E8F0] text-[#070B12] font-bold'
+                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
               title="Topología Estructural en Alambre"
             >
-              📐 Wire
+              📐 Wire CAD
             </button>
             <button
               type="button"
-              onClick={() => setVisualMode('flir')}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all ${
+              onMouseEnter={playHoverTick}
+              onClick={() => {
+                playModeSwitch('xray');
+                setVisualMode('flir');
+              }}
+              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
                 visualMode === 'flir'
-                  ? 'bg-amber-500 text-black font-bold'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-[#E09F5A] text-[#070B12] font-bold'
+                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
               title="Cámara Termográfica FLIR Ironbow"
             >
@@ -992,11 +1014,15 @@ export default function AgTechTelemetryCanvas() {
           {/* Despiece Técnico CAD (Exploded View) */}
           <button
             type="button"
-            onClick={() => setExploded((prev) => !prev)}
-            className={`px-3.5 py-2 text-xs font-mono rounded-xl border transition-all ${
+            onMouseEnter={playHoverTick}
+            onClick={() => {
+              playModeSwitch('wireframe');
+              setExploded((prev) => !prev);
+            }}
+            className={`px-3.5 py-2 text-xs font-mono rounded-xl border transition-all cursor-pointer ${
               exploded
-                ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold shadow-[0_0_15px_rgba(52,211,153,0.3)]'
-                : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
+                ? 'bg-[#D4AF37]/20 border-[#D4AF37] text-[#D4AF37] font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+                : 'bg-white/[0.04] border-white/[0.10] text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.08]'
             }`}
             title="Separar componentes mecánicos y circuitos internos con cotas CAD"
           >
@@ -1006,11 +1032,15 @@ export default function AgTechTelemetryCanvas() {
           {/* Botón de Giro Automático */}
           <button
             type="button"
-            onClick={() => setAutoRotate((prev) => !prev)}
-            className={`px-2.5 py-2 text-xs font-mono rounded-xl border transition-all ${
+            onMouseEnter={playHoverTick}
+            onClick={() => {
+              playModeSwitch('pbr');
+              setAutoRotate((prev) => !prev);
+            }}
+            className={`px-2.5 py-2 text-xs font-mono rounded-xl border transition-all cursor-pointer ${
               autoRotate
-                ? 'bg-white/10 border-white/20 text-white'
-                : 'bg-white/5 border-white/5 text-slate-400'
+                ? 'bg-white/[0.10] border-[#D4AF37]/40 text-[#F8FAFC]'
+                : 'bg-white/[0.04] border-white/[0.08] text-[#94A3B8]'
             }`}
             title="Pausar / reanudar rotación automática"
           >

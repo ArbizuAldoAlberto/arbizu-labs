@@ -22,7 +22,7 @@ export const es = {
       { value: "100%", label: "Operatividad Offline", desc: "SQLite WAL + Zero Network Drop" },
       { value: "< 10ms", label: "Latencia DeFi / WebSockets", desc: "TitanFlow Trading Engine" },
       { value: "0%", label: "Vendor Lock-in", desc: "Código 100% Propietario" },
-      { value: "13", label: "Aplicaciones en Producción", desc: "AgTech, DeFi, Security & SaaS" }
+      { value: "12", label: "Aplicaciones en Producción", desc: "AgTech, DeFi, Security & SaaS" }
     ]
   },
   socialProof: {
@@ -63,10 +63,10 @@ export const es = {
   },
   products: {
     badge: "Catálogo de Aplicaciones",
-    heading: "13 Sistemas Desarrollados & Desplegados",
+    heading: "12 Sistemas Desarrollados & Desplegados",
     subheading: "Explora nuestras plataformas en producción. Cada una resuelve un problema crítico de negocio mediante arquitectura de software a medida.",
     filters: {
-      all: "Todas las Apps (13)",
+      all: "Todas las Apps (12)",
       agtech: "AgTech & Logística",
       security: "Ciberseguridad & Mobile",
       defi: "DeFi & Fintech",
@@ -169,15 +169,6 @@ export const es = {
         desc: "Sistema operativo patrimonial con streaming ultrarrápido y detector de sesgos cognitivos en WebAssembly.",
         problem: "Decisiones de inversión impulsivas y falta de asesoría financiera personalizada accesible.",
         solution: "Streaming conversacional (TTFT < 120ms) y motor WASM en cliente para detección de trampas emocionales.",
-        btnCase: "Ver Caso Técnico"
-      },
-      techzone: {
-        title: "TechZone Retail POS",
-        category: "Retail POS & Mobile",
-        status: "Desplegado",
-        desc: "Punto de venta y catálogo omnicanal resiliente para comercios minoristas con cobro dual y SQLite WAL.",
-        problem: "Caídas de facturación y colas en mostradores físicos por cortes de conexión de banda ancha.",
-        solution: "Encolado transaccional local ininterrumpido con sincronización cloud desatendida.",
         btnCase: "Ver Caso Técnico"
       },
       habitat: {

@@ -67,14 +67,14 @@ export default function FloatingExecutiveDock() {
               href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20t%C3%A9cnica%20con%20Arbizu%20Labs"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-2.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 font-space text-xs font-bold transition-colors group"
+              className="flex items-center gap-3 p-2.5 rounded-xl bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 border border-[#D4AF37]/30 text-[#F3E5AB] font-space text-xs font-bold transition-colors group"
             >
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] shrink-0">
                 <MessageSquare className="w-4 h-4" />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-white group-hover:text-emerald-300 transition-colors">WhatsApp Direct</span>
-                <span className="font-mono text-[9px] text-emerald-400/80">&lt; 2h SLA · Aldo Arbizu</span>
+                <span className="text-white group-hover:text-[#F3E5AB] transition-colors">WhatsApp Direct</span>
+                <span className="font-mono text-[9px] text-[#D4AF37]/80">&lt; 2h SLA · Aldo Arbizu</span>
               </div>
             </a>
 
@@ -117,7 +117,7 @@ export default function FloatingExecutiveDock() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="relative w-14 h-14 rounded-full bg-[#080b12] border border-[var(--color-arbizu-teal)]/40 text-white shadow-[0_0_25px_rgba(29,158,117,0.35)] flex items-center justify-center cursor-pointer transition-colors hover:border-[var(--color-arbizu-teal)]"
+        className="relative w-14 h-14 rounded-full bg-[#070B12] border border-[#D4AF37]/40 text-white shadow-[0_0_25px_rgba(212,175,55,0.28)] flex items-center justify-center cursor-pointer transition-colors hover:border-[#D4AF37]"
         aria-label="Abrir panel de acción rápida"
         title={locale === 'es' ? 'Contacto & Canales Directos' : 'Contact & Direct Channels'}
       >
@@ -136,7 +136,7 @@ export default function FloatingExecutiveDock() {
             cy="26"
             r={radius}
             fill="none"
-            stroke="var(--color-arbizu-teal)"
+            stroke="#D4AF37"
             strokeWidth="2.5"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
@@ -151,8 +151,8 @@ export default function FloatingExecutiveDock() {
             <X className="w-5 h-5 text-white" />
           ) : (
             <div className="relative">
-              <MessageSquare className="w-5 h-5 text-[var(--color-arbizu-teal)]" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <MessageSquare className="w-5 h-5 text-[#D4AF37]" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
             </div>
           )}
         </div>
