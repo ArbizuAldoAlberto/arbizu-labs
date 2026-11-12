@@ -499,6 +499,7 @@ export default function AgTechTelemetryCanvas() {
     flirMaterial.onBeforeCompile = (shader) => {
       shader.uniforms.uTime = { value: 0 };
       shader.vertexShader = `
+        precision highp float;
         varying vec3 vWorldPos;
         ${shader.vertexShader}
       `;
@@ -511,6 +512,7 @@ export default function AgTechTelemetryCanvas() {
         `
       );
       shader.fragmentShader = `
+        precision highp float;
         varying vec3 vWorldPos;
         uniform float uTime;
         ${shader.fragmentShader}
@@ -520,7 +522,7 @@ export default function AgTechTelemetryCanvas() {
         `
         #include <dithering_fragment>
         // Gradiente Térmico FLIR Ironbow (14°C Azul -> 22°C Verde/Ambar -> 38°C Rojo Intenso)
-        float heightFactor = clamp((vWorldPos.y + 1.8) / 3.4, 0.0, 1.0);
+        float heightFactor = clamp((vWorldPos.y + 1.8) * 0.294118, 0.0, 1.0);
         // Bolsón térmico interno de fermentación
         float heatPocket = sin(vWorldPos.y * 5.0 + uTime * 2.0) * 0.08;
         float tempNorm = clamp(heightFactor + heatPocket, 0.0, 1.0);
@@ -533,13 +535,13 @@ export default function AgTechTelemetryCanvas() {
 
         vec3 thermalColor;
         if (tempNorm < 0.25) {
-          thermalColor = mix(cBlue, cCyan, tempNorm / 0.25);
+          thermalColor = mix(cBlue, cCyan, tempNorm * 4.0);
         } else if (tempNorm < 0.5) {
-          thermalColor = mix(cCyan, cGreen, (tempNorm - 0.25) / 0.25);
+          thermalColor = mix(cCyan, cGreen, (tempNorm - 0.25) * 4.0);
         } else if (tempNorm < 0.75) {
-          thermalColor = mix(cGreen, cYellow, (tempNorm - 0.5) / 0.25);
+          thermalColor = mix(cGreen, cYellow, (tempNorm - 0.5) * 4.0);
         } else {
-          thermalColor = mix(cYellow, cRed, (tempNorm - 0.75) / 0.25);
+          thermalColor = mix(cYellow, cRed, (tempNorm - 0.75) * 4.0);
         }
 
         gl_FragColor = vec4(thermalColor, 0.92);

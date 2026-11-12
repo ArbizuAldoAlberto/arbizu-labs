@@ -129,8 +129,8 @@ export default function RoiCalculator() {
                 {t.roi.labels.netSavings}
               </span>
               
-              <div className="font-space text-4xl sm:text-5xl font-black text-[#F8FAFC] mb-2">
-                ${estimatedSavings.toLocaleString()} <span className="text-xs font-mono text-[#94A3B8] font-normal">USD</span>
+              <div className="font-space text-4xl sm:text-5xl font-black text-[#F8FAFC] mb-2" suppressHydrationWarning>
+                ${estimatedSavings.toLocaleString('en-US')} <span className="text-xs font-mono text-[#94A3B8] font-normal">USD</span>
               </div>
 
               <p className="font-mono text-xs text-[#94A3B8] mb-6">

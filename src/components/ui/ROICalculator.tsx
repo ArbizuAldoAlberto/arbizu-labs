@@ -58,7 +58,7 @@ export default function ROICalculator() {
           <div>
             <label className="block text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2 flex items-center justify-between">
               <span>Annual Cost of Data Loss</span>
-              <span className="text-blue-500 font-bold">${dataLossCost.toLocaleString()}</span>
+              <span className="text-blue-500 font-bold" suppressHydrationWarning>${dataLossCost.toLocaleString('en-US')}</span>
             </label>
             <input 
               type="range" 
@@ -77,12 +77,12 @@ export default function ROICalculator() {
           <div className="space-y-4">
             <div>
               <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">Est. Monthly Savings</div>
-              <div className="text-2xl font-bold text-white mt-1">${monthlySavings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="text-2xl font-bold text-white mt-1" suppressHydrationWarning>${monthlySavings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
             </div>
 
             <div>
               <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">Est. Annual Savings</div>
-              <div className="text-3xl font-extrabold text-blue-500 mt-1">${yearlySavings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="text-3xl font-extrabold text-blue-500 mt-1" suppressHydrationWarning>${yearlySavings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
             </div>
           </div>
 

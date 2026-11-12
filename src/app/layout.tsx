@@ -89,8 +89,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-theme="v1" className={`${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`}>
-      <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[var(--color-arbizu-teal)]/30">
+    <html lang="es" data-theme="v1" className={`${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`} suppressHydrationWarning>
+      <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[var(--color-arbizu-teal)]/30" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID_ARBIZU &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("YYYY") &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("XXXX") && (
