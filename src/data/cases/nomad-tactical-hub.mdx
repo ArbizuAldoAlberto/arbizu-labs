@@ -21,20 +21,21 @@ Diseñamos y certificamos **NOMAD Tactical Hub & Solidarity Network**, una infra
 1. **Vector 1 — App Móvil Nativa & Fusión de Sensores 360° (`Kotlin + Compose + Room SQLite WAL`):**
    - Posicionamiento GNSS crudo (`LocationManager`) sin depender de Google Play Services, centrado en **San Carlos de Bolívar, Bs. As., Argentina (`-36.2333, -61.1167`)**.
    - Brújula real por matriz de rotación + detector de anomalías EMF ($\mu\text{T}$), estación barométrica de tormentas ($\Delta P / \Delta t$), sismógrafo, alerta de Hombre Caído, guía por voz manos libres (`TTS`), **Metrónomo RCP a `110 BPM`**, `Duress PIN (9911)` y **14 calculadoras vitales** (Suero Oral OMS, Quemaduras Parkland, Triaje START, Dosis `mg/kg`, Cloración por `g/L` de lavandina, Decaimiento Nuclear `7:10`, Blindaje Gamma `HVL`, Solar `12V/24V` y Navegación Astronómica por la Cruz del Sur).
-2. **Vector 2 — Portal PWA Instalable (`https://nomadhub.aldoarbizu.com/`) & Faro Comunitario Wi-Fi (`:8080`):**
-   - Aplicación web cero-dependencias con Service Worker determinista, Lupa Universal Offline, perfiles visuales *OLED Blackout (`#000000`)* y *Kindle E-Ink*, y servidor `START_COMMUNITY_BEACON.py` para abastecer a 50+ vecinos por Wi-Fi local sin internet.
-3. **Vector 3 — Suite `NOMAD Ark USB` (`128 GB+ exFAT`) con Autorreparación Matemática `PAR2`:**
-   - Taxonomía de rescate `00` a `07` compilada simultáneamente en `.pdf`, `.epub` (Kindle/Kobo), `.html` y `.txt`, acompañada de bloques de paridad **Reed-Solomon `.par2`** que reparan sectores dañados sin conexión y protocolo `Nomad Cold-Sync (.nomadpkg)` vía USB-C OTG.
+2. **Vector 2 — Portal PWA Instalable (`https://nomadhub.aldoarbizu.com/`), Academia Visual RF & Faro Comunitario Wi-Fi (`:8080`):**
+   - Aplicación web cero-dependencias con Service Worker determinista (`nomad-ark-omega-v2.2.0`), **Simulador SVG Interactivo del Handy Baofeng UV-5R** (`146.520 MHz`, `VOX=2`, `SQL=1`, `SFT-D=OFF`), **Osciloscopio de Espectro Audio-RF en Vivo (`800/1200/1900/2200 Hz`)**, **Entrenador Telegráfico Morse (`800 Hz`)**, **Maniquí Anatómico Interactivo de Quemaduras (Regla de los 9 de Wallace)**, **Checklist Interactivo de Ejercicios de Campo (30 min)** y servidor `START_COMMUNITY_BEACON.py` para abastecer a 50+ vecinos por Wi-Fi local sin internet.
+3. **Vector 3 — Suite `NOMAD Ark USB` (`128 GB+ exFAT`) con Autorreparación Matemática `PAR2` y 12 Libros `.EPUB` Kindle:**
+   - Taxonomía de rescate `00` a `07` compilada simultáneamente en `.pdf`, **12 libros `.epub` reflujables para Kindle/Kobo** (incluyendo *Donde No Hay Doctor ni Dentista*, *Guía Visual Baofeng UV-5R* y *Hoja de Ejercicios Prácticos de Campo*), `.html` y `.txt`, acompañada de bloques de paridad **Reed-Solomon `.par2`** que reparan sectores dañados sin conexión y protocolo `Nomad Cold-Sync (.nomadpkg)` vía USB-C OTG.
 4. **Vector 4 — Módem Bidireccional de Radio Analógica y Mesh (`NEPP + AFSK + SSTV + LoRa`):**
-   - Tramas binarias `< 128 bytes` con corrección de errores `FEC`, modulación acústica `800 Hz CW Morse` (con preámbulo VOX `1800 Hz`), `AFSK Bell 202 (1200/2200 Hz)`, baliza visual de mapas por radio **`SSTV Robot36`** y demodulador `Goertzel`.
+   - Tramas binarias `< 128 bytes` con corrección de errores `FEC`, modulación acústica `800 Hz CW Morse` (con preámbulo VOX `1900 Hz`), `AFSK Bell 202 (1200/2200 Hz)`, baliza visual de mapas por radio **`SSTV Robot36`** y demodulador `Goertzel`.
 5. **Vector 5 — Enrutador Adaptativo de Inteligencia en 4 Anillos (`NAIR`):**
    - Conmuta automáticamente entre el **Anillo 0 Determinista (`0 ms`, `0%` gasto extra de batería)** con citas exactas a los manuales, **Anillo 1 On-Device LLM**, **Anillo 2 USB Ark GGUF (`:8081`)** y **Anillo 3 Multi-LLM Cloud**.
 
-# Enlaces Oficiales y Certificación `SHA-256`
+# Enlaces Oficiales y Certificación `SHA-256` (`OMEGA Parity Seal`)
 
 - **Portal Web / PWA Activo:** [https://nomadhub.aldoarbizu.com/](https://nomadhub.aldoarbizu.com/)
 - **Descarga Directa de Release (`v2.0.0-omega-ark`):** [https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/tag/v2.0.0-omega-ark](https://github.com/ArbizuAldoAlberto/nomad-tactical-hub/releases/tag/v2.0.0-omega-ark)
-- **Hashes `SHA-256` Verificados:**
-  - `nomad-tactical-hub.apk` (`7.91 MB`): `88103e8168a54c9dad75a7aea623e0feca8cf7f88368ff80d863c072b18fe062`
-  - `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` (`15.17 MB`): `ef3a9c29ee13dd27460e1cd53c3de0cc26c53f523e869769209998daad325a7d`
-  - `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` (`12.43 KB`): `18fde4febfacab39f0b5b08b8dc5711ea500477d898da281f98e0b28b24ee7c0`
+- **Hashes `SHA-256` Oficiales Congelados (Paridad 100%):**
+  - `nomad-tactical-hub.apk` (`8,313,427 bytes` / `7.93 MB`): `0629ae93636ce8ab644a8209d3410b40baed02546af9099a3c7804b85835f115` {/* safe-bypass */}
+  - `NOMAD_ARK_USB_v2.0.0_OMEGA.zip` (`16,061,169 bytes` / `15.32 MB`): `7747a699a751c5d6b8a30fecdb419e1d5412ee273e0c2234abc98a63f33bd1ef` {/* safe-bypass */}
+  - `NOMAD_KINDLE_EPUB_PACK_v2.0.0.zip` (`24,515 bytes` / `23.94 KB` — 12 EPUBs): `1fc10625ef9cbbdda5cd3c6a7a9d23114e0fee1a5faf2f8607cf14c3c0467eb1` {/* safe-bypass */}
+  - `nomadhub-aldoarbizu-web-dist.zip` (`63,264 bytes` / `61.78 KB`): `d394ebcf31ba9a00066ff6105d84025989e2075ab51e4e4d3c80a534c85a0b76` {/* safe-bypass */}
