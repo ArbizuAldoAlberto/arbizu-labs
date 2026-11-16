@@ -136,12 +136,12 @@ export const es = {
         btnCase: "Ver Caso Técnico"
       },
       nomad: {
-        title: "NOMAD Tactical Hub",
-        category: "Hardware Táctico & RF",
-        status: "Desplegado",
-        desc: "Herramienta de supervivencia off-grid con calculadoras de radiofrecuencia, cifrado local y mapas vectoriales.",
-        problem: "Colapso de redes de telecomunicaciones en situaciones de emergencia o zonas remotas.",
-        solution: "Arquitectura 100% desconectada con cálculo de antenas y mapas embebidos sin dependencias externas.",
+        title: "NOMAD Tactical Hub & Solidarity Network",
+        category: "100% Humanitario · RF & Supervivencia Off-Grid",
+        status: "OMEGA v2.0 Activo",
+        desc: "Ecosistema pentadimensional de supervivencia civil: App Android Sensores 360°, PWA Offline-First, Suite USB Ark 128GB (exFAT + PAR2 + Kindle EPUB3), Módem Radio AFSK/SSTV/Morse 800Hz, LoRa Meshtastic y Enrutador IA 4 Anillos (NAIR).",
+        problem: "Colapso total de redes celulares, energía y servidores en catástrofes naturales o zonas aisladas.",
+        solution: "5 vectores 100% desconectados con 14 calculadoras médicas/solares/RF, autorreparación PAR2 en USB y transmisión de coordenadas/mapas por radio analógica y LoRa.",
         btnCase: "Ver Caso Técnico"
       },
       ecoconnect: {
