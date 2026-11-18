@@ -119,15 +119,6 @@ export const en: typeof es = {
         solution: "Offline cartographic caching and sub-2s immutable license minting on Base L2.",
         btnCase: "View Technical Case"
       },
-      sabiobosque: {
-        title: "SabioBosque",
-        category: "E-Commerce & Compliance",
-        status: "Deployed",
-        desc: "Specialized e-commerce engine with real-time automated verification of REPROCANN medical prescriptions via AI.",
-        problem: "Heavy administrative friction and compliance risks when reviewing medical authorizations manually.",
-        solution: "Multimodal prescription audit (< 800ms) with Gemini API and strict regulatory quota controls.",
-        btnCase: "View Technical Case"
-      },
       impresion3d: {
         title: "3D Printing P2P",
         category: "3D Manufacturing & Web3",

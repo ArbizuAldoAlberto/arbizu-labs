@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  DollarSign, ShoppingBag, CreditCard, Lock, Send, RefreshCw, 
-  ArrowLeft, CheckCircle, PlusCircle, AlertCircle, FileText, Globe 
+import {
+  DollarSign, ShoppingBag, CreditCard, Lock, Send, RefreshCw,
+  ArrowLeft, CheckCircle, PlusCircle, AlertCircle, FileText, Globe
 } from "lucide-react";
 
 interface Sale {
@@ -100,7 +100,7 @@ export default function MonetizationDashboard() {
     try {
       const res = await fetch("/api/warroom/sales", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -145,7 +145,7 @@ export default function MonetizationDashboard() {
           <h2 className="text-2xl font-black mb-2">Monetization War Room</h2>
           <p className="text-slate-400 text-sm mb-6">Ingresa la contraseña maestra de Arbizu Labs para desbloquear el comando de facturación.</p>
           <form onSubmit={handleLogin} className="space-y-4">
-            <input 
+            <input
               type="password"
               placeholder="Contraseña Maestra"
               value={passwordInput}
@@ -153,7 +153,7 @@ export default function MonetizationDashboard() {
               className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-900 focus:border-indigo-500 outline-none transition text-center"
             />
             {authError && <p className="text-rose-500 text-xs font-semibold">Contraseña incorrecta. Intenta de nuevo.</p>}
-            <button 
+            <button
               type="submit"
               className="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/20 hover:opacity-95 transition"
             >
@@ -167,11 +167,11 @@ export default function MonetizationDashboard() {
 
   return (
     <div className="min-h-screen bg-[#06070a] text-slate-100 font-sans p-6 md:p-10">
-      
+
       {/* HEADER */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <button 
+          <button
             onClick={() => router.push("/warroom")}
             className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition mb-2"
           >
@@ -180,8 +180,8 @@ export default function MonetizationDashboard() {
           <h1 className="text-3xl font-black tracking-tight">Monetization Command Center</h1>
           <p className="text-slate-400 text-sm">Control central de cobros, licencias e ingresos de Arbizu Labs.</p>
         </div>
-        
-        <button 
+
+        <button
           onClick={fetchSales}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-850 text-xs font-semibold transition"
         >
@@ -191,7 +191,7 @@ export default function MonetizationDashboard() {
 
       {/* METRICS CARDS */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        
+
         <div className="p-6 rounded-3xl bg-[#0b0c10] border border-slate-900 relative overflow-hidden shadow-xl">
           <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-indigo-500 opacity-5 blur-2xl" />
           <DollarSign className="w-8 h-8 text-indigo-400 mb-3" />
@@ -224,28 +224,27 @@ export default function MonetizationDashboard() {
 
       {/* CORE WORKSPACE SECTION */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* LEFT COLUMN: WIZARD & BREAKDOWN */}
         <div className="space-y-8 lg:col-span-1">
-          
+
           {/* PAYMENT LINK GENERATOR */}
           <div className="p-6 rounded-3xl bg-[#0b0c10] border border-slate-900 shadow-xl">
             <h3 className="text-lg font-black text-white mb-1 flex items-center gap-2">
               <PlusCircle className="w-5 h-5 text-indigo-400" /> Registrar Venta / Generar Link
             </h3>
             <p className="text-slate-400 text-xs mb-6">Genera un recibo, emite la licencia e invoice y avisa a Telegram.</p>
-            
+
             <form onSubmit={handleCreateSale} className="space-y-4">
               <div>
                 <label className="block text-slate-400 text-xs font-bold mb-1.5 uppercase">Producto</label>
-                <select 
-                  value={formProduct} 
+                <select
+                  value={formProduct}
                   onChange={(e) => setFormProduct(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-850 outline-none text-xs focus:border-indigo-500 transition"
                 >
                   <option value="titanflow">TitanFlow ($99)</option>
                   <option value="sentinelos">SentinelOS ($290)</option>
-                  <option value="sabiobosque">SabioBosque POS ($49)</option>
                   <option value="agromarket">AgroMarket Pro ($99)</option>
                   <option value="aureus">Aureus Premium ($19)</option>
                 </select>
@@ -253,7 +252,7 @@ export default function MonetizationDashboard() {
 
               <div>
                 <label className="block text-slate-400 text-xs font-bold mb-1.5 uppercase">Monto (USD)</label>
-                <input 
+                <input
                   type="number"
                   value={formAmount}
                   onChange={(e) => setFormAmount(e.target.value)}
@@ -263,8 +262,8 @@ export default function MonetizationDashboard() {
 
               <div>
                 <label className="block text-slate-400 text-xs font-bold mb-1.5 uppercase">Método</label>
-                <select 
-                  value={formMethod} 
+                <select
+                  value={formMethod}
                   onChange={(e) => setFormMethod(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-850 outline-none text-xs focus:border-indigo-500 transition"
                 >
@@ -277,7 +276,7 @@ export default function MonetizationDashboard() {
 
               <div>
                 <label className="block text-slate-400 text-xs font-bold mb-1.5 uppercase">Email del Cliente</label>
-                <input 
+                <input
                   type="email"
                   placeholder="ejemplo@cliente.com"
                   value={formEmail}
@@ -294,7 +293,7 @@ export default function MonetizationDashboard() {
                 </div>
               )}
 
-              <button 
+              <button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-xs shadow-md shadow-indigo-500/10 hover:opacity-95 transition flex items-center justify-center gap-2"
@@ -335,7 +334,7 @@ export default function MonetizationDashboard() {
             <h3 className="text-lg font-black text-white mb-6 uppercase tracking-tight flex items-center gap-2">
               <FileText className="w-5 h-5 text-indigo-400" /> Registro General de Ventas
             </h3>
-            
+
             {isLoading ? (
               <div className="text-center py-12 text-xs text-slate-500">Cargando transacciones...</div>
             ) : sales.length === 0 ? (
@@ -362,9 +361,8 @@ export default function MonetizationDashboard() {
                         <td className="py-3 font-semibold text-white capitalize pr-4">{sale.product}</td>
                         <td className="py-3 text-slate-300 pr-4 truncate max-w-[140px]" title={sale.customer_email}>{sale.customer_email}</td>
                         <td className="py-3 pr-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            sale.method === "crypto" ? "bg-cyan-950 text-cyan-400 border border-cyan-900/30" : "bg-indigo-950 text-indigo-400 border border-indigo-900/30"
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${sale.method === "crypto" ? "bg-cyan-950 text-cyan-400 border border-cyan-900/30" : "bg-indigo-950 text-indigo-400 border border-indigo-900/30"
+                            }`}>
                             {sale.method.toUpperCase()}
                           </span>
                         </td>
@@ -387,7 +385,6 @@ export default function MonetizationDashboard() {
 const PRODUCTS_ACCENTS: Record<string, string> = {
   titanflow: "bg-cyan-400",
   sentinelos: "bg-green-400",
-  sabiobosque: "bg-violet-400",
   agromarket: "bg-indigo-400",
   aureus: "bg-rose-400"
 };

@@ -147,14 +147,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/cases/sabiobosque"
-                  className="hover:text-[var(--text-primary)] transition-colors"
-                >
-                  SabioBosque Compliance
-                </Link>
-              </li>
-              <li>
                 <a
                   href="https://arbizualdo.gumroad.com"
                   target="_blank"

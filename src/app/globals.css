@@ -4,7 +4,9 @@
   --font-cormorant: var(--font-cormorant), "Times New Roman", Times, serif;
   --font-jetbrains: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-space: var(--font-space), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-inter: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-inter: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* ==========================================================================
@@ -95,9 +97,9 @@ html[data-theme="v1"] {
     transparent 100%
   );
 
-  /* Familias tipográficas */
-  --font-display: var(--font-space), var(--font-cormorant), system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Familias tipográficas — Orbital CNC & Horological Telemetry */
+  --font-display: var(--font-geist-sans), var(--font-space), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Geometría y contenedor */
   --container-max: 1360px;

@@ -4,7 +4,9 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-const DB_PATH = 'e:/01_DESARROLLO/2026/01_ACTIVE/nexus/nexus/career-ops/data/warroom.db';
+const DEFAULT_CAREER_OPS_DIR = path.resolve(process.cwd(), '../../nexus/nexus/career-ops');
+export const CAREER_OPS_DIR = process.env.NEXUS_CAREER_OPS_DIR || DEFAULT_CAREER_OPS_DIR;
+const DB_PATH = process.env.WARROOM_DB_PATH || path.join(CAREER_OPS_DIR, 'data', 'warroom.db');
 
 export interface DbClient {
   execute(sql: string, params?: any[]): Promise<any>;
@@ -21,6 +23,9 @@ class SQLiteAdapter implements DbClient {
       fs.mkdirSync(dir, { recursive: true });
     }
     this.db = new Database(DB_PATH);
+    this.db.pragma('journal_mode = WAL');
+    this.db.pragma('synchronous = NORMAL');
+    this.db.pragma('busy_timeout = 5000');
     this.db.pragma('foreign_keys = ON');
   }
 
@@ -48,7 +53,6 @@ class TursoAdapter implements DbClient {
 
   async execute(sql: string, params: any[] = []): Promise<any> {
     const res = await this.client.execute({ sql, args: params });
-    // Convert BigInt to number safely
     const lastRowId = res.lastInsertRowid !== undefined ? Number(res.lastInsertRowid) : undefined;
     return { lastInsertRowid: lastRowId, changes: res.rowsAffected };
   }
@@ -58,7 +62,6 @@ class TursoAdapter implements DbClient {
     return res.rows.map((row: any) => {
       const obj: any = {};
       res.columns.forEach((col: string, idx: number) => {
-        // Handle database return format if needed
         const val = row[idx];
         obj[col] = typeof val === 'bigint' ? Number(val) : val;
       });
@@ -76,9 +79,7 @@ export function getDb(): DbClient {
   const url = process.env.TURSO_DATABASE_URL;
   const token = process.env.TURSO_AUTH_TOKEN;
   if (url) {
-    console.log('🌐 Database: Using Cloud Turso client.');
     return new TursoAdapter(url, token || '');
   }
-  console.log('💾 Database: Using Local SQLite client.');
   return new SQLiteAdapter();
 }

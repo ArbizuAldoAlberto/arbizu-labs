@@ -37,13 +37,6 @@ export default function CaseStudies() {
       badge: locale === 'es' ? "Agro Drones / Web3" : "Ag Drones / Web3"
     },
     {
-      title: locale === 'es' ? "SabioBosque: Verificación REPROCANN con IA" : "SabioBosque: AI Medical Prescription Audit",
-      metric: "100%",
-      label: locale === 'es' ? "Auditoría legal automatizada con Gemini API" : "Automated regulatory audit with Gemini API",
-      slug: "sabiobosque",
-      badge: locale === 'es' ? "E-Commerce / Compliance" : "E-Commerce / Compliance"
-    },
-    {
       title: locale === 'es' ? "Impresión 3D P2P & Escrow Descentralizado" : "3D Printing P2P & Decentralized Escrow",
       metric: "0%",
       label: locale === 'es' ? "Comisiones abusivas con smart contracts" : "Intermediary fees with smart contracts",

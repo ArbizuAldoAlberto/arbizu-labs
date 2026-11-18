@@ -1,27 +1,98 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Send, CheckCircle2, ShieldCheck, ArrowUpRight, MessageSquare, Clock, Sparkles } from 'lucide-react';
+import { Mail, Send, CheckCircle2, ShieldCheck, ArrowUpRight, MessageSquare, Sparkles, WifiOff } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+
+const CONTACT_DRAFT_KEY = 'arbizu_contact_draft_v1';
 
 export default function ContactSection() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [isOffline, setIsOffline] = useState(false);
+  const [draft, setDraft] = useState({
+    name: '',
+    email: '',
+    company: '',
+    message: '',
+  });
+  const submittingRef = useRef(false);
+  const idempotencyKeyRef = useRef<string>('');
   const { locale } = useLanguage();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setIsOffline(!navigator.onLine);
+
+    const onOnline = () => setIsOffline(false);
+    const onOffline = () => setIsOffline(true);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+
+    try {
+      const saved = localStorage.getItem(CONTACT_DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setDraft({
+          name: parsed.name || '',
+          email: parsed.email || '',
+          company: parsed.company || '',
+          message: parsed.message || '',
+        });
+      }
+    } catch {
+      // Ignore invalid draft
+    }
+
+    idempotencyKeyRef.current =
+      typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : `contact_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, []);
+
+  const updateField = (field: keyof typeof draft, value: string) => {
+    setDraft((prev) => {
+      const next = { ...prev, [field]: value };
+      try {
+        localStorage.setItem(CONTACT_DRAFT_KEY, JSON.stringify(next));
+      } catch {
+        // Ignore storage quota error
+      }
+      return next;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      setIsOffline(true);
+      setError(
+        locale === 'es'
+          ? 'Conexión perdida. Tu borrador está resguardado localmente; reintenta al recuperar señal.'
+          : 'Network offline. Your draft is saved locally; retry once reconnected.'
+      );
+      return;
+    }
+
+    submittingRef.current = true;
     setLoading(true);
     setError('');
 
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      message: formData.get('message'),
+      name: draft.name.trim(),
+      email: draft.email.trim(),
+      company: draft.company.trim(),
+      message: draft.message.trim(),
       bot_field: formData.get('bot_field'),
       b_company_url: formData.get('b_company_url'),
       services: ['direct_contact_form'],
@@ -31,17 +102,26 @@ export default function ContactSection() {
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKeyRef.current || `contact_${Date.now()}`,
+        },
         body: JSON.stringify(data)
       });
 
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Error al enviar');
 
+      try {
+        localStorage.removeItem(CONTACT_DRAFT_KEY);
+      } catch {
+        // Ignore
+      }
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || (locale === 'es' ? 'Error al enviar. Escríbenos a aldo@arbizulabs.com' : 'Error sending. Email us at aldo@arbizulabs.com'));
+      setError(err.message || (locale === 'es' ? 'Error al enviar. Tu borrador sigue guardado. Escríbenos a aldo@arbizulabs.com' : 'Error sending. Your draft is preserved. Email us at aldo@arbizulabs.com'));
     } finally {
+      submittingRef.current = false;
       setLoading(false);
     }
   };
@@ -100,6 +180,17 @@ export default function ContactSection() {
                   <input type="text" name="bot_field" tabIndex={-1} autoComplete="off" defaultValue="" />
                 </div>
 
+                {isOffline && (
+                  <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-500/40 text-amber-200 flex items-center gap-2">
+                    <WifiOff className="w-4 h-4 shrink-0" />
+                    <span>
+                      {locale === 'es'
+                        ? 'Sin conexión. Borrador guardado automáticamente en localStorage.'
+                        : 'Offline mode. Draft automatically preserved in localStorage.'}
+                    </span>
+                  </div>
+                )}
+
                 <div>
                   <label className="block font-space text-[10px] uppercase tracking-widest text-[var(--color-mist-gray)] mb-1">
                     {locale === 'es' ? "Nombre Completo" : "Full Name"} *
@@ -108,6 +199,8 @@ export default function ContactSection() {
                     required
                     type="text"
                     name="name"
+                    value={draft.name}
+                    onChange={(e) => updateField('name', e.target.value)}
                     placeholder={locale === 'es' ? "Ej. Martín Gómez" : "e.g. John Doe"}
                     className="w-full bg-black/60 border border-white/10 rounded-lg p-3 text-white focus:border-[var(--color-arbizu-teal)] outline-none transition-colors"
                   />
@@ -121,6 +214,8 @@ export default function ContactSection() {
                     required
                     type="email"
                     name="email"
+                    value={draft.email}
+                    onChange={(e) => updateField('email', e.target.value)}
                     placeholder={locale === 'es' ? "tu.correo@empresa.com" : "you@company.com"}
                     className="w-full bg-black/60 border border-white/10 rounded-lg p-3 text-white focus:border-[var(--color-arbizu-teal)] outline-none transition-colors"
                   />
@@ -133,6 +228,8 @@ export default function ContactSection() {
                   <input
                     type="text"
                     name="company"
+                    value={draft.company}
+                    onChange={(e) => updateField('company', e.target.value)}
                     placeholder={locale === 'es' ? "Ej. AgroLogistics SRL" : "e.g. Acme Corp"}
                     className="w-full bg-black/60 border border-white/10 rounded-lg p-3 text-white focus:border-[var(--color-arbizu-teal)] outline-none transition-colors"
                   />
@@ -146,6 +243,8 @@ export default function ContactSection() {
                     required
                     rows={4}
                     name="message"
+                    value={draft.message}
+                    onChange={(e) => updateField('message', e.target.value)}
                     placeholder={locale === 'es' ? "¿Qué sistema necesitas desarrollar o auditar? (ej. App móvil offline, SaaS B2B, trading o automatizaciones)." : "What system do you need to build or audit? (e.g. Offline mobile app, B2B SaaS, quant trading, or automation)."}
                     className="w-full bg-black/60 border border-white/10 rounded-lg p-3 text-white focus:border-[var(--color-arbizu-teal)] outline-none transition-colors resize-none"
                   />
