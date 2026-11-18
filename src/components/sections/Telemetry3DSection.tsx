@@ -28,8 +28,9 @@ export default function Telemetry3DSection() {
     <section
       id="telemetria-3d"
       data-section="telemetry-3d"
-      className="surface-section py-20"
+      className="surface-section py-20 scroll-mt-24"
     >
+      <div id="telemetry" className="scroll-mt-24" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mb-10">
           <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold inline-flex items-center gap-2 mb-3">

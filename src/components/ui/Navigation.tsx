@@ -153,6 +153,8 @@ export default function Navigation() {
           <button
             type="button"
             onClick={toggleLuminance}
+            aria-label={luminance === 'soc' ? 'Activar modo Field Daylight (#F2F0EA)' : 'Activar modo SOC Night (#060709)'}
+            aria-pressed={luminance === 'daylight'}
             className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[2px] border border-[var(--accent-border)] bg-[var(--bg-btn)] text-[10px] font-mono uppercase tracking-wider text-[var(--text-primary)] hover:border-[#FF4F00] transition-colors cursor-pointer whitespace-nowrap"
             title={luminance === 'soc' ? 'Cambiar a Field Daylight Paper Mode (#F2F0EA)' : 'Cambiar a SOC Night Carbon Mode (#060709)'}
           >
@@ -186,6 +188,8 @@ export default function Navigation() {
 
           {/* Language Switcher [ ES | EN ] */}
           <button
+            type="button"
+            aria-label={locale === 'es' ? 'Switch language to English' : 'Cambiar idioma a Español'}
             onClick={() => {
               soundEngine.playSwitch();
               toggleLanguage();

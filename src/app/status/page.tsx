@@ -1,195 +1,161 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { Activity, CheckCircle, AlertCircle, Clock, Server, ArrowLeft } from 'lucide-react';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Activity, ArrowLeft, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
+interface SystemNode {
+  name: string;
+  port?: number;
+  version?: string;
+  status: string;
+  uptime: string;
+  latencyMs?: number | null;
+  telemetryHex?: string;
+  color?: string;
+}
+
 export default function StatusPage() {
-  const { locale, t } = useLanguage();
-  const [emailInput, setEmailInput] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
+  const [systems, setSystems] = useState<SystemNode[]>([]);
+  const [overallStatus, setOverallStatus] = useState('Polling Hetzner cluster...');
+  const [healthy, setHealthy] = useState(true);
+  const [timestamp, setTimestamp] = useState<string>('');
+  const [refreshing, setRefreshing] = useState(false);
 
-  const [systems, setSystems] = useState([
-    { name: "Portal Web Arbizu Labs (arbizulabs.com)", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
-    { name: "TitanFlow Bot Backend (Binance Futures Stream)", status: "Operational", uptime: "99.98%", color: "text-emerald-400" },
-    { name: "Portfolio Fundador (aldoarbizu.com)", status: "Operational", uptime: "99.99%", color: "text-emerald-400" },
-    { name: "NEXUS API Gateway & Reverse Proxy", status: "Operational", uptime: "99.97%", color: "text-emerald-400" },
-    { name: "War Room Lead Processing Daemon", status: "Operational", uptime: "99.99%", color: "text-emerald-400" }
-  ]);
-  const [overallStatus, setOverallStatus] = useState("Operational");
-  const [overallColor, setOverallColor] = useState("text-emerald-400 bg-emerald-950/20 border-emerald-900/50");
-
-  useEffect(() => {
-    let active = true;
-
-    const fetchStatus = async () => {
-      try {
-        const res = await fetch('/api/status');
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        
-        if (data.success && active) {
-          setSystems(data.systems);
-          setOverallStatus(data.overallStatus === "All Systems Operational" ? "Operational" : data.overallStatus);
-          if (data.overallStatus === "All Systems Operational") {
-            setOverallColor("text-emerald-400 bg-emerald-950/20 border-emerald-900/50");
-          } else {
-            setOverallColor("text-amber-500 bg-amber-950/20 border-amber-900/50");
-          }
-        }
-      } catch (e) {
-        if (active) {
-          setOverallStatus("Operational");
-          setOverallColor("text-emerald-400 bg-emerald-950/20 border-emerald-900/50");
-        }
+  const loadStatus = async () => {
+    setRefreshing(true);
+    try {
+      const res = await fetch('/api/status', { cache: 'no-store' });
+      if (!res.ok) throw new Error('status error');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.systems)) {
+        setSystems(data.systems);
+        setOverallStatus(data.overallStatus || 'Operational');
+        setHealthy(data.overallStatus === 'All Systems Operational');
+        setTimestamp(data.timestamp || new Date().toISOString());
       }
-    };
-
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 30000);
-    return () => {
-      active = false;
-      clearInterval(interval);
-    };
-  }, []);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput) {
-      setSubscribed(true);
-      setEmailInput('');
+    } catch {
+      setHealthy(false);
+      setOverallStatus('Telemetry Probe Error');
+    } finally {
+      setRefreshing(false);
     }
   };
 
-  const incidents = [
-    { 
-      date: locale === 'es' ? "15 de Junio, 2026" : "June 15, 2026", 
-      title: locale === 'es' ? "Mantenimiento Preventivo VPS Hetzner" : "Scheduled VPS Maintenance", 
-      desc: locale === 'es'
-        ? "Reinicio planificado del hypervisor (2 min). Failover automático ejecutado correctamente sin interrupción de telemetría."
-        : "Scheduled hypervisor restart (2 min). Automatic failover completed with zero telemetry downtime."
-    },
-    { 
-      date: locale === 'es' ? "28 de Mayo, 2026" : "May 28, 2026", 
-      title: locale === 'es' ? "Migración de Base de Datos Turso LibSQL" : "Turso LibSQL Database Migration", 
-      desc: locale === 'es'
-        ? "Actualización de esquema y réplica distribuida. Cero downtime reportado."
-        : "Schema upgrade and distributed replica sync. Zero downtime observed."
-    }
-  ];
+  useEffect(() => {
+    void loadStatus();
+    const timer = setInterval(() => void loadStatus(), 25000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--color-space-black)] text-slate-200 py-32 px-6">
+    <div className="min-h-screen bg-[var(--surface-void)] text-[var(--text-primary)] pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        
-        <Link 
-          href="/" 
-          className="inline-flex items-center text-[var(--color-mist-gray)] hover:text-white font-mono text-xs mb-10 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" /> {locale === 'es' ? "Volver al Inicio" : "Back to Home"}
-        </Link>
+        <div className="mb-8">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--text-muted)] hover:text-[#FF4F00] transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            {isEs ? 'Volver al Hub' : 'Back to Hub'}
+          </Link>
+        </div>
 
-        {/* Top Header */}
-        <div className="flex items-center justify-between flex-wrap gap-4 mb-12 border-b border-white/10 pb-8">
-          <div className="flex items-center gap-3.5">
-            <div className="p-3 bg-[var(--color-arbizu-teal)]/10 border border-[var(--color-arbizu-teal)]/30 rounded-xl">
-              <Activity className="w-8 h-8 text-[var(--color-arbizu-teal)]" />
+        <div className="p-6 sm:p-8 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="font-mono text-[11px] uppercase tracking-widest text-[#00E599] font-bold mb-1 flex items-center gap-2">
+              <Activity className="w-3.5 h-3.5" />
+              HETZNER VPS CLUSTER // PORT ROUTER TELEMETRY
             </div>
-            <div>
-              <span className="badge-enterprise mb-1">Live Telemetry</span>
-              <h1 className="text-3xl font-extrabold text-white font-serif">
-                {locale === 'es' ? "Estado de Infraestructura & Nodos" : "Infrastructure & System Status"}
-              </h1>
-              <p className="text-slate-400 text-xs font-mono">
-                {locale === 'es' 
-                  ? "Monitor de disponibilidad y registro de incidentes en tiempo real" 
-                  : "Live uptime monitor and incident status telemetry"}
-              </p>
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
+              {overallStatus}
+            </h1>
+            {timestamp && (
+              <div className="font-mono text-[11px] text-[var(--text-muted)] mt-1 tabular-nums">
+                Last Probe: {new Date(timestamp).toLocaleString()}
+              </div>
+            )}
           </div>
 
-          <div className={`flex items-center gap-2 border px-4 py-2 rounded-full font-space text-xs font-bold uppercase tracking-wider ${overallColor}`}>
-            <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse" />
-            <span>{locale === 'es' ? "Todos los Sistemas Operativos" : "All Systems Operational"}</span>
+          <div className="flex items-center gap-3">
+            <span
+              className={`px-3 py-1.5 rounded-[2px] border font-mono text-xs font-bold uppercase ${
+                healthy
+                  ? 'border-[#00E599]/40 bg-[#00E599]/10 text-[#00E599]'
+                  : 'border-[#FF4F00]/40 bg-[#FF4F00]/10 text-[#FF4F00]'
+              }`}
+            >
+              {healthy ? 'ALL NODES LIVE' : 'CHECK NODES'}
+            </span>
+            <button
+              type="button"
+              onClick={() => void loadStatus()}
+              disabled={refreshing}
+              aria-label="Refresh telemetry"
+              className="p-2.5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] hover:border-[#00E599]/50 text-[var(--text-primary)]"
+            >
+              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            </button>
           </div>
         </div>
 
-        {/* Nodes Listing */}
-        <section className="space-y-4 mb-16">
-          <h2 className="font-space text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2">
-            {locale === 'es' ? "Nodos Activos & Servicios Monitoreados" : "Active Nodes & Monitored Services"}
-          </h2>
-          {systems.map((s, idx) => (
-            <div key={idx} className="glass-surface-enterprise p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <Server className="w-5 h-5 text-white/50" />
-                <span className="font-bold text-white text-sm">{s.name}</span>
-              </div>
-              <div className="flex items-center gap-6 font-mono text-xs text-zinc-400">
-                <span className="bg-white/5 px-2 py-1 rounded border border-white/5">{s.uptime} uptime</span>
-                <span className="font-bold flex items-center gap-1.5 text-emerald-400">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>{locale === 'es' ? "Operativo" : "Operational"}</span>
-                </span>
-              </div>
-            </div>
-          ))}
-        </section>
-
-        {/* Incident History */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-serif text-white font-bold mb-6 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-[var(--color-arbizu-teal)]" /> 
-            <span>{locale === 'es' ? "Historial de Mantenimientos e Incidentes" : "Maintenance & Incident Log"}</span>
-          </h2>
-          <div className="space-y-4">
-            {incidents.map((inc, idx) => (
-              <div key={idx} className="glass-surface-enterprise p-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-bold text-white text-sm">{inc.title}</h4>
-                  <span className="text-[11px] text-zinc-500 font-mono">{inc.date}</span>
-                </div>
-                <p className="text-slate-400 text-xs font-mono leading-relaxed">{inc.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Email Subscribe */}
-        <section className="p-8 rounded-2xl bg-gradient-to-br from-[var(--color-deep-space)] to-black border border-white/10 text-center">
-          <h3 className="text-lg font-bold text-white font-serif mb-2">
-            {locale === 'es' ? "Suscribirse a Alertas de Incidentes" : "Subscribe to Status Alerts"}
-          </h3>
-          <p className="text-slate-400 text-xs font-mono mb-6 max-w-md mx-auto">
-            {locale === 'es'
-              ? "Recibe notificaciones automáticas por correo si se declara un mantenimiento programado o un cambio en los nodos."
-              : "Get automated alerts if an incident is declared or scheduled VPS maintenance occurs."}
-          </p>
-          
-          {subscribed ? (
-            <div className="text-emerald-400 font-mono font-bold text-xs bg-emerald-950/20 border border-emerald-900/40 p-3.5 rounded-xl max-w-sm mx-auto">
-              {locale === 'es' ? "✓ Correo registrado para notificaciones automáticas." : "✓ Email subscribed for automated alerts."}
+        <div className="rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] divide-y divide-[var(--grid-hairline)] mb-8">
+          {systems.length === 0 ? (
+            <div className="p-6 font-mono text-xs text-[var(--text-muted)]">
+              {isEs ? 'Cargando sondas de servicio...' : 'Loading live service probes...'}
             </div>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row max-w-md mx-auto gap-2">
-              <input 
-                type="email" 
-                placeholder={locale === 'es' ? "tu.correo@empresa.com" : "your.email@company.com"}
-                value={emailInput}
-                onChange={e => setEmailInput(e.target.value)}
-                required
-                className="flex-1 px-4 py-3 rounded-lg bg-black/60 border border-white/10 text-xs text-white focus:outline-none focus:border-[var(--color-arbizu-teal)] font-mono"
-              />
-              <button 
-                type="submit" 
-                className="btn-primary-enterprise text-xs py-3 px-5 whitespace-nowrap"
-              >
-                {locale === 'es' ? "Suscribirme" : "Subscribe"}
-              </button>
-            </form>
+            systems.map((sys) => {
+              const isUp = sys.status === 'Operational' || sys.status === 'Self-Hosted Active';
+              return (
+                <div
+                  key={sys.name}
+                  className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs"
+                >
+                  <div>
+                    <div className="font-bold text-[var(--text-primary)] text-sm">{sys.name}</div>
+                    <div className="text-[11px] text-[var(--text-muted)] mt-0.5">
+                      {sys.port ? `:${sys.port}` : ''} {sys.version ? `· ${sys.version}` : ''}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 tabular-nums">
+                    {sys.latencyMs != null && (
+                      <span className="text-[var(--text-secondary)]">{sys.latencyMs} ms</span>
+                    )}
+                    <span className="text-[var(--text-secondary)]">{sys.uptime}</span>
+                    <span
+                      className={`px-2.5 py-0.5 rounded-[2px] border font-bold text-[10px] uppercase ${
+                        isUp
+                          ? 'border-[#00E599]/40 bg-[#00E599]/10 text-[#00E599]'
+                          : 'border-[#FF4F00]/40 bg-[#FF4F00]/10 text-[#FF4F00]'
+                      }`}
+                    >
+                      {sys.status}
+                    </span>
+                  </div>
+                </div>
+              );
+            })
           )}
-        </section>
+        </div>
 
+        <div className="p-5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+          <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+            <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
+            <span>Sovereign VPS Infrastructure · Zero Vercel Dependencies</span>
+          </div>
+          <div className="flex gap-4">
+            <Link href="/metrics" className="text-[#FF4F00] font-bold hover:underline">
+              /metrics →
+            </Link>
+            <Link href="/security" className="text-[#00E599] font-bold hover:underline">
+              /security →
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

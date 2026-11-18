@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowUpRight,
@@ -261,8 +261,24 @@ export default function ProductsBento() {
     setLastHmac(`hmac_${((checkpointsDone + 1) * 7919).toString(16)}a4f`);
   };
 
-  const openQuoteModal = (title: string, price: string) => {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const sp = new URLSearchParams(window.location.search);
+    const sys = sp.get('sys')?.toUpperCase();
+    if (sys === 'SYS-01' || sys === 'SYS-02' || sys === 'SYS-03' || sys === 'SYS-04') {
+      setSelectedSys(sys);
+    }
+  }, []);
+
+  const openQuoteModal = (title: string, price: string, sysCode: string) => {
     playEngagePulse();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('arbizu:select-service', {
+          detail: { code: sysCode, title, price },
+        })
+      );
+    }
     setContractTitle(title);
     setContractPrice(price);
     setIsContractOpen(true);
@@ -272,9 +288,10 @@ export default function ProductsBento() {
     <section
       id="workbench"
       data-section="workbench"
-      className="py-24 bg-[var(--bg-deep,#060709)] border-t border-b border-[var(--grid-hairline,#1B202B)] relative"
+      className="py-24 bg-[var(--surface-void,#060709)] border-t border-b border-[var(--grid-hairline,#1B202B)] relative scroll-mt-24"
     >
-      <div id="ecosystem" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="systems" className="scroll-mt-24" />
+      <div id="ecosystem" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         {/* Encabezado de Sección */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-8 border-b border-[var(--grid-hairline,#1B202B)]">
           <div>
@@ -308,8 +325,8 @@ export default function ProductsBento() {
                 }}
                 className={`p-4 text-left border rounded-[2px] transition-all flex items-center gap-3 cursor-pointer ${
                   active
-                    ? 'bg-[#11151D] border-[#FF4F00] shadow-[0_0_24px_rgba(255,79,0,0.16)]'
-                    : 'bg-[var(--bg-surface)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]/60'
+                    ? 'bg-[var(--surface-elevated,#11151D)] border-[#FF4F00] shadow-[0_0_24px_rgba(255,79,0,0.16)]'
+                    : 'bg-[var(--surface-chassis,#0B0D12)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]/60'
                 }`}
               >
                 <ProductDynastyBadge code={code} className="w-10 h-10 shrink-0" />
@@ -317,7 +334,7 @@ export default function ProductsBento() {
                   <div className="font-mono text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">
                     {code}
                   </div>
-                  <div className="font-sans text-sm sm:text-base font-bold text-[#F6F7F9] truncate">
+                  <div className="font-sans text-sm sm:text-base font-bold text-[var(--text-primary)] truncate">
                     {item.title}
                   </div>
                 </div>
@@ -327,15 +344,15 @@ export default function ProductsBento() {
         </div>
 
         {/* WORKBENCH INTERACTIVO (IZQUIERDA: INSTRUMENTO VIVO | DERECHA: FICHA B2B) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[var(--grid-hairline,#1B202B)] bg-[#0B0D12]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)]">
           {/* Panel Izquierdo (7 cols): Visor Operativo Ejecutable */}
-          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[#1B202B] font-mono">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[#1B202B] text-[11px]">
+          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[var(--grid-hairline,#1B202B)] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[var(--grid-hairline,#1B202B)] text-[11px]">
               <span className="text-[#00E599] font-bold flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
                 INTERACTIVE SLICE // {selectedSys}
               </span>
-              <span className="text-[#8A93A6] uppercase">{meta.deployment}</span>
+              <span className="text-[var(--text-muted)] uppercase">{meta.deployment}</span>
             </div>
 
             {selectedSys === 'SYS-01' && (
@@ -343,16 +360,16 @@ export default function ProductsBento() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <SlidersHorizontal className="w-4 h-4 text-[#D4AF37]" />
-                    <span className="text-xs font-bold text-[#F6F7F9]">BINANCE FUTURES · PURE_EXIT_ENGINE</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)]">BINANCE FUTURES · PURE_EXIT_ENGINE</span>
                   </div>
-                  <div className="flex border border-[#1B202B]">
+                  <div className="flex border border-[var(--grid-hairline,#1B202B)]">
                     {(['LONG', 'SHORT'] as const).map((dir) => (
                       <button
                         key={dir}
                         type="button"
                         onClick={() => setDirection(dir)}
                         className={`px-3 py-1 text-[11px] font-bold cursor-pointer ${
-                          direction === dir ? 'bg-[#D4AF37] text-[#060709]' : 'text-[#8A93A6] bg-[#060709]'
+                          direction === dir ? 'bg-[#D4AF37] text-[#060709]' : 'text-[var(--text-muted)] bg-[var(--surface-void,#060709)]'
                         }`}
                       >
                         {dir}
@@ -362,8 +379,8 @@ export default function ProductsBento() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
-                    <span className="text-[#8A93A6] block mb-1">ENTRY PRICE (USDT): ${entryPrice}</span>
+                  <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <span className="text-[var(--text-muted)] block mb-1">ENTRY PRICE (USDT): ${entryPrice}</span>
                     <input
                       type="range"
                       min={20000}
@@ -374,8 +391,8 @@ export default function ProductsBento() {
                       className="w-full accent-[#D4AF37] cursor-pointer"
                     />
                   </label>
-                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
-                    <span className="text-[#8A93A6] block mb-1">ATR 1H VOLATILITY: ${atrValue}</span>
+                  <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <span className="text-[var(--text-muted)] block mb-1">ATR 1H VOLATILITY: ${atrValue}</span>
                     <input
                       type="range"
                       min={250}
@@ -388,9 +405,9 @@ export default function ProductsBento() {
                   </label>
                 </div>
 
-                <div className="overflow-x-auto border border-[#1B202B]">
+                <div className="overflow-x-auto border border-[var(--grid-hairline,#1B202B)]">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[#11151D] text-[#8A93A6] uppercase text-[10px]">
+                    <thead className="bg-[var(--surface-elevated,#11151D)] text-[var(--text-muted)] uppercase text-[10px]">
                       <tr>
                         <th className="p-2.5">Nivel</th>
                         <th className="p-2.5">Precio</th>
@@ -398,30 +415,30 @@ export default function ProductsBento() {
                         <th className="p-2.5">Regla Slot</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1B202B] text-[#F6F7F9]">
+                    <tbody className="divide-y divide-[var(--grid-hairline,#1B202B)] text-[var(--text-primary)]">
                       <tr>
                         <td className="p-2.5 text-[#F43F5E] font-bold">SL (Hard Cap)</td>
                         <td className="p-2.5 font-bold">${slPrice.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#F43F5E]">{(((-riskDist) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[#8A93A6]">1.50x ATR · INITIAL</td>
+                        <td className="p-2.5 text-[var(--text-muted)]">1.50x ATR · INITIAL</td>
                       </tr>
                       <tr>
                         <td className="p-2.5 text-[#00E599] font-bold">TP1 (2.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp1Price.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#00E599]">+{(((atrValue * 2.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[#8A93A6]">Cierra 60% + Mueve SL a BE</td>
+                        <td className="p-2.5 text-[var(--text-muted)]">Cierra 60% + Mueve SL a BE</td>
                       </tr>
                       <tr>
                         <td className="p-2.5 text-[#D4AF37] font-bold">TP2 (4.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp2Price.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#D4AF37]">+{(((atrValue * 4.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[#8A93A6]">Runner 40% Restante</td>
+                        <td className="p-2.5 text-[var(--text-muted)]">Runner 40% Restante</td>
                       </tr>
                       <tr>
-                        <td className="p-2.5 text-[#C2C8D4] font-bold">Trailing Chandelier</td>
+                        <td className="p-2.5 text-[var(--text-secondary)] font-bold">Trailing Chandelier</td>
                         <td className="p-2.5">${trailPrice.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#00E599]">+0.20% Buffer</td>
-                        <td className="p-2.5 text-[#8A93A6]">Lock-In Autónomo</td>
+                        <td className="p-2.5 text-[var(--text-muted)]">Lock-In Autónomo</td>
                       </tr>
                     </tbody>
                   </table>
@@ -432,7 +449,7 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-02' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-xs font-bold text-[#F6F7F9]">
+                  <span className="text-xs font-bold text-[var(--text-primary)]">
                     GUARD PATROL NODE · ANTI-SPOOFING &amp; SOS GATEWAY
                   </span>
                   <span className="px-2.5 py-1 text-[10px] font-bold border border-[#00B4D8]/50 text-[#00B4D8] bg-[#00B4D8]/10">
@@ -441,16 +458,16 @@ export default function ProductsBento() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
-                    <div className="text-[#8A93A6] text-[10px]">RONDAS NFC SELLADAS</div>
+                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">RONDAS NFC SELLADAS</div>
                     <div className="text-2xl font-bold text-[#00E599] mt-1">{checkpointsDone}</div>
                   </div>
-                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
-                    <div className="text-[#8A93A6] text-[10px]">HMAC-SHA256 PAYLOAD</div>
-                    <div className="text-xs font-bold text-[#F6F7F9] mt-2 truncate">{lastHmac}</div>
+                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">HMAC-SHA256 PAYLOAD</div>
+                    <div className="text-xs font-bold text-[var(--text-primary)] mt-2 truncate">{lastHmac}</div>
                   </div>
-                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
-                    <div className="text-[#8A93A6] text-[10px]">ESTADO SOS SOC</div>
+                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">ESTADO SOS SOC</div>
                     <div className={`text-xs font-bold mt-2 ${sosTriggered ? 'text-[#F43F5E]' : 'text-[#00E599]'}`}>
                       {sosTriggered ? 'CRITICAL SOS ENVIADO' : 'PERÍMETRO NORMAL'}
                     </div>
@@ -484,7 +501,7 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-03' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#F6F7F9]">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[var(--text-primary)]">
                     <Scale className="w-4 h-4 text-[#10B981]" />
                     <span>BALANZA SILOBOLSA &amp; STOCK SENASA (SQLITE WAL)</span>
                   </div>
@@ -503,13 +520,13 @@ export default function ProductsBento() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="p-3.5 border border-[#1B202B] bg-[#060709]">
-                    <span className="text-[#8A93A6] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
-                    <span className="text-2xl font-bold text-[#F6F7F9]">{siloWeightKg.toLocaleString('en-US')} kg</span>
+                  <div className="p-3.5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <span className="text-[var(--text-muted)] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
+                    <span className="text-2xl font-bold text-[var(--text-primary)]">{siloWeightKg.toLocaleString('en-US')} kg</span>
                   </div>
-                  <div className="p-3.5 border border-[#1B202B] bg-[#060709] flex items-center justify-between">
+                  <div className="p-3.5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] flex items-center justify-between">
                     <div>
-                      <span className="text-[#8A93A6] text-[10px] block">COLA TRANSACCIONAL WAL</span>
+                      <span className="text-[var(--text-muted)] text-[10px] block">COLA TRANSACCIONAL WAL</span>
                       <span className="text-sm font-bold text-[#00E599]">0 bytes perdidos</span>
                     </div>
                     <button
@@ -522,11 +539,11 @@ export default function ProductsBento() {
                   </div>
                 </div>
 
-                <div className="border border-[#1B202B] divide-y divide-[#1B202B] text-xs">
+                <div className="border border-[var(--grid-hairline,#1B202B)] divide-y divide-[var(--grid-hairline,#1B202B)] text-xs">
                   {walBuffer.map((row) => (
-                    <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[#060709]">
-                      <span className="text-[#F6F7F9] font-bold">{row.ticket} · Soja/Maíz</span>
-                      <span className="text-[#C2C8D4]">{row.kg.toLocaleString('en-US')} kg</span>
+                    <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[var(--surface-void,#060709)]">
+                      <span className="text-[var(--text-primary)] font-bold">{row.ticket} · Soja/Maíz</span>
+                      <span className="text-[var(--text-secondary)]">{row.kg.toLocaleString('en-US')} kg</span>
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 border ${
                           row.status === 'PENDING_SYNC'
@@ -545,7 +562,7 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-04' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-[#F6F7F9] flex items-center gap-2">
+                  <span className="font-bold text-[var(--text-primary)] flex items-center gap-2">
                     <Radio className="w-4 h-4 text-[#FF4F00]" />
                     CALCULADORA OFF-GRID AUTONOMÍA SOLAR + MÓDEM AFSK 800Hz
                   </span>
@@ -553,8 +570,8 @@ export default function ProductsBento() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
-                    <span className="text-[#8A93A6] block mb-1">PANEL SOLAR PORTÁTIL: {solarWatts}W</span>
+                  <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <span className="text-[var(--text-muted)] block mb-1">PANEL SOLAR PORTÁTIL: {solarWatts}W</span>
                     <input
                       type="range"
                       min={15}
@@ -565,8 +582,8 @@ export default function ProductsBento() {
                       className="w-full accent-[#FF4F00] cursor-pointer"
                     />
                   </label>
-                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
-                    <span className="text-[#8A93A6] block mb-1">BANCO LiFePO4: {batteryWh}Wh</span>
+                  <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+                    <span className="text-[var(--text-muted)] block mb-1">BANCO LiFePO4: {batteryWh}Wh</span>
                     <input
                       type="range"
                       min={100}
@@ -579,17 +596,17 @@ export default function ProductsBento() {
                   </label>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 text-xs border-t border-[#1B202B] pt-4">
-                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
-                    <div className="text-[#8A93A6] text-[10px]">RECARGA COMPLETA</div>
-                    <div className="text-lg font-bold text-[#F6F7F9]">{(batteryWh / (solarWatts * 0.78)).toFixed(1)} hs sol</div>
+                <div className="grid grid-cols-3 gap-3 text-xs border-t border-[var(--grid-hairline,#1B202B)] pt-4">
+                  <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">RECARGA COMPLETA</div>
+                    <div className="text-lg font-bold text-[var(--text-primary)]">{(batteryWh / (solarWatts * 0.78)).toFixed(1)} hs sol</div>
                   </div>
-                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
-                    <div className="text-[#8A93A6] text-[10px]">OPERACIÓN TABLET/LoRa</div>
+                  <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">OPERACIÓN TABLET/LoRa</div>
                     <div className="text-lg font-bold text-[#00E599]">{Math.round(batteryWh / 12)} días</div>
                   </div>
-                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
-                    <div className="text-[#8A93A6] text-[10px]">ALCANCE RF / LORA</div>
+                  <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
+                    <div className="text-[var(--text-muted)] text-[10px]">ALCANCE RF / LORA</div>
                     <div className="text-lg font-bold text-[#D4AF37]">8 – 22 km LoS</div>
                   </div>
                 </div>
@@ -598,7 +615,7 @@ export default function ProductsBento() {
           </div>
 
           {/* Panel Derecho (5 cols): Ficha de Ingeniería & Conversión B2B */}
-          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-[#0E1116]">
+          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-[var(--surface-elevated,#11151D)]">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <ProductDynastyBadge code={selectedSys} className="w-11 h-11 shrink-0" />
@@ -606,27 +623,27 @@ export default function ProductsBento() {
                   <span className="font-mono text-[10px] text-[#FF4F00] font-bold uppercase tracking-widest block">
                     {selectedSys} // SOVEREIGN DIVISION
                   </span>
-                  <h3 className="font-sans text-2xl font-extrabold text-[#F6F7F9]">{meta.title}</h3>
+                  <h3 className="font-sans text-2xl font-extrabold text-[var(--text-primary)]">{meta.title}</h3>
                 </div>
               </div>
 
-              <p className="font-sans text-sm text-[#C2C8D4] leading-relaxed mb-5">
+              <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
                 {isEs ? meta.subtitleEs : meta.subtitleEn}
               </p>
 
-              <div className="space-y-3 border-y border-[#1B202B] py-4 mb-6 font-mono text-xs">
+              <div className="space-y-3 border-y border-[var(--grid-hairline,#1B202B)] py-4 mb-6 font-mono text-xs">
                 <div>
-                  <span className="text-[#8A93A6] uppercase block text-[10px]">
+                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">
                     {isEs ? 'PROBLEMA ELIMINADO:' : 'ELIMINATED BOTTLENECK:'}
                   </span>
-                  <span className="text-[#F6F7F9]">{isEs ? meta.problemEs : meta.problemEn}</span>
+                  <span className="text-[var(--text-primary)]">{isEs ? meta.problemEs : meta.problemEn}</span>
                 </div>
                 <div>
-                  <span className="text-[#8A93A6] uppercase block text-[10px]">ARCHITECTURE STACK:</span>
+                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">ARCHITECTURE STACK:</span>
                   <span className="text-[#00E599] font-bold">{meta.arch}</span>
                 </div>
                 <div>
-                  <span className="text-[#8A93A6] uppercase block text-[10px]">
+                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">
                     {isEs ? 'MODALIDAD B2B:' : 'LICENSING TIER:'}
                   </span>
                   <span className="text-[#D4AF37] font-bold">{meta.quotePrice}</span>
@@ -637,7 +654,7 @@ export default function ProductsBento() {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
-                onClick={() => openQuoteModal(meta.quoteTitle, meta.quotePrice)}
+                onClick={() => openQuoteModal(meta.quoteTitle, meta.quotePrice, selectedSys)}
                 className="flex-1 py-3 px-4 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
               >
                 {isEs ? 'Cotizar Despliegue →' : 'Configure Deployment →'}
@@ -646,7 +663,7 @@ export default function ProductsBento() {
                 href={meta.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 px-4 border border-white/20 bg-[#060709] hover:border-[#D4AF37] text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center justify-center gap-1.5"
+                className="py-3 px-4 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] hover:border-[#D4AF37] text-[var(--text-primary)] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center justify-center gap-1.5"
               >
                 <span>{isEs ? 'Abrir Sistema' : 'Open Live'}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37]" />
@@ -660,7 +677,7 @@ export default function ProductsBento() {
           <button
             type="button"
             onClick={() => setShowFullDynasty((s) => !s)}
-            className="w-full py-4 px-6 border border-[var(--grid-hairline,#1B202B)] bg-[var(--bg-surface)] hover:border-[#D4AF37] flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="w-full py-4 px-6 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] hover:border-[#D4AF37] flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors cursor-pointer"
           >
             <span>
               {isEs
@@ -675,7 +692,7 @@ export default function ProductsBento() {
               {SECONDARY_VERTICALS.map((v) => (
                 <div
                   key={v.code}
-                  className="p-5 border-t sm:border-r border-[var(--grid-hairline,#1B202B)] bg-[#0B0D12] flex flex-col justify-between"
+                  className="p-5 border-t sm:border-r border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
@@ -684,18 +701,18 @@ export default function ProductsBento() {
                         {v.status}
                       </span>
                     </div>
-                    <span className="font-mono text-[10px] text-[#8A93A6] uppercase block">
+                    <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">
                       {v.code} · {v.domain}
                     </span>
-                    <h4 className="font-sans text-base font-bold text-[#F6F7F9] mt-0.5 mb-2">{v.title}</h4>
-                    <p className="font-mono text-[11px] text-[#C2C8D4] leading-relaxed mb-4">
+                    <h4 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5 mb-2">{v.title}</h4>
+                    <p className="font-mono text-[11px] text-[var(--text-secondary)] leading-relaxed mb-4">
                       {isEs ? v.summaryEs : v.summaryEn}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-[#1B202B] flex items-center justify-between font-mono text-[10px]">
-                    <Link href={`/cases/${v.caseSlug}`} className="text-[#8A93A6] hover:text-[#F6F7F9]">
-                      {isEs ? 'Caso Técnico' : 'Tech Case'}
+                  <div className="pt-3 border-t border-[var(--grid-hairline,#1B202B)] flex items-center justify-between font-mono text-[10px]">
+                    <Link href={`/products/${v.id}`} className="text-[var(--text-secondary)] hover:text-[#FF4F00]">
+                      {isEs ? 'Especificaciones' : 'Specs'}
                     </Link>
                     <a
                       href={v.liveUrl}

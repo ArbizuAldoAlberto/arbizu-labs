@@ -1,986 +1,887 @@
-"use client";
+'use client';
 
-import React, { use, useState } from "react";
-import { useRouter } from "next/navigation";
-import { 
-  Bot, Shield, CreditCard, Check, ArrowRight, Star, Cpu, Lock, 
-  Smartphone, Database, Code, Zap, DollarSign, Activity, AlertTriangle,
-  Leaf, Coins, ShoppingBag
-} from "lucide-react";
-import ROICalculator from "@/components/ui/ROICalculator";
+import React, { use, useState } from 'react';
+import Link from 'next/link';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  CheckCircle2,
+  ShieldAlert,
+  ShieldCheck,
+  Terminal,
+} from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { ProductDynastyBadge, type DynastySystemCode } from '@/components/ui/SovereignBrandMark';
+import B2BContractModal from '@/components/modals/B2BContractModal';
+import RoiCalculator from '@/components/sections/RoiCalculator';
 
-interface ProductContent {
-  title: string;
-  subtitle: string;
-  themeColor: string; // Tailwind color class
-  accentBg: string;
-  glowColor: string;
-  icon: React.ReactNode;
-  heroBadge: string;
-  problem: string[];
-  solution: string[];
-  features: { name: string; desc: string }[];
-  useCases: { title: string; scenario: string }[];
-  tiers: { name: string; price: string; desc: string; features: string[]; checkoutUrl: string }[];
-  faqs: { q: string; a: string }[];
+interface ProductTier {
+  name: string;
+  price: string;
+  period: string;
+  features: string[];
+  highlighted?: boolean;
 }
 
-const CHECKOUT_WALLET_ADDRESS = "0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718";
+interface ProductSpec {
+  code: DynastySystemCode;
+  title: string;
+  domain: string;
+  badge: string;
+  subtitle: string;
+  problem: string[];
+  solution: string[];
+  stack: string[];
+  metrics: { label: string; value: string }[];
+  tiers: ProductTier[];
+  liveUrl?: string;
+  solutionSlug?: string;
+  caseSlug?: string;
+  complianceNotice?: string;
+}
 
-const PRODUCTS: Record<string, ProductContent> = {
+const PRODUCTS_DATA: Record<string, ProductSpec> = {
   titanflow: {
-    title: "TitanFlow",
-    subtitle: "Trading Bot Cuantitativo Multi-Estrategia & Risk Audit en Caliente",
-    themeColor: "from-cyan-500 to-blue-600",
-    accentBg: "border-cyan-500/30 bg-cyan-950/20",
-    glowColor: "shadow-cyan-500/20",
-    icon: <Bot className="w-12 h-12 text-cyan-400" />,
-    heroBadge: "Algorithmic DeFi & Binance L2 SaaS",
+    code: 'SYS-01',
+    title: 'TitanFlow Quant Engine',
+    domain: 'Algorithmic Execution & Risk Ops',
+    badge: 'SYS-01 // HFT & KELLY CRITERION',
+    subtitle:
+      'Motor algorítmico Binance Futures con ejecución sub-10ms, Pessimistic SL-First, Chandelier Trailing adaptativo y aislamiento de colateral (Hard Cap 1.50%).',
     problem: [
-      "Pérdida de capital debido a deslices emocionales durante la volatilidad extrema del mercado.",
-      "Altas tarifas 'taker' que reducen los márgenes netos de ganancia mensual en micro-escalas.",
-      "Falta de supervisión de riesgos por IA independiente en caliente."
+      'Latencia de polling REST (>250ms) que provoca slippage y llenados desfavorables en rupturas de volatilidad.',
+      'Gestión emocional discrecional o ausencia de Stop-Loss automático ante compras manuales en caliente.',
+      'Backtests optimistas que ignoran comisiones Taker, Funding Rate 8h o barras con ambigüedad SL/TP.',
     ],
     solution: [
-      "Ejecución robótica 100% libre de emociones con gestión autónoma Maker Post-Only.",
-      "Descuento del 60% en comisiones (de 0.05% a 0.02%) mediante auditoría óptima del bid/ask spread.",
-      "Auditoría integrada en caliente con modelos de LLM locales y fallbacks tolerantes a cortes."
+      'Motor determinista por WebSocket con latencia sub-10ms y arquitectura Auto-Adopt para operaciones manuales.',
+      'Paridad 1:1 Backtest/Live con evaluación Pessimistic SL-First y control rígido de riesgo al 1.50% por slot.',
+      'Telemetría Telegram/HUD en vivo con cálculo exacto de TP1 (2.5x ATR), TP2 (4.5x ATR) y Break-Even.',
     ],
-    features: [
-      { name: "Maker Limit Execution", desc: "Monitorea bid/ask en caliente e inyecta parámetros postOnly:true para garantizar fees óptimos." },
-      { name: "Dynamic Position Leverage", desc: "Ajuste dinámico basado en ATR y sentimiento del mercado de forma automática." },
-      { name: "Ollama Fallback Engine", desc: "Auditoría de riesgo local con qwen2.5:7b y salto a modelo ligero qwen2.5:1.5b en VPS." },
-      { name: "Partial Take Profit (TP1)", desc: "Cierre parcial del 40% al cruzar el 50% de la distancia objetivo y movimiento a breakeven." }
-    ],
-    useCases: [
-      { title: "Escalamiento en Stablecoins", scenario: "Optimización y renta en Base L2 o pools descentralizados de liquidez." },
-      { title: "Arbitraje del Spread", scenario: "Captura rápida de volatilidad en pares exóticos controlados." },
-      { title: "Auditoría en Conectividad Inestable", scenario: "Risk supervisor operando localmente sincronizado a través de Tailscale." }
+    stack: ['Node.js WebSockets', 'SQLite WAL', 'Pessimistic SL-First', 'Telegram Ops'],
+    metrics: [
+      { label: 'Latencia Motor', value: '< 10 ms' },
+      { label: 'Hard Cap Riesgo', value: '1.50%' },
+      { label: 'Paridad Ejecución', value: '1 : 1' },
     ],
     tiers: [
       {
-        name: "Starter (Simulated)",
-        price: "$49",
-        desc: "Ideal para familiarizarse con el flujo cuantitativo y backtesting.",
-        features: ["Ejecución simulada (Mock Account)", "Backtesting ilimitado", "Historial de 30 días", "Alertas a Telegram"],
-        checkoutUrl: "/api/warroom/checkout?product=titanflow-starter"
+        name: 'Arquitectura Base / Self-Hosted',
+        price: '$4,500 USD',
+        period: 'Setup + transferencia total de código fuente',
+        highlighted: true,
+        features: [
+          'Motor determinista WebSocket + pureExitEngine',
+          'Auto-Adopción de trades manuales en caliente',
+          'Reglas Kelly Criterion & Chandelier Trailing',
+          'Alertas Telegram cuantitativas en tiempo real',
+          '30 días de hardening SRE en Hetzner VPS',
+        ],
       },
       {
-        name: "Pro Live",
-        price: "$99",
-        desc: "Para traders individuales activos que conectan su propio Exchange.",
-        features: ["Ejecución Maker en Binance Live", "Auditoría en Caliente con IA", "Soporte Multi-Estrategia", "EAS Cloud logs & alerts"],
-        checkoutUrl: "/api/warroom/checkout?product=titanflow-pro"
+        name: 'Sprint Cuantitativo Enterprise',
+        price: '$2,500 USD',
+        period: 'Entrega incremental cada 14 días',
+        features: [
+          'Auditoría y paridad 1:1 de estrategias existentes',
+          'Backtester Pessimistic SL-First + Taker Fees',
+          'Observabilidad con PM2, logs WAL y failover',
+        ],
       },
-      {
-        name: "Enterprise Custom",
-        price: "$149",
-        desc: "Para fondos de inversión pequeños con soporte dedicado.",
-        features: ["Estrategias a medida en Node/Python", "Instancia VPS dedicada", "Garantía de alta disponibilidad 99.9%", "Soporte prioritario 24/7"],
-        checkoutUrl: "/api/warroom/checkout?product=titanflow-enterprise"
-      }
     ],
-    faqs: [
-      { q: "¿Qué es TitanFlow?", a: "Es un bot cuantitativo automatizado que analiza spreads y gestiona carteras criptográficas de manera automatizada y descentralizada." },
-      { q: "¿Necesito transferir mis fondos al bot?", a: "No. El bot opera localmente y se conecta a tu exchange favorito a través de API Keys seguras con permisos de retiro deshabilitados." },
-      { q: "¿Cómo reduce los costos de comisiones?", a: "Utiliza órdenes de tipo límite Post-Only, asegurando que tus transacciones entren siempre al libro de órdenes como creador (Maker), evitando las tarifas más altas del mercado." },
-      { q: "¿Qué sucede si el modelo LLM primario falla?", a: "El supervisor de IA detecta el timeout e implementa de manera transparente un switch al modelo ligero ejecutado en tu VPS." },
-      { q: "¿Cómo se activa la licencia?", a: "Al confirmar tu pago en la pasarela o crypto, recibirás una clave API única para desbloquear tu instancia local." }
-    ]
+    liveUrl: 'https://titanflow.aldoarbizu.com',
+    solutionSlug: 'desarrollo-bots-trading-algoritmico-binance-futures',
+    caseSlug: 'titanflow-defi-low-latency',
   },
   sentinelos: {
-    title: "SentinelOS",
-    subtitle: "Sistema de Control de Rondas, GPS QR Routing & Guardia Inteligente",
-    themeColor: "from-green-500 to-emerald-600",
-    accentBg: "border-green-500/30 bg-green-950/20",
-    glowColor: "shadow-green-500/20",
-    icon: <Shield className="w-12 h-12 text-green-400" />,
-    heroBadge: "Offline-First Guard Dispatch & Security Hub",
+    code: 'SYS-02',
+    title: 'SentinelOS Dispatch',
+    domain: 'Tactical Security & Multi-Tenant SOC',
+    badge: 'SYS-02 // 60/60 POSTGRESQL RLS',
+    subtitle:
+      'Plataforma táctica de despacho para empresas de seguridad privada con rondas NFC/GPS anti-spoofing, detección biométrica local y SOC offline-first.',
     problem: [
-      "Falta de auditorías reales en rondas de patrullaje físico y reportes de guardia falsos.",
-      "Cortes de conectividad celular que anulan la subida de incidencias en áreas críticas.",
-      "Ubicaciones imprecisas en alarmas de emergencia y botones de pánico."
+      'Clonación fraudulenta de etiquetas NFC o uso de aplicaciones GPS Mock Location durante rondas nocturnas.',
+      'Pérdida total de señal celular en subsuelos, depósitos industriales o predios rurales de gran extensión.',
+      'Fugas de datos multi-tenant por políticas SQL permisivas en bases de datos compartidas.',
     ],
     solution: [
-      "Validación física estricta mediante lector de QR inalterable y sellos de tiempo cryptográficos.",
-      "Motor offline local (SQLite) que almacena reportes y fotos sincronizándolas al volver la señal.",
-      "Ubicaciones precisas y fallback de coordenadas precalibradas por hardware."
+      'Validación criptográfica de rondas NFC/GPS + firma HMAC-SHA256 y detección biométrica local.',
+      'Persistencia en SQLite WAL capaz de encolar eventos críticos sin internet y sincronizar en background.',
+      '60/60 políticas PostgreSQL Row Level Security (RLS) auditadas con test automatizado de intrusión.',
     ],
-    features: [
-      { name: "Active Shift Pulsing", desc: "Efecto de onda premium que indica visualmente que el guardia se encuentra transmitiendo en vivo." },
-      { name: "QR Patrol Auditing", desc: "Escaneo estricto de códigos físicos para corroborar la visita presencial a puntos de control." },
-      { name: "Offline Sync Engine", desc: "Cola de acciones persistente que sube los datos a Firebase o Supabase de forma desatendida." },
-      { name: "Bolívar GPS Fallback", desc: "Calibración automática a coordenadas de control de rondas locales en caso de caída del sensor." }
-    ],
-    useCases: [
-      { title: "Control de Agencias Físicas", scenario: "Supervisión de rondas nocturnas en depósitos industriales y predios cerrados." },
-      { title: "Seguridad en Zonas Rurales", scenario: "Control de personal de patrullaje en campos o parques solares con mala conectividad." },
-      { title: "Reportes de Evidencia Rápida", scenario: "Envío seguro de fotos del terreno con marcas de agua y hashes inalterables." }
+    stack: ['Supabase RLS 60/60', 'SQLite WAL', 'HMAC-SHA256', 'Zero-Trust SOC'],
+    metrics: [
+      { label: 'Auditoría RLS', value: '60 / 60' },
+      { label: 'Cola Offline', value: '10,000 tx' },
+      { label: 'Anti-Spoofing', value: 'NFC + GPS' },
     ],
     tiers: [
       {
-        name: "Starter Kit",
-        price: "$290",
-        desc: "Licencia de código fuente base y tutorial de despliegue para desarrolladores.",
-        features: ["Código fuente React Native completo", "Configuración de Expo básica", "Base de datos local preinstalada", "Docs de desarrollo"],
-        checkoutUrl: "/api/warroom/checkout?product=sentinelos-starter"
+        name: 'Licencia B2B Operación Mensual',
+        price: '$120.000 ARS / mes',
+        period: 'Hasta 50 guardias activos + Consola SOC',
+        highlighted: true,
+        features: [
+          'App táctica offline-first para patrullaje en campo',
+          'Consola SOC en vivo con despacho Aegis SOS',
+          'Reportes auditables y firma criptográfica',
+        ],
       },
       {
-        name: "SaaS Enterprise",
-        price: "$10",
-        desc: "SaaS administrado por usuario activo. Ideal para agencias de seguridad.",
-        features: ["$10 USD por guardia/mes", "Consola de control web centralizada", "Hosting y base de datos incluidos", "Soporte técnico directo"],
-        checkoutUrl: "/api/warroom/checkout?product=sentinelos-enterprise"
+        name: 'Despliegue Soberano Dedicated',
+        price: '$1,800 USD Setup',
+        period: 'Instancia VPS dedicada + SLA industrial',
+        features: [
+          'Base PostgreSQL aislada con 60/60 RLS',
+          'Marca blanca y dominio corporativo propio',
+          'Capacitación de supervisores e integración API',
+        ],
       },
-      {
-        name: "SaaS Unlimited",
-        price: "$990",
-        desc: "Instancia dedicada y dominio propio sin límites.",
-        features: ["Usuarios y guardias ilimitados", "Código personalizado e integraciones", "Facturación local y soporte preferencial", "Backup diario automatizado"],
-        checkoutUrl: "/api/warroom/checkout?product=sentinelos-unlimited"
-      }
     ],
-    faqs: [
-      { q: "¿SentinelOS funciona sin internet?", a: "Sí. Toda la información de la ronda, lectura de códigos QR y alertas de emergencia se persisten de forma segura localmente en SQLite y se sincronizan apenas se detecta señal." },
-      { q: "¿Cómo se instala?", a: "Está optimizado sobre Expo SDK. Se puede compilar para Android (APK nativa) e iOS usando EAS build." },
-      { q: "¿Admite fotos de evidencias?", a: "Sí, puedes tomar evidencias fotográficas desde la cámara nativa de la app, las cuales se comprimen y suben en background." },
-      { q: "¿Se puede integrar con mi sistema de monitoreo?", a: "Sí. SentinelOS expone webhooks y endpoints REST para sincronizar datos con cualquier CRM o central de monitoreo preexistente." }
-    ]
-  },
-  aeroshot: {
-    title: "AeroShot Drone SaaS",
-    subtitle: "Procesamiento de Imágenes, Mapeo Agrícola y Licenciamiento de Stock Web3",
-    themeColor: "from-violet-500 to-indigo-600",
-    accentBg: "border-violet-500/30 bg-violet-950/20",
-    glowColor: "shadow-violet-500/20",
-    icon: <Zap className="w-12 h-12 text-violet-400" />,
-    heroBadge: "Aereal Media & Precision Agriculture SaaS",
-    problem: [
-      "Falta de conectividad celular en campos remotos para procesar imágenes de parcelas y mapas.",
-      "Lentitud e inseguridad en la adquisición de derechos de autor de tomas aéreas comerciales.",
-      "Visualizaciones cartográficas toscas o lentas que dificultan el análisis agronómico móvil."
-    ],
-    solution: [
-      "Procesamiento Offline-First de imágenes y telemetría con sincronización automática en background al recuperar señal.",
-      "Minteo inmediato de licencias y derechos de imagen inmutables en Base L2 mediante firmas Web3.",
-      "Capas de mapas fluidas con transiciones glassmorphic y respuestas táctiles/hápticas de precisión."
-    ],
-    features: [
-      { name: "Offline Map Caching", desc: "Almacenamiento local de capas cartográficas y telemetría de vuelo en SQLite para uso off-grid." },
-      { name: "Base L2 IP Licensing", desc: "Registro inmutable de derechos de autor y licencias de tomas aéreas al instante con firma digital." },
-      { name: "Fluid Animated Engine", desc: "Renderizado y amortiguación de telemetría de vuelo mediante transiciones fluidas de hardware." },
-      { name: "Haptic Guidance", desc: "Retroalimentación háptica precisa durante la selección y control de parcelas e imágenes." }
-    ],
-    useCases: [
-      { title: "Inspecciones Agrícolas Off-Grid", scenario: "Análisis y mapeo de lotes en campos sin cobertura celular mediante caché local." },
-      { title: "Venta de Contenido Aéreo", scenario: "Minteo de imágenes y videos comerciales de drones con licenciamiento inmediato." },
-      { title: "Monitoreo de Telemetría", scenario: "Seguimiento de misiones de vuelo con respuestas fluidas y alertas de seguridad hápitcas." }
-    ],
-    tiers: [
-      {
-        name: "Lite Operator",
-        price: "$49",
-        desc: "Para pilotos individuales que licencian tomas aéreas.",
-        features: ["50GB almacenamiento R2", "100 licencias Web3 al mes", "Sync en background básica", "Soporte comunitario"],
-        checkoutUrl: "/api/warroom/checkout?product=aeroshot-lite"
-      },
-      {
-        name: "Pro Fleet",
-        price: "$99",
-        desc: "Para agencias de filmación y mapeo aéreo con múltiples drones.",
-        features: ["500GB almacenamiento R2", "Licenciamiento Web3 ilimitado", "Amortiguación haptics en telemetría", "Soporte prioritario"],
-        checkoutUrl: "/api/warroom/checkout?product=aeroshot-pro"
-      },
-      {
-        name: "Enterprise Custom",
-        price: "$499",
-        desc: "Para operaciones industriales y corporativas de alta escala.",
-        features: ["Almacenamiento R2 ilimitado", "Integraciones GIS personalizadas", "Garantía de SLA 99.9%", "Soporte dedicado 24/7"],
-        checkoutUrl: "/api/warroom/checkout?product=aeroshot-enterprise"
-      }
-    ],
-    faqs: [
-      { q: "¿AeroShot funciona sin internet?", a: "Sí. Toda la telemetría de vuelo, procesamiento de parcelas y registro de imágenes se guardan de forma local y se suben al servidor apenas recuperas la señal." },
-      { q: "¿Qué drones son compatibles?", a: "Es compatible con logs de vuelo estándar de DJI, Autel y Pixhawk, importándolos de forma automática." },
-      { q: "¿Qué ventajas tiene el licenciamiento Web3?", a: "Permite certificar la fecha, autoría e inmutabilidad de una toma aérea, facilitando su venta o transferencia sin intermediarios tradicionales." },
-      { q: "¿Cómo se integra con plataformas GIS?", a: "Permite exportar mapas procesados en formatos GeoJSON, KML y Shapefile compatibles con QGIS, ArcGIS y otras plataformas líderes." }
-    ]
-  },
-  "offline-starter": {
-    title: "Offline Starter Kit",
-    subtitle: "Boilerplate React Native + SQLite WAL + Zustand — Listo para producción Offline-First",
-    themeColor: "from-emerald-500 to-teal-600",
-    accentBg: "border-emerald-500/30 bg-emerald-950/20",
-    glowColor: "shadow-emerald-500/20",
-    icon: <Database className="w-12 h-12 text-emerald-400" />,
-    heroBadge: "React Native Offline-First Boilerplate",
-    problem: [
-      "Implementar sincronización offline desde cero consume semanas de desarrollo y debugging.",
-      "SQLite en React Native tiene configuraciones WAL, journal modes y migraciones complejas que generan errores silenciosos.",
-      "Los boilerplates gratuitos no incluyen manejo de conflictos, cola de operaciones ni estado global sincronizado."
-    ],
-    solution: [
-      "Arquitectura pre-configurada con SQLite WAL mode, migraciones automáticas y Zustand como state manager.",
-      "Cola de operaciones offline persistente que sincroniza automáticamente al recuperar conexión.",
-      "Estructura de carpetas production-ready con TypeScript strict, ESLint y patrones probados en 5+ apps reales."
-    ],
-    features: [
-      { name: "SQLite WAL Mode", desc: "Base de datos local con Write-Ahead Logging para lecturas/escrituras concurrentes de alta velocidad." },
-      { name: "Zustand State Sync", desc: "Estado global reactivo sincronizado con la capa de persistencia offline automáticamente." },
-      { name: "Conflict Resolution", desc: "Motor de resolución de conflictos last-write-wins con timestamps vectoriales." },
-      { name: "Background Sync Queue", desc: "Cola de operaciones pendientes que procesa automáticamente cuando vuelve la conectividad." }
-    ],
-    useCases: [
-      { title: "Apps de Campo", scenario: "Aplicaciones para zonas rurales o industriales con conectividad intermitente o nula." },
-      { title: "Inventarios Móviles", scenario: "Gestión de stock en depósitos sin WiFi confiable con sincronización al server central." },
-      { title: "Formularios Offline", scenario: "Recolección de datos en terreno con envío diferido y validación local." }
-    ],
-    tiers: [
-      {
-        name: "Starter Kit",
-        price: "$29",
-        desc: "Código fuente completo del boilerplate listo para producción.",
-        features: ["Proyecto React Native + Expo completo", "SQLite WAL + Zustand configurados", "Cola de sync offline incluida", "Documentación técnica"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-starter"
-      },
-      {
-        name: "Pro Bundle",
-        price: "$79",
-        desc: "Starter Kit + componentes UI premium y soporte por email.",
-        features: ["Todo lo del Starter Kit", "15+ componentes UI offline-ready", "Ejemplos de CRUD completo", "30 días de soporte por email"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-starter-pro"
-      },
-      {
-        name: "Enterprise Architecture",
-        price: "$299",
-        desc: "Consultoría de arquitectura offline-first para tu equipo.",
-        features: ["Todo lo del Pro Bundle", "Sesión de arquitectura 1-on-1 (60 min)", "Code review de tu implementación", "Soporte prioritario 90 días"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/offline-enterprise"
-      }
-    ],
-    faqs: [
-      { q: "¿Con qué versión de Expo es compatible?", a: "Está optimizado para Expo SDK 54+ con soporte para el New Architecture (Fabric/TurboModules)." },
-      { q: "¿Puedo usarlo con Firebase o Supabase?", a: "Sí. El kit está diseñado para funcionar con cualquier backend. Incluye adaptadores de ejemplo para Firebase y Supabase." },
-      { q: "¿Incluye migraciones de base de datos?", a: "Sí. Incluye un sistema de migraciones versionadas que se ejecutan automáticamente al iniciar la app." },
-      { q: "¿Qué pasa si ya tengo un proyecto existente?", a: "Puedes integrar los módulos individuales (SQLite, Zustand store, sync queue) en tu proyecto existente siguiendo la guía de integración incluida." }
-    ]
-  },
-  "n8n-crm": {
-    title: "n8n CRM Workflow",
-    subtitle: "Automatización Inteligente de Lead Scoring con Gemini AI & n8n",
-    themeColor: "from-orange-500 to-red-600",
-    accentBg: "border-orange-500/30 bg-orange-950/20",
-    glowColor: "shadow-orange-500/20",
-    icon: <Cpu className="w-12 h-12 text-orange-400" />,
-    heroBadge: "AI-Powered Lead Scoring Automation",
-    problem: [
-      "Evaluar leads manualmente consume horas y está sujeto a sesgos humanos inconsistentes.",
-      "Las integraciones CRM tradicionales requieren desarrollo custom costoso y frágil.",
-      "Sin scoring automático, los equipos de ventas pierden tiempo en leads de baja calidad."
-    ],
-    solution: [
-      "Workflow n8n pre-configurado que conecta formularios, emails y CRMs con scoring por IA en minutos.",
-      "Gemini AI analiza cada lead y asigna un score de 0-100 basado en criterios personalizables.",
-      "Notificaciones automáticas a Slack, Telegram o email cuando un lead supera el umbral de calificación."
-    ],
-    features: [
-      { name: "Gemini AI Scoring", desc: "Evaluación inteligente de leads usando modelos de lenguaje con prompts optimizados para conversión B2B." },
-      { name: "Multi-Source Intake", desc: "Captura leads desde formularios web, emails, webhooks y APIs de CRM de forma unificada." },
-      { name: "Auto-Routing", desc: "Enrutamiento automático de leads calificados al vendedor correcto según territorio y expertise." },
-      { name: "Analytics Dashboard", desc: "Panel de métricas de conversión, tiempo de respuesta y eficiencia del pipeline." }
-    ],
-    useCases: [
-      { title: "Agencias de Marketing", scenario: "Scoring automático de leads entrantes de campañas multi-canal para priorizar seguimiento." },
-      { title: "SaaS B2B", scenario: "Calificación de trials y demos solicitadas para optimizar el pipeline de ventas." },
-      { title: "Consultorías", scenario: "Filtrado inteligente de consultas entrantes para dedicar tiempo solo a oportunidades reales." }
-    ],
-    tiers: [
-      {
-        name: "Workflow Kit",
-        price: "$19",
-        desc: "Workflow n8n exportable listo para importar y personalizar.",
-        features: ["Archivo JSON de workflow completo", "Documentación de configuración", "Prompts de Gemini optimizados", "Templates de notificación"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-crm"
-      },
-      {
-        name: "Pro Setup",
-        price: "$59",
-        desc: "Kit + sesión de implementación asistida por video.",
-        features: ["Todo lo del Workflow Kit", "Sesión de setup por video (30 min)", "Personalización de scoring criteria", "14 días de soporte"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-crm-pro"
-      },
-      {
-        name: "Enterprise Automation",
-        price: "$199",
-        desc: "Suite completa de automatización CRM con integración custom.",
-        features: ["Todo lo del Pro Setup", "Integración con tu CRM existente", "Workflows adicionales (follow-up, nurture)", "Soporte prioritario 60 días"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/n8n-enterprise"
-      }
-    ],
-    faqs: [
-      { q: "¿Necesito una instancia de n8n?", a: "Sí. Puedes usar n8n Cloud (plan gratuito disponible) o self-hosted en Docker. Incluimos instrucciones para ambos." },
-      { q: "¿Qué CRMs soporta?", a: "El workflow se conecta nativamente con HubSpot, Pipedrive, Notion y Google Sheets. Es extensible a cualquier CRM con API." },
-      { q: "¿Necesito una API key de Gemini?", a: "Sí. Necesitas una API key de Google AI Studio (tier gratuito disponible con 60 requests/minuto)." },
-      { q: "¿Puedo cambiar los criterios de scoring?", a: "Absolutamente. Los prompts de scoring son 100% editables. Incluimos una guía de prompt engineering para optimizarlos." }
-    ]
-  },
-  "titan-alerts": {
-    title: "Titan Alerts",
-    subtitle: "Monitor de Arbitraje Cripto en Tiempo Real con WebSockets & Alertas Telegram",
-    themeColor: "from-yellow-500 to-amber-600",
-    accentBg: "border-yellow-500/30 bg-yellow-950/20",
-    glowColor: "shadow-yellow-500/20",
-    icon: <Activity className="w-12 h-12 text-yellow-400" />,
-    heroBadge: "Real-Time Crypto Arbitrage Scanner",
-    problem: [
-      "Las oportunidades de arbitraje entre exchanges duran milisegundos y son imposibles de detectar manualmente.",
-      "Los bots de alertas comerciales cobran suscripciones mensuales de $50+ sin permitir personalización.",
-      "Sin monitoreo 24/7, pierdes ventanas de ganancia mientras duermes o trabajas."
-    ],
-    solution: [
-      "Script Python liviano que monitorea spreads entre exchanges en tiempo real vía WebSockets.",
-      "Alertas instantáneas a Telegram con datos del spread, volumen y ventana estimada de oportunidad.",
-      "100% self-hosted y personalizable — tú controlas los pares, umbrales y frecuencia de alertas."
-    ],
-    features: [
-      { name: "WebSocket Streams", desc: "Conexión en tiempo real a order books de Binance, Bybit y más exchanges simultáneamente." },
-      { name: "Spread Calculator", desc: "Cálculo automático de spread neto considerando fees maker/taker de cada exchange." },
-      { name: "Telegram Bot", desc: "Alertas formateadas con emoji, spread %, volumen disponible y timestamp preciso." },
-      { name: "Configurable Filters", desc: "Filtros de volumen mínimo, spread threshold y blacklist de pares para reducir ruido." }
-    ],
-    useCases: [
-      { title: "Traders Independientes", scenario: "Monitoreo pasivo de oportunidades de arbitraje mientras trabajas en otras tareas." },
-      { title: "DeFi Operators", scenario: "Detección de desequilibrios entre CEX y DEX pools para arbitraje cross-venue." },
-      { title: "Research & Analysis", scenario: "Logging de spreads históricos para backtesting de estrategias de arbitraje." }
-    ],
-    tiers: [
-      {
-        name: "Alert Script",
-        price: "$14",
-        desc: "Script Python completo con documentación de setup.",
-        features: ["Script Python producción-ready", "Soporte Binance + Bybit", "Bot de Telegram pre-configurado", "Guía de despliegue en VPS"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts"
-      },
-      {
-        name: "Pro Multi-Exchange",
-        price: "$39",
-        desc: "Soporte extendido para 5+ exchanges y filtros avanzados.",
-        features: ["Todo lo del Alert Script", "5 exchanges adicionales", "Filtros de volumen avanzados", "Dashboard web básico"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts-pro"
-      },
-      {
-        name: "Enterprise Suite",
-        price: "$99",
-        desc: "Para operaciones institucionales con API y soporte dedicado.",
-        features: ["Todo lo del Pro", "API REST para integración", "Histórico y analytics", "Soporte prioritario 30 días"],
-        checkoutUrl: "https://arbizualdo.gumroad.com/l/titan-alerts-enterprise"
-      }
-    ],
-    faqs: [
-      { q: "¿Qué lenguaje usa?", a: "Python 3.10+. Solo necesitas pip install de 3 dependencias: websockets, python-telegram-bot y aiohttp." },
-      { q: "¿Puedo correrlo en una VPS barata?", a: "Sí. Funciona perfectamente en una VPS de $5/mes (DigitalOcean, Hetzner). Consume menos de 50MB de RAM." },
-      { q: "¿Es un bot de trading automático?", a: "No. Titan Alerts es un sistema de ALERTAS. Te notifica oportunidades pero no ejecuta trades. Para ejecución automática, mira TitanFlow Pro." },
-      { q: "¿Puedo agregar más exchanges?", a: "Sí. El código es modular. Cada exchange es un adaptador independiente. Incluimos documentación para crear adaptadores nuevos." }
-    ]
+    liveUrl: 'https://sentinelos.aldoarbizu.com',
+    solutionSlug: 'sistema-control-rondas-seguridad-privada-offline',
+    caseSlug: 'sentinelos-security-dispatch',
   },
   agromarket: {
-    title: "AgroMarket Pro",
-    subtitle: "Plataforma B2B Agropecuaria Offline-First con Subastas de Granos/Ganado & Liquidación Segura",
-    themeColor: "from-amber-500 to-yellow-600",
-    accentBg: "border-amber-500/30 bg-amber-950/20",
-    glowColor: "shadow-amber-500/20",
-    icon: <Smartphone className="w-12 h-12 text-amber-400" />,
-    heroBadge: "AgTech Offline-First B2B Marketplace",
+    code: 'SYS-03',
+    title: 'AgroMarket Pro',
+    domain: 'AgTech Offline-First & FLIR Telemetry',
+    badge: 'SYS-03 // ACOPIO SIN SEÑAL 4G',
+    subtitle:
+      'Suite AgTech offline-first para acopio de granos, pesaje en balanzas rurales, cubicación de silobolsas e inspecciones termográficas FLIR con cumplimiento SENASA.',
     problem: [
-      "Pérdida de conectividad celular constante en zonas rurales y silos de acopio.",
-      "Asimetría de precios de cereales y hacienda que perjudica al productor primario.",
-      "Cierres de contratos manuales vulnerables a demoras administrativas y default crediticio."
+      'Planillas de papel perdidas y discrepancias en tickets de camión cuando cae la cobertura 4G en cosecha.',
+      'Falta de detección temprana de foco térmico o humedad destructiva dentro de silobolsas almacenadas.',
+      'Fricción administrativa para vincular cartas de porte, humedad, pesajes y liquidaciones comerciales.',
     ],
     solution: [
-      "Operación 100% Offline-First con SQLite WAL y sincronización automática en milisegundos.",
-      "Libro de ofertas y subastas transparentes en tiempo real para cereales, oleaginosas y hacienda.",
-      "Liquidación inteligente y contratos digitales con trazabilidad de lotes verificable."
+      'Escritura atómica en SQLite WAL sin depender de conectividad móvil, con sincronización al detectar red.',
+      'Módulo de volumetría de silobolsas, cálculo de merma y anexo de termografía FLIR calibrada.',
+      'Arquitectura auditada con exportación ejecutiva de stock e indicadores operativos en tiempo real.',
     ],
-    features: [
-      { name: "Offline Sync Engine", desc: "Registro local de lotes, pesajes y remates con sync instantánea al detectar señal de red." },
-      { name: "Live Grain & Cattle Auctions", desc: "Pizarra de ofertas en vivo con cotizaciones actualizadas de puertos y mercados concentradores." },
-      { name: "Dual-Rail Settlements", desc: "Pasarela dual de liquidaciones: moneda fiduciaria (MercadoPago/Stripe) y crypto (USDC en Base L2)." },
-      { name: "Field Batch Traceability", desc: "Trazabilidad de origen y calidad de granos mediante códigos QR inmutables." }
-    ],
-    useCases: [
-      { title: "Acopios & Cooperativas", scenario: "Recepción de granos en tolva sin depender de internet y sincronización al servidor central." },
-      { title: "Remates Ganaderos en Campo", scenario: "Cierre de pujas y ofertas en corrales con registro offline y liquidación inmediata." },
-      { title: "Proveedores de Insumos", scenario: "Venta directa de fertilizantes y semillas con canje de cereal en plataforma única." }
+    stack: ['SQLite WAL', 'LiDAR / FLIR', 'Next.js PWA', 'SENASA Compliance'],
+    metrics: [
+      { label: 'Operación Rural', value: '0% 4G Req' },
+      { label: 'Licencia Acopio', value: '$75.000 ARS' },
+      { label: 'Persistencia', value: 'ACID WAL' },
     ],
     tiers: [
       {
-        name: "Productor / Trader",
-        price: "$49",
-        desc: "Para productores individuales y comisionistas de granos.",
-        features: ["App móvil offline completa", "Subastas y cotizaciones en vivo", "Historial de remates ilimitado", "Soporte comunitario"],
-        checkoutUrl: "/api/warroom/checkout?product=agromarket-producer"
+        name: 'Licencia Enterprise Acopio',
+        price: '$75.000 ARS / mes',
+        period: 'Operación completa + Soporte ingeniero directo',
+        highlighted: true,
+        features: [
+          'Control de balanza offline y cubicación de silobolsas',
+          'Registro auditable de humedad, lotes y stock',
+          'Soporte prioritario WhatsApp + actualización continua',
+        ],
       },
       {
-        name: "Acopio & Cooperativa",
-        price: "$199",
-        desc: "Para cooperativas agrícolas y plantas de silo con múltiples balanzas.",
-        features: ["Hasta 25 balanzas y usuarios", "Módulo de liquidación automática", "Trazabilidad QR de camiones", "Soporte prioritario 24/7"],
-        checkoutUrl: "/api/warroom/checkout?product=agromarket-coop"
+        name: 'Despliegue Custom + Auditoría FLIR',
+        price: '$1,500 USD',
+        period: 'Setup + relevamiento termográfico presencial/remoto',
+        features: [
+          'Integración ERP / balanzas seriales RS-232',
+          'Auditoría térmica FLIR Ironbow de planta e instalaciones',
+          'Instancia dedicada con respaldo WAL automático',
+        ],
       },
-      {
-        name: "Enterprise Multi-Planta",
-        price: "$699",
-        desc: "Para exportadores y cadenas agroindustriales con SLA dedicado.",
-        features: ["Instancia dedicada y dominio propio", "Integración SAP/ERP a medida", "Garantía de SLA 99.9%", "Auditoría de lotes en Base L2"],
-        checkoutUrl: "/api/warroom/checkout?product=agromarket-enterprise"
-      }
     ],
-    faqs: [
-      { q: "¿Funciona en zonas rurales sin señal celular?", a: "Sí. Toda la aplicación opera 100% offline. Puedes cargar camiones, lotes y ofertas sin señal; los datos se encolan y sincronizan automáticamente al reconectar." },
-      { q: "¿Qué métodos de pago admite para la liquidación?", a: "Admite transferencias bancarias fiduciarias automatizadas y pagos instantáneos en USDC vía Base L2 con comisiones de menos de $0.01." },
-      { q: "¿Se puede conectar con balanzas de camiones?", a: "Sí, la app soporta integración con protocolos seriales e indicadores de pesaje industriales vía Bluetooth y WiFi local." },
-      { q: "¿Cómo se auditan los contratos?", a: "Cada contrato genera un hash criptográfico inmutable que garantiza que las condiciones pactadas no fueron adulteradas." }
-    ]
+    liveUrl: 'https://agromarket.aldoarbizu.com',
+    solutionSlug: 'software-acopio-granos-silobolsa-offline',
+    caseSlug: 'agromarket-pro',
+  },
+  nomadhub: {
+    code: 'SYS-04',
+    title: 'NOMAD Tactical Hub',
+    domain: 'Off-Grid Survival & Mesh Radio',
+    badge: 'SYS-04 // AFSK + LORA + PAR2',
+    subtitle:
+      'Ecosistema operativo para contingencias sin red eléctrica ni internet: PWA off-grid, módem acústico AFSK 800Hz, LoRa Meshtastic y recuperación USB Ark PAR2.',
+    problem: [
+      'Colapso simultáneo de telefonía celular, datos móviles y energía eléctrica en zonas aisladas o desastres.',
+      'Imposibilidad de intercambiar coordenadas, triaje médico o inventario logístico sin servidores centrales.',
+      'Corrupción silenciosa de archivos críticos en memorias externas de campo tras apagones bruscos.',
+    ],
+    solution: [
+      'Transmisión de datos vía módem de audio AFSK 800Hz y nodos LoRa Meshtastic P2P sin infraestructura.',
+      'Bóveda cifrada AES-256-GCM protegida con paridad Reed-Solomon PAR2 y exportación EPUB3 E-Ink.',
+      'Calculadoras tácticas integradas (solar, RF, médica) ejecutables 100% locales en navegador/Android.',
+    ],
+    stack: ['Room SQLite WAL', 'AES-256-GCM', 'Reed-Solomon PAR2', 'LoRa / AFSK'],
+    metrics: [
+      { label: 'Red Externa', value: '0 Bytes' },
+      { label: 'Tolerancia Fallo', value: 'PAR2 ECC' },
+      { label: 'Cifrado Local', value: 'AES-256-GCM' },
+    ],
+    tiers: [
+      {
+        name: 'Arquitectura Custom Off-Grid',
+        price: '$4,500 USD',
+        period: 'Licencia Enterprise + Adaptación organizacional',
+        highlighted: true,
+        features: [
+          'PWA Off-Grid + USB Ark con redundancia PAR2',
+          'Módulo de mensajería AFSK / LoRa Meshtastic',
+          'Compilación EPUB3 optimizada para pantallas E-Ink',
+        ],
+      },
+      {
+        name: 'Auditoria & Kit de Contingencia',
+        price: '$1,500 USD',
+        period: 'Despliegue para equipos de campo (hasta 25 nodos)',
+        features: [
+          'Aprovisionamiento de bóvedas AES-256-GCM',
+          'Simulacros de blackout total y recuperación',
+        ],
+      },
+    ],
+    liveUrl: 'https://nomadhub.aldoarbizu.com',
+    caseSlug: 'nomad-tactical-hub',
+  },
+  verify: {
+    code: 'SYS-05',
+    title: 'Verify Cryptographic Trust',
+    domain: 'Audits, SHA-256 & Base L2 Ledger',
+    badge: 'SYS-05 // VERIFICACIÓN INMUTABLE',
+    subtitle:
+      'Motor de atestación criptográfica para validar informes termográficos FLIR, certificados RLS, reportes periciales y cotizaciones B2B firmadas.',
+    problem: [
+      'Adulteración de presupuestos PDF, informes periciales técnicos o actas de inspección industrial.',
+      'Falta de trazabilidad verificable por terceros sobre la vigencia y firma de auditorías de infraestructura.',
+    ],
+    solution: [
+      'Huella criptográfica SHA-256 determinista vinculada al código ARB-2026 en SQLite WAL y Base L2.',
+      'Portal público instantáneo para validar autenticidad desde celular o auditor externo mediante código o QR.',
+    ],
+    stack: ['SHA-256', 'Base L2 Attestation', 'SQLite WAL', 'Public API'],
+    metrics: [
+      { label: 'Hash', value: 'SHA-256' },
+      { label: 'Verificación', value: '< 50 ms' },
+      { label: 'Red', value: 'Base L2' },
+    ],
+    tiers: [
+      {
+        name: 'Licencia Integración Verify',
+        price: '$75.000 ARS',
+        period: 'Integración API + emisión ilimitada de constancias',
+        highlighted: true,
+        features: [
+          'Emisor SHA-256 y página pública de verificación QR',
+          'Registro auditable en SQLite WAL + Base L2',
+          'Integración directa con flujos de cotización B2B',
+        ],
+      },
+    ],
+    liveUrl: 'https://verify.aldoarbizu.com',
+    caseSlug: 'sentinelos-security-dispatch',
+  },
+  cannasavias: {
+    code: 'SYS-06',
+    title: 'CannaSavias REPROCANN Sim',
+    domain: 'B2B Software Simulator & Compliance',
+    badge: 'SYS-06 // SIMULADOR DE SOFTWARE B2B',
+    subtitle:
+      'DEMOSTRACIÓN DE SOFTWARE B2B / SIMULADOR DE TRAZABILIDAD REPROCANN para clubes de cultivo autorizados y consultorios con auditoría estricta de cupos.',
+    complianceNotice:
+      'USO EXCLUSIVO DE DEMOSTRACIÓN DE SOFTWARE B2B: Esta plataforma NO comercializa flores, sustancias ni productos regulados. Las licencias corresponden únicamente al software de gestión de trazabilidad e inventario técnico para entidades habilitadas.',
+    problem: [
+      'Riesgo regulatorio y auditorías fallidas por control manual en planillas de cálculo sin bitácora inmutable.',
+      'Falta de trazabilidad técnica de lotes, cupos de asociados autorizados e historial de bitácoras ambientales.',
+    ],
+    solution: [
+      'Simulador demostrativo y licencia B2B con registro cronológico append-only e indicadores de cumplimiento.',
+      'Control de acceso por roles, respaldo SQLite WAL offline-first y separación estricta entre gestión técnica e inventario.',
+    ],
+    stack: ['SQLite WAL', 'Compliance Audit', 'Offline PWA', 'RBAC'],
+    metrics: [
+      { label: 'Naturaleza', value: 'Software B2B' },
+      { label: 'Licencia Club', value: '$75.000 ARS' },
+      { label: 'Bitácora', value: 'Inmutable' },
+    ],
+    tiers: [
+      {
+        name: 'Licencia Software Trazabilidad B2B',
+        price: '$75.000 ARS',
+        period: 'Licencia operativa exclusiva para clubes autorizados',
+        highlighted: true,
+        features: [
+          'Módulo de trazabilidad técnica REPROCANN',
+          'Exportación de libros y auditoría cronológica',
+          'Despliegue dedicado + soporte de ingeniería',
+        ],
+      },
+    ],
+    liveUrl: 'https://cannasavias.aldoarbizu.com',
+    solutionSlug: 'software-trazabilidad-reprocann-clubes-cultivo',
+  },
+  aeroshot: {
+    code: 'SYS-07',
+    title: 'AeroShot Drones GIS',
+    domain: 'Multispectral AgTech & FLIR',
+    badge: 'SYS-07 // TELEMETRÍA AÉREA & FLIR',
+    subtitle:
+      'Plataforma de relevamiento aéreo 4K, análisis NDVI y peritaje termográfico FLIR calibrado para explotaciones agropecuarias y plantas industriales.',
+    problem: [
+      'Fallas térmicas ocultas en tableros eléctricos, transformadores y silobolsas no visibles al ojo humano.',
+      'Pérdida de ortomosaicos y telemetría de vuelo al operar en lotes rurales sin cobertura de red.',
+    ],
+    solution: [
+      'Adquisición en campo offline-first con capas cartográficas GIS y clasificación térmica calibrada Ironbow.',
+      'Generación de informe técnico certificado con coordenadas verificadas en sistema Verify.',
+    ],
+    stack: ['GIS WebGL', 'FLIR Ironbow', 'DJI Telemetry', 'Base L2'],
+    metrics: [
+      { label: 'Servicio Regional', value: '$60K - $120K ARS' },
+      { label: 'Resolución', value: '4K + FLIR' },
+      { label: 'Salida', value: 'GeoJSON + PDF' },
+    ],
+    tiers: [
+      {
+        name: 'Relevamiento & Auditoría FLIR',
+        price: '$120.000 ARS',
+        period: 'Servicio técnico + informe certificado SHA-256',
+        highlighted: true,
+        features: [
+          'Termografía calibrada de tableros, motores o silobolsas',
+          'Mapeo georreferenciado GIS + evaluación de anomalías',
+          'Informe técnico firmado con verificación Verify',
+        ],
+      },
+    ],
+    liveUrl: 'https://aeroshot.aldoarbizu.com',
+    solutionSlug: 'auditoria-termografica-flir-industrial-buenos-aires',
+    caseSlug: 'aeroshot-drone-marketplace',
+  },
+  impresion3d: {
+    code: 'SYS-08',
+    title: 'ab3d-forge // Impresión 3D',
+    domain: 'Bit-to-Atom Functional Hardware',
+    badge: 'SYS-08 // BLENDER + FDM MANUFACTURING',
+    subtitle:
+      'Modelado paramétrico en Blender headless (`ab3d-forge`), slicing STL en cliente WebAssembly y fabricación aditiva de repuestos industriales funcionales.',
+    problem: [
+      'Demoras de semanas en importación de engranajes, soportes, carcasas de sensores IoT y piezas técnicas.',
+      'Cotizaciones opacas de archivos STL sin estimación transparente de volumen, gramos y tolerancias.',
+    ],
+    solution: [
+      'Previsualización STL/WebGL y cálculo paramétrico de material (PLA+, PETG, ABS Técnico, TPU).',
+      'Manufactura directa en granja local (Hellbot Magna 2 Dual 300) con entrega y despacho en Argentina.',
+    ],
+    stack: ['Blender Headless', 'WASM STL', 'Three.js CAD', 'Hellbot Magna 2'],
+    metrics: [
+      { label: 'Volumen Máx', value: '300×300×400' },
+      { label: 'Slicer Cliente', value: '0ms Server' },
+      { label: 'Entrega Base', value: '48 - 72 hs' },
+    ],
+    tiers: [
+      {
+        name: 'Prototipado Técnico / Lote Funcional',
+        price: 'Cotización STL Directa',
+        period: 'PETG / ABS Técnico / Carcasas IoT a medida',
+        highlighted: true,
+        features: [
+          'Diseño paramétrico o ajuste de archivo STL',
+          'Cálculo volumétrico instantáneo sin intermediarios',
+          'Opción de licencia software cotizador B2B',
+        ],
+      },
+    ],
+    liveUrl: 'https://impresion3d.aldoarbizu.com',
+    caseSlug: 'impresion-3d-p2p',
+  },
+  habitat: {
+    code: 'SYS-09',
+    title: 'Hábitat Lease Engine',
+    domain: 'PropTech & Smart Contract Leasing',
+    badge: 'SYS-09 // ARRIENDOS SIN FRICCIÓN',
+    subtitle:
+      'Motor de contratos directos y acuerdos de explotación agropecuaria firmados criptográficamente en Base L2 con bitácora auditable de cumplimiento.',
+    problem: [
+      'Comisiones elevadas de intermediación e inseguridad jurídica sobre anexos modificados post-firma.',
+    ],
+    solution: [
+      'Contratos firmados por wallet (`personal_sign`) o verificación KYC liviana anclados a hash inmutable en Base L2.',
+    ],
+    stack: ['Next.js 16', 'Solidity / Base L2', 'PostgreSQL', 'PDF Attestation'],
+    metrics: [
+      { label: 'Red Firma', value: 'Base L2' },
+      { label: 'Integridad', value: 'Keccak256' },
+      { label: 'Costo Tx', value: '< $0.01 USD' },
+    ],
+    tiers: [
+      {
+        name: 'Despliegue Portal Inmobiliario / Agro',
+        price: '$1,500 USD',
+        period: 'Instancia personalizada + Smart Contracts auditados',
+        highlighted: true,
+        features: [
+          'Firma dual off-chain / Base L2 verificable',
+          'Panel administrativo de vencimientos y recibos',
+        ],
+      },
+    ],
+    liveUrl: 'https://habitat.aldoarbizu.com',
+    caseSlug: 'habitat-lease-engine',
   },
   ecoconnect: {
-    title: "EcoConnect",
-    subtitle: "Trazabilidad Satelital NDVI & Registro de Créditos de Carbono / Economía Circular",
-    themeColor: "from-teal-500 to-emerald-600",
-    accentBg: "border-teal-500/30 bg-teal-950/20",
-    glowColor: "shadow-teal-500/20",
-    icon: <Leaf className="w-12 h-12 text-teal-400" />,
-    heroBadge: "ESG & Satellite NDVI Verification Engine",
+    code: 'SYS-10',
+    title: 'EcoConnect ESG',
+    domain: 'Satellite NDVI Telemetry & Carbon',
+    badge: 'SYS-10 // SENTINEL-2 + RLS AUDIT',
+    subtitle:
+      'Monitoreo satelital de masa forestal mediante índices NDVI (Sentinel-2) y certificación criptográfica de trazabilidad ambiental con RLS estricto.',
     problem: [
-      "Greenwashing y falta de comprobación científica auditable en créditos de carbono.",
-      "Auditorías presenciales de biomasa costosas, lentas y propensas a fraude documental.",
-      "Dificultad de los productores agroforestales para certificar prácticas regenerativas."
+      'Auditorías ambientales costosas basadas en planillas manuales difíciles de verificar en tiempo real.',
     ],
     solution: [
-      "Verificación continua mediante análisis multiespectral satelital Sentinel-2 (NDVI/EVI).",
-      "Tokenización inmutable de créditos de carbono y sellos ESG en Base L2 (Soulbound Tokens).",
-      "Dashboard interactivo 3D para inversores y compradores corporativos de créditos."
+      'Lectura multiespectral Sentinel-2 automatizada, aislamiento PostgreSQL RLS y certificados verificables.',
     ],
-    features: [
-      { name: "Sentinel-2 Multi-Spectral Pipeline", desc: "Descarga y procesamiento autónomo de imágenes satelitales cada 5 días para medir biomasa." },
-      { name: "Soulbound ESG Certificates", desc: "Acreditaciones ambientales no transferibles que certifican la absorción real de CO2." },
-      { name: "NDVI Growth Tracking", desc: "Algoritmos de visión computacional que detectan deforestación, rebrote y salud foliar." },
-      { name: "Corporate ESG API", desc: "Integración con reportes corporativos de sustentabilidad (GRI, SASB y normativas europeas)." }
-    ],
-    useCases: [
-      { title: "Campos de Siembra Directa", scenario: "Certificación de fijación de carbono en suelos para exportación a la Unión Europea." },
-      { title: "Reservas Forestales Privadas", scenario: "Monitoreo satelital anti-desmonte y monetización de biomasa conservada." },
-      { title: "Empresas con Meta Net-Zero", scenario: "Compra de créditos de carbono con prueba satelital de impacto en tiempo real." }
+    stack: ['Sentinel-2 NDVI', 'Next.js 16', 'PostgreSQL RLS', 'Base L2'],
+    metrics: [
+      { label: 'Satélite', value: 'Sentinel-2' },
+      { label: 'Resolución', value: '10m / px' },
+      { label: 'Aislamiento', value: 'RLS 100%' },
     ],
     tiers: [
       {
-        name: "Lote Familiar",
-        price: "$79",
-        desc: "Monitoreo satelital para establecimientos de hasta 500 hectáreas.",
-        features: ["Actualización satelital cada 5 días", "Cálculo de índice NDVI/EVI", "Reportes PDF para bancos y aseguradoras", "Alertas por anomalías"],
-        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-starter"
+        name: 'Licencia Municipio / Empresa ESG',
+        price: '$1,800 USD Setup',
+        period: 'Monitoreo continuo + portal público de auditoría',
+        highlighted: true,
+        features: [
+          'Cálculo NDVI histórico por polígono GeoJSON',
+          'Tablero público verificable para stakeholders',
+        ],
       },
-      {
-        name: "Pro Agroforestal",
-        price: "$249",
-        desc: "Para campos de hasta 5,000 hectáreas con certificación de créditos.",
-        features: ["Cobertura multi-parcela", "Certificación on-chain en Base L2", "API de telemetría ambiental", "Soporte técnico preferencial"],
-        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-pro"
-      },
-      {
-        name: "Enterprise ESG",
-        price: "$890",
-        desc: "Para fondos de inversión verde y corporaciones multinacionales.",
-        features: ["Monitoreo ilimitado de hectáreas", "Modelos predictivos de biomasa con IA", "SLA 99.9% y soporte legal", "Dashboard White-label"],
-        checkoutUrl: "/api/warroom/checkout?product=ecoconnect-enterprise"
-      }
     ],
-    faqs: [
-      { q: "¿Cómo se obtienen los datos satelitales?", a: "Nos integramos con la constelación de satélites Sentinel-2 de la Agencia Espacial Europea (ESA), obteniendo pasadas multiespectrales de alta resolución cada 5 días." },
-      { q: "¿Cómo evitan el doble conteo de créditos?", a: "Cada crédito de carbono está respaldado por coordenadas geoespaciales unívocas registradas en la blockchain de Base L2 con hashes de imágenes satelitales." },
-      { q: "¿Requiere instalar sensores físicos en el campo?", a: "No es obligatorio. El análisis primario es 100% satelital. Sin embargo, permite integrar estaciones meteorológicas IoT para mayor precisión." }
-    ]
+    liveUrl: 'https://ecoconnect.aldoarbizu.com',
+    caseSlug: 'ecoconnect-esg-registry',
   },
   aureus: {
-    title: "Aureus Capital",
-    subtitle: "Private Wealth & DeFi Yield Vaults con Supervisión de Riesgo por IA",
-    themeColor: "from-yellow-500 to-amber-600",
-    accentBg: "border-yellow-500/30 bg-yellow-950/20",
-    glowColor: "shadow-yellow-500/20",
-    icon: <Coins className="w-12 h-12 text-yellow-400" />,
-    heroBadge: "DeFi Yield Vaults & Quantitative Wealth OS",
+    code: 'SYS-11',
+    title: 'Aureus Wealth OS',
+    domain: 'Private Multi-Currency ERP',
+    badge: 'SYS-11 // STREAMING SUB-120MS + WASM',
+    subtitle:
+      'Consolidación patrimonial multimoneda (ARS, USD, USDC, BTC) con cálculo determinista WASM en cliente y arquitectura Zero-Secret sin fuga en la nube.',
     problem: [
-      "Rendimientos de depósitos bancarios tradicionales que pierden sistemáticamente contra la inflación global.",
-      "Riesgos de descalce o liquidaciones catastróficas en protocolos DeFi desatendidos.",
-      "Falta de interfaces ejecutivas que integren custodia, cálculo impositivo y métricas en tiempo real."
+      'Exposición de tenencias reales y balances privados en planillas o apps SaaS de terceros.',
     ],
     solution: [
-      "Bóvedas cuantitativas inteligentes que balancean stablecoins y activos líderes en Base L2.",
-      "Agente de IA supervisor de liquidez que retira capital preventivamente ante desvíos de colateral.",
-      "Dashboard institucional con liquidaciones auditadas y reportes de rendimiento auditados."
+      'Cómputo local en navegador con streaming sub-120ms y circuit breaker para proyecciones financieras.',
     ],
-    features: [
-      { name: "Autonomous Yield Rebalancer", desc: "Rebalanceo algorítmico entre protocolos de lending de primer nivel para maximizar APR." },
-      { name: "Risk Sentinel AI", desc: "Supervisión 24/7 de smart contracts y desvíos de paridad (peg) con ejecución de kill-switch." },
-      { name: "Non-Custodial Architecture", desc: "Control de fondos total en manos del cliente mediante contratos multi-sig transparentes." },
-      { name: "Tax & Performance Reporting", desc: "Generación instantánea de reportes impositivos y contables en formato auditado." }
-    ],
-    useCases: [
-      { title: "Tesorerías de Startups", scenario: "Preservación del runway en dólares digitales con rendimientos superiores al 6-10% anual." },
-      { title: "Family Offices", scenario: "Diversificación institucional en DeFi con parámetros conservadores y auditoría en caliente." },
-      { title: "Inversores Sofisticados", scenario: "Estrategias de delta neutral y provisión de liquidez automatizada sin fricción." }
+    stack: ['Next.js 16', 'Rust / WASM', 'SQLite WAL', 'Circuit Breaker'],
+    metrics: [
+      { label: 'Streaming UI', value: '< 120 ms' },
+      { label: 'Custodia Datos', value: '100% Local' },
+      { label: 'Uso', value: 'Private / Custom' },
     ],
     tiers: [
       {
-        name: "Private Tier",
-        price: "$99",
-        desc: "Para patrimonios individuales que buscan rendimientos en stablecoins.",
-        features: ["Acceso a bóvedas de rendimiento conservador", "Auditoría de riesgo en tiempo real", "Alertas Telegram prioritarias", "Dashboard web institucional"],
-        checkoutUrl: "/api/warroom/checkout?product=aureus-private"
+        name: 'Implementación Dedicada Family Office / PyME',
+        price: '$2,500 USD',
+        period: 'Instancia privada en VPS bajo control del titular',
+        highlighted: true,
+        features: [
+          'Consolidación ARS / USD / Crypto con histórico TC',
+          'Sin dependencias de nubes compartidas ni telemetría externa',
+        ],
       },
-      {
-        name: "Institutional Vault",
-        price: "$349",
-        desc: "Para tesorerías corporativas y fondos privados con múltiples signatarios.",
-        features: ["Soporte Multi-Sig (Gnosis Safe)", "Estrategias cuantitativas a medida", "Reportes fiscales y contables automatizados", "Account manager dedicado"],
-        checkoutUrl: "/api/warroom/checkout?product=aureus-institutional"
-      },
-      {
-        name: "Family Office Sovereign",
-        price: "$1,200",
-        desc: "Infraestructura dedicada y contratos inteligentes auditados a medida.",
-        features: ["Smart contracts desplegados en nodo privado", "Auditoría de seguridad externa incluida", "SLA 99.99% y soporte telefónico 24/7", "Integración bancaria offshore"],
-        checkoutUrl: "/api/warroom/checkout?product=aureus-sovereign"
-      }
     ],
-    faqs: [
-      { q: "¿Es un protocolo custodial?", a: "No. Aureus opera sobre una arquitectura no custodial: usted mantiene el control absoluto de sus claves privadas en todo momento." },
-      { q: "¿Cómo protege el capital ante caídas del mercado?", a: "El supervisor algorítmico opera en stablecoins de primera línea (USDC) y cuenta con un kill-switch automatizado que mueve fondos a bóvedas frías ante anomalías de volatilidad." },
-      { q: "¿Qué rendimientos históricos se han obtenido?", a: "Nuestras estrategias de delta neutral y provisión de liquidez en Base L2 generan históricamente entre un 7.5% y un 14.2% APR neto." }
-    ]
-  }
+    liveUrl: 'https://aureus.aldoarbizu.com',
+    caseSlug: 'aureus-wealth-os',
+  },
+  marketingadvisor: {
+    code: 'SYS-12',
+    title: 'Smart Marketing AI',
+    domain: 'Autonomous n8n Pipelines',
+    badge: 'SYS-12 // N8N + LLMCIRCUITBREAKER',
+    subtitle:
+      'Orquestador n8n con calificación estructurada de demanda, validación estricta por Zod Schema y fallback determinista ante fallos o cuotas de LLM.',
+    problem: [
+      'Leads B2B que quedan sin respuesta durante horas por falta de clasificación técnica y enrutamiento automático.',
+    ],
+    solution: [
+      'Workflows n8n self-hosted + LLMCircuitBreaker (`gemini-2.5-flash` con degradación segura y kill switch).',
+    ],
+    stack: ['n8n Self-Hosted', 'Zod Schema', 'Gemini 2.5 Flash', 'Telegram / WA Ops'],
+    metrics: [
+      { label: 'SLA Respuesta', value: '< 5 seg' },
+      { label: 'Protección API', value: 'Circuit Breaker' },
+      { label: 'Calificación', value: 'JSON Estricto' },
+    ],
+    tiers: [
+      {
+        name: 'Suite Automatización B2B',
+        price: '$450 - $900 USD',
+        period: 'Implementación n8n + pipelines productivos',
+        highlighted: true,
+        features: [
+          'Enrutamiento automático de leads a CRM/SQLite/WhatsApp',
+          'Limitador de tasa, kill switch y validación de payload',
+        ],
+      },
+    ],
+    liveUrl: 'https://marketingadvisor.aldoarbizu.com',
+    caseSlug: 'smart-marketing-advisor',
+  },
+  'offline-starter': {
+    code: 'SYS-03',
+    title: 'React Native Offline-First Kit',
+    domain: 'Developer Boilerplate & Sync Engine',
+    badge: 'KIT-01 // EXPO + SQLITE WAL + ZUSTAND',
+    subtitle:
+      'Boilerplate productivo en TypeScript para apps móviles operativas en zonas de conectividad nula: SQLite en modo WAL + cola de sincronización tolerante a fallos.',
+    problem: [
+      'Pérdida de datos y pantallas bloqueadas al usar fetch directo en apps móviles de logística o campo.',
+    ],
+    solution: [
+      'Motor de mutaciones locales encapsulado con reintentos exponenciales y resolución determinista de conflictos.',
+    ],
+    stack: ['React Native', 'TypeScript', 'SQLite WAL', 'Zustand Queue'],
+    metrics: [
+      { label: 'Licencia', value: 'Perpetua' },
+      { label: 'Inversión', value: '$29 USD' },
+      { label: 'Cobertura', value: 'iOS + Android' },
+    ],
+    tiers: [
+      {
+        name: 'Licencia Individual / Equipo',
+        price: '$29 USD / $45.000 ARS',
+        period: 'Código fuente completo + actualizaciones',
+        highlighted: true,
+        features: [
+          'Repositorio TypeScript limpio (sin secretos ni bloat)',
+          'Adaptadores para PostgreSQL / Supabase / REST APIs',
+          'Soporte de puesta en marcha por WhatsApp',
+        ],
+      },
+    ],
+  },
+  'n8n-crm': {
+    code: 'SYS-12',
+    title: 'n8n WhatsApp AI & CRM Pack',
+    domain: 'Self-Hosted Workflow Template Pack',
+    badge: 'KIT-02 // N8N AUTOMATION TEMPLATES',
+    subtitle:
+      'Colección productiva de workflows n8n para calificación de leads B2B, alertas operativas en Telegram/WhatsApp y sincronización de base de datos sin costos Zapier.',
+    problem: [
+      'Facturas crecientes por volumen de tareas en Zapier/Make y falta de validación contra doble envío.',
+    ],
+    solution: [
+      'Plantillas JSON listas para importar en Docker n8n propio con Idempotency-Key y fallbacks.',
+    ],
+    stack: ['Docker n8n', 'SQLite / Postgres', 'Webhook Guard', 'JSON Schema'],
+    metrics: [
+      { label: 'Ahorro SaaS', value: '-90% Costo' },
+      { label: 'Inversión', value: '$49 USD' },
+      { label: 'Self-Hosted', value: '100%' },
+    ],
+    tiers: [
+      {
+        name: 'Pack Completo Plantillas n8n',
+        price: '$49 USD / $75.000 ARS',
+        period: 'Pago único · despliegue ilimitado',
+        highlighted: true,
+        features: [
+          '12 workflows exportables en JSON documentado',
+          'Guía Docker Compose hardening para VPS',
+        ],
+      },
+    ],
+  },
+  'titan-alerts': {
+    code: 'SYS-01',
+    title: 'TitanFlow Signal Bridge SDK',
+    domain: 'Quant Telemetry Connector',
+    badge: 'KIT-03 // WEBSOCKET RISK TELEMETRY',
+    subtitle:
+      'Conector liviano para recibir señales cuantitativas, validación ATR (TP1/TP2/SL) y envío estructurado a Telegram/Discord sin polling innecesario.',
+    problem: [
+      'Bots básicos que alertan precios sin distancia porcentual, riesgo en USDT ni estado de fase.',
+    ],
+    solution: [
+      'Módulo TypeScript/Node.js con formato tabular cuantitativo y cálculo dinámico de niveles.',
+    ],
+    stack: ['Node.js', 'WebSockets', 'ATR Engine', 'Telegram Bot API'],
+    metrics: [
+      { label: 'Tick', value: '< 10 ms' },
+      { label: 'Formato', value: 'ATR Table' },
+      { label: 'Inversión', value: '$99 USD' },
+    ],
+    tiers: [
+      {
+        name: 'Licencia SDK & Templates',
+        price: '$99 USD / $140.000 ARS',
+        period: 'Licencia comercial de integración',
+        highlighted: true,
+        features: [
+          'Calculador cuantitativo SL / TP1 / TP2 / Trailing',
+          'Integración limpia hacia Telegram / webhooks privados',
+        ],
+      },
+    ],
+    liveUrl: 'https://titanflow.aldoarbizu.com',
+  },
 };
 
-export default function ProductLanding({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = use(params);
-  const slug = resolvedParams.slug?.toLowerCase();
-  const product = PRODUCTS[slug];
-  const router = useRouter();
+export default function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params);
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
+  const product = PRODUCTS_DATA[slug] ?? PRODUCTS_DATA.agromarket;
 
-  const [checkoutModal, setCheckoutModal] = useState<{ isOpen: boolean; tierName: string; price: string } | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTierTitle, setSelectedTierTitle] = useState(
+    `${product.code} · ${product.title}`
+  );
+  const [selectedTierPrice, setSelectedTierPrice] = useState(product.tiers[0].price);
 
-  if (!product) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 text-white p-6">
-        <AlertTriangle className="w-16 h-16 text-rose-500 mb-4" />
-        <h1 className="text-3xl font-bold mb-2">Producto No Encontrado</h1>
-        <p className="text-slate-400 mb-6">La landing page solicitada no existe en nuestro catálogo actual.</p>
-        <button 
-          onClick={() => router.push("/warroom")}
-          className="px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition"
-        >
-          Volver al Centro de Control
-        </button>
-      </div>
-    );
-  }
-
-  const handleCheckoutClick = (tierName: string, price: string) => {
-    setCheckoutModal({ isOpen: true, tierName, price });
+  const openModalWithTier = (tier: ProductTier) => {
+    setSelectedTierTitle(`${product.code} · ${product.title} (${tier.name})`);
+    setSelectedTierPrice(tier.price);
+    setModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-[#08090f] text-slate-100 font-sans antialiased overflow-x-hidden">
-      
-      {/* ── HEADER ── */}
-      <header className="border-b border-slate-900 bg-slate-950/70 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/warroom")}>
-            <div className={`p-2 rounded-lg bg-gradient-to-br ${product.themeColor} text-white`}>
-              {product.icon}
-            </div>
-            <span className="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-              {product.title}
-            </span>
-          </div>
-          <button 
-            onClick={() => handleCheckoutClick("Plan Pro", product.tiers[1].price)}
-            className={`px-5 py-2 rounded-lg font-semibold bg-gradient-to-r ${product.themeColor} text-white shadow-lg ${product.glowColor} hover:scale-105 transition-transform`}
+    <div className="min-h-screen bg-[var(--surface-void)] text-[var(--text-primary)] pt-24 pb-20">
+      {/* Breadcrumb Bar */}
+      <div className="border-y border-[var(--grid-hairline)] bg-[var(--surface-chassis)]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between gap-4">
+          <Link
+            href="/#systems"
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-[var(--text-secondary)] hover:text-[#FF4F00] transition-colors"
           >
-            Comprar Ahora
-          </button>
-        </div>
-      </header>
-
-      {/* ── HERO SECTION ── */}
-      <section className="relative py-24 px-6 overflow-hidden">
-        {/* Glow Background */}
-        <div className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-gradient-to-br ${product.themeColor} opacity-10 blur-[120px] pointer-events-none`} />
-
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400 mb-6">
-            <Zap className="w-3.5 h-3.5 text-yellow-500 animate-pulse" />
-            {product.heroBadge}
-          </span>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-6 leading-tight">
-            Optimiza tu Flujo con{" "}
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${product.themeColor}`}>
-              {product.title}
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            {product.subtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => handleCheckoutClick(product.tiers[1].name, product.tiers[1].price)}
-              className={`px-8 py-4 rounded-xl font-bold bg-gradient-to-r ${product.themeColor} text-white shadow-xl ${product.glowColor} flex items-center justify-center gap-2 hover:opacity-90 transition`}
+            <ArrowLeft className="w-3.5 h-3.5" />
+            {isEs ? 'Volver al Catálogo SYS-01..12' : 'Back to SYS-01..12 Catalog'}
+          </Link>
+          <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-wider">
+            <span className="text-[var(--text-muted)] hidden sm:inline">{product.domain}</span>
+            <button
+              type="button"
+              onClick={() => openModalWithTier(product.tiers[0])}
+              className="px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-bold uppercase tracking-wider text-[10px]"
             >
-              Comenzar en el plan {product.tiers[1].name}
-              <ArrowRight className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => {
-                const el = document.getElementById("features");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="px-8 py-4 rounded-xl font-bold bg-slate-900 hover:bg-slate-800 border border-slate-800 transition"
-            >
-              Ver características
+              {isEs ? 'Contratar / Solicitar' : 'Deploy / License'}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-14 border-b border-[var(--grid-hairline)]">
+        <div className="flex flex-wrap items-center gap-4 mb-6">
+          <ProductDynastyBadge code={product.code} className="w-12 h-12 shrink-0" />
+          <div>
+            <span className="inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-[#FF4F00] font-bold mb-1">
+              {product.badge}
+            </span>
+            <div className="font-mono text-xs text-[var(--text-muted)]">{product.domain}</div>
+          </div>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)] mb-5 max-w-4xl">
+          {product.title}
+        </h1>
+        <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-3xl leading-relaxed mb-8">
+          {product.subtitle}
+        </p>
+
+        {product.complianceNotice && (
+          <div className="mb-8 p-4 rounded-[2px] border border-[#FF4F00]/45 bg-[#FF4F00]/10 font-mono text-xs text-[var(--text-primary)] leading-relaxed">
+            <strong className="text-[#FF4F00] block uppercase tracking-wider mb-1">
+              Cumplimiento Legal &amp; Blindaje Comercial
+            </strong>
+            {product.complianceNotice}
+          </div>
+        )}
+
+        {/* Metrics + Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          {product.metrics.map((m) => (
+            <div
+              key={m.label}
+              className="p-4 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)]"
+            >
+              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-1">
+                {m.label}
+              </div>
+              <div className="font-mono text-2xl font-bold text-[var(--text-primary)] tabular-nums">
+                {m.value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => openModalWithTier(product.tiers[0])}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+          >
+            {isEs ? `Solicitar ${product.tiers[0].name}` : `Request ${product.tiers[0].name}`}
+            <ArrowRight className="w-4 h-4" />
+          </button>
+
+          {product.liveUrl && (
+            <a
+              href={product.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] hover:border-[#00E599]/50 text-[var(--text-primary)] font-mono text-xs uppercase tracking-widest font-semibold transition-colors"
+            >
+              {isEs ? 'Abrir Entorno en Vivo' : 'Open Live Deployment'}
+              <ArrowUpRight className="w-4 h-4 text-[#00E599]" />
+            </a>
+          )}
+
+          <Link
+            href={`/?sys=${product.code}#workbench`}
+            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] hover:border-[#D4AF37]/50 text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-mono text-xs uppercase tracking-widest font-semibold transition-colors"
+          >
+            <Terminal className="w-3.5 h-3.5 text-[#D4AF37]" />
+            {isEs ? 'Inspeccionar en Workbench' : 'Inspect on Workbench'}
+          </Link>
         </div>
       </section>
 
-      {/* ── PROBLEM / SOLUTION ── */}
-      <section className="py-20 border-t border-slate-900 bg-slate-950/20 px-6">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
-          {/* Problema */}
-          <div className="p-8 rounded-2xl bg-slate-950/50 border border-slate-900 relative">
-            <h3 className="text-2xl font-bold text-rose-500 mb-6 flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6" /> El Dolor Común
-            </h3>
+      {/* Problem & Solution */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 border-b border-[var(--grid-hairline)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 sm:p-8 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)]">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-[#FF4F00] font-bold flex items-center gap-2 mb-5">
+              <ShieldAlert className="w-4 h-4" />
+              {isEs ? 'Riesgo Operativo Resuelto' : 'Operational Bottleneck'}
+            </h2>
             <ul className="space-y-4">
               {product.problem.map((p, idx) => (
-                <li key={idx} className="flex gap-3 text-slate-400 text-sm leading-relaxed">
-                  <span className="text-rose-500 font-bold">•</span>
+                <li key={idx} className="flex gap-3 text-sm text-[var(--text-secondary)] leading-relaxed">
+                  <span className="font-mono text-xs text-[#FF4F00] font-bold mt-0.5">0{idx + 1}</span>
                   <span>{p}</span>
                 </li>
               ))}
             </ul>
           </div>
-          {/* Solución */}
-          <div className="p-8 rounded-2xl bg-slate-950/50 border border-slate-900 relative">
-            <div className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${product.themeColor} opacity-5 blur-sm`} />
-            <h3 className="text-2xl font-bold text-emerald-400 mb-6 flex items-center gap-2 relative z-10">
-              <Check className="w-6 h-6 text-emerald-400" /> La Solución de {product.title}
-            </h3>
-            <ul className="space-y-4 relative z-10">
+
+          <div className="p-6 sm:p-8 rounded-[2px] border border-[#00E599]/35 bg-[var(--surface-chassis)]">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-[#00E599] font-bold flex items-center gap-2 mb-5">
+              <ShieldCheck className="w-4 h-4" />
+              {isEs ? 'Arquitectura de Producción' : 'Production Architecture'}
+            </h2>
+            <ul className="space-y-4">
               {product.solution.map((s, idx) => (
-                <li key={idx} className="flex gap-3 text-slate-300 text-sm leading-relaxed">
-                  <Check className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                <li key={idx} className="flex gap-3 text-sm text-[var(--text-primary)] leading-relaxed">
+                  <CheckCircle2 className="w-4 h-4 text-[#00E599] shrink-0 mt-0.5" />
                   <span>{s}</span>
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FEATURES ── */}
-      <section id="features" className="py-24 px-6 max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">Arquitectura y Módulos Técnicos</h2>
-          <p className="text-slate-400">Diseñado con robustez y los más altos estándares de calidad de Arbizu Labs.</p>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {product.features.map((f, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-slate-950 border border-slate-900 hover:border-slate-800 transition">
-              <div className="p-3 rounded-xl bg-slate-900 w-fit mb-4 text-cyan-400">
-                <Code className="w-6 h-6 text-slate-400" />
-              </div>
-              <h4 className="font-bold text-lg mb-2 text-white">{f.name}</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+            <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t border-[var(--grid-hairline)]">
+              {product.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-1 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] font-mono text-[10px] uppercase tracking-wider text-[var(--text-secondary)]"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── USE CASES ── */}
-      <section className="py-20 border-t border-slate-900 bg-slate-950/40 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-center mb-16">Casos de Uso del Mundo Real</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {product.useCases.map((u, idx) => (
-              <div key={idx} className="p-6 rounded-xl bg-slate-900/30 border border-slate-900">
-                <div className="font-extrabold text-xl mb-3 text-white flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-indigo-400" /> {u.title}
-                </div>
-                <p className="text-slate-400 text-sm leading-relaxed">{u.scenario}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRICING ── */}
-      <section className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">Planes de Licencias</h2>
-          <p className="text-slate-400">Escoge el plan que mejor se adapte al tamaño de tu operación.</p>
+      {/* Licensing Tiers */}
+      <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 border-b border-[var(--grid-hairline)]">
+        <div className="mb-8">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-[#D4AF37] font-bold block mb-2">
+            // LICENCIAS &amp; DESPLIEGUE SOBERANO
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+            {isEs ? 'Modalidades de Contratación Oficial' : 'Official Deployment Tiers'}
+          </h2>
         </div>
 
-        <ROICalculator />
-
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {product.tiers.map((t, idx) => (
-            <div 
-              key={idx} 
-              className={`p-8 rounded-3xl bg-slate-950 border relative flex flex-col justify-between ${
-                idx === 1 ? `border-indigo-500 ${product.glowColor}` : "border-slate-900"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {product.tiers.map((tier) => (
+            <div
+              key={tier.name}
+              className={`p-6 sm:p-8 rounded-[2px] border flex flex-col justify-between bg-[var(--surface-chassis)] ${
+                tier.highlighted ? 'border-[#FF4F00]/60' : 'border-[var(--grid-hairline)]'
               }`}
             >
-              {idx === 1 && (
-                <span className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${product.themeColor} text-white`}>
-                  Recomendado
-                </span>
-              )}
               <div>
-                <h3 className="font-bold text-xl mb-2 text-white">{t.name}</h3>
-                <p className="text-slate-400 text-sm mb-6 min-h-[40px]">{t.desc}</p>
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-4xl font-black text-white">{t.price}</span>
-                  <span className="text-slate-400 text-sm">USD</span>
+                <div className="font-mono text-xs uppercase tracking-widest text-[#D4AF37] font-bold mb-2">
+                  {tier.name}
                 </div>
-                <ul className="space-y-4 mb-8">
-                  {t.features.map((f, fIdx) => (
-                    <li key={fIdx} className="flex gap-2.5 text-sm text-slate-300">
-                      <Check className="w-5 h-5 text-indigo-400 shrink-0" />
-                      <span>{f}</span>
+                <div className="font-mono text-3xl font-extrabold text-[var(--text-primary)] tabular-nums mb-1">
+                  {tier.price}
+                </div>
+                <div className="font-mono text-xs text-[var(--text-muted)] mb-6">{tier.period}</div>
+                <ul className="space-y-3 mb-8">
+                  {tier.features.map((feat) => (
+                    <li key={feat} className="flex items-start gap-2.5 text-sm text-[var(--text-secondary)]">
+                      <Check className="w-4 h-4 text-[#00E599] shrink-0 mt-0.5" />
+                      <span>{feat}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <button 
-                onClick={() => handleCheckoutClick(t.name, t.price)}
-                className={`w-full py-3 rounded-xl font-bold transition ${
-                  idx === 2
-                    ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg"
-                    : idx === 1 
-                      ? `bg-gradient-to-r ${product.themeColor} text-white shadow-lg ${product.glowColor}`
-                      : "bg-slate-900 hover:bg-slate-800 text-slate-200"
+              <button
+                type="button"
+                onClick={() => openModalWithTier(tier)}
+                className={`w-full py-3.5 px-5 rounded-[2px] font-mono text-xs uppercase tracking-widest font-bold transition-colors flex items-center justify-center gap-2 ${
+                  tier.highlighted
+                    ? 'bg-[#FF4F00] hover:bg-[#e64600] text-white'
+                    : 'border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] hover:border-[#FF4F00]/50 text-[var(--text-primary)]'
                 }`}
               >
-                {idx === 2 ? "Contactar Ventas" : `Adquirir ${t.name}`}
+                {isEs ? 'Activar con Coordenadas Oficiales' : 'Proceed to Official Checkout'}
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           ))}
         </div>
 
-        {/* Comparison Table */}
-        <div className="mt-24 border-t border-slate-900 pt-16">
-          <h3 className="text-2xl font-bold text-center text-white mb-10">¿Por qué elegir Arbizu Labs?</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr className="border-b border-slate-900 text-zinc-500 font-mono uppercase text-xs tracking-wider">
-                  <th className="py-4 px-6">Características</th>
-                  <th className="py-4 px-6">Arbizu Labs</th>
-                  <th className="py-4 px-6">Competidores A</th>
-                  <th className="py-4 px-6">Competidores B</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-900/60 text-slate-300">
-                <tr>
-                  <td className="py-4 px-6 font-bold text-white">Arquitectura Offline-First</td>
-                  <td className="py-4 px-6 text-emerald-400 font-bold">✅ Completa (SQLite WAL)</td>
-                  <td className="py-4 px-6 text-rose-500">❌ Solo Cloud / REST</td>
-                  <td className="py-4 px-6 text-yellow-500">⚠️ Parcial (Local Storage)</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-white">Integración Blockchain-Native</td>
-                  <td className="py-4 px-6 text-emerald-400 font-bold">✅ Base L2, Eth, Polygon</td>
-                  <td className="py-4 px-6 text-rose-500">❌ No Soportado</td>
-                  <td className="py-4 px-6 text-rose-500">❌ No Soportado</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-white">Latencia de Red (WebSockets)</td>
-                  <td className="py-4 px-6 text-emerald-400 font-bold">🚀 Sub-10ms</td>
-                  <td className="py-4 px-6 text-slate-500">250ms (REST polling)</td>
-                  <td className="py-4 px-6 text-yellow-500">⚠️ 50ms</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-white">Uptime SLA Garantizado</td>
-                  <td className="py-4 px-6 text-emerald-400 font-bold">✅ 99.99% con Failover</td>
-                  <td className="py-4 px-6 text-rose-500">❌ Sin SLA</td>
-                  <td className="py-4 px-6 text-yellow-500">⚠️ 99.9% básico</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-white">Cumplimiento Normativo</td>
-                  <td className="py-4 px-6 text-emerald-400 font-bold">🛡️ GDPR / SOC 2 Ready</td>
-                  <td className="py-4 px-6 text-rose-500">❌ No Certificado</td>
-                  <td className="py-4 px-6 text-rose-500">❌ No Certificado</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* ── ENGINEERING GUARANTEES ── */}
-      <section className="py-20 border-t border-slate-900 bg-slate-950/20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="badge-enterprise mb-3">Estándares de Entrega</span>
-            <h2 className="text-3xl font-extrabold text-white">Garantía de Arquitectura Arbizu Labs</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 font-mono text-xs">
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
-              <div className="text-[var(--color-arbizu-teal)] font-bold text-sm font-space mb-2">01. CERO VENDOR LOCK-IN</div>
-              <p className="text-slate-400 leading-relaxed">Código fuente 100% tuyo. Sin suscripciones forzosas de infraestructura propietaria ni dependencias opacas.</p>
-            </div>
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
-              <div className="text-[#00D4FF] font-bold text-sm font-space mb-2">02. VERIFICACIÓN OWASP</div>
-              <p className="text-slate-400 leading-relaxed">Arquitecturas auditadas contra fugas de secrets, inyecciones de datos y vulnerabilidades de red en repositorios locales.</p>
-            </div>
-            <div className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
-              <div className="text-[#7F77DD] font-bold text-sm font-space mb-2">03. SOPORTE DE DESPLIEGUE</div>
-              <p className="text-slate-400 leading-relaxed">Acompañamiento directo por parte del Lead Engineer para la integración, configuración de VPS y puesta en producción.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section className="py-24 px-6 max-w-4xl mx-auto">
-        <h2 className="text-3xl font-extrabold text-center mb-16">Preguntas Frecuentes</h2>
-        <div className="space-y-6">
-          {product.faqs.map((f, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-slate-950 border border-slate-900">
-              <h4 className="font-bold text-lg text-white mb-2">{f.q}</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">{f.a}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── CTA FINAL ── */}
-      <section className="py-24 px-6 text-center border-t border-slate-900 bg-gradient-to-b from-[#08090f] to-[#040508]">
-        <h2 className="text-4xl font-extrabold mb-6">¿Listo para escalar tus operaciones?</h2>
-        <p className="text-slate-400 mb-10 max-w-lg mx-auto">Comienza hoy mismo e integra los mejores desarrollos de Arbizu Labs en tu negocio.</p>
-        <button 
-          onClick={() => handleCheckoutClick(product.tiers[1].name, product.tiers[1].price)}
-          className={`px-8 py-4 rounded-xl font-bold bg-gradient-to-r ${product.themeColor} text-white shadow-xl ${product.glowColor} hover:opacity-90 transition`}
-        >
-          Adquirir Licencia {product.title}
-        </button>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-950 bg-slate-950/80 py-12 px-6 text-center text-slate-500 text-xs">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>© 2026 Arbizu Labs. Todos los derechos reservados. San Carlos de Bolívar, Argentina.</div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-slate-300">Términos</a>
-            <a href="#" className="hover:text-slate-300">Privacidad</a>
-            <a href="#" className="hover:text-slate-300">Contacto</a>
-          </div>
-        </div>
-      </footer>
-
-      {/* ── CHECKOUT GATEWAY DIALOG ── */}
-      {checkoutModal?.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-3xl bg-[#0d0e16] border border-slate-800 p-8 shadow-2xl relative">
-            <h3 className="text-2xl font-black text-white mb-2">Comprar {product.title}</h3>
-            <p className="text-slate-400 text-sm mb-6">Estás adquiriendo el plan <span className="text-white font-bold">{checkoutModal.tierName}</span> por <span className="text-white font-black">{checkoutModal.price} USD</span>.</p>
-            
-            <div className="space-y-4 mb-8">
-              {/* Primary: Gumroad checkout */}
-              <button 
-                onClick={() => {
-                  const tier = product.tiers.find(t => t.name === checkoutModal.tierName);
-                  if (tier?.checkoutUrl?.startsWith('https://')) {
-                    window.open(tier.checkoutUrl, '_blank');
-                  } else {
-                    window.open(`https://arbizualdo.gumroad.com`, '_blank');
-                  }
-                  setCheckoutModal(null);
-                }}
-                className="w-full py-4 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 transition"
+        {(product.caseSlug || product.solutionSlug) && (
+          <div className="mt-8 flex flex-wrap gap-4 font-mono text-xs">
+            {product.caseSlug && (
+              <Link
+                href={`/cases/${product.caseSlug}`}
+                className="text-[#00E599] hover:underline inline-flex items-center gap-1"
               >
-                <CreditCard className="w-5 h-5" /> Pagar con Tarjeta (Gumroad)
-              </button>
-              
-              {/* Crypto: Base L2 USDC */}
-              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-900 text-center">
-                <div className="text-xs text-indigo-400 font-bold mb-2">Pagar en Web3 Base L2 (USDC)</div>
-                <div className="text-[10px] text-slate-500 font-mono select-all bg-slate-900 py-1.5 px-3 rounded-lg border border-slate-850 break-all mb-3">
-                  {CHECKOUT_WALLET_ADDRESS}
-                </div>
-                <p className="text-[10px] text-slate-600 mb-3">Envía {checkoutModal.price} USDC y luego confirma enviando el hash de tx por email.</p>
-                <a 
-                  href={`mailto:aldo@arbizulabs.com?subject=Crypto%20Payment%20-%20${encodeURIComponent(product.title)}%20${encodeURIComponent(checkoutModal.tierName)}&body=Transaction%20Hash:%20%0A%0APlan:%20${encodeURIComponent(checkoutModal.tierName)}%0AAmount:%20${encodeURIComponent(checkoutModal.price)}%20USDC`}
-                  className="w-full py-2.5 rounded-lg font-bold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 flex items-center justify-center gap-2 text-xs transition"
-                >
-                  <Lock className="w-4 h-4 text-indigo-400" /> Confirmar Pago Cripto por Email
-                </a>
-              </div>
-
-              {/* Argentina: Official Audited Banking & Mercado Pago Rails */}
-              <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-left space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-emerald-400 font-bold">Rieles Oficiales Argentina</span>
-                  <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-mono font-bold">10% OFF</span>
-                </div>
-                <div className="text-[11px] font-mono space-y-1 text-slate-300">
-                  <div><span className="text-slate-500">Banco Galicia:</span> <strong className="text-white select-all">ALDO.ARBIZU.GALICIA</strong></div>
-                  <div><span className="text-slate-500">CBU:</span> <strong className="text-white select-all">0070149130004016919618</strong></div>
-                  <div><span className="text-slate-500">Mercado Pago:</span> <strong className="text-white select-all">aldoarbizu</strong></div>
-                  <div><span className="text-slate-500">Titular:</span> Aldo Alberto Arbizu (CUIT: 20-38362060-1)</div>
-                </div>
-                <div className="pt-2 border-t border-emerald-900/40 flex justify-between items-center">
-                  <span className="text-[10px] text-slate-400">Confirmación directa:</span>
-                  <a 
-                    href={`https://wa.me/5492314489197?text=${encodeURIComponent(`Hola Aldo, realicé la transferencia para comprar ${product.title} (${checkoutModal.tierName}) por ${checkoutModal.price} USD (-10% OFF). Adjunto comprobante.`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-bold text-emerald-400 hover:underline inline-flex items-center gap-1"
-                  >
-                    Confirmar por WhatsApp →
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setCheckoutModal(null)}
-              className="w-full py-3 rounded-xl font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 text-sm transition"
-            >
-              Cancelar
-            </button>
+                {isEs ? 'Leer Caso Técnico Auditado →' : 'Read Audited Technical Case →'}
+              </Link>
+            )}
+            {product.solutionSlug && (
+              <Link
+                href={`/solutions/${product.solutionSlug}`}
+                className="text-[#D4AF37] hover:underline inline-flex items-center gap-1"
+              >
+                {isEs ? 'Ver Ficha de Vertical Industrial →' : 'View Industrial Solution Brief →'}
+              </Link>
+            )}
           </div>
-        </div>
-      )}
-      
-      {/* Schema.org Product Markup */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": product.title,
-            "description": product.subtitle,
-            "offers": {
-              "@type": "Offer",
-              "price": product.tiers[1]?.price.replace("$", "") || "49",
-              "priceCurrency": "USD",
-              "availability": "https://schema.org/InStock"
-            }
-          })
-        }}
-      />
+        )}
+      </section>
 
+      {/* ROI Calculator */}
+      <RoiCalculator />
+
+      <B2BContractModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialServiceTitle={selectedTierTitle}
+        initialServicePrice={selectedTierPrice}
+      />
     </div>
   );
 }

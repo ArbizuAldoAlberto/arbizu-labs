@@ -126,13 +126,18 @@ html[data-theme="v1"] {
 /* MODO FIELD DAYLIGHT PAPER (GAP-04 — Alto Contraste Solar Rural 18.4:1 AAA) */
 html[data-luminance="daylight"] {
   color-scheme: light;
+  --surface-void: #F2F0EA;
+  --surface-chassis: #FFFFFF;
+  --surface-elevated: #EAE7DF;
+  --surface-glass: rgba(242, 240, 234, 0.94);
+  --grid-hairline: #D6D3C9;
   --bg-seam: #F2F0EA;
   --bg-deep: #F2F0EA;
   --bg-surface: #FFFFFF;
   --bg-elevated: #EAE7DF;
   --bg-card: #FFFFFF;
   --bg-card-solid: #FFFFFF;
-  --bg-glass: rgba(242, 240, 234, 0.92);
+  --bg-glass: rgba(242, 240, 234, 0.94);
   --bg-btn: #FFFFFF;
   --color-space-black: #F2F0EA;
   --color-deep-space: #EAE7DF;
@@ -143,11 +148,79 @@ html[data-luminance="daylight"] {
   --text-secondary: #3E4552;
   --text-muted: #525B6C;
   --accent-border: #D6D3C9;
+  --accent-border-strong: rgba(212, 175, 55, 0.72);
+  --grid-line: rgba(7, 8, 10, 0.05);
 }
 
 html[data-luminance="daylight"] .site-header {
-  background: rgba(242, 240, 234, 0.94) !important;
+  background: rgba(242, 240, 234, 0.96) !important;
   border-bottom: 1px solid #D6D3C9 !important;
+}
+
+/* Garantía global 0 bloques negros / 0 textos blancos invisibles en Field Daylight */
+html[data-luminance="daylight"] :is(
+  [class*="bg-[#060709]"],
+  [class*="bg-[#0B0D12]"],
+  [class*="bg-[#11151D]"],
+  [class*="bg-[#0E1116]"],
+  [class*="bg-[#070B12]"],
+  [class*="bg-[#0D131F]"],
+  [class*="bg-[#0A0A0A]"],
+  [class*="bg-[#080b12]"],
+  .bg-slate-950,
+  .bg-zinc-950,
+  [class*="bg-black/"]
+):not([data-keep-dark="true"]):not([class*="bg-[#FF4F00]"]):not([class*="bg-[#D4AF37]"]):not([class*="bg-[#00E599]"]) {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] section[id]:not([data-section="artifacts"]):not([data-keep-dark="true"]) {
+  background-color: #F2F0EA !important;
+  background-image: none !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] [data-keep-dark="true"],
+html[data-luminance="daylight"] [data-keep-dark="true"] * {
+  /* Preserva bandas de contraste editorial intencional (#07080A / #F2F0EA) */
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="text-[#F6F7F9]"],
+  [class*="text-[#F8FAFC]"],
+  [class*="text-[#F2F0EA]"],
+  .text-white,
+  .text-slate-100,
+  .text-slate-200
+):not([data-keep-dark="true"]):not([data-keep-dark="true"] *):not([class*="bg-[#FF4F00]"]):not([class*="bg-[#D4AF37]"]):not([class*="bg-[#00E599]"]):not([class*="bg-[#07080A]"]) {
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="text-[#C2C8D4]"],
+  [class*="text-[#8A93A6]"],
+  [class*="text-[#94A3B8]"],
+  .text-slate-300,
+  .text-slate-400,
+  .text-zinc-300,
+  .text-zinc-400
+):not([data-keep-dark="true"]):not([data-keep-dark="true"] *) {
+  color: #3E4552 !important;
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="border-[#1B202B]"],
+  [class*="border-white/"],
+  .border-slate-900,
+  .border-zinc-900
+):not([data-keep-dark="true"]) {
+  border-color: #D6D3C9 !important;
+}
+
+html[data-luminance="daylight"] .hero-media {
+  opacity: 0.14;
 }
 
 /* ==========================================================================
@@ -235,10 +308,16 @@ html[data-theme="v2"] {
     background-color: var(--bg-seam);
     color: var(--text-primary);
     font-family: var(--font-inter), system-ui, sans-serif;
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  section[id],
+  div[id],
+  footer[id] {
+    scroll-margin-top: 6rem;
   }
 
   body {
@@ -586,13 +665,13 @@ html[data-theme="v2"] .theme-switch a[data-theme-link="v2"],
 .hero {
   position: relative;
   width: 100%;
+  height: auto;
   min-height: 100svh;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 13vh clamp(1.25rem, 5vw, 4rem) 14vh;
+  padding: 6.5rem clamp(1rem, 4vw, 3.5rem) 4rem;
   background-color: var(--bg-seam);
   overflow-x: clip;
 }
@@ -1236,7 +1315,10 @@ section:not(.hero):not(.dive),
 
 @media (max-width: 768px) {
   .hero {
-    padding: 15vh 1.25rem 13vh;
+    height: auto;
+    min-height: 100svh;
+    justify-content: flex-start;
+    padding: 5.5rem 1rem 4rem;
   }
 
   .hero-title {

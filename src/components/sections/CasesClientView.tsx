@@ -1,8 +1,11 @@
 'use client';
-import React from 'react';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen, HeartHandshake } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { ProductDynastyBadge, type DynastySystemCode } from '@/components/ui/SovereignBrandMark';
+import B2BContractModal from '@/components/modals/B2BContractModal';
 
 interface CaseItem {
   slug: string;
@@ -12,239 +15,320 @@ interface CaseItem {
   stack: string[];
 }
 
-export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
-  const { locale } = useLanguage();
-
-  const caseAssetMap: Record<string, { image: string; subDomain: string }> = {
-    "titanflow-defi-low-latency": { image: "/projects/titanflow.png", subDomain: "titanflow.aldoarbizu.com" },
-    "sentinelos-security-dispatch": { image: "/projects/sentinelos.png", subDomain: "sentinelos.aldoarbizu.com" },
-    "agromarket-pro": { image: "/projects/agromarket.png", subDomain: "agromarket.aldoarbizu.com" },
-    "aeroshot-drone-marketplace": { image: "/projects/aeroshot.png", subDomain: "aeroshot.aldoarbizu.com" },
-    "impresion-3d-p2p": { image: "/projects/impresion3d.png", subDomain: "impresion3d.aldoarbizu.com" },
-    "nomad-tactical-hub": { image: "/projects/nomadhub.png", subDomain: "nomadhub.aldoarbizu.com" },
-    "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", subDomain: "ecoconnect.aldoarbizu.com" },
-    "pawhero-pet-tracking": { image: "/projects/pawhero.png", subDomain: "pawhero.aldoarbizu.com" },
-    "aureus-wealth-os": { image: "/projects/aureus.png", subDomain: "aureus.aldoarbizu.com" },
-    "habitat-lease-engine": { image: "/projects/habitat.png", subDomain: "habitat.aldoarbizu.com" },
-    "smart-marketing-advisor": { image: "/projects/marketingadvisor.png", subDomain: "marketingadvisor.aldoarbizu.com" },
-  };
-
-  // Bilingual titles, industries & metrics map
-  const caseTranslations: Record<string, {
+const SLUG_META: Record<
+  string,
+  {
+    image: string;
+    subDomain: string;
+    code?: DynastySystemCode;
+    productSlug?: string;
+    nonProfit?: boolean;
     titleEn: string;
     industryEn: string;
     metricsEn: Array<{ label: string; value: string }>;
-  }> = {
-    "titanflow-defi-low-latency": {
-      titleEn: "TitanFlow: Sub-10ms Latency in DeFi Algorithmic Trading",
-      industryEn: "DeFi & Quant Trading",
-      metricsEn: [
-        { label: "Execution Latency", value: "< 10ms" },
-        { label: "Fee Discount", value: "-60% Fees" },
-        { label: "Risk Management", value: "Fractional Kelly" }
-      ]
-    },
-    "sentinelos-security-dispatch": {
-      titleEn: "SentinelOS: Tactical Dispatch & Offline Patrol Management",
-      industryEn: "Cybersecurity & Mobile",
-      metricsEn: [
-        { label: "Offline Availability", value: "100%" },
-        { label: "Spoofing Prevention", value: "Biometric Verification" },
-        { label: "Sync Reconciliation", value: "< 1.5s" }
-      ]
-    },
-    "agromarket-pro": {
-      titleEn: "AgroMarket Pro: Grain Intake & Traceability Without Connectivity",
-      industryEn: "AgTech & Rural Logistics",
-      metricsEn: [
-        { label: "Offline Traceability", value: "100%" },
-        { label: "Shrinkage Reduction", value: "15%" },
-        { label: "Data Reconciliation", value: "< 1.2s" }
-      ]
-    },
-    "aeroshot-drone-marketplace": {
-      titleEn: "AeroShot: Agricultural Drone Processing & Web3 Media Licensing",
-      industryEn: "AgTech & Drones",
-      metricsEn: [
-        { label: "Parcel Processing", value: "Offline Caching" },
-        { label: "Web3 Licensing", value: "< 2s" },
-        { label: "GIS Export", value: "GeoJSON / KML" }
-      ]
-    },
-    "impresion-3d-p2p": {
-      titleEn: "3D Printing P2P: Distributed Manufacturing & Base L2 Escrow",
-      industryEn: "Additive Manufacturing & Web3",
-      metricsEn: [
-        { label: "Client-Side STL Slicing", value: "< 500ms" },
-        { label: "Intermediary Fee", value: "0% Commission" },
-        { label: "3D Rendering", value: "60 FPS WebGL" }
-      ]
-    },
-    "nomad-tactical-hub": {
-      titleEn: "NOMAD Tactical Hub: Off-Grid Communications & Tactical Resiliency",
-      industryEn: "Tactical Hardware & Mesh",
-      metricsEn: [
-        { label: "Network Uptime", value: "100% Off-Grid" },
-        { label: "Tactical Cryptography", value: "Local Vigenère" },
-        { label: "RF Antenna Math", value: "Offline Native" }
-      ]
-    },
-    "ecoconnect-esg-registry": {
-      titleEn: "EcoConnect: ESG Forestry Registry, Satellite Biomass & SBTs",
-      industryEn: "ESG & Satellite Telemetry",
-      metricsEn: [
-        { label: "Satellite Telemetry", value: "Sentinel-2 NDVI" },
-        { label: "On-Chain Certificate", value: "SBT on Base L2" },
-        { label: "Forest Digital Twin", value: "3D Interactive" }
-      ]
-    },
-    "pawhero-pet-tracking": {
-      titleEn: "PawHero: Pet Identification with 3D QR Tags & On-Chain Philanthropy",
-      industryEn: "Social Impact & 3D Hardware",
-      metricsEn: [
-        { label: "3D Tag Cost", value: "$0 USD STL" },
-        { label: "Alert Network", value: "P2P WebSockets" },
-        { label: "Adoption Badges", value: "Base L2 SBT" }
-      ]
-    },
-    "aureus-wealth-os": {
-      titleEn: "Aureus Wealth OS: Streaming AI Portfolio Advisor with WASM Bias Detection",
-      industryEn: "Fintech & AI Advisory",
-      metricsEn: [
-        { label: "Streaming Latency", value: "< 120ms TTFT" },
-        { label: "Cognitive Bias Engine", value: "Local WASM" },
-        { label: "Design Language", value: "Wealth OS Glass" }
-      ]
-    },
-    "habitat-lease-engine": {
-      titleEn: "Hábitat: Decentralized Leasing Protocol & Land Reactivation",
-      industryEn: "PropTech & Smart Contracts",
-      metricsEn: [
-        { label: "Contract Sealing", value: "Base L2 personal_sign" },
-        { label: "Brokerage Cost", value: "-80% Lower" },
-        { label: "Verification", value: "On-Chain Trace" }
-      ]
-    },
-    "smart-marketing-advisor": {
-      titleEn: "Smart Marketing Advisor: Omnichannel AI Marketing Coach & n8n Pipeline",
-      industryEn: "AI Marketing & Automation",
-      metricsEn: [
-        { label: "Copy Generation", value: "< 3s per Post" },
-        { label: "Operational Savings", value: "15h / week" },
-        { label: "Channels", value: "Omnichannel Sync" }
-      ]
-    }
-  };
+  }
+> = {
+  'titanflow-defi-low-latency': {
+    image: '/projects/titanflow.png',
+    subDomain: 'titanflow.aldoarbizu.com',
+    code: 'SYS-01',
+    productSlug: 'titanflow',
+    titleEn: 'TitanFlow: Sub-10ms Latency in Algorithmic Futures Execution',
+    industryEn: 'Quantitative Trading & Risk Ops',
+    metricsEn: [
+      { label: 'Execution Latency', value: '< 10ms' },
+      { label: 'Collateral Cap', value: '1.50%' },
+      { label: 'Risk Engine', value: 'Pessimistic SL-First' },
+    ],
+  },
+  'sentinelos-security-dispatch': {
+    image: '/projects/sentinelos.png',
+    subDomain: 'sentinelos.aldoarbizu.com',
+    code: 'SYS-02',
+    productSlug: 'sentinelos',
+    titleEn: 'SentinelOS: Tactical Dispatch & Offline Patrol Management',
+    industryEn: 'Physical Security & Multi-Tenant SOC',
+    metricsEn: [
+      { label: 'Offline Availability', value: '100%' },
+      { label: 'RLS Audit', value: '60 / 60 PASS' },
+      { label: 'Sync Reconciliation', value: '< 1.5s' },
+    ],
+  },
+  'agromarket-pro': {
+    image: '/projects/agromarket.png',
+    subDomain: 'agromarket.aldoarbizu.com',
+    code: 'SYS-03',
+    productSlug: 'agromarket',
+    titleEn: 'AgroMarket Pro: Grain Intake & Traceability Without Connectivity',
+    industryEn: 'AgTech & Rural Logistics',
+    metricsEn: [
+      { label: 'Offline Traceability', value: '100%' },
+      { label: 'Shrinkage Control', value: 'LiDAR + FLIR' },
+      { label: 'Data Reconciliation', value: 'SQLite WAL' },
+    ],
+  },
+  'nomad-tactical-hub': {
+    image: '/projects/nomadhub.png',
+    subDomain: 'nomadhub.aldoarbizu.com',
+    code: 'SYS-04',
+    productSlug: 'nomadhub',
+    titleEn: 'NOMAD Tactical Hub: Off-Grid Communications & Tactical Resiliency',
+    industryEn: 'Tactical Software & Mesh Radio',
+    metricsEn: [
+      { label: 'Network Uptime', value: '100% Off-Grid' },
+      { label: 'Vault Encryption', value: 'AES-256-GCM' },
+      { label: 'RF & Parity', value: 'PAR2 + AFSK' },
+    ],
+  },
+  'aeroshot-drone-marketplace': {
+    image: '/projects/aeroshot.png',
+    subDomain: 'aeroshot.aldoarbizu.com',
+    code: 'SYS-07',
+    productSlug: 'aeroshot',
+    titleEn: 'AeroShot: Agricultural Drone Processing & FLIR Telemetry',
+    industryEn: 'AgTech & GIS Aerial Telemetry',
+    metricsEn: [
+      { label: 'Parcel Processing', value: 'Offline Caching' },
+      { label: 'Thermal Sensor', value: 'FLIR Ironbow' },
+      { label: 'GIS Export', value: 'GeoJSON / KML' },
+    ],
+  },
+  'impresion-3d-p2p': {
+    image: '/projects/impresion3d.png',
+    subDomain: 'impresion3d.aldoarbizu.com',
+    code: 'SYS-08',
+    productSlug: 'impresion3d',
+    titleEn: '3D Printing P2P: Parametric CAD & Client STL Slicing',
+    industryEn: 'Additive Manufacturing',
+    metricsEn: [
+      { label: 'Client-Side Slicing', value: '< 500ms' },
+      { label: 'CAD Pipeline', value: 'Blender ab3d-forge' },
+      { label: '3D Rendering', value: '60 FPS WebGL' },
+    ],
+  },
+  'habitat-lease-engine': {
+    image: '/projects/habitat.png',
+    subDomain: 'habitat.aldoarbizu.com',
+    code: 'SYS-09',
+    productSlug: 'habitat',
+    titleEn: 'Hábitat: Direct Leasing Protocol & Base L2 Signing',
+    industryEn: 'PropTech & Smart Contracts',
+    metricsEn: [
+      { label: 'Contract Sealing', value: 'Base L2' },
+      { label: 'Brokerage Fee', value: 'Direct Peer' },
+      { label: 'Verification', value: 'Keccak256' },
+    ],
+  },
+  'ecoconnect-esg-registry': {
+    image: '/projects/ecoconnect.png',
+    subDomain: 'ecoconnect.aldoarbizu.com',
+    code: 'SYS-10',
+    productSlug: 'ecoconnect',
+    titleEn: 'EcoConnect: ESG Forestry Registry & Sentinel-2 Telemetry',
+    industryEn: 'ESG & Satellite Telemetry',
+    metricsEn: [
+      { label: 'Satellite Telemetry', value: 'Sentinel-2 NDVI' },
+      { label: 'On-Chain Proof', value: 'Base L2' },
+      { label: 'Resolution', value: '10m / px' },
+    ],
+  },
+  'aureus-wealth-os': {
+    image: '/projects/aureus.png',
+    subDomain: 'aureus.aldoarbizu.com',
+    code: 'SYS-11',
+    productSlug: 'aureus',
+    titleEn: 'Aureus Wealth OS: Private Multi-Currency Consolidation',
+    industryEn: 'Wealth Engineering & WASM',
+    metricsEn: [
+      { label: 'Streaming Latency', value: '< 120ms' },
+      { label: 'Compute Engine', value: 'Local WASM' },
+      { label: 'Data Custody', value: 'Zero-Cloud' },
+    ],
+  },
+  'smart-marketing-advisor': {
+    image: '/projects/marketingadvisor.png',
+    subDomain: 'marketingadvisor.aldoarbizu.com',
+    code: 'SYS-12',
+    productSlug: 'marketingadvisor',
+    titleEn: 'Smart Marketing AI: Autonomous n8n Demand Orchestration',
+    industryEn: 'AI Automation & n8n',
+    metricsEn: [
+      { label: 'Routing SLA', value: '< 5s' },
+      { label: 'Schema Guard', value: 'Zod Strict' },
+      { label: 'Resilience', value: 'Circuit Breaker' },
+    ],
+  },
+  'pawhero-pet-tracking': {
+    image: '/projects/pawhero.png',
+    subDomain: 'pawhero.aldoarbizu.com',
+    nonProfit: true,
+    titleEn: 'PawHero: Pet Identification with 3D QR Tags & Shelter Aid',
+    industryEn: 'Philanthropic / Non-Profit Initiative',
+    metricsEn: [
+      { label: 'STL Tag Cost', value: '$0 USD' },
+      { label: 'Commission', value: '0% Non-Profit' },
+      { label: 'Donations', value: '100% Shelters' },
+    ],
+  },
+};
+
+export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
+  const [modalPrice, setModalPrice] = useState<string | undefined>(undefined);
+
+  const visibleCases = cases.filter((c) => !c.slug.toLowerCase().includes('sabiobosque'));
 
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-[var(--color-space-black)] text-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="mb-16 text-center max-w-3xl mx-auto">
-          <span className="badge-enterprise mb-4">
-            <BookOpen className="w-3.5 h-3.5" />
-            {locale === 'es' ? "Casos de Estudio de Ingeniería" : "Engineering Case Studies"}
-          </span>
-          <h1 className="font-serif text-4xl sm:text-6xl text-white font-bold tracking-tight mb-6">
-            {locale === 'es' ? "Casos de Estudio & Benchmarks Técnicos" : "Technical Case Studies & Benchmarks"}
-          </h1>
-          <p className="font-mono text-sm text-[var(--color-mist-gray)] leading-relaxed">
-            {locale === 'es'
-              ? "Explora cómo resolvemos problemas complejos de latencia, desconexión rural, automatización de procesos y seguridad en nuestras aplicaciones en producción."
-              : "Explore how we solve complex bottlenecks in latency, rural off-grid connectivity, workflow automation, and security in production."}
-          </p>
+    <div className="min-h-screen bg-[var(--surface-void)] text-[var(--text-primary)] pt-28 pb-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 border-b border-[var(--grid-hairline)] pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-[#FF4F00] font-bold mb-3">
+              <BookOpen className="w-3.5 h-3.5" />
+              // PRODUCTION CASE ARCHIVE
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--text-primary)] mb-3">
+              {isEs ? 'Casos de Arquitectura en Producción' : 'Audited Production Case Studies'}
+            </h1>
+            <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] max-w-2xl leading-relaxed">
+              {isEs
+                ? 'Desglose técnico de sistemas desplegados con SQLite WAL, RLS multi-tenant, WebSockets deterministas y enlaces directos a entornos en vivo.'
+                : 'Technical breakdown of live production systems built with SQLite WAL, PostgreSQL RLS isolation, and deterministic execution engines.'}
+            </p>
+          </div>
+          <Link
+            href="/#systems"
+            className="px-4 py-2.5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] hover:border-[#FF4F00]/50 font-mono text-xs uppercase tracking-wider text-[var(--text-primary)] whitespace-nowrap"
+          >
+            {isEs ? 'Explorar Matriz SYS-01..12' : 'Explore SYS-01..12 Matrix'}
+          </Link>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cases.map((c, i) => {
-            const trans = caseTranslations[c.slug];
-            const title = locale === 'en' && trans ? trans.titleEn : c.title;
-            const industry = locale === 'en' && trans ? trans.industryEn : c.industry;
-            const metrics = locale === 'en' && trans ? trans.metricsEn : c.metrics;
-
-            const asset = caseAssetMap[c.slug];
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visibleCases.map((c) => {
+            const meta = SLUG_META[c.slug];
+            const displayTitle = !isEs && meta ? meta.titleEn : c.title;
+            const displayIndustry = !isEs && meta ? meta.industryEn : c.industry;
+            const displayMetrics = (!isEs && meta ? meta.metricsEn : c.metrics) || [];
 
             return (
-              <Link href={`/cases/${c.slug}`} key={i} className="group">
-                <div className="glass-surface-enterprise p-0 h-full flex flex-col justify-between hover:border-[var(--color-arbizu-teal)]/40 hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden rounded-2xl">
-                  {/* Screenshot Thumbnail Mockup */}
-                  {asset && (
-                    <div className="border-b border-white/10 bg-black/60 overflow-hidden">
-                      <div className="flex items-center justify-between px-3 py-2 bg-black/80 border-b border-white/5 text-[10px] font-mono text-slate-400">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-amber-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
-                          <span className="text-slate-400 text-[9px] ml-1.5 hidden sm:inline">
-                            https://{asset.subDomain}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1 text-emerald-400 font-bold text-[9px]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                          <span>200 OK</span>
-                        </div>
-                      </div>
-                      <div className="relative aspect-[16/10] overflow-hidden bg-[#06080e]">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={asset.image}
-                          alt={`${title} Preview`}
-                          loading="lazy"
-                          className="w-full h-full object-cover object-top opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 ease-out"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                      </div>
+              <article
+                key={c.slug}
+                className="rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] flex flex-col justify-between overflow-hidden hover:border-[#FF4F00]/50 transition-colors"
+              >
+                <div>
+                  {meta?.image && (
+                    <div className="relative aspect-[16/9] border-b border-[var(--grid-hairline)] bg-[var(--surface-void)] overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={meta.image}
+                        alt={displayTitle}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
                     </div>
                   )}
 
-                  <div className="p-6 flex flex-col flex-1 justify-between">
-                    <div>
-                      <span className="text-[var(--color-arbizu-teal)] font-space text-[10px] uppercase tracking-widest font-bold bg-[var(--color-arbizu-teal)]/10 px-2.5 py-1 rounded-full border border-[var(--color-arbizu-teal)]/20 mb-4 inline-block">
-                        {industry}
-                      </span>
-                      
-                      <h2 className="font-serif text-2xl text-white font-bold mb-5 group-hover:text-[var(--color-arbizu-teal)] transition-colors leading-snug">
-                        {title}
-                      </h2>
-                      
-                      {/* Metrics */}
-                      {metrics && metrics.length > 0 && (
-                        <div className="space-y-2.5 mb-5 p-3.5 rounded-xl bg-black/40 border border-white/5">
-                          {metrics.map((m: any, idx: number) => (
-                            <div key={idx} className="flex justify-between items-center text-xs">
-                              <span className="font-mono text-[var(--color-mist-gray)]/80">{m.label}</span>
-                              <span className="font-space font-bold text-white group-hover:text-[var(--color-arbizu-teal)] transition-colors">{m.value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Stack pills */}
-                      {c.stack && c.stack.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-6">
-                          {c.stack.slice(0, 4).map((tech: string, idx: number) => (
-                            <span key={idx} className="px-2 py-0.5 rounded bg-white/5 font-mono text-[10px] text-white/60">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        {meta?.code ? (
+                          <ProductDynastyBadge code={meta.code} className="w-8 h-8 shrink-0" />
+                        ) : (
+                          <span className="w-8 h-8 rounded-[2px] border border-[#00E599]/40 bg-[#00E599]/10 inline-flex items-center justify-center shrink-0">
+                            <HeartHandshake className="w-4 h-4 text-[#00E599]" />
+                          </span>
+                        )}
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold truncate">
+                          {meta?.code ? `${meta.code} // ` : 'FILANTRÓPICO // '}
+                          {displayIndustry}
+                        </span>
+                      </div>
+                      {meta?.nonProfit && (
+                        <span className="px-2 py-0.5 rounded-[2px] border border-[#00E599]/40 text-[#00E599] font-mono text-[9px] uppercase font-bold shrink-0">
+                          0% LUCRO
+                        </span>
                       )}
                     </div>
 
-                    <div className="pt-4 border-t border-white/5 flex items-center text-white/70 group-hover:text-white font-mono text-xs transition-colors">
-                      <span>{locale === 'es' ? "Leer desglose de arquitectura" : "Read architecture breakdown"}</span>
-                      <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    <h2 className="text-lg font-bold text-[var(--text-primary)] mb-4 leading-snug">
+                      {displayTitle}
+                    </h2>
+
+                    <div className="grid grid-cols-3 gap-2 mb-4 pt-3 border-t border-[var(--grid-hairline)]">
+                      {displayMetrics.slice(0, 3).map((m) => (
+                        <div key={m.label}>
+                          <div className="font-mono text-xs font-bold text-[var(--text-primary)] tabular-nums">
+                            {m.value}
+                          </div>
+                          <div className="font-mono text-[9px] text-[var(--text-muted)] uppercase truncate">
+                            {m.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {(c.stack || []).slice(0, 4).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-0.5 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] font-mono text-[10px] text-[var(--text-secondary)]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </Link>
+
+                <div className="px-6 py-4 border-t border-[var(--grid-hairline)] bg-[var(--surface-elevated)] flex flex-wrap items-center justify-between gap-2 font-mono text-[11px]">
+                  <Link
+                    href={`/cases/${c.slug}`}
+                    className="inline-flex items-center gap-1.5 font-bold text-[var(--text-primary)] hover:text-[#FF4F00]"
+                  >
+                    {isEs ? 'Leer Caso' : 'Read Case'} <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <div className="flex items-center gap-3">
+                    {!meta?.nonProfit && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setModalTitle(`Arquitectura similar a ${displayTitle}`);
+                          setModalPrice('Cotización B2B / Sprint');
+                          setModalOpen(true);
+                        }}
+                        className="text-[#FF4F00] hover:underline font-bold"
+                      >
+                        {isEs ? 'Cotizar' : 'Quote'}
+                      </button>
+                    )}
+                    {meta?.subDomain && (
+                      <a
+                        href={`https://${meta.subDomain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#00E599] hover:underline inline-flex items-center gap-0.5 font-bold"
+                      >
+                        Live <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
             );
           })}
         </div>
-
       </div>
+
+      <B2BContractModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        initialServiceTitle={modalTitle}
+        initialServicePrice={modalPrice}
+      />
     </div>
   );
 }
