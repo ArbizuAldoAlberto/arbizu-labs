@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { X, Copy, Check, ShieldCheck, ArrowRight, MessageSquare, CreditCard, Building2, Wallet } from 'lucide-react';
+import { X, Copy, Check, ShieldCheck, ArrowRight, MessageSquare, CreditCard, Building2, Wallet, ArrowDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export interface B2BContractModalProps {
@@ -31,7 +31,7 @@ const SERVICES_CATALOG = [
     title: 'Desarrollo de Plataforma Soberana / Sprint B2B',
     desc: 'Construcción integral de microservicios, apps móviles Offline-First y automatización IA.',
     priceARS: 'Desde $250.000 ARS',
-    priceUSD: 'Desde $500 - $3,000 USD',
+    priceUSD: 'Desde $500 - $4,500 USD',
   },
 ];
 
@@ -42,11 +42,32 @@ export default function B2BContractModal({
   initialServicePrice,
 }: B2BContractModalProps) {
   const { locale, t } = useLanguage();
-  const [selectedService, setSelectedService] = useState(SERVICES_CATALOG[0].id);
+  const [selectedService, setSelectedService] = useState(
+    initialServiceTitle ? 'custom-selected' : SERVICES_CATALOG[0].id
+  );
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
+  useEffect(() => {
+    if (initialServiceTitle) {
+      setSelectedService('custom-selected');
+    } else {
+      setSelectedService(SERVICES_CATALOG[0].id);
+    }
+  }, [initialServiceTitle, initialServicePrice, isOpen]);
+
   const localizedCatalog = [
+    ...(initialServiceTitle
+      ? [
+          {
+            id: 'custom-selected',
+            title: initialServiceTitle,
+            desc: locale === 'es' ? 'Sistema / Tier seleccionado en vivo para cotización inmediata.' : 'Live-selected system or tier ready for deployment settlement.',
+            priceARS: initialServicePrice || '$75.000 ARS',
+            priceUSD: 'B2B Verified Rate',
+          },
+        ]
+      : []),
     {
       id: 'arch-consulting',
       title: t.b2bModal.service1Title,
@@ -66,7 +87,7 @@ export default function B2BContractModal({
       title: t.b2bModal.service3Title,
       desc: t.b2bModal.service3Desc,
       priceARS: 'Desde $250.000 ARS',
-      priceUSD: 'Desde $500 - $3,000 USD',
+      priceUSD: 'Desde $500 - $4,500 USD',
     },
   ];
 
@@ -107,11 +128,10 @@ export default function B2BContractModal({
     [getAudioContext]
   );
 
-  // Escuchar tecla Escape para cierre accesible y chime al abrir
   useEffect(() => {
     if (!isOpen) return;
 
-    playChime(660, 990, 0.09); // Chime sutil al abrir modal
+    playChime(660, 990, 0.09);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -129,7 +149,7 @@ export default function B2BContractModal({
   const currentService = localizedCatalog.find((s) => s.id === selectedService) || localizedCatalog[0];
 
   const handleCopy = (key: string, text: string) => {
-    playChime(987, 1318, 0.07); // Doble tono armónico de confirmación
+    playChime(987, 1318, 0.07);
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard.writeText(text).catch(() => {});
     }
@@ -138,14 +158,38 @@ export default function B2BContractModal({
   };
 
   const getWhatsAppLink = () => {
-    const label = initialServiceTitle || currentService.title;
-    const price = initialServicePrice || `${currentService.priceARS} / ${currentService.priceUSD}`;
+    const label = currentService.title;
+    const price = currentService.id === 'custom-selected' && initialServicePrice
+      ? initialServicePrice
+      : `${currentService.priceARS} / ${currentService.priceUSD}`;
     const text = encodeURIComponent(
       locale === 'es'
         ? `Hola Aldo, solicito Discovery Call / Propuesta B2B en Arbizu Labs para "${label}" (${price}).`
         : `Hello Aldo, I would like to request a Discovery Call / B2B Proposal at Arbizu Labs for "${label}" (${price}).`
     );
     return `https://wa.me/5492314489197?text=${text}`;
+  };
+
+  const handleJumpToContact = () => {
+    playChime(784, 1046, 0.07);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('arbizu:select-service', {
+          detail: {
+            code: currentService.id,
+            title: currentService.title,
+            price: currentService.priceARS,
+          },
+        })
+      );
+      const target = document.getElementById('contact') || document.getElementById('contacto');
+      onClose();
+      if (target) {
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 60);
+      } else {
+        window.location.href = `/#contact`;
+      }
+    }
   };
 
   return (
@@ -161,18 +205,18 @@ export default function B2BContractModal({
         }
       }}
     >
-      <div className="relative w-full max-w-2xl bg-[#070B12] border border-[#D4AF37]/40 rounded-2xl p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85),0_0_32px_rgba(212,175,55,0.18)] overflow-y-auto max-h-[90vh]">
+      <div className="relative w-full max-w-2xl bg-[var(--surface-void,#060709)] border border-[#FF4F00]/50 rounded-[2px] p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85)] overflow-y-auto max-h-[90vh] text-[var(--text-primary)]">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.10] mb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#070B12] border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] font-bold text-xs shadow-[0_0_12px_rgba(212,175,55,0.25)]">
+        <div className="flex items-center justify-between pb-4 border-b border-[var(--grid-hairline,#1B202B)] mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[#D4AF37]/60 flex items-center justify-center text-[#D4AF37] font-mono font-bold text-xs">
               B2B
             </div>
             <div>
-              <h3 id="b2b-modal-title" className="font-serif text-xl sm:text-2xl text-[#F8FAFC] font-bold tracking-tight">
+              <h3 id="b2b-modal-title" className="font-sans text-xl sm:text-2xl text-[var(--text-primary)] font-extrabold tracking-tight">
                 {t.b2bModal.title}
               </h3>
-              <p className="font-mono text-xs text-[#94A3B8]">
+              <p className="font-mono text-xs text-[var(--text-muted)]">
                 {locale === 'es' ? 'Titular: Aldo Alberto Arbizu · CUIT: 20-38362060-1' : 'Beneficiary: Aldo Alberto Arbizu · Tax ID: 20-38362060-1'}
               </p>
             </div>
@@ -183,7 +227,7 @@ export default function B2BContractModal({
               playChime(440, 330, 0.06);
               onClose();
             }}
-            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 flex items-center justify-center text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
+            className="w-8 h-8 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#FF4F00] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             aria-label={t.b2bModal.closeAria}
           >
             <X className="w-4 h-4" />
@@ -192,8 +236,8 @@ export default function B2BContractModal({
 
         {/* 1. Selector de Servicio */}
         <div className="mb-6">
-          <label className="font-mono text-xs uppercase tracking-wider text-[#D4AF37] font-bold block mb-2.5">
-            {locale === 'es' ? '1. Selecciona el Módulo / Servicio Requerido:' : '1. Select Required Module / Service:'}
+          <label className="font-mono text-xs uppercase tracking-wider text-[#FF4F00] font-bold block mb-2.5">
+            {locale === 'es' ? '1. Módulo / Sistema Seleccionado:' : '1. Selected Module / System:'}
           </label>
           <div className="space-y-2.5">
             {localizedCatalog.map((srv) => (
@@ -205,21 +249,26 @@ export default function B2BContractModal({
                   setSelectedService(srv.id);
                   if (typeof window !== 'undefined') {
                     sessionStorage.setItem('webanti_b2b_plan', srv.title);
+                    window.dispatchEvent(
+                      new CustomEvent('arbizu:select-service', {
+                        detail: { code: srv.id, title: srv.title, price: srv.priceARS },
+                      })
+                    );
                   }
                 }}
-                className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                className={`w-full text-left p-3.5 rounded-[2px] border transition-all flex items-center justify-between gap-3 cursor-pointer ${
                   selectedService === srv.id
-                    ? 'bg-[#D4AF37]/10 border-[#D4AF37] text-[#F8FAFC] shadow-[0_0_16px_rgba(212,175,55,0.2)]'
-                    : 'bg-black/40 border-white/[0.08] hover:border-white/20 text-[#94A3B8]'
+                    ? 'bg-[var(--surface-elevated,#11151D)] border-[#FF4F00] text-[var(--text-primary)]'
+                    : 'bg-[var(--surface-chassis,#0B0D12)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]/60 text-[var(--text-secondary)]'
                 }`}
               >
                 <div>
-                  <div className="font-sans text-sm font-bold text-[#F8FAFC]">{srv.title}</div>
-                  <div className="font-sans text-xs text-[#94A3B8] mt-0.5">{srv.desc}</div>
+                  <div className="font-sans text-sm font-bold text-[var(--text-primary)]">{srv.title}</div>
+                  <div className="font-mono text-xs text-[var(--text-muted)] mt-0.5">{srv.desc}</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="font-mono text-sm font-bold text-[#D4AF37]">{srv.priceARS}</div>
-                  <div className="font-mono text-[10px] text-[#94A3B8]">{srv.priceUSD}</div>
+                  <div className="font-mono text-xs sm:text-sm font-bold text-[#D4AF37]">{srv.priceARS}</div>
+                  <div className="font-mono text-[10px] text-[var(--text-muted)]">{srv.priceUSD}</div>
                 </div>
               </button>
             ))}
@@ -227,7 +276,7 @@ export default function B2BContractModal({
         </div>
 
         {/* 2. Coordenadas de Pago Oficiales Auditadas */}
-        <div className="mb-6 space-y-3">
+        <div className="mb-6 space-y-2.5">
           <label className="font-mono text-xs uppercase tracking-wider text-[#D4AF37] font-bold block">
             {locale === 'es'
               ? '2. Coordenadas Financieras Oficiales (Transferencia 3.0 / Cripto L2):'
@@ -235,23 +284,23 @@ export default function B2BContractModal({
           </label>
 
           {/* Alias Mercado Pago */}
-          <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08] flex items-center justify-between gap-3">
+          <div className="p-3 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4 text-[#D4AF37] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[#94A3B8] uppercase block">Alias Mercado Pago</span>
-                <span className="font-mono text-sm font-bold text-[#F8FAFC] tracking-wider">aldoarbizu</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">Alias Mercado Pago</span>
+                <span className="font-mono text-sm font-bold text-[var(--text-primary)] tracking-wider">aldoarbizu</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => handleCopy('mp', 'aldoarbizu')}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#D4AF37] text-xs font-mono text-[#94A3B8] hover:text-[#F8FAFC] flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 rounded-[2px] bg-[var(--surface-elevated,#11151D)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedKey === 'mp' ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599]" />
+                  <span className="text-[#00E599] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
@@ -263,23 +312,23 @@ export default function B2BContractModal({
           </div>
 
           {/* Alias Galicia */}
-          <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08] flex items-center justify-between gap-3">
+          <div className="p-3 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <Building2 className="w-4 h-4 text-[#E09F5A] shrink-0" strokeWidth={1.5} />
+              <Building2 className="w-4 h-4 text-[#FF4F00] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[#94A3B8] uppercase block">Alias Banco Galicia</span>
-                <span className="font-mono text-sm font-bold text-[#F8FAFC] tracking-wider">ALDO.ARBIZU.GALICIA</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">Alias Banco Galicia</span>
+                <span className="font-mono text-sm font-bold text-[var(--text-primary)] tracking-wider">ALDO.ARBIZU.GALICIA</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => handleCopy('galicia', 'ALDO.ARBIZU.GALICIA')}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#D4AF37] text-xs font-mono text-[#94A3B8] hover:text-[#F8FAFC] flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 rounded-[2px] bg-[var(--surface-elevated,#11151D)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedKey === 'galicia' ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599]" />
+                  <span className="text-[#00E599] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
@@ -291,23 +340,23 @@ export default function B2BContractModal({
           </div>
 
           {/* CBU Banco Galicia */}
-          <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08] flex items-center justify-between gap-3">
+          <div className="p-3 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <Building2 className="w-4 h-4 text-[#E2E8F0] shrink-0" strokeWidth={1.5} />
+              <Building2 className="w-4 h-4 text-[var(--text-secondary)] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[#94A3B8] uppercase block">CBU Banco Galicia</span>
-                <span className="font-mono text-xs sm:text-sm font-bold text-[#F8FAFC] tracking-wider">0070149130004016919618</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">CBU Banco Galicia</span>
+                <span className="font-mono text-xs sm:text-sm font-bold text-[var(--text-primary)] tracking-wider">0070149130004016919618</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => handleCopy('cbu', '0070149130004016919618')}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#D4AF37] text-xs font-mono text-[#94A3B8] hover:text-[#F8FAFC] flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 rounded-[2px] bg-[var(--surface-elevated,#11151D)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {copiedKey === 'cbu' ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599]" />
+                  <span className="text-[#00E599] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
@@ -319,23 +368,23 @@ export default function B2BContractModal({
           </div>
 
           {/* Web3 EVM / Base L2 */}
-          <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08] flex items-center justify-between gap-3">
+          <div className="p-3 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
               <Wallet className="w-4 h-4 text-[#D4AF37] shrink-0" strokeWidth={1.5} />
               <div className="min-w-0">
-                <span className="font-mono text-[10px] text-[#94A3B8] uppercase block">USDC / USDT (Base L2 / ETH)</span>
-                <span className="font-mono text-xs font-bold text-[#F8FAFC] truncate block">0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">USDC / USDT (Base L2 / ETH)</span>
+                <span className="font-mono text-xs font-bold text-[var(--text-primary)] truncate block">0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => handleCopy('eth', '0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718')}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#D4AF37] text-xs font-mono text-[#94A3B8] hover:text-[#F8FAFC] flex items-center gap-1.5 transition-colors shrink-0"
+              className="px-3 py-1.5 rounded-[2px] bg-[var(--surface-elevated,#11151D)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37] text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer"
             >
               {copiedKey === 'eth' ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span className="text-[#D4AF37] font-bold">{t.b2bModal.copied}</span>
+                  <Check className="w-3.5 h-3.5 text-[#00E599]" />
+                  <span className="text-[#00E599] font-bold">{t.b2bModal.copied}</span>
                 </>
               ) : (
                 <>
@@ -347,27 +396,37 @@ export default function B2BContractModal({
           </div>
         </div>
 
-        {/* 3. Acción Inmediata: WhatsApp Oficial */}
-        <div className="pt-4 border-t border-white/[0.10] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#94A3B8]">
-            <ShieldCheck className="w-4 h-4 text-[#D4AF37] shrink-0" strokeWidth={1.5} />
+        {/* 3. Acciones: Preseleccionar en #contact + WhatsApp Oficial */}
+        <div className="pt-4 border-t border-[var(--grid-hairline,#1B202B)] flex flex-col gap-3">
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
+            <ShieldCheck className="w-4 h-4 text-[#00E599] shrink-0" strokeWidth={1.5} />
             <span>{locale === 'es' ? 'Factura electrónica oficial emitida en el acto.' : 'Official electronic invoice issued on the spot.'}</span>
           </div>
 
-          <a
-            href={getWhatsAppLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => playChime(880, 1760, 0.08)}
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#D4AF37] hover:bg-[#E09F5A] text-[#070B12] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)]"
-          >
-            <MessageSquare className="w-4 h-4" strokeWidth={1.5} />
-            <span>{t.b2bModal.btnWhatsApp}</span>
-            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={handleJumpToContact}
+              className="flex-1 px-4 py-3 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37] text-[var(--text-primary)] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <ArrowDown className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>{locale === 'es' ? 'Preseleccionar en Formulario' : 'Prefill Contact Form'}</span>
+            </button>
+
+            <a
+              href={getWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => playChime(880, 1760, 0.08)}
+              className="flex-1 px-5 py-3 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" strokeWidth={1.5} />
+              <span>{t.b2bModal.btnWhatsApp}</span>
+              <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+            </a>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-

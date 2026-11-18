@@ -44,6 +44,74 @@ function escapeHtml(raw: string): string {
     .replace(/'/g, '&#39;');
 }
 
+export async function GET(req: NextRequest) {
+  try {
+    const code = (req.nextUrl.searchParams.get('code') || '').trim().toUpperCase();
+    if (!code || !/^ARB-[A-Z0-9-]{4,24}$/.test(code)) {
+      return NextResponse.json({ verified: false, error: 'Código inválido' }, { status: 400 });
+    }
+
+    try {
+      const db = getDb();
+      const row = await db.get(
+        `SELECT id, name, company, total, created_at FROM b2b_leads WHERE idempotency_key = ? OR UPPER(name) LIKE ? ORDER BY created_at DESC LIMIT 1`,
+        [`roi_${code}`, `%${code}%`]
+      );
+      if (row) {
+        const fingerprint = crypto
+          .createHash('sha256')
+          .update(`${code}|${row.company || ''}|${row.total || 0}|${row.created_at || ''}`)
+          .digest('hex')
+          .slice(0, 32);
+        return NextResponse.json({
+          verified: true,
+          source: 'sqlite_wal',
+          code,
+          project_type: row.company || 'Arbizu Labs B2B Architecture',
+          estimated_savings: Number(row.total || 0),
+          created_at: row.created_at,
+          sha256_fingerprint: `sha256:${fingerprint}`,
+        });
+      }
+    } catch {
+      // Fallback to JSON ledger if table does not yet exist
+    }
+
+    const leadsFile = path.join(process.cwd(), 'data', 'arbizu_leads.json');
+    if (fs.existsSync(leadsFile)) {
+      const leads = JSON.parse(fs.readFileSync(leadsFile, 'utf-8'));
+      if (Array.isArray(leads)) {
+        const found = [...leads].reverse().find(
+          (l) =>
+            String(l.idempotency_key || '').toUpperCase() === `ROI_${code}` ||
+            String(l.name || '').toUpperCase().includes(code)
+        );
+        if (found) {
+          const fingerprint = crypto
+            .createHash('sha256')
+            .update(`${code}|${found.company || ''}|${found.total || 0}|${found.timestamp || ''}`)
+            .digest('hex')
+            .slice(0, 32);
+          return NextResponse.json({
+            verified: true,
+            source: 'json_atomic_ledger',
+            code,
+            project_type: found.company || 'Arbizu Labs B2B Architecture',
+            estimated_savings: Number(found.total || 0),
+            created_at: found.timestamp,
+            sha256_fingerprint: `sha256:${fingerprint}`,
+          });
+        }
+      }
+    }
+
+    return NextResponse.json({ verified: false, code });
+  } catch (err) {
+    console.error('Error verifying ARB code:', err);
+    return NextResponse.json({ verified: false, error: 'Error verificando código' }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Payload size cap (16KB)

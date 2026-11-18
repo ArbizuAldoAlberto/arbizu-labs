@@ -76,9 +76,10 @@ export default function WhyEnterprise() {
     <section
       id="artefactos"
       data-section="artifacts"
-      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative"
+      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24"
       style={{ overflowX: 'clip' }}
     >
+      <div id="standards" className="scroll-mt-24" />
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Encabezado Bi-Luminance Editorial */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#D6D3C9] mb-12">
@@ -180,7 +181,10 @@ export default function WhyEnterprise() {
         </div>
 
         {/* Cierre Táctico Editorial */}
-        <div className="p-6 sm:p-8 bg-[#07080A] text-[#F2F0EA] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div
+          data-keep-dark="true"
+          className="p-6 sm:p-8 bg-[#07080A] text-[#F2F0EA] flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+        >
           <div className="space-y-1">
             <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold">
               ARBIZU LABS // COMPROMISO DE ENTREGA CERRADA

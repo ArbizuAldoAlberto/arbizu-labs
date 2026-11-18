@@ -97,7 +97,7 @@ export default function Hero() {
 
       {/* ETAPA 1: Command Hero Split 7:5 (Axiom Sovereign Industrial) */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative border border-[var(--grid-hairline,#1B202B)] bg-[#060709]/88 backdrop-blur-md p-6 sm:p-10 lg:p-12 shadow-[0_24px_80px_rgba(0,0,0,0.9)]">
+        <div className="relative border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]/92 backdrop-blur-md p-6 sm:p-10 lg:p-12 shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           {/* Crosshairs CNC de registro */}
           <span className="absolute -top-2.5 -left-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
           <span className="absolute -top-2.5 -right-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
@@ -105,12 +105,12 @@ export default function Hero() {
           <span className="absolute -bottom-2.5 -right-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
 
           {/* Barra superior de telemetría viva */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-8 border-b border-white/10 font-mono text-[11px] tracking-[0.14em] uppercase tabular-nums">
-            <div className="flex items-center gap-2.5 text-[#F6F7F9]">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-8 border-b border-[var(--grid-hairline,#1B202B)] font-mono text-[11px] tracking-[0.14em] uppercase tabular-nums">
+            <div className="flex items-center gap-2.5 text-[var(--text-primary)]">
               <span className="h-2 w-2 rounded-full bg-[#00E599] animate-pulse shadow-[0_0_8px_#00E599]" />
               <span className="text-[#00E599] font-bold">LIVE TELEMETRY</span>
-              <span className="text-white/25">/</span>
-              <span className="text-[#C2C8D4]">
+              <span className="opacity-30">/</span>
+              <span className="text-[var(--text-secondary)]">
                 {liveNodes.length > 0
                   ? `${operationalCount}/${liveNodes.length} PRODUCTION NODES · ${avgLatencyMs ?? '< 10'}ms AVG`
                   : '4/4 PRODUCTION NODES · OFFLINE-FIRST KERNEL'}
@@ -131,13 +131,13 @@ export default function Hero() {
 
                 <h1
                   id="hero-title"
-                  className="font-sans font-extrabold text-3xl sm:text-5xl lg:text-[3.6rem] leading-[0.98] tracking-[-0.04em] text-[#F6F7F9] mb-6"
+                  className="font-sans font-extrabold text-3xl sm:text-5xl lg:text-[3.6rem] leading-[0.98] tracking-[-0.04em] text-[var(--text-primary)] mb-6"
                 >
                   {t.hero.titleMain}{' '}
                   <span className="text-[#FF4F00]">{t.hero.titleHighlight}</span>
                 </h1>
 
-                <p className="font-sans text-base sm:text-lg text-[#C2C8D4] leading-relaxed max-w-2xl mb-8">
+                <p className="font-sans text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl mb-8">
                   {t.hero.description}
                 </p>
               </div>
@@ -160,7 +160,7 @@ export default function Hero() {
                   href="#workbench"
                   onMouseEnter={playHoverTick}
                   onClick={playEngagePulse}
-                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[2px] border border-white/20 bg-[#0B0D12] hover:border-[#D4AF37] text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[2px] border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] hover:border-[#D4AF37] text-[var(--text-primary)] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   <span>{t.hero.ctaPrimary}</span>
                   <ArrowRight className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.75} />
@@ -172,7 +172,7 @@ export default function Hero() {
                   rel="noopener noreferrer"
                   onMouseEnter={playHoverTick}
                   onClick={playEngagePulse}
-                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-[2px] border border-[#1B202B] bg-[#0B0D12]/90 hover:border-[#00E599] text-[#C2C8D4] hover:text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-[2px] border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] hover:border-[#00E599] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   <MessageSquare className="w-4 h-4 text-[#00E599]" strokeWidth={1.75} />
                   <span>WhatsApp</span>
@@ -181,19 +181,19 @@ export default function Hero() {
             </div>
 
             {/* Columna Derecha (5 cols): Instrumento Interactivo Conmutable en Tiempo Real */}
-            <div className="lg:col-span-5 border border-[#1B202B] bg-[#0B0D12] flex flex-col justify-between font-mono tabular-nums">
+            <div className="lg:col-span-5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] flex flex-col justify-between font-mono tabular-nums">
               {/* Tabs del Instrumento */}
-              <div className="grid grid-cols-3 border-b border-[#1B202B] text-[10px] uppercase tracking-wider">
+              <div className="grid grid-cols-3 border-b border-[var(--grid-hairline,#1B202B)] text-[10px] uppercase tracking-wider">
                 <button
                   type="button"
                   onClick={() => {
                     playModeSwitch('pbr');
                     setActiveTab('wal');
                   }}
-                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[#1B202B] transition-colors cursor-pointer ${
+                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[var(--grid-hairline,#1B202B)] transition-colors cursor-pointer ${
                     activeTab === 'wal'
-                      ? 'bg-[#11151D] text-[#00E599] font-bold border-b-2 border-b-[#00E599]'
-                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                      ? 'bg-[var(--surface-elevated,#11151D)] text-[#00E599] font-bold border-b-2 border-b-[#00E599]'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   }`}
                 >
                   <Database className="w-3 h-3" />
@@ -205,10 +205,10 @@ export default function Hero() {
                     playModeSwitch('wireframe');
                     setActiveTab('quant');
                   }}
-                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[#1B202B] transition-colors cursor-pointer ${
+                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[var(--grid-hairline,#1B202B)] transition-colors cursor-pointer ${
                     activeTab === 'quant'
-                      ? 'bg-[#11151D] text-[#D4AF37] font-bold border-b-2 border-b-[#D4AF37]'
-                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                      ? 'bg-[var(--surface-elevated,#11151D)] text-[#D4AF37] font-bold border-b-2 border-b-[#D4AF37]'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   }`}
                 >
                   <Zap className="w-3 h-3" />
@@ -222,8 +222,8 @@ export default function Hero() {
                   }}
                   className={`py-3 px-2 flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
                     activeTab === 'rls'
-                      ? 'bg-[#11151D] text-[#FF4F00] font-bold border-b-2 border-b-[#FF4F00]'
-                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                      ? 'bg-[var(--surface-elevated,#11151D)] text-[#FF4F00] font-bold border-b-2 border-b-[#FF4F00]'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   }`}
                 >
                   <ShieldCheck className="w-3 h-3" />
@@ -236,7 +236,7 @@ export default function Hero() {
                 {activeTab === 'wal' && (
                   <>
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-[#8A93A6]">NETWORK_LINK:</span>
+                      <span className="text-[var(--text-muted)]">NETWORK_LINK:</span>
                       <span
                         className={`inline-flex items-center gap-1.5 font-bold ${
                           networkCut ? 'text-[#FF4F00]' : 'text-[#00E599]'
@@ -247,20 +247,20 @@ export default function Hero() {
                       </span>
                     </div>
 
-                    <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B]">
+                    <dl className="divide-y divide-[var(--grid-hairline,#1B202B)] text-xs border-y border-[var(--grid-hairline,#1B202B)]">
                       <div className="py-2.5 flex justify-between">
-                        <dt className="text-[#8A93A6]">JOURNAL_MODE</dt>
-                        <dd className="text-[#F6F7F9] font-bold">WAL · synchronous=NORMAL</dd>
+                        <dt className="text-[var(--text-muted)]">JOURNAL_MODE</dt>
+                        <dd className="text-[var(--text-primary)] font-bold">WAL · synchronous=NORMAL</dd>
                       </div>
                       <div className="py-2.5 flex justify-between">
-                        <dt className="text-[#8A93A6]">TX_ENCOLADAS_LOCAL</dt>
+                        <dt className="text-[var(--text-muted)]">TX_ENCOLADAS_LOCAL</dt>
                         <dd className={networkCut ? 'text-[#FF4F00] font-bold' : 'text-[#00E599] font-bold'}>
                           {queuedWalTx} pendientes · 0 pérdidas
                         </dd>
                       </div>
                       <div className="py-2.5 flex justify-between">
-                        <dt className="text-[#8A93A6]">TOTAL_SINCRONIZADO</dt>
-                        <dd className="text-[#F6F7F9] font-bold">{syncedCount.toLocaleString('en-US')} registros</dd>
+                        <dt className="text-[var(--text-muted)]">TOTAL_SINCRONIZADO</dt>
+                        <dd className="text-[var(--text-primary)] font-bold">{syncedCount.toLocaleString('en-US')} registros</dd>
                       </div>
                     </dl>
 
@@ -288,50 +288,50 @@ export default function Hero() {
                 )}
 
                 {activeTab === 'quant' && (
-                  <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B] my-auto">
+                  <dl className="divide-y divide-[var(--grid-hairline,#1B202B)] text-xs border-y border-[var(--grid-hairline,#1B202B)] my-auto">
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">ENGINE_VERSION</dt>
+                      <dt className="text-[var(--text-muted)]">ENGINE_VERSION</dt>
                       <dd className="text-[#D4AF37] font-bold">TitanFlow V7.5 Singularity</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">EXECUTION_MODEL</dt>
-                      <dd className="text-[#F6F7F9] font-bold">Pessimistic SL-First + Post-Only</dd>
+                      <dt className="text-[var(--text-muted)]">EXECUTION_MODEL</dt>
+                      <dd className="text-[var(--text-primary)] font-bold">Pessimistic SL-First + Post-Only</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">COLLATERAL_CAP</dt>
+                      <dt className="text-[var(--text-muted)]">COLLATERAL_CAP</dt>
                       <dd className="text-[#00E599] font-bold">1.50% Hard Risk / Trade</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">EXIT_STAGES</dt>
-                      <dd className="text-[#F6F7F9]">TP1 (2.5x) · TP2 (4.5x) · Chandelier</dd>
+                      <dt className="text-[var(--text-muted)]">EXIT_STAGES</dt>
+                      <dd className="text-[var(--text-primary)]">TP1 (2.5x) · TP2 (4.5x) · Chandelier</dd>
                     </div>
                   </dl>
                 )}
 
                 {activeTab === 'rls' && (
-                  <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B] my-auto">
+                  <dl className="divide-y divide-[var(--grid-hairline,#1B202B)] text-xs border-y border-[var(--grid-hairline,#1B202B)] my-auto">
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">INTRUSION_SUITE</dt>
+                      <dt className="text-[var(--text-muted)]">INTRUSION_SUITE</dt>
                       <dd className="text-[#00E599] font-bold">60/60 PASS (0 Bypasses)</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">SECURITY_DEFINER</dt>
-                      <dd className="text-[#F6F7F9] font-bold">search_path=public · REVOKE anon</dd>
+                      <dt className="text-[var(--text-muted)]">SECURITY_DEFINER</dt>
+                      <dd className="text-[var(--text-primary)] font-bold">search_path=public · REVOKE anon</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">EDGE_4_LAYERS</dt>
-                      <dd className="text-[#F6F7F9]">HMAC · 429 RL · 413 Cap · 503 Kill</dd>
+                      <dt className="text-[var(--text-muted)]">EDGE_4_LAYERS</dt>
+                      <dd className="text-[var(--text-primary)]">HMAC · 429 RL · 413 Cap · 503 Kill</dd>
                     </div>
                     <div className="py-2.5 flex justify-between">
-                      <dt className="text-[#8A93A6]">HTTP_CSP_PARITY</dt>
+                      <dt className="text-[var(--text-muted)]">HTTP_CSP_PARITY</dt>
                       <dd className="text-[#D4AF37] font-bold">Grade A+ · 0 Vercel Refs</dd>
                     </div>
                   </dl>
                 )}
 
                 {/* Nodos reales desde /api/status */}
-                <div className="pt-3 border-t border-[#1B202B] space-y-1.5 text-[10px]">
-                  <div className="flex items-center justify-between text-[#8A93A6] uppercase">
+                <div className="pt-3 border-t border-[var(--grid-hairline,#1B202B)] space-y-1.5 text-[10px]">
+                  <div className="flex items-center justify-between text-[var(--text-muted)] uppercase">
                     <span>LIVE NODES (/api/status)</span>
                     <span className="text-[#D4AF37]">nexus-router-v2.8</span>
                   </div>
@@ -347,9 +347,9 @@ export default function Hero() {
                     ).map((node, i) => (
                       <div
                         key={i}
-                        className="px-2 py-1 border border-[#1B202B] bg-[#060709] flex items-center justify-between"
+                        className="px-2 py-1 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] flex items-center justify-between"
                       >
-                        <span className="text-[#C2C8D4] truncate">:{node.port}</span>
+                        <span className="text-[var(--text-secondary)] truncate">:{node.port}</span>
                         <span className="text-[#00E599] font-bold">{node.latencyMs ?? 12}ms</span>
                       </div>
                     ))}

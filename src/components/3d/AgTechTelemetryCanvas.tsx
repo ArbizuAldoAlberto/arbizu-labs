@@ -917,26 +917,26 @@ export default function AgTechTelemetryCanvas() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[540px] lg:h-[640px] rounded-2xl overflow-hidden border border-[#D4AF37]/30 bg-gradient-to-b from-[#070B12] via-[#05080F] to-[#030509] shadow-[0_20px_60px_-15px_rgba(212,175,55,0.18)] flex flex-col justify-between p-5 sm:p-7 select-none"
+      className="relative w-full h-[520px] lg:h-[620px] rounded-[2px] overflow-hidden border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.45)] flex flex-col justify-between p-5 sm:p-7 select-none"
     >
       {/* HUD Técnico Superior */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
+        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-[2px] bg-[var(--surface-chassis,#0B0D12)] border border-[#D4AF37]/40 text-[#D4AF37]">
+          <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse shadow-[0_0_8px_rgba(0,229,153,0.8)]" />
           <span className="font-bold tracking-wider">{t.hardware3d.viewportTitle}</span>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#070B12]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/[0.10] text-[11px] text-[#94A3B8]">
-          <span className="text-[#94A3B8]">TRIS:</span>
+        <div className="flex items-center gap-2 bg-[var(--surface-chassis,#0B0D12)] px-3 py-1.5 rounded-[2px] border border-[var(--grid-hairline,#1B202B)] text-[11px] text-[var(--text-secondary)] tabular-nums">
+          <span className="text-[var(--text-muted)]">TRIS:</span>
           <span className="text-[#D4AF37] font-bold">{metrics.tris.toLocaleString()}</span>
-          <span className="text-white/20">|</span>
-          <span className="text-[#94A3B8]">CALLS:</span>
-          <span className="text-[#F8FAFC] font-bold">{metrics.drawCalls}</span>
-          <span className="text-white/20">|</span>
-          <span className="text-[#94A3B8]">FPS:</span>
-          <span className="text-[#D4AF37] font-bold">{metrics.fps}</span>
-          <span className="text-white/20">|</span>
-          <span className="text-[#E09F5A] font-medium">SQLite WAL</span>
+          <span className="opacity-30">|</span>
+          <span className="text-[var(--text-muted)]">CALLS:</span>
+          <span className="text-[var(--text-primary)] font-bold">{metrics.drawCalls}</span>
+          <span className="opacity-30">|</span>
+          <span className="text-[var(--text-muted)]">FPS:</span>
+          <span className="text-[#00E599] font-bold">{metrics.fps}</span>
+          <span className="opacity-30">|</span>
+          <span className="text-[#FF4F00] font-bold">SQLite WAL</span>
         </div>
       </div>
 
@@ -948,15 +948,15 @@ export default function AgTechTelemetryCanvas() {
       />
 
       {/* Indicador de Interacción */}
-      <div className="absolute top-20 right-6 z-10 pointer-events-none hidden sm:flex items-center gap-2 text-[10px] font-mono text-[#94A3B8] bg-[#070B12]/70 backdrop-blur-sm px-3 py-1 rounded-full border border-white/[0.08]">
+      <div className="absolute top-20 right-6 z-10 pointer-events-none hidden sm:flex items-center gap-2 text-[10px] font-mono text-[var(--text-secondary)] bg-[var(--surface-chassis,#0B0D12)] px-3 py-1 rounded-[2px] border border-[var(--grid-hairline,#1B202B)]">
         <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
         <span>{t.hardware3d.rotateHelp}</span>
       </div>
 
       {/* Overlay de Carga */}
       {loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#070B12]/85 backdrop-blur-md transition-opacity">
-          <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-3 shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--surface-void,#060709)]/90 backdrop-blur-md transition-opacity">
+          <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-3" />
           <span className="text-xs font-mono text-[#D4AF37] tracking-widest uppercase">
             {t.hardware3d.loading}
           </span>
@@ -964,25 +964,25 @@ export default function AgTechTelemetryCanvas() {
       )}
 
       {/* Dock de Control Técnico Inferior */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mt-auto pt-4 border-t border-white/[0.08] bg-[#070B12]/80 backdrop-blur-md -mx-5 -mb-5 sm:-mx-7 sm:-mb-7 p-5 sm:p-7 rounded-b-2xl">
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-end justify-between gap-4 mt-auto pt-4 border-t border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)]/95 backdrop-blur-md -mx-5 -mb-5 sm:-mx-7 sm:-mb-7 p-5 sm:p-6">
         <div className="max-w-md">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono text-[#D4AF37] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#D4AF37]/10 border border-[#D4AF37]/30">
+            <span className="text-[10px] font-mono text-[#FF4F00] font-bold uppercase tracking-widest px-2 py-0.5 rounded-[2px] bg-[#FF4F00]/10 border border-[#FF4F00]/40">
               {activeMeta.badge}
             </span>
           </div>
-          <h4 className="text-base sm:text-xl font-bold text-[#F8FAFC] font-space tracking-tight">
+          <h3 className="text-base sm:text-xl font-bold text-[var(--text-primary)] font-sans tracking-tight">
             {activeMeta.title}
-          </h4>
-          <p className="text-xs text-[#94A3B8] font-mono mt-1 leading-relaxed">
+          </h3>
+          <p className="text-xs text-[var(--text-secondary)] font-mono mt-1 leading-relaxed">
             {activeMeta.subtitle}
           </p>
         </div>
 
         {/* Barra de Herramientas de Interacción */}
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
           {/* Selector de Activo */}
-          <div className="flex items-center bg-white/[0.04] border border-white/[0.10] rounded-xl p-1">
+          <div className="flex items-center bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)] rounded-[2px] p-1">
             <button
               type="button"
               onMouseEnter={playHoverTick}
@@ -993,8 +993,8 @@ export default function AgTechTelemetryCanvas() {
               }}
               className={`px-3 py-1.5 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 activeModel === 'terminal'
-                  ? 'bg-[#FF4F00] text-[#060709] font-bold shadow-[0_0_12px_rgba(255,79,0,0.3)]'
-                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                  ? 'bg-[#FF4F00] text-[#060709] font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               [01 TERMINAL IoT]
@@ -1009,8 +1009,8 @@ export default function AgTechTelemetryCanvas() {
               }}
               className={`px-3 py-1.5 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 activeModel === 'silo'
-                  ? 'bg-[#FF4F00] text-[#060709] font-bold shadow-[0_0_12px_rgba(255,79,0,0.3)]'
-                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                  ? 'bg-[#FF4F00] text-[#060709] font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               [02 SILO AGTECH]
@@ -1018,7 +1018,7 @@ export default function AgTechTelemetryCanvas() {
           </div>
 
           {/* Selector de Modo Visual (PBR / Wireframe / FLIR) */}
-          <div className="flex items-center bg-white/[0.04] border border-white/[0.10] rounded-xl p-1">
+          <div className="flex items-center bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)] rounded-[2px] p-1">
             <button
               type="button"
               onMouseEnter={playHoverTick}
@@ -1027,10 +1027,10 @@ export default function AgTechTelemetryCanvas() {
                 setVisualMode('pbr');
                 if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'pbr');
               }}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
+              className={`px-2.5 py-1 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 visualMode === 'pbr'
-                  ? 'bg-[#D4AF37] text-[#070B12] font-bold'
-                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                  ? 'bg-[#D4AF37] text-[#060709] font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Renderizado PBR Físico de Superficies"
             >
@@ -1044,12 +1044,12 @@ export default function AgTechTelemetryCanvas() {
                 setVisualMode('wireframe');
                 if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'wireframe');
               }}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
+              className={`px-2.5 py-1 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 visualMode === 'wireframe'
-                  ? 'bg-[#E2E8F0] text-[#070B12] font-bold'
-                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                  ? 'bg-[#D4AF37] text-[#060709] font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
-              title="Topología Estructural en Alambre"
+              title="Topología Estructural CAD 1.5px"
             >
               {t.hardware3d.modeWire}
             </button>
@@ -1061,10 +1061,10 @@ export default function AgTechTelemetryCanvas() {
                 setVisualMode('flir');
                 if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_mode', 'flir');
               }}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-all cursor-pointer ${
+              className={`px-2.5 py-1 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 visualMode === 'flir'
-                  ? 'bg-[#E09F5A] text-[#070B12] font-bold'
-                  : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                  ? 'bg-[#FF4F00] text-[#060709] font-bold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Cámara Termográfica FLIR Ironbow"
             >
@@ -1080,14 +1080,15 @@ export default function AgTechTelemetryCanvas() {
               playModeSwitch('wireframe');
               setExploded((prev) => !prev);
             }}
-            className={`px-3.5 py-2 text-xs font-mono rounded-xl border transition-all cursor-pointer ${
+            aria-label={exploded ? 'Contraer despiece CAD' : 'Activar despiece técnico CAD'}
+            className={`px-3 py-1.5 text-xs font-mono rounded-[2px] border transition-all cursor-pointer ${
               exploded
-                ? 'bg-[#D4AF37]/20 border-[#D4AF37] text-[#D4AF37] font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]'
-                : 'bg-white/[0.04] border-white/[0.10] text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.08]'
+                ? 'bg-[#D4AF37] border-[#D4AF37] text-[#060709] font-bold'
+                : 'bg-[var(--surface-void,#060709)] border-[var(--grid-hairline,#1B202B)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
             title="Separar componentes mecánicos y circuitos internos con cotas CAD"
           >
-            {exploded ? `✕ ${t.hardware3d.collapsed}` : `⚡ ${t.hardware3d.exploded}`}
+            {exploded ? `[x] ${t.hardware3d.collapsed}` : `[+] ${t.hardware3d.exploded}`}
           </button>
 
           {/* Botón de Giro Automático */}
@@ -1098,14 +1099,15 @@ export default function AgTechTelemetryCanvas() {
               playModeSwitch('pbr');
               setAutoRotate((prev) => !prev);
             }}
-            className={`px-2.5 py-2 text-xs font-mono rounded-xl border transition-all cursor-pointer ${
+            aria-label={autoRotate ? 'Pausar rotación automática 3D' : 'Reanudar rotación automática 3D'}
+            className={`px-2.5 py-1.5 text-xs font-mono rounded-[2px] border transition-all cursor-pointer ${
               autoRotate
-                ? 'bg-white/[0.10] border-[#D4AF37]/40 text-[#F8FAFC]'
-                : 'bg-white/[0.04] border-white/[0.08] text-[#94A3B8]'
+                ? 'bg-[var(--surface-elevated,#11151D)] border-[#D4AF37]/50 text-[var(--text-primary)]'
+                : 'bg-[var(--surface-void,#060709)] border-[var(--grid-hairline,#1B202B)] text-[var(--text-secondary)]'
             }`}
             title="Pausar / reanudar rotación automática"
           >
-            {autoRotate ? '⏸' : '▶'}
+            {autoRotate ? 'PAUSE' : 'SPIN'}
           </button>
         </div>
       </div>
