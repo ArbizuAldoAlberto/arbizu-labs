@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, Mail, Activity, Globe } from 'lucide-react';
+import { ArrowUpRight, Mail, Activity, Globe, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { ArbizuLabsMark } from '@/components/ui/SovereignBrandMark';
 
 export default function Footer() {
   const { locale, toggleLanguage, t } = useLanguage();
@@ -15,20 +16,23 @@ export default function Footer() {
   return (
     <footer
       data-section="footer"
-      className="site-footer py-16 text-[var(--text-secondary)]"
+      className="site-footer py-16 text-[var(--text-secondary)] border-t border-[var(--grid-hairline,#1B202B)]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top footer grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-[10px] bg-[var(--bg-btn)] border border-[var(--accent-border-strong)] flex items-center justify-center text-[var(--accent)] font-space font-bold text-xs">
-                AL
+            <div className="flex items-center gap-3">
+              <ArbizuLabsMark className="w-9 h-9 shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-sans text-xl text-[var(--text-primary)] font-extrabold tracking-tight leading-none">
+                  ARBIZU <span className="text-[#FF4F00]">LABS</span>
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#D4AF37] mt-1">
+                  AXIOM SOVEREIGN SYSTEMS · CUIT 20-38362060-1
+                </span>
               </div>
-              <span className="font-serif text-2xl text-[var(--text-primary)] font-bold tracking-tight">
-                Arbizu<span className="text-[var(--accent)]">Labs</span>
-              </span>
             </div>
 
             <p className="font-sans text-xs text-[var(--text-secondary)] max-w-sm leading-relaxed">
@@ -199,19 +203,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar (no hard full-width border-t to avoid seam spike) */}
-        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-xs text-[var(--text-secondary)]">
+        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-xs text-[var(--text-secondary)] border-t border-[var(--grid-hairline,#1B202B)]">
           <p>{t.footer.rights}</p>
-          <div className="flex gap-6">
-            <Link href="/security" className="hover:text-[var(--text-primary)] transition-colors">
-              {t.footer.security}
+          <div className="flex flex-wrap items-center gap-5">
+            <Link href="/security" className="inline-flex items-center gap-1 hover:text-[var(--text-primary)] transition-colors">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#00E599]" />
+              <span>{t.footer.security}</span>
             </Link>
             <Link href="/status" className="hover:text-[var(--text-primary)] transition-colors">
               {t.footer.uptime}
             </Link>
+            <a href="/llms.txt" className="hover:text-[#FF4F00] transition-colors">
+              llms.txt (GEO)
+            </a>
             <a
               href="mailto:aldo@arbizulabs.com"
-              className="hover:text-[var(--text-primary)] transition-colors"
+              className="hover:text-[var(--text-primary)] transition-colors font-bold text-[var(--text-primary)]"
             >
               aldo@arbizulabs.com
             </a>

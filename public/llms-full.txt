@@ -1,0 +1,38 @@
+# Arbizu Labs — Complete Technical & Commercial Specification (`llms-full.txt`)
+
+Version: `v3.0-sovereign` | Constitution: `v2.1.0-ironclad`
+Primary B2B Domain: `https://arbizulabs.com`
+Principal Architect Hub: `https://aldoarbizu.com`
+Live Telemetry Endpoint: `https://arbizulabs.com/api/status`
+Legal Entity: Aldo Alberto Arbizu (CUIT: `20-38362060-1`)
+Email: `aldo@arbizulabs.com` (B2B Commercial) / `arbizualdoalberto@gmail.com` (Principal Architecture & Direct Recruiting)
+Direct Phone / WhatsApp: `+54 9 2314 489197` (`https://wa.me/5492314489197`)
+
+---
+
+## 1. Architectural Standards (`v2.1.0-ironclad` & `DESIGN.md v3.0`)
+1. **Visual System — Axiom Sovereign Industrial:** Unified `Geist Sans` + `JetBrains Mono` (`tabular-nums`), Bi-Luminance tokens (`#060709` Void, `#0B0D12` Chassis, `#F2F0EA` Titanium Paper Mode for solar field legibility, `#FF4F00` Signal Orange, `#D4AF37` Oxide Gold, `#00E599` Telemetry Emerald).
+2. **Database Security (`[MOD-01]`):** Strict `ENABLE ROW LEVEL SECURITY` on all `public` tables, zero `OR auth.uid() IS NULL` or `USING (true)` policies on business data, `WITH (security_invoker = on)` views (`tenants_public`), hardened `SECURITY DEFINER` RPCs (`SET search_path = public`), private evidence buckets, automated `audit-rls-intrusion.mjs` (`60/60 PASS`).
+3. **API & Edge Defense (`[MOD-02]`):** Constant-time HMAC-SHA256 / JWT validation, fail-closed server middleware (`WARROOM_SECRET_KEY`), IP/Tenant rate limiting (`429`), strict payload caps (`16KB` leads / `64KB` ingestion -> `413`), and runtime kill switches (`AI_KILL_SWITCH` / `EDGE_KILL_SWITCH` -> `503`).
+4. **Offline-First & Unhappy-Path Engineering (`[MOD-03]`):** Client-side `useRef` double-submit lock + `Idempotency-Key` SHA-256 deduplication, `localStorage` offline draft persistence, SQLite WAL (`journal_mode = WAL; synchronous = NORMAL; busy_timeout = 5000`), verified snapshots (`SHA256SUMS.txt` + `PRAGMA integrity_check: ok`).
+5. **Strict Scope Exclusion:** Legacy project `SabioBosque` is permanently inactive and returns `404 Not Found` across all hubs and routes. `CannaSavias` operates strictly as a B2B traceability software simulator.
+
+## 2. Geo-Aware Engagement Pricing (`[GAP-06]`)
+### AR / LATAM Regional Tactical Tiers (ARS & Crypto)
+- **Auditoría Termográfica FLIR Industrial:** `$150.000 ARS` (`50%` reservation deposit `$75.000 ARS`) — calibrated camera inspection, hot-spot criticality report, signed deliverable.
+- **Licencia Software Trazabilidad Agro / REPROCANN:** `$75.000 ARS` — SQLite WAL offline-first software license, SENASA / compliance modules, direct technical support.
+- **Hardening Linux VPS & Zero-Downtime Setup:** `$120.000 ARS` — UFW firewall, Cloudflare HTTP/2 strict tunnel, PM2 watchdog & `<60s` rollback.
+- **Relevamiento Aéreo GIS / Peritaje Drones (AeroShot):** `$60.000 ARS`.
+
+### Global Enterprise Tiers (USD)
+- **Tier 1 — Architecture & OWASP/RLS Hardening Audit:** `$1,500 USD` (7-day turnaround, `60/60 PASS` suite + fix PRs).
+- **Tier 2 — Flagship Offline-First / SaaS / Quant Deployment Sprint:** `$4,500 USD` (4–6 weeks, full source IP transfer, zero vendor lock-in).
+- **Tier 3 — Principal Engineering & Staff SRE Retainer:** `$6,500 USD / mo`.
+
+## 3. Official Settlement Coordinates
+- **Mercado Pago Alias:** `aldoarbizu`
+- **Banco Galicia Alias:** `ALDO.ARBIZU.GALICIA` | **CBU:** `0070149130004016919618`
+- **ETH / EVM / Base L2 / BSC:** `0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718`
+- **Bitcoin (BTC SegWit):** `bc1qmd23nj6tn48ujy0gdwnjhv4j337yymp7gaduy8`
+- **Solana (SOL):** `7kM37FUAMujSEs8iGwDbB9jceRdqxSpwKy1ckmoG2Hmd`
+- **International Platforms:** ACH Direct Deposit via Belo / Takenos USD -> USDC settlement.

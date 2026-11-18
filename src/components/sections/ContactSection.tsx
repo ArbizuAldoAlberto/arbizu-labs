@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, Send, CheckCircle2, ShieldCheck, ArrowUpRight, MessageSquare, Sparkles, WifiOff } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -134,19 +135,18 @@ export default function ContactSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header */}
-        <div className="max-w-3xl mb-16 text-center mx-auto">
-          <span className="badge-enterprise mb-4">
+        <div className="max-w-3xl mb-14 text-left">
+          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold inline-flex items-center gap-2 mb-3">
             <MessageSquare className="w-3.5 h-3.5" />
-            {locale === 'es' ? "Contacto & Consultoría Directa" : "Direct Contact & Advisory"}
+            <span>[07 // TERMINAL DE CONTRATACIÓN IDEMPOTENTE · VERIFIER]</span>
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-white font-bold tracking-tight mb-4">
-            {locale === 'es' ? "Inicia una Conversación de Ingeniería" : "Start an Engineering Conversation"}
+          <h2 className="font-sans text-3xl sm:text-5xl text-[#F6F7F9] font-extrabold tracking-[-0.03em] mb-4">
+            {locale === 'es' ? 'Inicia una Conversación de Ingeniería' : 'Start an Engineering Conversation'}
           </h2>
-          <p className="font-mono text-sm sm:text-base text-[var(--color-mist-gray)] leading-relaxed">
+          <p className="font-mono text-xs sm:text-sm text-[#C2C8D4] leading-relaxed">
             {locale === 'es'
-              ? "Cuéntanos sobre los cuellos de botella de tu arquitectura. Te responderemos en menos de 12 horas con una evaluación técnica inicial."
-              : "Tell us about your architectural bottlenecks. We will respond in under 12 hours with an initial technical assessment."}
+              ? 'Cuéntanos los cuellos de botella de tu arquitectura. Respuesta técnica en menos de 12 hs o verificación directa en /security.'
+              : 'Describe your architectural bottlenecks. Initial technical assessment under 12 hours.'}
           </p>
         </div>
 
@@ -345,6 +345,12 @@ export default function ContactSection() {
               <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
                 <span>{locale === 'es' ? "Ubicación:" : "Location:"}</span>
                 <span className="text-[#F8FAFC]">Buenos Aires, Argentina (GMT-3)</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
+                <span>{locale === 'es' ? "Verificador Criptográfico:" : "Proposal Verifier:"}</span>
+                <Link href="/security" className="text-[#00E599] font-bold hover:underline">
+                  /security (ARB-2026-XXXX) ↗
+                </Link>
               </div>
               <div className="flex items-center justify-between">
                 <span>{locale === 'es' ? "Notificaciones:" : "Alerts:"}</span>

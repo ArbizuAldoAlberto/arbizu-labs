@@ -2,29 +2,29 @@ import { es } from './es';
 
 export const en: typeof es = {
   nav: {
-    ecosystem: "Ecosystem",
-    services: "Services",
+    ecosystem: "Workbench",
+    services: "B2B Tiers",
     cases: "Case Studies",
     kits: "Boilerplates",
     pricing: "Pricing",
-    founder: "Founder",
-    bookCall: "Book Call",
+    founder: "Principal Architect",
+    bookCall: "Configure Deployment",
     allCases: "View All Cases",
     status: "Nodes Status",
-    founderSubtitle: "Founder Portfolio (Aldo Arbizu)"
+    founderSubtitle: "aldoarbizu.com (Principal Architect)"
   },
   hero: {
-    badge: "Software Engineering Boutique & Hybrid R&D",
-    titleMain: "We build software that survives the",
-    titleHighlight: "stress of the physical world.",
-    description: "Specialists in Offline-First architectures for field and industrial operations, high-concurrency B2B SaaS platforms, autonomous AI workflows, and 3D rapid prototyping.",
-    ctaPrimary: "Explore Ecosystem",
-    ctaSecondary: "Schedule Discovery Call",
+    badge: "[ARBIZU LABS // SOVEREIGN FIELD & QUANT SYSTEMS · 4/4 PRODUCTION NODES ONLINE]",
+    titleMain: "Mission-Critical Systems for Operations",
+    titleHighlight: "Where Downtime Is Not an Option.",
+    description: "Offline-First software engineering (SQLite WAL), anti-spoofing tactical dispatch, sub-10ms quantitative engines, and calibrated FLIR industrial thermography. Self-hosted in active production, row-level isolated (60/60 RLS), and delivered turnkey with zero vendor lock-in.",
+    ctaPrimary: "Test Live Offline-First Console [0ms]",
+    ctaSecondary: "Configure Deployment & Instant Quote",
     metrics: [
       { value: "100%", label: "Offline Availability", desc: "SQLite WAL + Zero Network Drop" },
       { value: "< 10ms", label: "DeFi / WebSocket Latency", desc: "TitanFlow Trading Engine" },
-      { value: "0%", label: "Vendor Lock-in", desc: "100% Proprietary Codebase" },
-      { value: "12", label: "Production Apps", desc: "AgTech, DeFi, Security & SaaS" }
+      { value: "60/60", label: "RLS MASVS Isolation", desc: "Certified Multi-Tenant Hardening" },
+      { value: "12", label: "Production Systems", desc: "SYS-01..12 Sovereign Ecosystem" }
     ]
   },
   socialProof: {
@@ -465,9 +465,9 @@ export const en: typeof es = {
     siloTitle: "AGROMARKET PRO INDUSTRIAL SILO",
     siloSubtitle: "Smart storage with LiDAR ToF telemetry, FLIR thermal sensor, and load cells",
     siloBadge: "AGTECH AUTOMATION",
-    modePbr: "🎨 PBR",
-    modeWire: "📐 Wire CAD",
-    modeFlir: "🌡 FLIR",
+    modePbr: "01 PBR CHASSIS",
+    modeWire: "02 CAD 1.5px WIRE",
+    modeFlir: "03 FLIR THERMAL",
     exploded: "Exploded View",
     collapsed: "Assembled View"
   },

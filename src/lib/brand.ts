@@ -1,24 +1,29 @@
 export const BRAND = {
-  // Paleta de colores enterprise (inspirada en Stripe, Vercel, Linear)
+  // Axiom Sovereign Industrial (v3.0-SOVEREIGN Bi-Luminance Tokens)
   colors: {
-    primary: '#0066FF', // Azul corporativo (confianza, tecnología)
-    secondary: '#00D4FF', // Cyan (innovación, blockchain)
-    accent: '#FF6B00', // Naranja (acción, urgencia)
-    dark: '#0A0A0A', // Negro profundo (premium)
-    light: '#FAFAFA', // Blanco roto (limpio)
-    success: '#00C853', // Verde (éxito, uptime)
-    warning: '#FFB300', // Amarillo (alerta)
-    error: '#FF3D00', // Rojo (crítico)
+    void: '#060709',
+    chassis: '#0B0D12',
+    elevated: '#11151D',
+    paper: '#F2F0EA',
+    inkOnPaper: '#07080A',
+    primary: '#FF4F00', // International Signal Orange (CTAs & Field Signals)
+    secondary: '#D4AF37', // Precision Oxide Gold (Authority)
+    accent: '#00E599', // Live Telemetry Emerald (Nodes Online / WAL Sync)
+    dark: '#060709',
+    light: '#F2F0EA',
+    success: '#00E599',
+    warning: '#D4AF37',
+    error: '#F43F5E',
   },
-  
-  // Tipografía enterprise (Inter para UI, JetBrains Mono para código)
+
+  // Tipografía Unificada (Geist Sans + JetBrains Mono)
   fonts: {
-    heading: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-    body: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-    mono: 'JetBrains Mono, Fira Code, monospace',
+    heading: 'var(--font-geist-sans), system-ui, -apple-system, sans-serif',
+    body: 'var(--font-geist-sans), system-ui, -apple-system, sans-serif',
+    mono: 'var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace',
   },
-  
-  // Espaciado consistente (8px grid)
+
+  // Grilla Suiza Industrial Exposta
   spacing: {
     xs: '4px',
     sm: '8px',
@@ -28,21 +33,18 @@ export const BRAND = {
     '2xl': '48px',
     '3xl': '64px',
   },
-  
-  // Sombras enterprise (sutiles, profesionales)
+
   shadows: {
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+    sm: '0 1px 2px 0 rgba(6, 7, 9, 0.35)',
+    md: '0 8px 24px -4px rgba(6, 7, 9, 0.55)',
+    lg: '0 24px 64px -12px rgba(6, 7, 9, 0.85)',
   },
-  
-  // Bordes redondeados (sutil, no exagerado)
+
   borderRadius: {
-    sm: '4px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
+    sm: '2px',
+    md: '2px',
+    lg: '4px',
+    xl: '6px',
     full: '9999px',
   },
-};
+} as const;

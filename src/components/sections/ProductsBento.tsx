@@ -1,569 +1,725 @@
 'use client';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  ArrowUpRight, 
-  Layers, 
-  Smartphone, 
-  TrendingUp, 
-  ShieldCheck, 
-  Cpu, 
-  Boxes, 
-  Radio, 
-  Leaf, 
-  HeartHandshake, 
-  Coins, 
-  Store, 
-  Home, 
-  Sparkles,
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronUp,
+  Wifi,
+  WifiOff,
+  ShieldAlert,
   CheckCircle2,
-  AlertTriangle,
-  ExternalLink,
-  Eye,
-  X,
-  MessageSquare
+  SlidersHorizontal,
+  Radio,
+  Scale,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { soundEngine } from '@/lib/sound/SoundEngine';
 import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
-import OfflineSimulator from '@/components/OfflineSimulator';
+import { ProductDynastyBadge, type DynastySystemCode } from '@/components/ui/SovereignBrandMark';
+import B2BContractModal from '@/components/modals/B2BContractModal';
 
-export interface ProjectData {
+type FlagshipCode = 'SYS-01' | 'SYS-02' | 'SYS-03' | 'SYS-04';
+
+interface VerticalCatalogItem {
+  code: DynastySystemCode;
   id: string;
-  categoryFilter: string;
-  icon: any;
-  accentColor: string;
-  borderColor: string;
-  badgeColor: string;
+  title: string;
+  domain: string;
+  status: string;
+  summaryEs: string;
+  summaryEn: string;
+  liveUrl: string;
+  caseSlug: string;
   stack: string[];
-  metrics: string;
-  liveUrl?: string;
-  caseSlug?: string;
-  imageFile?: string;
-  span: string;
-  data: any;
 }
 
-export default function ProductsBento() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [previewModal, setPreviewModal] = useState<{ isOpen: boolean; title: string; image: string; liveUrl?: string; desc: string; metrics: string } | null>(null);
-  const { locale, t } = useLanguage();
-  const { playHoverTick, playModeSwitch } = useTacticalAudio();
+const FLAGSHIP_META: Record<
+  FlagshipCode,
+  {
+    title: string;
+    subtitleEs: string;
+    subtitleEn: string;
+    problemEs: string;
+    problemEn: string;
+    arch: string;
+    deployment: string;
+    liveUrl: string;
+    caseSlug: string;
+    quoteTitle: string;
+    quotePrice: string;
+  }
+> = {
+  'SYS-01': {
+    title: 'TitanFlow Quant Engine',
+    subtitleEs: 'Motor algorítmico Binance Futures con ejecución sub-10ms y gestión de riesgo determinista.',
+    subtitleEn: 'Algorithmic Binance Futures execution engine with sub-10ms telemetry and deterministic risk.',
+    problemEs: 'Ejecución emocional, latencia REST y deslizamiento de comisiones Taker en mercados volátiles.',
+    problemEn: 'Emotional manual trading, high REST latency, and taker slippage in volatile regimes.',
+    arch: 'Node.js WebSockets · SQLite WAL · Pessimistic SL-First · Chandelier Trailing',
+    deployment: 'Hetzner VPS Zero-Downtime (:3005)',
+    liveUrl: 'https://titanflow.aldoarbizu.com',
+    caseSlug: 'titanflow-defi-low-latency',
+    quoteTitle: 'Licencia / Despliegue Arquitectura Quant TitanFlow',
+    quotePrice: '$4,500 USD',
+  },
+  'SYS-02': {
+    title: 'SentinelOS Dispatch',
+    subtitleEs: 'Plataforma táctica multi-tenant para empresas de seguridad privada, rondas NFC/GPS y SOS.',
+    subtitleEn: 'Multi-tenant physical security dispatch platform with anti-spoofing NFC/GPS patrols and SOS.',
+    problemEs: 'Clonación fraudulenta de QR, mock location GPS y guardias sin señal en subsuelos.',
+    problemEn: 'Fraudulent QR cloning, GPS spoofing, and dead zones in underground facilities.',
+    arch: 'Supabase RLS 60/60 · SQLite WAL · Edge HMAC-SHA256 · TFLite Biometrics',
+    deployment: 'Suite SOC (:3060) + App Móvil',
+    liveUrl: 'https://sentinelos.aldoarbizu.com',
+    caseSlug: 'sentinelos-security-dispatch',
+    quoteTitle: 'Licencia Multi-Tenant SentinelOS SOC & App Guardias',
+    quotePrice: '$120.000 ARS / $1,800 USD Setup',
+  },
+  'SYS-03': {
+    title: 'AgroMarket Pro',
+    subtitleEs: 'Sistema AgTech Offline-First para acopio de granos, balanza de silobolsas, FLIR y SENASA.',
+    subtitleEn: 'Offline-First AgTech intake suite for silo bag monitoring, weighbridges, FLIR, and compliance.',
+    problemEs: 'Mermas no registradas y tickets perdidos en balanzas rurales sin señal celular 4G.',
+    problemEn: 'Unlogged grain shrinkage and lost weighbridge tickets during zero-signal rural harvests.',
+    arch: 'React Native · SQLite WAL Queue · LiDAR ToF + FLIR Ironbow · Supabase Sync',
+    deployment: 'PWA + Mobile APK (:3001 Router)',
+    liveUrl: 'https://agromarket.aldoarbizu.com',
+    caseSlug: 'agromarket-pro',
+    quoteTitle: 'Licencia AgroMarket Pro Acopio & Trazabilidad Offline',
+    quotePrice: '$75.000 ARS / $1,500 USD Enterprise',
+  },
+  'SYS-04': {
+    title: 'NOMAD Tactical Hub',
+    subtitleEs: 'Ecosistema humanitario off-grid: PWA sin red, radio AFSK 800Hz, LoRa Meshtastic y USB Ark.',
+    subtitleEn: 'Off-grid survival and tactical operations suite: zero-network PWA, AFSK radio, LoRa, PAR2.',
+    problemEs: 'Colapso total de redes celulares, energía e internet en zonas aisladas o contingencias.',
+    problemEn: 'Total cellular and grid blackout in remote zones or critical contingencies.',
+    arch: 'Room SQLite WAL · Reed-Solomon PAR2 · AES-256-GCM · EPUB3 E-Ink Export',
+    deployment: 'Offline PWA + Android + USB Ark',
+    liveUrl: 'https://nomadhub.aldoarbizu.com',
+    caseSlug: 'nomad-tactical-hub',
+    quoteTitle: 'Arquitectura Custom Off-Grid / NOMAD Engine',
+    quotePrice: '$4,500 USD',
+  },
+};
 
-  const handleCardPointerMove = (e: React.PointerEvent<HTMLElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const px = ((e.clientX - rect.left) / rect.width) * 100;
-    const py = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--gx', `${px.toFixed(1)}%`);
-    card.style.setProperty('--gy', `${py.toFixed(1)}%`);
+const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
+  {
+    code: 'SYS-05',
+    id: 'verify',
+    title: 'Verify Cryptographic Trust',
+    domain: 'Audits & Attestation',
+    status: 'LIVE VERIFIER',
+    summaryEs: 'Portal de verificación inmutable para informes técnicos FLIR, auditorías OWASP y cotizaciones.',
+    summaryEn: 'Tamper-proof verification ledger for FLIR audits, OWASP reports, and signed quotes.',
+    liveUrl: 'https://verify.aldoarbizu.com',
+    caseSlug: 'sentinelos-security-dispatch',
+    stack: ['SHA-256', 'Base L2', 'QR Proof'],
+  },
+  {
+    code: 'SYS-06',
+    id: 'cannasavias',
+    title: 'CannaSavias REPROCANN Sim',
+    domain: 'B2B Software Simulator',
+    status: 'SIMULADOR B2B ($75K ARS)',
+    summaryEs: 'DEMOSTRACIÓN DE SOFTWARE B2B / Simulador de trazabilidad y cupos para clubes autorizados.',
+    summaryEn: 'B2B SOFTWARE DEMONSTRATION / Traceability compliance simulator for licensed clubs.',
+    liveUrl: 'https://cannasavias.aldoarbizu.com',
+    caseSlug: 'agromarket-pro',
+    stack: ['SQLite WAL', 'Compliance', 'Traceability'],
+  },
+  {
+    code: 'SYS-07',
+    id: 'aeroshot',
+    title: 'AeroShot Drones GIS',
+    domain: 'Multispectral AgTech',
+    status: 'REGIONAL $60K ARS',
+    summaryEs: 'Relevamiento aéreo 4K, índice NDVI y peritaje geoespacial para explotaciones agropecuarias.',
+    summaryEn: '4K aerial surveys, NDVI crop vigor maps, and geospatial loss appraisal.',
+    liveUrl: 'https://aeroshot.aldoarbizu.com',
+    caseSlug: 'aeroshot-drone-marketplace',
+    stack: ['GIS WebGL', 'DJI Telemetry', 'Base L2'],
+  },
+  {
+    code: 'SYS-08',
+    id: 'impresion3d',
+    title: 'ab3d-forge // Impresión 3D',
+    domain: 'Bit-to-Atom Hardware',
+    status: 'MANUFACTURA ACTIVA',
+    summaryEs: 'Modelado paramétrico en Blender + slicer STL y fabricación aditiva de repuestos funcionales.',
+    summaryEn: 'Parametric CAD in Blender, client STL slicing, and functional FDM prototyping.',
+    liveUrl: 'https://impresion3d.aldoarbizu.com',
+    caseSlug: 'impresion-3d-p2p',
+    stack: ['Blender Headless', 'WASM STL', 'Hellbot Magna 2'],
+  },
+  {
+    code: 'SYS-09',
+    id: 'habitat',
+    title: 'Hábitat Lease Engine',
+    domain: 'PropTech & Smart Contracts',
+    status: 'DESPLEGADO',
+    summaryEs: 'Contratos directos y acuerdos de explotación de tierras firmados con personal_sign en Base L2.',
+    summaryEn: 'Direct leasing agreements cryptographically notarized on Base L2.',
+    liveUrl: 'https://habitat.aldoarbizu.com',
+    caseSlug: 'habitat-lease-engine',
+    stack: ['Next.js', 'Solidity', 'Base L2'],
+  },
+  {
+    code: 'SYS-10',
+    id: 'ecoconnect',
+    title: 'EcoConnect ESG',
+    domain: 'Satellite Telemetry',
+    status: 'LIVE TELEMETRY',
+    summaryEs: 'Monitoreo forestal mediante imágenes Sentinel-2 (NDVI) y certificación on-chain.',
+    summaryEn: 'Forest canopy verification using Sentinel-2 NDVI and on-chain certificates.',
+    liveUrl: 'https://ecoconnect.aldoarbizu.com',
+    caseSlug: 'ecoconnect-esg-registry',
+    stack: ['Sentinel-2 API', 'Next.js', 'Base L2 SBT'],
+  },
+  {
+    code: 'SYS-11',
+    id: 'aureus',
+    title: 'Aureus Wealth OS',
+    domain: 'Private Wealth ERP',
+    status: 'INTERNAL / LIVE',
+    summaryEs: 'Consolidación patrimonial multimoneda con streaming sub-120ms y motor WASM.',
+    summaryEn: 'Multi-currency wealth management with sub-120ms streaming and WASM.',
+    liveUrl: 'https://aureus.aldoarbizu.com',
+    caseSlug: 'aureus-wealth-os',
+    stack: ['Next.js 16', 'WASM', 'AI Circuit Breaker'],
+  },
+  {
+    code: 'SYS-12',
+    id: 'marketingadvisor',
+    title: 'Smart Marketing AI',
+    domain: 'Autonomous n8n Pipelines',
+    status: 'DESPLEGADO',
+    summaryEs: 'Orquestador n8n + LLMs locales/Gemini para generación y calificación estructurada de demanda.',
+    summaryEn: 'Autonomous n8n + structured LLM pipeline for B2B demand orchestration.',
+    liveUrl: 'https://marketingadvisor.aldoarbizu.com',
+    caseSlug: 'smart-marketing-advisor',
+    stack: ['n8n', 'Zod Schema', 'Gemini 2.5'],
+  },
+];
+
+export default function ProductsBento() {
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
+  const { playHoverTick, playModeSwitch, playEngagePulse } = useTacticalAudio();
+
+  const [selectedSys, setSelectedSys] = useState<FlagshipCode>('SYS-03');
+  const [showFullDynasty, setShowFullDynasty] = useState(false);
+  const [contractTitle, setContractTitle] = useState<string | undefined>(undefined);
+  const [contractPrice, setContractPrice] = useState<string | undefined>(undefined);
+  const [isContractOpen, setIsContractOpen] = useState(false);
+
+  // Interactive Slice 1: TitanFlow Risk Engine State
+  const [direction, setDirection] = useState<'LONG' | 'SHORT'>('LONG');
+  const [entryPrice, setEntryPrice] = useState(84200);
+  const [atrValue, setAtrValue] = useState(950);
+
+  // Interactive Slice 2: SentinelOS Checkpoints & SOS
+  const [checkpointsDone, setCheckpointsDone] = useState(4);
+  const [lastHmac, setLastHmac] = useState('hmac_9f4a82e1c0b7');
+  const [sosTriggered, setSosTriggered] = useState(false);
+
+  // Interactive Slice 3: AgroMarket Offline Scale
+  const [agroOffline, setAgroOffline] = useState(true);
+  const [siloWeightKg, setSiloWeightKg] = useState(42850);
+  const [walBuffer, setWalBuffer] = useState<{ ticket: string; kg: number; status: string }[]>([
+    { ticket: 'WAL-0841', kg: 41200, status: 'PENDING_SYNC' },
+    { ticket: 'WAL-0842', kg: 42850, status: 'PENDING_SYNC' },
+  ]);
+
+  // Interactive Slice 4: NOMAD Autonomy
+  const [solarWatts, setSolarWatts] = useState(60);
+  const [batteryWh, setBatteryWh] = useState(256);
+
+  const meta = FLAGSHIP_META[selectedSys];
+
+  // Quant calculations (1.50% risk basis)
+  const riskDist = atrValue * 1.5;
+  const slPrice = direction === 'LONG' ? entryPrice - riskDist : entryPrice + riskDist;
+  const tp1Price = direction === 'LONG' ? entryPrice + atrValue * 2.5 : entryPrice - atrValue * 2.5;
+  const tp2Price = direction === 'LONG' ? entryPrice + atrValue * 4.5 : entryPrice - atrValue * 4.5;
+  const trailPrice = direction === 'LONG' ? entryPrice + atrValue * 0.8 : entryPrice - atrValue * 0.8;
+
+  const handleRecordWeighbridge = () => {
+    playModeSwitch('pbr');
+    const nextWeight = 38000 + Math.floor((siloWeightKg * 7 + 1350) % 9000);
+    setSiloWeightKg(nextWeight);
+    const id = `WAL-0${843 + walBuffer.length}`;
+    setWalBuffer((prev) => [
+      { ticket: id, kg: nextWeight, status: agroOffline ? 'PENDING_SYNC' : 'COMMITTED_CLOUD' },
+      ...prev.slice(0, 3),
+    ]);
   };
 
-  const filterCategories = [
-    { id: 'all', label: t.products.filters.all },
-    { id: 'agtech', label: t.products.filters.agtech },
-    { id: 'security', label: t.products.filters.security },
-    { id: 'defi', label: t.products.filters.defi },
-    { id: 'automation', label: t.products.filters.automation },
-    { id: 'manufacturing', label: t.products.filters.manufacturing },
-  ];
+  const handleScanCheckpoint = () => {
+    playEngagePulse();
+    setCheckpointsDone((c) => c + 1);
+    setLastHmac(`hmac_${((checkpointsDone + 1) * 7919).toString(16)}a4f`);
+  };
 
-  const UNIFIED_ACCENT = "from-[#D4AF37]/15 to-[#8C6D46]/10";
-  const UNIFIED_BORDER = "hover:border-[#D4AF37]/45";
-  const UNIFIED_BADGE = "text-[#D4AF37] border-[#D4AF37]/30 bg-[#D4AF37]/10";
-
-  const apps: ProjectData[] = [
-    {
-      id: "titanflow",
-      categoryFilter: "defi",
-      icon: TrendingUp,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Node.js", "TypeScript", "WebSockets", "Binance Futures", "Base L2"],
-      metrics: "< 10ms Latencia",
-      liveUrl: "https://titanflow.aldoarbizu.com",
-      caseSlug: "titanflow-defi-low-latency",
-      imageFile: "titanflow.png",
-      span: "md:col-span-2 lg:col-span-2",
-      data: t.products.items.titanflow
-    },
-    {
-      id: "sentinelos",
-      categoryFilter: "security",
-      icon: ShieldCheck,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["React Native", "SQLite WAL", "Firebase RLS", "TensorFlow Lite"],
-      metrics: "Auditoría $120k ARS",
-      liveUrl: "https://sentinelos.aldoarbizu.com",
-      caseSlug: "sentinelos-security-dispatch",
-      imageFile: "sentinelos.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.sentinelos
-    },
-    {
-      id: "agromarket",
-      categoryFilter: "agtech",
-      icon: Smartphone,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["React Native", "SQLite WAL", "FLIR Thermal", "Supabase"],
-      metrics: "8 Tools · FLIR $105k ARS",
-      liveUrl: "https://agromarket.aldoarbizu.com",
-      caseSlug: "agromarket-pro",
-      imageFile: "agromarket.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.agromarket
-    },
-    {
-      id: "aeroshot",
-      categoryFilter: "agtech",
-      icon: Radio,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js", "React Native", "Base L2", "GIS WebGL"],
-      metrics: "Relevamiento $60k ARS",
-      liveUrl: "https://aeroshot.aldoarbizu.com",
-      caseSlug: "aeroshot-drone-marketplace",
-      imageFile: "aeroshot.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.aeroshot
-    },
-    {
-      id: "impresion3d",
-      categoryFilter: "manufacturing",
-      icon: Boxes,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Three.js", "Solidity", "Base L2", "Hellbot Magna 2"],
-      metrics: "0% Intermediación",
-      liveUrl: "https://impresion3d.aldoarbizu.com",
-      caseSlug: "impresion-3d-p2p",
-      imageFile: "impresion3d.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.impresion3d
-    },
-    {
-      id: "nomad",
-      categoryFilter: "security",
-      icon: Radio,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Kotlin", "Jetpack Compose", "Room SQLite WAL", "AFSK/SSTV Radio", "LoRa Meshtastic", "USB Ark PAR2", "Kindle EPUB3", "NAIR 4-Ring AI", "PWA Offline-First"],
-      metrics: "v2.0 OMEGA · 5 Vectores Off-Grid",
-      liveUrl: "https://nomadhub.aldoarbizu.com/",
-      caseSlug: "nomad-tactical-hub",
-      imageFile: "nomadhub.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.nomad
-    },
-    {
-      id: "ecoconnect",
-      categoryFilter: "agtech",
-      icon: Leaf,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js", "Sentinel-2 API", "Base L2 SBT", "Three.js"],
-      metrics: "Sentinel-2 NDVI",
-      liveUrl: "https://ecoconnect.aldoarbizu.com",
-      caseSlug: "ecoconnect-esg-registry",
-      imageFile: "ecoconnect.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.ecoconnect
-    },
-    {
-      id: "pawhero",
-      categoryFilter: "manufacturing",
-      icon: HeartHandshake,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["React Native", "3D STL", "WebSockets", "Base L2"],
-      metrics: "$0 USD STL",
-      liveUrl: "https://pawhero.aldoarbizu.com",
-      caseSlug: "pawhero-pet-tracking",
-      imageFile: "pawhero.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.pawhero
-    },
-    {
-      id: "aureus",
-      categoryFilter: "defi",
-      icon: Coins,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js 16", "Vercel AI SDK", "WASM", "PostgreSQL"],
-      metrics: "TTFT < 120ms",
-      liveUrl: "https://aureus.aldoarbizu.com",
-      caseSlug: "aureus-wealth-os",
-      imageFile: "aureus.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.aureus
-    },
-    {
-      id: "habitat",
-      categoryFilter: "manufacturing",
-      icon: Home,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js", "Solidity", "Base L2", "PostgreSQL"],
-      metrics: "Smart personal_sign",
-      liveUrl: "https://habitat.aldoarbizu.com",
-      caseSlug: "habitat-lease-engine",
-      imageFile: "habitat.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.habitat
-    },
-    {
-      id: "smartmarketing",
-      categoryFilter: "automation",
-      icon: Sparkles,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js", "n8n", "Gemini AI", "SQLite"],
-      metrics: "< 3s por Copy",
-      liveUrl: "https://marketingadvisor.aldoarbizu.com",
-      caseSlug: "smart-marketing-advisor",
-      imageFile: "marketingadvisor.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.smartmarketing
-    }
-  ];
-
-  const filteredApps = activeFilter === 'all' 
-    ? apps 
-    : apps.filter(a => a.categoryFilter === activeFilter);
+  const openQuoteModal = (title: string, price: string) => {
+    playEngagePulse();
+    setContractTitle(title);
+    setContractPrice(price);
+    setIsContractOpen(true);
+  };
 
   return (
-    <section id="ecosystem" className="py-28 bg-[var(--color-slate-black)] border-b border-[var(--color-space-border)] relative overflow-hidden">
-      
-      {/* Background Atmosphere */}
-      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[var(--color-arbizu-teal)]/5 blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-[var(--color-arbizu-purple)]/5 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+    <section
+      id="workbench"
+      data-section="workbench"
+      className="py-24 bg-[var(--bg-deep,#060709)] border-t border-b border-[var(--grid-hairline,#1B202B)] relative"
+    >
+      <div id="ecosystem" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Encabezado de Sección */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-8 border-b border-[var(--grid-hairline,#1B202B)]">
           <div>
-            <span className="badge-enterprise mb-4">
-              <Layers className="w-3.5 h-3.5" />
-              {t.products.badge}
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold block mb-2">
+              [02 // LIVE PRODUCT WORKBENCH — TRY BEFORE YOU TALK · GAP-01]
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl text-white font-bold tracking-tight mb-4">
-              {t.products.heading}
+            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[var(--text-primary)]">
+              {isEs ? 'Dinastía de Sistemas en Producción' : 'Production Systems Dynasty'}
             </h2>
-            <p className="font-mono text-sm sm:text-base text-[var(--color-mist-gray)] max-w-2xl leading-relaxed">
-              {t.products.subheading}
-            </p>
           </div>
+          <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
+            {isEs
+              ? 'Opera instrumentos reales de nuestra ingeniería directamente en el navegador antes de agendar una llamada. Mismo chasis octagonal, misma garantía v2.1.0-ironclad.'
+              : 'Test live slices of our production engineering right inside the browser before scheduling a discovery call.'}
+          </p>
         </div>
 
-        {/* Industry Filters */}
-        <div className="flex flex-wrap gap-2 mb-12 pb-2 border-b border-white/[0.08]">
-          {filterCategories.map(cat => (
-            <button
-              key={cat.id}
-              onMouseEnter={() => {
-                soundEngine.playHover();
-                playHoverTick();
-              }}
-              onClick={() => {
-                soundEngine.playSwitch();
-                playModeSwitch('pbr');
-                setActiveFilter(cat.id);
-              }}
-              className={`px-4 py-2 rounded-xl font-mono text-xs transition-all duration-200 cursor-pointer ${
-                activeFilter === cat.id
-                  ? 'bg-[#D4AF37] text-[#070B12] font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]'
-                  : 'bg-white/[0.04] text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.08] border border-white/[0.08]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Bento Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence>
-            {filteredApps.map((app) => {
-              const Icon = app.icon;
-              const imgName = app.imageFile || `${app.id}.png`;
-              return (
-                <motion.div
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.35 }}
-                  key={app.id}
-                  onPointerEnter={() => {
-                    soundEngine.playHover();
-                    playHoverTick();
-                  }}
-                  onPointerMove={handleCardPointerMove}
-                  className={`glass-surface-enterprise p-6 sm:p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 group border border-white/[0.08] ${app.borderColor} ${app.span} relative overflow-hidden`}
-                >
-                  {/* Directional Spotlight Halo (--gx, --gy) */}
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background:
-                        'radial-gradient(320px circle at var(--gx, 50%) var(--gy, 50%), rgba(212, 175, 55, 0.14), transparent 72%)',
-                    }}
-                  />
-                  {/* Mechanical Corner Brackets */}
-                  <span className="card-bracket card-bracket--tl" aria-hidden="true" />
-                  <span className="card-bracket card-bracket--tr" aria-hidden="true" />
-                  <span className="card-bracket card-bracket--bl" aria-hidden="true" />
-                  <span className="card-bracket card-bracket--br" aria-hidden="true" />
-
-                  {/* Subtle Inner Glow */}
-                  <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-br ${app.accentColor} blur-3xl opacity-30 pointer-events-none group-hover:opacity-60 transition-opacity`} />
-
-                  <div>
-                    {/* Top Meta Bar */}
-                    <div className="flex items-center justify-between gap-2 mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-lg bg-[#070B12] border border-[#D4AF37]/35 text-[#D4AF37]">
-                          <Icon className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
-                        </div>
-                        <span className={`font-space text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full border font-bold ${app.badgeColor}`}>
-                          {app.data.category}
-                        </span>
-                      </div>
-                      <span className="font-mono text-[10px] text-[#94A3B8] bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.08]">
-                        {app.metrics}
-                      </span>
-                    </div>
-
-                    {/* Screenshot Preview Thumbnail */}
-                    <div 
-                      onClick={() => {
-                        playModeSwitch('xray');
-                        setPreviewModal({
-                          isOpen: true,
-                          title: app.data.title,
-                          image: `/projects/${imgName}`,
-                          liveUrl: app.liveUrl,
-                          desc: app.data.desc,
-                          metrics: app.metrics
-                        });
-                      }}
-                      className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-[#070B12] border border-white/[0.10] mb-4 cursor-pointer group/img shadow-md"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={`/projects/${imgName}`}
-                        alt={app.data.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover object-top opacity-85 group-hover/img:opacity-100 group-hover/img:scale-105 transition-all duration-500"
-                      />
-                      <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#070B12]/90 border border-[#D4AF37]/40 text-[9px] font-mono text-[#D4AF37] font-bold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-ping" />
-                        <span>LIVE · 200 OK</span>
-                      </div>
-                      <div className="absolute inset-0 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center gap-1.5 font-space text-[11px] text-[#F8FAFC] font-bold bg-[#070B12]/60 backdrop-blur-[2px]">
-                        <Eye className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
-                        <span>{locale === 'es' ? "Ampliar Dashboard" : "Expand Dashboard"}</span>
-                      </div>
-                    </div>
-
-                    {/* App Title */}
-                    <h3 className="font-serif text-2xl font-bold text-[#F8FAFC] mb-2 group-hover:text-[#D4AF37] transition-colors">
-                      {app.data.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="font-mono text-xs text-[#94A3B8] mb-4 leading-relaxed">
-                      {app.data.desc}
-                    </p>
-
-                    {/* Problem / Solution Diagnostic */}
-                    <div className="space-y-2 p-3.5 rounded-xl bg-[#070B12]/80 border border-white/[0.08] mb-4 font-mono text-[11px]">
-                      <div className="flex items-start gap-2">
-                        <AlertTriangle className="w-3.5 h-3.5 text-[#E09F5A] shrink-0 mt-0.5" strokeWidth={1.5} />
-                        <div>
-                          <strong className="text-[#F8FAFC]">{t.products.labels.problem}</strong>{' '}
-                          <span className="text-[#94A3B8]">{app.data.problem}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37] shrink-0 mt-0.5" strokeWidth={1.5} />
-                        <div>
-                          <strong className="text-[#F8FAFC]">{t.products.labels.solution}</strong>{' '}
-                          <span className="text-[#E2E8F0]">{app.data.solution}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Offline Simulator exclusively embedded in Sentinel OS */}
-                    {app.id === 'sentinelos' && (
-                      <OfflineSimulator />
-                    )}
-
-                    {/* Tech Stack Badges */}
-                    <div className="flex flex-wrap gap-1.5 my-4">
-                      {app.stack.map((tech, i) => (
-                        <span key={i} className="px-2 py-0.5 bg-white/[0.04] border border-white/[0.08] rounded font-mono text-[10px] text-[#94A3B8]">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+        {/* Selector de los 4 Sistemas Insignia */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          {(['SYS-01', 'SYS-02', 'SYS-03', 'SYS-04'] as FlagshipCode[]).map((code) => {
+            const item = FLAGSHIP_META[code];
+            const active = selectedSys === code;
+            return (
+              <button
+                key={code}
+                type="button"
+                onMouseEnter={playHoverTick}
+                onClick={() => {
+                  playModeSwitch('wireframe');
+                  setSelectedSys(code);
+                }}
+                className={`p-4 text-left border rounded-[2px] transition-all flex items-center gap-3 cursor-pointer ${
+                  active
+                    ? 'bg-[#11151D] border-[#FF4F00] shadow-[0_0_24px_rgba(255,79,0,0.16)]'
+                    : 'bg-[var(--bg-surface)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]/60'
+                }`}
+              >
+                <ProductDynastyBadge code={code} className="w-10 h-10 shrink-0" />
+                <div className="min-w-0">
+                  <div className="font-mono text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">
+                    {code}
                   </div>
-
-                  {/* Actions Footer */}
-                  <div className="pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-3 mt-auto">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {/* Vista Previa Modal Button */}
-                      <button
-                        onClick={() => {
-                          playModeSwitch('xray');
-                          setPreviewModal({
-                            isOpen: true,
-                            title: app.data.title,
-                            image: `/projects/${imgName}`,
-                            liveUrl: app.liveUrl,
-                            desc: app.data.desc,
-                            metrics: app.metrics
-                          });
-                        }}
-                        type="button"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.10] border border-white/[0.10] text-[#F8FAFC] font-space text-[11px] font-bold transition-all cursor-pointer"
-                      >
-                        <Eye className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={1.5} />
-                        <span>{locale === 'es' ? "Vista Previa" : "Preview"}</span>
-                      </button>
-
-                      {/* Live System Link */}
-                      {app.liveUrl ? (
-                        <a
-                          href={app.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => playModeSwitch('pbr')}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#D4AF37] text-[#070B12] font-space text-[11px] font-bold hover:bg-[#E09F5A] transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] cursor-pointer"
-                        >
-                          <span>{locale === 'es' ? "Sistema en Vivo" : "Live System"}</span>
-                          <ArrowUpRight className="w-3 h-3" strokeWidth={1.5} />
-                        </a>
-                      ) : (
-                        <Link
-                          href={`/cases/${app.caseSlug}`}
-                          className="inline-flex items-center gap-1 font-space text-xs font-bold text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
-                        >
-                          <span>{(app.data as any).btnCase || t.products.labels.viewCase}</span>
-                          <ArrowUpRight className="w-3 h-3" strokeWidth={1.5} />
-                        </Link>
-                      )}
-                    </div>
-
-                    <span className="font-space text-[9px] text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-2 py-0.5 rounded uppercase tracking-wider font-bold">
-                      {app.data.status}
-                    </span>
-                  </div>
-
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
-
-      </div>
-
-      {/* High-Resolution Screenshot Lightbox Modal */}
-      <AnimatePresence>
-        {previewModal?.isOpen && (
-          <div 
-            onClick={() => setPreviewModal(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-6"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-4xl rounded-2xl bg-[#070B12] border border-[#D4AF37]/35 p-5 sm:p-7 shadow-2xl relative max-h-[90vh] flex flex-col"
-            >
-              <div className="flex items-center justify-between mb-4 border-b border-white/[0.10] pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37]">
-                    <Eye className="w-5 h-5" strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-xl font-bold text-[#F8FAFC]">
-                      {previewModal.title} — Dashboard en Vivo
-                    </h4>
-                    <span className="font-mono text-xs text-[#94A3B8]">{previewModal.metrics}</span>
+                  <div className="font-sans text-sm sm:text-base font-bold text-[#F6F7F9] truncate">
+                    {item.title}
                   </div>
                 </div>
-                <button
-                  onClick={() => setPreviewModal(null)}
-                  className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-[#F8FAFC] transition cursor-pointer"
+              </button>
+            );
+          })}
+        </div>
+
+        {/* WORKBENCH INTERACTIVO (IZQUIERDA: INSTRUMENTO VIVO | DERECHA: FICHA B2B) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[var(--grid-hairline,#1B202B)] bg-[#0B0D12]">
+          {/* Panel Izquierdo (7 cols): Visor Operativo Ejecutable */}
+          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[#1B202B] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[#1B202B] text-[11px]">
+              <span className="text-[#00E599] font-bold flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
+                INTERACTIVE SLICE // {selectedSys}
+              </span>
+              <span className="text-[#8A93A6] uppercase">{meta.deployment}</span>
+            </div>
+
+            {selectedSys === 'SYS-01' && (
+              <div className="space-y-5 tabular-nums">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <SlidersHorizontal className="w-4 h-4 text-[#D4AF37]" />
+                    <span className="text-xs font-bold text-[#F6F7F9]">BINANCE FUTURES · PURE_EXIT_ENGINE</span>
+                  </div>
+                  <div className="flex border border-[#1B202B]">
+                    {(['LONG', 'SHORT'] as const).map((dir) => (
+                      <button
+                        key={dir}
+                        type="button"
+                        onClick={() => setDirection(dir)}
+                        className={`px-3 py-1 text-[11px] font-bold cursor-pointer ${
+                          direction === dir ? 'bg-[#D4AF37] text-[#060709]' : 'text-[#8A93A6] bg-[#060709]'
+                        }`}
+                      >
+                        {dir}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
+                    <span className="text-[#8A93A6] block mb-1">ENTRY PRICE (USDT): ${entryPrice}</span>
+                    <input
+                      type="range"
+                      min={20000}
+                      max={120000}
+                      step={200}
+                      value={entryPrice}
+                      onChange={(e) => setEntryPrice(Number(e.target.value))}
+                      className="w-full accent-[#D4AF37] cursor-pointer"
+                    />
+                  </label>
+                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
+                    <span className="text-[#8A93A6] block mb-1">ATR 1H VOLATILITY: ${atrValue}</span>
+                    <input
+                      type="range"
+                      min={250}
+                      max={2500}
+                      step={50}
+                      value={atrValue}
+                      onChange={(e) => setAtrValue(Number(e.target.value))}
+                      className="w-full accent-[#D4AF37] cursor-pointer"
+                    />
+                  </label>
+                </div>
+
+                <div className="overflow-x-auto border border-[#1B202B]">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-[#11151D] text-[#8A93A6] uppercase text-[10px]">
+                      <tr>
+                        <th className="p-2.5">Nivel</th>
+                        <th className="p-2.5">Precio</th>
+                        <th className="p-2.5">Distancia %</th>
+                        <th className="p-2.5">Regla Slot</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#1B202B] text-[#F6F7F9]">
+                      <tr>
+                        <td className="p-2.5 text-[#F43F5E] font-bold">SL (Hard Cap)</td>
+                        <td className="p-2.5 font-bold">${slPrice.toLocaleString('en-US')}</td>
+                        <td className="p-2.5 text-[#F43F5E]">{(((-riskDist) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#8A93A6]">1.50x ATR · INITIAL</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2.5 text-[#00E599] font-bold">TP1 (2.50x ATR)</td>
+                        <td className="p-2.5 font-bold">${tp1Price.toLocaleString('en-US')}</td>
+                        <td className="p-2.5 text-[#00E599]">+{(((atrValue * 2.5) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#8A93A6]">Cierra 60% + Mueve SL a BE</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2.5 text-[#D4AF37] font-bold">TP2 (4.50x ATR)</td>
+                        <td className="p-2.5 font-bold">${tp2Price.toLocaleString('en-US')}</td>
+                        <td className="p-2.5 text-[#D4AF37]">+{(((atrValue * 4.5) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#8A93A6]">Runner 40% Restante</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2.5 text-[#C2C8D4] font-bold">Trailing Chandelier</td>
+                        <td className="p-2.5">${trailPrice.toLocaleString('en-US')}</td>
+                        <td className="p-2.5 text-[#00E599]">+0.20% Buffer</td>
+                        <td className="p-2.5 text-[#8A93A6]">Lock-In Autónomo</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {selectedSys === 'SYS-02' && (
+              <div className="space-y-5 tabular-nums">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-xs font-bold text-[#F6F7F9]">
+                    GUARD PATROL NODE · ANTI-SPOOFING &amp; SOS GATEWAY
+                  </span>
+                  <span className="px-2.5 py-1 text-[10px] font-bold border border-[#00B4D8]/50 text-[#00B4D8] bg-[#00B4D8]/10">
+                    RLS TENANT ISOLATION 60/60
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
+                    <div className="text-[#8A93A6] text-[10px]">RONDAS NFC SELLADAS</div>
+                    <div className="text-2xl font-bold text-[#00E599] mt-1">{checkpointsDone}</div>
+                  </div>
+                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
+                    <div className="text-[#8A93A6] text-[10px]">HMAC-SHA256 PAYLOAD</div>
+                    <div className="text-xs font-bold text-[#F6F7F9] mt-2 truncate">{lastHmac}</div>
+                  </div>
+                  <div className="p-3 border border-[#1B202B] bg-[#060709]">
+                    <div className="text-[#8A93A6] text-[10px]">ESTADO SOS SOC</div>
+                    <div className={`text-xs font-bold mt-2 ${sosTriggered ? 'text-[#F43F5E]' : 'text-[#00E599]'}`}>
+                      {sosTriggered ? 'CRITICAL SOS ENVIADO' : 'PERÍMETRO NORMAL'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={handleScanCheckpoint}
+                    className="px-4 py-2.5 bg-[#00B4D8] text-[#060709] text-xs font-bold uppercase tracking-wider rounded-[2px] cursor-pointer"
+                  >
+                    + Fichar Checkpoint NFC / Mock-GPS Check
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSosTriggered((s) => !s)}
+                    className={`px-4 py-2.5 border text-xs font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-2 cursor-pointer ${
+                      sosTriggered
+                        ? 'bg-[#00E599] text-[#060709] border-[#00E599]'
+                        : 'border-[#F43F5E] text-[#F43F5E] bg-[#F43F5E]/10'
+                    }`}
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>{sosTriggered ? 'Limpiar Alerta SOC' : 'Probar Disparo SOS (< 250ms)'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {selectedSys === 'SYS-03' && (
+              <div className="space-y-5 tabular-nums">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#F6F7F9]">
+                    <Scale className="w-4 h-4 text-[#10B981]" />
+                    <span>BALANZA SILOBOLSA &amp; STOCK SENASA (SQLITE WAL)</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setAgroOffline((v) => !v)}
+                    className={`px-3 py-1 text-[10px] font-bold border flex items-center gap-1.5 cursor-pointer ${
+                      agroOffline
+                        ? 'border-[#FF4F00] text-[#FF4F00] bg-[#FF4F00]/10'
+                        : 'border-[#00E599] text-[#00E599] bg-[#00E599]/10'
+                    }`}
+                  >
+                    {agroOffline ? <WifiOff className="w-3 h-3" /> : <Wifi className="w-3 h-3" />}
+                    <span>{agroOffline ? 'ZONA RURAL: 0% SEÑAL 4G' : 'ENLACE NUBE ACTIVO'}</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3.5 border border-[#1B202B] bg-[#060709]">
+                    <span className="text-[#8A93A6] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
+                    <span className="text-2xl font-bold text-[#F6F7F9]">{siloWeightKg.toLocaleString('en-US')} kg</span>
+                  </div>
+                  <div className="p-3.5 border border-[#1B202B] bg-[#060709] flex items-center justify-between">
+                    <div>
+                      <span className="text-[#8A93A6] text-[10px] block">COLA TRANSACCIONAL WAL</span>
+                      <span className="text-sm font-bold text-[#00E599]">0 bytes perdidos</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRecordWeighbridge}
+                      className="px-3.5 py-2 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] text-[11px] font-bold uppercase cursor-pointer"
+                    >
+                      + Registrar Camión
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border border-[#1B202B] divide-y divide-[#1B202B] text-xs">
+                  {walBuffer.map((row) => (
+                    <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[#060709]">
+                      <span className="text-[#F6F7F9] font-bold">{row.ticket} · Soja/Maíz</span>
+                      <span className="text-[#C2C8D4]">{row.kg.toLocaleString('en-US')} kg</span>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 border ${
+                          row.status === 'PENDING_SYNC'
+                            ? 'text-[#FF4F00] border-[#FF4F00]/40'
+                            : 'text-[#00E599] border-[#00E599]/40'
+                        }`}
+                      >
+                        {row.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedSys === 'SYS-04' && (
+              <div className="space-y-5 tabular-nums">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-[#F6F7F9] flex items-center gap-2">
+                    <Radio className="w-4 h-4 text-[#FF4F00]" />
+                    CALCULADORA OFF-GRID AUTONOMÍA SOLAR + MÓDEM AFSK 800Hz
+                  </span>
+                  <span className="text-[#00E599] font-bold">PAR2 USB RECOVERY: OK</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
+                    <span className="text-[#8A93A6] block mb-1">PANEL SOLAR PORTÁTIL: {solarWatts}W</span>
+                    <input
+                      type="range"
+                      min={15}
+                      max={200}
+                      step={5}
+                      value={solarWatts}
+                      onChange={(e) => setSolarWatts(Number(e.target.value))}
+                      className="w-full accent-[#FF4F00] cursor-pointer"
+                    />
+                  </label>
+                  <label className="block p-3 border border-[#1B202B] bg-[#060709]">
+                    <span className="text-[#8A93A6] block mb-1">BANCO LiFePO4: {batteryWh}Wh</span>
+                    <input
+                      type="range"
+                      min={100}
+                      max={1024}
+                      step={32}
+                      value={batteryWh}
+                      onChange={(e) => setBatteryWh(Number(e.target.value))}
+                      className="w-full accent-[#FF4F00] cursor-pointer"
+                    />
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 text-xs border-t border-[#1B202B] pt-4">
+                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
+                    <div className="text-[#8A93A6] text-[10px]">RECARGA COMPLETA</div>
+                    <div className="text-lg font-bold text-[#F6F7F9]">{(batteryWh / (solarWatts * 0.78)).toFixed(1)} hs sol</div>
+                  </div>
+                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
+                    <div className="text-[#8A93A6] text-[10px]">OPERACIÓN TABLET/LoRa</div>
+                    <div className="text-lg font-bold text-[#00E599]">{Math.round(batteryWh / 12)} días</div>
+                  </div>
+                  <div className="p-3 bg-[#060709] border border-[#1B202B]">
+                    <div className="text-[#8A93A6] text-[10px]">ALCANCE RF / LORA</div>
+                    <div className="text-lg font-bold text-[#D4AF37]">8 – 22 km LoS</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Panel Derecho (5 cols): Ficha de Ingeniería & Conversión B2B */}
+          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-[#0E1116]">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <ProductDynastyBadge code={selectedSys} className="w-11 h-11 shrink-0" />
+                <div>
+                  <span className="font-mono text-[10px] text-[#FF4F00] font-bold uppercase tracking-widest block">
+                    {selectedSys} // SOVEREIGN DIVISION
+                  </span>
+                  <h3 className="font-sans text-2xl font-extrabold text-[#F6F7F9]">{meta.title}</h3>
+                </div>
+              </div>
+
+              <p className="font-sans text-sm text-[#C2C8D4] leading-relaxed mb-5">
+                {isEs ? meta.subtitleEs : meta.subtitleEn}
+              </p>
+
+              <div className="space-y-3 border-y border-[#1B202B] py-4 mb-6 font-mono text-xs">
+                <div>
+                  <span className="text-[#8A93A6] uppercase block text-[10px]">
+                    {isEs ? 'PROBLEMA ELIMINADO:' : 'ELIMINATED BOTTLENECK:'}
+                  </span>
+                  <span className="text-[#F6F7F9]">{isEs ? meta.problemEs : meta.problemEn}</span>
+                </div>
+                <div>
+                  <span className="text-[#8A93A6] uppercase block text-[10px]">ARCHITECTURE STACK:</span>
+                  <span className="text-[#00E599] font-bold">{meta.arch}</span>
+                </div>
+                <div>
+                  <span className="text-[#8A93A6] uppercase block text-[10px]">
+                    {isEs ? 'MODALIDAD B2B:' : 'LICENSING TIER:'}
+                  </span>
+                  <span className="text-[#D4AF37] font-bold">{meta.quotePrice}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => openQuoteModal(meta.quoteTitle, meta.quotePrice)}
+                className="flex-1 py-3 px-4 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
+              >
+                {isEs ? 'Cotizar Despliegue →' : 'Configure Deployment →'}
+              </button>
+              <a
+                href={meta.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-4 border border-white/20 bg-[#060709] hover:border-[#D4AF37] text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center justify-center gap-1.5"
+              >
+                <span>{isEs ? 'Abrir Sistema' : 'Open Live'}</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Toggle para inspeccionar las 8 Verticales Especializadas SYS-05..12 */}
+        <div className="mt-8">
+          <button
+            type="button"
+            onClick={() => setShowFullDynasty((s) => !s)}
+            className="w-full py-4 px-6 border border-[var(--grid-hairline,#1B202B)] bg-[var(--bg-surface)] hover:border-[#D4AF37] flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors cursor-pointer"
+          >
+            <span>
+              {isEs
+                ? 'INSPECCIONAR CATÁLOGO COMPLETO DE LA DINASTÍA (SYS-05 .. SYS-12)'
+                : 'INSPECT FULL DYNASTY CATALOG (SYS-05 .. SYS-12)'}
+            </span>
+            {showFullDynasty ? <ChevronUp className="w-4 h-4 text-[#FF4F00]" /> : <ChevronDown className="w-4 h-4 text-[#D4AF37]" />}
+          </button>
+
+          {showFullDynasty && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-x border-b border-[var(--grid-hairline,#1B202B)]">
+              {SECONDARY_VERTICALS.map((v) => (
+                <div
+                  key={v.code}
+                  className="p-5 border-t sm:border-r border-[var(--grid-hairline,#1B202B)] bg-[#0B0D12] flex flex-col justify-between"
                 >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <ProductDynastyBadge code={v.code} className="w-8 h-8" />
+                      <span className="font-mono text-[9px] px-2 py-0.5 border border-[#D4AF37]/40 text-[#D4AF37] font-bold">
+                        {v.status}
+                      </span>
+                    </div>
+                    <span className="font-mono text-[10px] text-[#8A93A6] uppercase block">
+                      {v.code} · {v.domain}
+                    </span>
+                    <h4 className="font-sans text-base font-bold text-[#F6F7F9] mt-0.5 mb-2">{v.title}</h4>
+                    <p className="font-mono text-[11px] text-[#C2C8D4] leading-relaxed mb-4">
+                      {isEs ? v.summaryEs : v.summaryEn}
+                    </p>
+                  </div>
 
-              {/* High-Res Viewport */}
-              <div className="relative rounded-xl overflow-hidden bg-black border border-white/[0.10] flex-1 min-h-[300px] mb-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={previewModal.image}
-                  alt={previewModal.title}
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                <p className="font-mono text-xs text-[#94A3B8] max-w-lg leading-relaxed">
-                  {previewModal.desc}
-                </p>
-                {previewModal.liveUrl && (
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="pt-3 border-t border-[#1B202B] flex items-center justify-between font-mono text-[10px]">
+                    <Link href={`/cases/${v.caseSlug}`} className="text-[#8A93A6] hover:text-[#F6F7F9]">
+                      {isEs ? 'Caso Técnico' : 'Tech Case'}
+                    </Link>
                     <a
-                      href={`https://wa.me/5492314489197?text=${encodeURIComponent(`Hola Aldo, me interesa contratar / cotizar el servicio de ${previewModal.title} de Arbizu Labs.`)}`}
+                      href={v.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37]/15 text-[#D4AF37] border border-[#D4AF37]/30 font-space text-xs font-bold hover:bg-[#D4AF37]/25 transition-all cursor-pointer"
+                      className="text-[#00E599] font-bold inline-flex items-center gap-1 hover:underline"
                     >
-                      <MessageSquare className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
-                      <span>{locale === 'es' ? "Cotizar por WhatsApp" : "Quote via WhatsApp"}</span>
-                    </a>
-                    <a
-                      href={previewModal.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#D4AF37] text-[#070B12] font-space text-xs font-bold hover:bg-[#E09F5A] transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)]"
-                    >
-                      <span>{locale === 'es' ? "Abrir Sistema en Nueva Pestaña" : "Open System in New Tab"}</span>
-                      <ExternalLink className="w-4 h-4" strokeWidth={1.5} />
+                      <span>LIVE</span>
+                      <ArrowUpRight className="w-3 h-3" />
                     </a>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
+      <B2BContractModal
+        isOpen={isContractOpen}
+        onClose={() => setIsContractOpen(false)}
+        initialServiceTitle={contractTitle}
+        initialServicePrice={contractPrice}
+      />
     </section>
   );
 }

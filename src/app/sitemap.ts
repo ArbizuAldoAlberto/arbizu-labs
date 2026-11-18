@@ -88,6 +88,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
+    {
+      url: 'https://arbizulabs.com/llms.txt',
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: 'https://arbizulabs.com/solutions/software-acopio-granos-silobolsa-offline',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: 'https://arbizulabs.com/solutions/sistema-control-rondas-seguridad-privada-offline',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: 'https://arbizulabs.com/solutions/auditoria-termografica-flir-industrial-buenos-aires',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: 'https://arbizulabs.com/solutions/software-trazabilidad-reprocann-clubes-cultivo',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: 'https://arbizulabs.com/solutions/desarrollo-bots-trading-algoritmico-binance-futures',
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
     ...caseUrls,
     ...blogUrls
   ];
