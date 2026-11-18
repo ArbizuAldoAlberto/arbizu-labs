@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import React, { useState } from 'react';
+import { ArrowUpRight, CheckCircle2, XCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { soundEngine } from '@/lib/sound/SoundEngine';
 import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
@@ -8,251 +8,208 @@ import B2BContractModal from '@/components/modals/B2BContractModal';
 
 function CadBlueprintIcon({ index }: { index: number }) {
   if (index === 0) {
-    // 1. Arquitectura Offline-First / Bases de Datos Sincronizadas (SQLite WAL)
     return (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5" stroke="#D4AF37" strokeWidth="1.5" />
-        <path d="M4.5 5.5v6c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6" stroke="#94A3B8" strokeWidth="1.5" />
-        <path d="M4.5 11.5v6.5c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6.5" stroke="#D4AF37" strokeWidth="1.5" />
-        <path d="M9 15.5h6M12 13.5v4" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
+        <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5" stroke="#FF4F00" strokeWidth="1.5" />
+        <path d="M4.5 5.5v6c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6" stroke="#07080A" strokeWidth="1.5" />
+        <path d="M4.5 11.5v6.5c0 1.38 3.36 2.5 7.5 2.5s7.5-1.12 7.5-2.5v-6.5" stroke="#FF4F00" strokeWidth="1.5" />
       </svg>
     );
   }
   if (index === 1) {
-    // 2. Drones y Telemetría AgTech (LiDAR ToF)
     return (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="6" cy="6" r="2.75" stroke="#D4AF37" strokeWidth="1.5" />
-        <circle cx="18" cy="6" r="2.75" stroke="#D4AF37" strokeWidth="1.5" />
-        <circle cx="6" cy="18" r="2.75" stroke="#94A3B8" strokeWidth="1.5" />
-        <circle cx="18" cy="18" r="2.75" stroke="#94A3B8" strokeWidth="1.5" />
-        <path d="M8 8l8 8M16 8l-8 8" stroke="#94A3B8" strokeWidth="1.5" />
-        <rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="#070B12" stroke="#D4AF37" strokeWidth="1.5" />
+        <circle cx="6" cy="6" r="2.75" stroke="#FF4F00" strokeWidth="1.5" />
+        <circle cx="18" cy="6" r="2.75" stroke="#FF4F00" strokeWidth="1.5" />
+        <circle cx="6" cy="18" r="2.75" stroke="#07080A" strokeWidth="1.5" />
+        <circle cx="18" cy="18" r="2.75" stroke="#07080A" strokeWidth="1.5" />
+        <path d="M8 8l8 8M16 8l-8 8" stroke="#07080A" strokeWidth="1.5" />
+        <rect x="9.5" y="9.5" width="5" height="5" fill="#F2F0EA" stroke="#FF4F00" strokeWidth="1.5" />
       </svg>
     );
   }
   if (index === 2) {
-    // 3. Ciberseguridad Defensiva / Zero-Trust
     return (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M12 2.75L4.75 6v5.75c0 5.1 3.1 9.65 7.25 11.25 4.15-1.6 7.25-6.15 7.25-11.25V6L12 2.75z"
-          stroke="#D4AF37"
-          strokeWidth="1.5"
-        />
-        <circle cx="12" cy="11.5" r="2.5" stroke="#94A3B8" strokeWidth="1.5" />
-        <path d="M12 14v3" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" />
+        <polygon points="12,3 20,6.5 20,13 12,21 4,13 4,6.5" stroke="#07080A" strokeWidth="1.5" />
+        <path d="M9 12.2l2.1 2.1 4.2-4.6" stroke="#FF4F00" strokeWidth="1.75" strokeLinecap="square" />
       </svg>
     );
   }
-  // 4. Ingeniería Cuantitativa / Algorítmica
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M3.5 18.5h17M3.5 5.5v13" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M6 15l4-4.5 3.5 2.5 5.5-6.5" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="10" cy="10.5" r="1.5" fill="#D4AF37" />
-      <circle cx="19" cy="6.5" r="1.5" fill="#D4AF37" />
+      <path d="M3.5 18.5h17M3.5 5.5v13" stroke="#07080A" strokeWidth="1.5" />
+      <path d="M6 15l4-4.5 3.5 2.5 5.5-6.5" stroke="#FF4F00" strokeWidth="1.5" />
+      <circle cx="19" cy="6.5" r="1.75" fill="#FF4F00" />
     </svg>
   );
 }
 
-const ARTIFACT_ASSETS = [
-  {
-    id: 'terminal-ip67',
-    src: '/assets/3d/terminal-ip67.webp',
-    alt: 'Terminal IoT Rugged IP67 con persistencia SQLite WAL',
-  },
-  {
-    id: 'silo-lidar',
-    src: '/assets/3d/silo-lidar.webp',
-    alt: 'Silo AgTech con telemetría láser LiDAR ToF',
-  },
-  {
-    id: 'neural-n8n',
-    src: '/assets/3d/neural-n8n.webp',
-    alt: 'Núcleo de orquestación autónoma n8n e IA privada',
-  },
-  {
-    id: 'flir-optic',
-    src: '/assets/3d/flir-optic.webp',
-    alt: 'Óptica termográfica FLIR calibrada de precisión industrial',
-  },
-];
-
 export default function WhyEnterprise() {
-  const { t } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
+  const { locale, t } = useLanguage();
+  const isEs = locale === 'es';
   const [isContractOpen, setIsContractOpen] = useState(false);
   const { playHoverTick, playEngagePulse } = useTacticalAudio();
 
-  useEffect(() => {
-    const sec = sectionRef.current;
-    if (!sec) return;
-    const floatImgs = sec.querySelectorAll<HTMLElement>('img[data-float]');
-    const tweens: gsap.core.Tween[] = [];
-
-    floatImgs.forEach((img, idx) => {
-      const tw = gsap.to(img, {
-        y: 6,
-        duration: 2.8 + (idx % 3) * 0.35,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        delay: idx * 0.25,
-      });
-      tweens.push(tw);
-    });
-
-    return () => {
-      tweens.forEach((tw) => tw.kill());
-    };
-  }, []);
-
-  const handleTiltMove = (e: React.PointerEvent<HTMLElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    const rotY = (px - 0.5) * 10;
-    const rotX = (0.5 - py) * 8;
-
-    card.style.setProperty('--gx', `${(px * 100).toFixed(1)}%`);
-    card.style.setProperty('--gy', `${(py * 100).toFixed(1)}%`);
-    card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
-  };
-
-  const handleTiltLeave = (e: React.PointerEvent<HTMLElement>) => {
-    e.currentTarget.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
-  };
+  const comparisonRows = [
+    {
+      dimension: isEs ? 'Conectividad Rural / Subsuelo' : 'Zero-Signal Field Resilience',
+      traditional: isEs ? 'Colapsa ante pérdida 4G; tickets y rondas duplicadas' : 'Crashes on 4G drop; lost weighbridge logs',
+      cannedSaas: isEs ? 'Caché superficial; fallos en escrituras concurrentes' : 'Shallow cache; fails on concurrent writes',
+      sovereign: isEs ? 'SQLite WAL + Colas Criptográficas (0% Pérdida)' : 'SQLite WAL + Cryptographic Queue (0% Loss)',
+    },
+    {
+      dimension: isEs ? 'Aislamiento Multi-Tenant & Seguridad' : 'Multi-Tenant Isolation & Security',
+      traditional: isEs ? 'Permisos RLS permisivos o validación solo en UI' : 'Permissive RLS policies or client-only checks',
+      cannedSaas: isEs ? 'Vendor Lock-in total; datos en nubes opacas' : 'Strict vendor lock-in on opaque third-party cloud',
+      sovereign: isEs ? '60/60 RLS Certificado · Edge HMAC-SHA256 · Self-Hosted' : '60/60 RLS Certified · Edge HMAC · Self-Hosted',
+    },
+    {
+      dimension: isEs ? 'Puente Software <-> Mundo Físico' : 'Bit-to-Atom Integration',
+      traditional: isEs ? 'Solo pantallas genéricas; sin sensores ni hardware' : 'Generic web forms only; no field telemetry',
+      cannedSaas: isEs ? 'Sin integración directa con balanzas, drones o FLIR' : 'No native integration with drones or FLIR optics',
+      sovereign: isEs ? 'Termografía FLIR + Drones GIS + Impresión 3D CAD' : 'FLIR Thermography + GIS Drones + 3D Hardware',
+    },
+  ];
 
   return (
     <section
       id="artefactos"
-      ref={sectionRef}
       data-section="artifacts"
-      className="artifacts relative"
-      style={{
-        overflowX: 'clip',
-        contain: 'layout paint',
-        paddingBottom: '6.5rem',
-      }}
+      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative"
+      style={{ overflowX: 'clip' }}
     >
-      <div className="section-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="max-w-3xl mb-14">
-          <span className="badge-enterprise mb-4">{t.whyEnterprise.badge}</span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-[var(--text-primary)] font-bold tracking-tight mb-4">
-            {t.whyEnterprise.heading}
-          </h2>
-          <p className="font-sans text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
-            {t.whyEnterprise.subheading}
-          </p>
-        </div>
-
-        {/* 4 Floating 3D Artifacts Grid */}
-        <div className="artifact-grid">
-          {t.whyEnterprise.moats.slice(0, 4).map((pillar, i) => {
-            const asset = ARTIFACT_ASSETS[i] || ARTIFACT_ASSETS[0];
-
-            return (
-              <article
-                key={asset.id}
-                data-tilt
-                onPointerEnter={() => {
-                  soundEngine.playHover();
-                  playHoverTick();
-                }}
-                onPointerMove={handleTiltMove}
-                onPointerLeave={handleTiltLeave}
-                className="artifact-card group relative overflow-hidden border border-white/[0.08] bg-[#070B12]/85"
-              >
-                {/* Directional Spotlight Halo (--gx, --gy) */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background:
-                      'radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), rgba(212, 175, 55, 0.16), transparent 72%)',
-                  }}
-                />
-                {/* Mechanical Corner Brackets */}
-                <span className="card-bracket card-bracket--tl" aria-hidden="true" />
-                <span className="card-bracket card-bracket--tr" aria-hidden="true" />
-                <span className="card-bracket card-bracket--bl" aria-hidden="true" />
-                <span className="card-bracket card-bracket--br" aria-hidden="true" />
-
-                <div className="relative z-10 flex items-center justify-between mb-3">
-                  <span className="font-space text-[11px] uppercase tracking-widest text-[var(--accent)] bg-[var(--bg-btn)] px-2.5 py-1 rounded-[8px] border border-[var(--accent-border)] font-bold">
-                    {pillar.tag}
-                  </span>
-                  <span className="font-space text-sm font-bold text-[var(--text-secondary)]">
-                    {pillar.num}
-                  </span>
-                </div>
-
-                {/* 1:1 3D Floating Stage */}
-                <div className="artifact-stage relative z-10">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={asset.src}
-                    alt={asset.alt}
-                    data-float={asset.id}
-                    width={640}
-                    height={640}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="sync"
-                    className="sepia-[.82] hue-rotate-[-12deg] saturate-[1.3] contrast-[1.08]"
-                  />
-                </div>
-
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="icon-pedestal-sovereign">
-                    <CadBlueprintIcon index={i} />
-                  </div>
-                  <h3 className="artifact-name !mb-0">{pillar.title}</h3>
-                </div>
-
-                <p className="artifact-copy">{pillar.desc}</p>
-              </article>
-            );
-          })}
-        </div>
-
-        {/* B2B Instant Conversion Anchor */}
-        <div className="mt-14 p-6 sm:p-8 rounded-2xl border border-white/[0.08] bg-[#070B12] flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_12px_36px_rgba(0,0,0,0.65)]">
-          <div className="space-y-1 text-center md:text-left">
-            <span className="font-space text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold">
-              ARBIZU LABS // CONTRATACIÓN B2B INMEDIATA
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Encabezado Bi-Luminance Editorial */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#D6D3C9] mb-12">
+          <div className="max-w-3xl">
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold block mb-3">
+              [03 // BI-LUMINANCE DOCTRINE · TITANIUM PAPER BRIEF]
             </span>
-            <h3 className="font-serif text-xl sm:text-2xl text-[#F8FAFC] font-bold">
-              ¿Listo para desplegar hardware o software de misión crítica?
-            </h3>
-            <p className="font-sans text-xs sm:text-sm text-[#94A3B8]">
-              Evaluación de arquitectura en &lt; 12 hs con Aldo Alberto Arbizu. Facturación CUIT 20-38362060-1 y escrow Web3.
+            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[#07080A] mb-4">
+              {isEs
+                ? 'La Doctrina Bit-to-Atom: Por Qué el Software Convencional Colapsa en el Terreno'
+                : 'The Bit-to-Atom Doctrine: Why Conventional Software Collapses in the Field'}
+            </h2>
+            <p className="font-sans text-base text-[#3E4552] leading-relaxed">
+              {t.whyEnterprise.subheading}
             </p>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+          <div className="font-mono text-xs text-[#3E4552] tabular-nums shrink-0 border-l-2 border-[#FF4F00] pl-4">
+            <div className="font-bold text-[#07080A]">CERTIFIED VERIFICATION BASELINE</div>
+            <div>contrast_ratio: 18.4:1 AAA · rls_audit: 60/60 PASS</div>
+          </div>
+        </div>
+
+        {/* 4 Pilares Doctrinales (Sin tarjetas clonadas flotantes: Grilla Suiza de 1px) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-[#D6D3C9] bg-[#FFFFFF] mb-14">
+          {t.whyEnterprise.moats.slice(0, 4).map((pillar, i) => (
+            <article
+              key={pillar.num}
+              onMouseEnter={() => {
+                soundEngine.playHover();
+                playHoverTick();
+              }}
+              className="p-6 border-b lg:border-b-0 md:border-r last:border-r-0 border-[#D6D3C9] flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-5 font-mono text-xs">
+                  <span className="uppercase tracking-widest text-[#FF4F00] font-bold">{pillar.tag}</span>
+                  <span className="text-[#3E4552] font-bold">{pillar.num}</span>
+                </div>
+                <div className="w-10 h-10 border border-[#D6D3C9] bg-[#F2F0EA] flex items-center justify-center mb-4">
+                  <CadBlueprintIcon index={i} />
+                </div>
+                <h3 className="font-sans text-lg font-extrabold text-[#07080A] mb-2">{pillar.title}</h3>
+                <p className="font-sans text-xs text-[#3E4552] leading-relaxed">{pillar.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Matriz Comparativa Horizontal + Estándares STD-01..06 */}
+        <div className="mb-14">
+          <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-[#07080A] font-bold mb-4">
+            {isEs
+              ? 'MATRIZ COMPARATIVA DE ARQUITECTURA (AGENCIA VS. SAAS ENLATADO VS. ARBIZU LABS)'
+              : 'ARCHITECTURAL COMPARISON MATRIX (AGENCY VS. CANNED SAAS VS. ARBIZU LABS)'}
+          </h3>
+          <div className="overflow-x-auto border border-[#D6D3C9] bg-[#FFFFFF]">
+            <table className="w-full text-left font-mono text-xs">
+              <thead className="bg-[#07080A] text-[#F2F0EA] uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th className="p-4">{isEs ? 'Vector Técnico' : 'Engineering Vector'}</th>
+                  <th className="p-4">{isEs ? 'Agencia Cloud-Only' : 'Cloud-Only Agency'}</th>
+                  <th className="p-4">{isEs ? 'SaaS Genérico' : 'Generic SaaS'}</th>
+                  <th className="p-4 text-[#00E599]">{isEs ? 'Arquitectura Soberana Arbizu Labs' : 'Arbizu Labs Sovereign Architecture'}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#D6D3C9]">
+                {comparisonRows.map((r) => (
+                  <tr key={r.dimension}>
+                    <td className="p-4 font-sans font-bold text-[#07080A]">{r.dimension}</td>
+                    <td className="p-4 text-[#3E4552]">
+                      <span className="inline-flex items-center gap-1.5">
+                        <XCircle className="w-3.5 h-3.5 text-[#F43F5E] shrink-0" />
+                        <span>{r.traditional}</span>
+                      </span>
+                    </td>
+                    <td className="p-4 text-[#3E4552]">{r.cannedSaas}</td>
+                    <td className="p-4 font-bold text-[#07080A] bg-[#F2F0EA]/60">
+                      <span className="inline-flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#FF4F00] shrink-0" />
+                        <span>{r.sovereign}</span>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Estándares Auditables STD-01..06 */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-[#D6D3C9] bg-[#FFFFFF] font-mono tabular-nums mb-10">
+          {t.standards.items.slice(0, 6).map((std, idx) => (
+            <div key={std.title} className="p-4 border-b lg:border-b-0 border-r last:border-r-0 border-[#D6D3C9]">
+              <div className="text-[10px] text-[#FF4F00] font-bold">STD-0{idx + 1}</div>
+              <div className="font-sans text-xs font-extrabold text-[#07080A] mt-1">{std.title}</div>
+              <div className="text-[10px] text-[#3E4552] mt-1">{std.tag}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Cierre Táctico Editorial */}
+        <div className="p-6 sm:p-8 bg-[#07080A] text-[#F2F0EA] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold">
+              ARBIZU LABS // COMPROMISO DE ENTREGA CERRADA
+            </span>
+            <h3 className="font-sans text-xl sm:text-2xl font-extrabold text-[#F6F7F9]">
+              {isEs
+                ? 'Infraestructura entregada con código propietario, CI/CD auditado y cero cuotas cautivas.'
+                : 'Delivered with 100% proprietary source code, audited CI/CD, and zero vendor lock-in.'}
+            </h3>
+          </div>
+          <div className="flex flex-wrap gap-3 shrink-0">
             <button
               type="button"
-              onMouseEnter={playHoverTick}
               onClick={() => {
-                soundEngine.playSuccess();
                 playEngagePulse();
                 setIsContractOpen(true);
               }}
-              className="px-5 py-2.5 rounded-xl font-space text-xs font-black uppercase tracking-wider bg-[#D4AF37] text-[#070B12] hover:bg-[#F8FAFC] transition-all shadow-[0_0_20px_rgba(212,175,55,0.35)] cursor-pointer"
+              className="px-5 py-3 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] cursor-pointer transition-colors"
             >
-              Iniciar Consulta Técnica
+              {isEs ? 'Solicitar Auditoría de Campo →' : 'Request Architecture Audit →'}
             </button>
             <a
-              href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20contratar%20servicios%20de%20ingeniería%20con%20Arbizu%20Labs"
+              href="https://aldoarbizu.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-xl font-space text-xs font-bold uppercase tracking-wider bg-[var(--bg-btn)] border border-[var(--accent-border-strong)] text-[var(--text-primary)] hover:border-[var(--accent)] transition-all"
+              className="px-5 py-3 border border-white/25 text-[#F2F0EA] hover:border-[#D4AF37] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center gap-1.5"
             >
-              WhatsApp Directo
+              <span>{isEs ? 'Ver Autoría Técnica' : 'Principal Specs'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37]" />
             </a>
           </div>
         </div>

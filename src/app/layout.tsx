@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist, JetBrains_Mono, Space_Mono, Inter } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
@@ -11,33 +11,15 @@ import { LanguageProvider } from "@/context/LanguageContext";
 
 const geistSans = Geist({
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
   variable: "--font-geist-sans",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
-  variable: "--font-cormorant",
   display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
-
-const space = Space_Mono({
-  subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-space",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -100,8 +82,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-theme="v1" className={`${geistSans.variable} ${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`} suppressHydrationWarning>
-      <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[var(--color-arbizu-teal)]/30" suppressHydrationWarning>
+    <html lang="es" data-theme="v1" data-luminance="soc" className={`${geistSans.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+      <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[#FF4F00]/30 selection:text-white" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID_ARBIZU &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("YYYY") &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("XXXX") && (

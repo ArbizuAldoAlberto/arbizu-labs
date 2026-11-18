@@ -32,17 +32,15 @@ export default function Telemetry3DSection() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mb-10">
-          <span className="badge-enterprise mb-4 inline-flex items-center gap-2">
-            <span className="inline-flex items-center justify-center text-[var(--accent)] drop-shadow-[0_0_6px_var(--accent)]">
-              <Cpu className="w-3.5 h-3.5" />
-            </span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold inline-flex items-center gap-2 mb-3">
+            <Cpu className="w-3.5 h-3.5" />
             <span>
               {locale === 'es'
-                ? 'GEMELO DIGITAL INTERACTIVO · WEBGL PBR & SHADER FLIR'
-                : 'INTERACTIVE DIGITAL TWIN · WEBGL PBR & FLIR SHADER'}
+                ? '[04 // GEMELO DIGITAL WEBGL 60 FPS · DRACO LOCAL & SHADER FLIR]'
+                : '[04 // INTERACTIVE 60 FPS DIGITAL TWIN · LOCAL DRACO & FLIR SHADER]'}
             </span>
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-[var(--text-primary)] font-bold tracking-tight mb-3">
+          <h2 className="font-sans text-3xl sm:text-5xl text-[var(--text-primary)] font-extrabold tracking-[-0.03em] mb-3">
             {locale === 'es'
               ? 'Laboratorio de Telemetría & Hardware Embebido 3D'
               : '3D Embedded Hardware & Telemetry Lab'}

@@ -1,0 +1,35 @@
+# Arbizu Labs — Sovereign Field, Offline-First & Quant Systems (v3.0-sovereign)
+
+> Commercial B2B Hub: https://arbizulabs.com
+> Principal Systems Architect Hub: https://aldoarbizu.com
+> Entity: Aldo Alberto Arbizu (CUIT 20-38362060-1) · San Carlos de Bolívar, Buenos Aires, Argentina
+> Commercial B2B Contact: aldo@arbizulabs.com | Direct WhatsApp: +54 9 2314 489197
+
+## Core Engineering Capabilities & Verified Benchmarks
+- **Offline-First Mobile & Local Persistence:** React Native + SQLite WAL (`journal_mode = WAL`), zero-loss cryptographic transaction queues, bidirectional background sync.
+- **Database & Edge Hardening (`v2.1.0-ironclad`):** PostgreSQL Row-Level Security (`60/60 PASS` automated cross-tenant intrusion suite), views with `security_invoker = on`, RPC `SET search_path = public`, 4-layer API/Edge Shield (JWT/HMAC + Rate Limit 429 + Size Cap 16KB/64KB 413 + AI_KILL_SWITCH 503).
+- **Quantitative Trading Infrastructure (`SYS-01`):** Binance Futures persistent WebSockets (`<10ms` tick execution), Pessimistic SL-First backtest/live parity, 1.50% Hard Risk Cap.
+- **Bit-to-Atom Hardware & Thermography:** Calibrated FLIR industrial thermographic inspections, LiDAR ToF grain storage monitoring, GIS drone surveys, Blender headless / FDM 3D manufacturing.
+
+## Active Sovereign Product Dynasty (`SYS-01` .. `SYS-12`)
+- [SYS-01 TitanFlow Quant Engine](https://titanflow.aldoarbizu.com): Algorithmic execution & deterministic risk management.
+- [SYS-02 SentinelOS Dispatch](https://sentinelos.aldoarbizu.com): Multi-tenant private security guard rounds, NFC/GPS anti-spoofing, SOS gateway.
+- [SYS-03 AgroMarket Pro](https://agromarket.aldoarbizu.com): Rural grain intake, silo bags, weighbridges & SENASA offline traceability.
+- [SYS-04 NOMAD Tactical Hub](https://nomadhub.aldoarbizu.com): Off-grid PWA, AFSK/SSTV radio modem, LoRa Meshtastic, exFAT USB Ark PAR2.
+- [SYS-05 Verify Cryptographic Trust](https://verify.aldoarbizu.com): Audit & quote verification (`https://arbizulabs.com/security`).
+- [SYS-06 CannaSavias Simulator](https://cannasavias.aldoarbizu.com): B2B Software Simulator for REPROCANN authorized club traceability ($75,000 ARS software license; zero regulated substance sales).
+- [SYS-07 AeroShot Drones](https://aeroshot.aldoarbizu.com): 4K multispectral aerial surveys & NDVI analytics.
+- [SYS-08 ab3d-forge](https://impresion3d.aldoarbizu.com): Parametric 3D CAD, WASM STL slicer & FDM prototyping.
+- [SYS-09 Hábitat](https://habitat.aldoarbizu.com): PropTech direct lease & land contracts signed on Base L2.
+- [SYS-10 EcoConnect ESG](https://ecoconnect.aldoarbizu.com): Sentinel-2 NDVI ecological verification.
+- [SYS-11 Aureus Wealth OS](https://aureus.aldoarbizu.com): Internal/Enterprise Private Wealth ERP.
+- [SYS-12 Smart Marketing AI](https://marketingadvisor.aldoarbizu.com): Self-hosted n8n + structured Gemini 2.5 demand pipelines.
+
+## Programmatic Solutions & Verification
+- [Offline Grain & Silo Storage Software](https://arbizulabs.com/solutions/software-acopio-granos-silobolsa-offline)
+- [Offline Private Security Guard Patrol System](https://arbizulabs.com/solutions/sistema-control-rondas-seguridad-privada-offline)
+- [Industrial FLIR Thermography Audit Buenos Aires](https://arbizulabs.com/solutions/auditoria-termografica-flir-industrial-buenos-aires)
+- [REPROCANN Club Traceability B2B Software Simulator](https://arbizulabs.com/solutions/software-trazabilidad-reprocann-clubes-cultivo)
+- [Algorithmic Binance Futures Trading Architecture](https://arbizulabs.com/solutions/desarrollo-bots-trading-algoritmico-binance-futures)
+- [Full Technical Ontology](/llms-full.txt)
+- [Security & Quote Verifier](https://arbizulabs.com/security)

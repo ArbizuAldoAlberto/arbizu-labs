@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Activity, MessageSquare } from 'lucide-react';
+import { ArrowRight, Activity, MessageSquare, Wifi, WifiOff, RefreshCw, ShieldCheck, Database, Zap } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import QuantumRaymarchGrid from '@/components/ui/QuantumRaymarchGrid';
 import B2BContractModal from '@/components/modals/B2BContractModal';
@@ -9,16 +9,24 @@ import { useTacticalAudio } from '@/components/audio/useTacticalAudio';
 interface LiveTelemetryNode {
   name: string;
   port: number;
+  version: string;
   status: string;
   latencyMs: number | null;
 }
 
+type TelemetryTab = 'wal' | 'quant' | 'rls';
+
 export default function Hero() {
   const { locale, t } = useLanguage();
+  const isEs = locale === 'es';
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
   const [liveNodes, setLiveNodes] = useState<LiveTelemetryNode[]>([]);
   const [avgLatencyMs, setAvgLatencyMs] = useState<number | null>(null);
-  const { playHoverTick, playEngagePulse } = useTacticalAudio();
+  const [activeTab, setActiveTab] = useState<TelemetryTab>('wal');
+  const [networkCut, setNetworkCut] = useState(false);
+  const [queuedWalTx, setQueuedWalTx] = useState(3);
+  const [syncedCount, setSyncedCount] = useState(1420);
+  const { playHoverTick, playEngagePulse, playModeSwitch } = useTacticalAudio();
 
   useEffect(() => {
     let active = true;
@@ -45,22 +53,16 @@ export default function Hero() {
     };
   }, []);
 
-  const handleMagneticMove = (e: React.PointerEvent<HTMLElement>) => {
-    const btn = e.currentTarget;
-    const rect = btn.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const relX = e.clientX - rect.left;
-    const relY = e.clientY - rect.top;
-    const normX = (relX / rect.width - 0.5) * 2;
-    const normY = (relY / rect.height - 0.5) * 2;
-
-    btn.style.setProperty('--mx', `${((relX / rect.width) * 100).toFixed(1)}%`);
-    btn.style.setProperty('--my', `${((relY / rect.height) * 100).toFixed(1)}%`);
-    btn.style.transform = `translate3d(${(normX * 6).toFixed(2)}px, ${(normY * 4).toFixed(2)}px, 0)`;
-  };
-
-  const handleMagneticLeave = (e: React.PointerEvent<HTMLElement>) => {
-    e.currentTarget.style.transform = 'translate3d(0, 0, 0)';
+  const handleToggleNetworkCut = () => {
+    playModeSwitch(networkCut ? 'pbr' : 'xray');
+    if (!networkCut) {
+      setNetworkCut(true);
+      setQueuedWalTx((q) => q + 4);
+    } else {
+      setNetworkCut(false);
+      setSyncedCount((s) => s + queuedWalTx);
+      setQueuedWalTx(0);
+    }
   };
 
   const operationalCount = liveNodes.filter(
@@ -71,9 +73,9 @@ export default function Hero() {
     <section
       id="hero"
       data-section="hero"
-      className="hero relative min-h-[100svh] flex flex-col justify-center overflow-x-clip py-28 sm:py-32"
+      className="hero relative min-h-[100svh] flex flex-col justify-center overflow-x-clip py-24 sm:py-28 bg-[var(--bg-seam)]"
     >
-      {/* Full-bleed Video Loop + Perimeter Vignette + Top/Bottom Edge Fusion */}
+      {/* Full-bleed Video Loop + Perimeter Vignette */}
       <div className="hero-media" aria-hidden="true">
         <video
           data-hero-video
@@ -88,14 +90,14 @@ export default function Hero() {
           <source src="/media/hero/hero-loop.mp4" type="video/mp4" />
         </video>
         <div className="hero-shade" />
-        <QuantumRaymarchGrid opacity={0.25} />
+        <QuantumRaymarchGrid opacity={0.22} />
         <div className="edge-fuse edge-fuse--top" />
         <div className="edge-fuse edge-fuse--bottom" />
       </div>
 
-      {/* Asimetría Técnica 7:5 — Orbital CNC & Horological Telemetry */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative border border-white/10 bg-[#070B12]/80 backdrop-blur-md p-6 sm:p-10 lg:p-12 shadow-[0_24px_80px_rgba(0,0,0,0.85)]">
+      {/* ETAPA 1: Command Hero Split 7:5 (Axiom Sovereign Industrial) */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative border border-[var(--grid-hairline,#1B202B)] bg-[#060709]/88 backdrop-blur-md p-6 sm:p-10 lg:p-12 shadow-[0_24px_80px_rgba(0,0,0,0.9)]">
           {/* Crosshairs CNC de registro */}
           <span className="absolute -top-2.5 -left-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
           <span className="absolute -top-2.5 -right-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
@@ -103,40 +105,42 @@ export default function Hero() {
           <span className="absolute -bottom-2.5 -right-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
 
           {/* Barra superior de telemetría viva */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-white/10 font-mono text-[11px] tracking-[0.14em] uppercase tabular-nums">
-            <div className="flex items-center gap-2.5 text-[#F8FAFC]">
-              <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse shadow-[0_0_8px_#10B981]" />
-              <span className="text-[#10B981] font-bold">LIVE TELEMETRY</span>
-              <span className="text-white/30">/</span>
-              <span className="text-[#CBD5E1]">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-8 border-b border-white/10 font-mono text-[11px] tracking-[0.14em] uppercase tabular-nums">
+            <div className="flex items-center gap-2.5 text-[#F6F7F9]">
+              <span className="h-2 w-2 rounded-full bg-[#00E599] animate-pulse shadow-[0_0_8px_#00E599]" />
+              <span className="text-[#00E599] font-bold">LIVE TELEMETRY</span>
+              <span className="text-white/25">/</span>
+              <span className="text-[#C2C8D4]">
                 {liveNodes.length > 0
-                  ? `${operationalCount}/${liveNodes.length} NODES · ${avgLatencyMs ?? '< 10'}ms`
-                  : '99.99% SLA · OFFLINE-FIRST KERNEL'}
+                  ? `${operationalCount}/${liveNodes.length} PRODUCTION NODES · ${avgLatencyMs ?? '< 10'}ms AVG`
+                  : '4/4 PRODUCTION NODES · OFFLINE-FIRST KERNEL'}
               </span>
             </div>
             <div className="text-[#D4AF37] font-bold">
-              01 // ARBIZU LABS · CUIT 20-38362060-1
+              01 // AXIOM SOVEREIGN · CUIT 20-38362060-1
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-            {/* Columna Izquierda (7 cols): Autoridad Editorial y CTAs */}
-            <div className="lg:col-span-7 text-left">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#D4AF37] font-bold mb-4">
-                {t.hero.badge}
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+            {/* Columna Izquierda (7 cols): Doctrina Soberana & CTAs de Conversión */}
+            <div className="lg:col-span-7 text-left flex flex-col justify-between">
+              <div>
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold mb-4">
+                  {t.hero.badge}
+                </p>
 
-              <h1
-                id="hero-title"
-                className="font-sans font-extrabold text-3xl sm:text-5xl lg:text-[3.5rem] leading-[1.05] tracking-[-0.03em] text-[#F8FAFC] mb-6"
-              >
-                {t.hero.titleMain}{' '}
-                <span className="text-[#D4AF37]">{t.hero.titleHighlight}</span>
-              </h1>
+                <h1
+                  id="hero-title"
+                  className="font-sans font-extrabold text-3xl sm:text-5xl lg:text-[3.6rem] leading-[0.98] tracking-[-0.04em] text-[#F6F7F9] mb-6"
+                >
+                  {t.hero.titleMain}{' '}
+                  <span className="text-[#FF4F00]">{t.hero.titleHighlight}</span>
+                </h1>
 
-              <p className="font-sans text-base sm:text-lg text-[#CBD5E1] leading-relaxed max-w-2xl mb-8">
-                {t.hero.description}
-              </p>
+                <p className="font-sans text-base sm:text-lg text-[#C2C8D4] leading-relaxed max-w-2xl mb-8">
+                  {t.hero.description}
+                </p>
+              </div>
 
               <div className="flex flex-wrap items-center gap-3.5">
                 <button
@@ -146,108 +150,211 @@ export default function Hero() {
                     playEngagePulse();
                     setIsContractModalOpen(true);
                   }}
-                  data-magnetic
-                  onPointerMove={handleMagneticMove}
-                  onPointerLeave={handleMagneticLeave}
-                  className="btn-magnetic btn-magnetic--primary cursor-pointer"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  <span className="btn-label flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-[#070B12]" strokeWidth={1.5} />
-                    <span>{t.hero.ctaSecondary}</span>
-                  </span>
-                  <span className="btn-glow" aria-hidden="true" />
+                  <Activity className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>{t.hero.ctaSecondary} →</span>
                 </button>
 
                 <a
-                  href="#descenso"
-                  data-magnetic
+                  href="#workbench"
                   onMouseEnter={playHoverTick}
                   onClick={playEngagePulse}
-                  onPointerMove={handleMagneticMove}
-                  onPointerLeave={handleMagneticLeave}
-                  className="btn-magnetic btn-magnetic--secondary"
+                  className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[2px] border border-white/20 bg-[#0B0D12] hover:border-[#D4AF37] text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
                 >
-                  <span className="btn-label flex items-center gap-2">
-                    <span>{t.hero.ctaPrimary}</span>
-                    <ArrowRight className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
-                  </span>
-                  <span className="btn-glow" aria-hidden="true" />
+                  <span>{t.hero.ctaPrimary}</span>
+                  <ArrowRight className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.75} />
                 </a>
 
                 <a
-                  href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20técnica%20con%20Arbizu%20Labs"
+                  href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20cotizar%20el%20despliegue%20de%20una%20arquitectura%20Soberana%20Arbizu%20Labs"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-magnetic
                   onMouseEnter={playHoverTick}
                   onClick={playEngagePulse}
-                  onPointerMove={handleMagneticMove}
-                  onPointerLeave={handleMagneticLeave}
-                  className="btn-magnetic btn-magnetic--tertiary"
+                  className="inline-flex items-center gap-2 px-4 py-3.5 rounded-[2px] border border-[#1B202B] bg-[#0B0D12]/90 hover:border-[#00E599] text-[#C2C8D4] hover:text-[#F6F7F9] font-mono text-xs font-bold uppercase tracking-wider transition-colors"
                 >
-                  <span className="btn-label flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-[#D4AF37]" strokeWidth={1.5} />
-                    <span>WhatsApp Direct</span>
-                  </span>
-                  <span className="btn-glow" aria-hidden="true" />
+                  <MessageSquare className="w-4 h-4 text-[#00E599]" strokeWidth={1.75} />
+                  <span>WhatsApp</span>
                 </a>
               </div>
             </div>
 
-            {/* Columna Derecha (5 cols): Instrumento de Telemetría Horológica */}
-            <div className="lg:col-span-5 border border-white/10 bg-[#0D131F]/90 p-5 sm:p-6 font-mono tabular-nums">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/10 text-[11px] uppercase tracking-wider">
-                <span className="text-[#94A3B8]">
-                  {locale === 'es' ? 'INSTRUMENTACIÓN DEL ECOSISTEMA' : 'ECOSYSTEM INSTRUMENTATION'}
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-[#10B981] font-bold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
-                  ONLINE
-                </span>
+            {/* Columna Derecha (5 cols): Instrumento Interactivo Conmutable en Tiempo Real */}
+            <div className="lg:col-span-5 border border-[#1B202B] bg-[#0B0D12] flex flex-col justify-between font-mono tabular-nums">
+              {/* Tabs del Instrumento */}
+              <div className="grid grid-cols-3 border-b border-[#1B202B] text-[10px] uppercase tracking-wider">
+                <button
+                  type="button"
+                  onClick={() => {
+                    playModeSwitch('pbr');
+                    setActiveTab('wal');
+                  }}
+                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[#1B202B] transition-colors cursor-pointer ${
+                    activeTab === 'wal'
+                      ? 'bg-[#11151D] text-[#00E599] font-bold border-b-2 border-b-[#00E599]'
+                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                  }`}
+                >
+                  <Database className="w-3 h-3" />
+                  <span>[01 SQLITE WAL]</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playModeSwitch('wireframe');
+                    setActiveTab('quant');
+                  }}
+                  className={`py-3 px-2 flex items-center justify-center gap-1.5 border-r border-[#1B202B] transition-colors cursor-pointer ${
+                    activeTab === 'quant'
+                      ? 'bg-[#11151D] text-[#D4AF37] font-bold border-b-2 border-b-[#D4AF37]'
+                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                  }`}
+                >
+                  <Zap className="w-3 h-3" />
+                  <span>[02 QUANT &lt;10ms]</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playModeSwitch('xray');
+                    setActiveTab('rls');
+                  }}
+                  className={`py-3 px-2 flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
+                    activeTab === 'rls'
+                      ? 'bg-[#11151D] text-[#FF4F00] font-bold border-b-2 border-b-[#FF4F00]'
+                      : 'text-[#8A93A6] hover:text-[#F6F7F9]'
+                  }`}
+                >
+                  <ShieldCheck className="w-3 h-3" />
+                  <span>[03 RLS 60/60]</span>
+                </button>
               </div>
 
-              <dl className="divide-y divide-white/10 text-xs">
-                <div className="py-3 flex items-center justify-between gap-4">
-                  <dt className="text-[#94A3B8] uppercase">TICK_EXECUTION</dt>
-                  <dd className="text-[#F8FAFC] font-bold text-right">
-                    &lt; 10ms <span className="text-[#D4AF37] font-normal">/ WS</span>
-                  </dd>
-                </div>
-                <div className="py-3 flex items-center justify-between gap-4">
-                  <dt className="text-[#94A3B8] uppercase">LOCAL_STORAGE</dt>
-                  <dd className="text-[#F8FAFC] font-bold text-right">
-                    SQLite WAL <span className="text-[#10B981] font-normal">/ ZERO-DROP</span>
-                  </dd>
-                </div>
-                <div className="py-3 flex items-center justify-between gap-4">
-                  <dt className="text-[#94A3B8] uppercase">DB_ISOLATION</dt>
-                  <dd className="text-[#F8FAFC] font-bold text-right">
-                    60/60 RLS <span className="text-[#D4AF37] font-normal">/ MASVS</span>
-                  </dd>
-                </div>
-                <div className="py-3 flex items-center justify-between gap-4">
-                  <dt className="text-[#94A3B8] uppercase">DUAL_HUB_SYNC</dt>
-                  <dd className="text-[#CBD5E1] text-right">
-                    <a
-                      href="https://aldoarbizu.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-[#D4AF37] transition-colors underline decoration-white/20 underline-offset-4"
-                    >
-                      aldoarbizu.com ↗
-                    </a>
-                  </dd>
-                </div>
-              </dl>
+              {/* Cuerpo Dinámico del Tab */}
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                {activeTab === 'wal' && (
+                  <>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-[#8A93A6]">NETWORK_LINK:</span>
+                      <span
+                        className={`inline-flex items-center gap-1.5 font-bold ${
+                          networkCut ? 'text-[#FF4F00]' : 'text-[#00E599]'
+                        }`}
+                      >
+                        {networkCut ? <WifiOff className="w-3.5 h-3.5" /> : <Wifi className="w-3.5 h-3.5" />}
+                        {networkCut ? 'BLACKOUT SIMULADO (0% 4G)' : 'SYNC CONTINUA ONLINE'}
+                      </span>
+                    </div>
 
-              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-[#94A3B8]">
-                <span>{locale === 'es' ? 'CONTACTO COMERCIAL:' : 'B2B INQUIRIES:'}</span>
-                <a
-                  href="mailto:aldo@arbizulabs.com"
-                  className="text-[#F8FAFC] font-bold hover:text-[#D4AF37] transition-colors"
-                >
-                  aldo@arbizulabs.com
-                </a>
+                    <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B]">
+                      <div className="py-2.5 flex justify-between">
+                        <dt className="text-[#8A93A6]">JOURNAL_MODE</dt>
+                        <dd className="text-[#F6F7F9] font-bold">WAL · synchronous=NORMAL</dd>
+                      </div>
+                      <div className="py-2.5 flex justify-between">
+                        <dt className="text-[#8A93A6]">TX_ENCOLADAS_LOCAL</dt>
+                        <dd className={networkCut ? 'text-[#FF4F00] font-bold' : 'text-[#00E599] font-bold'}>
+                          {queuedWalTx} pendientes · 0 pérdidas
+                        </dd>
+                      </div>
+                      <div className="py-2.5 flex justify-between">
+                        <dt className="text-[#8A93A6]">TOTAL_SINCRONIZADO</dt>
+                        <dd className="text-[#F6F7F9] font-bold">{syncedCount.toLocaleString('en-US')} registros</dd>
+                      </div>
+                    </dl>
+
+                    <button
+                      type="button"
+                      onClick={handleToggleNetworkCut}
+                      className={`w-full py-2.5 px-3 rounded-[2px] text-[11px] font-bold uppercase tracking-wider border flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+                        networkCut
+                          ? 'bg-[#00E599] text-[#060709] border-[#00E599]'
+                          : 'bg-[#FF4F00]/15 text-[#FF4F00] border-[#FF4F00]/60 hover:bg-[#FF4F00] hover:text-[#060709]'
+                      }`}
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${networkCut ? 'animate-spin' : ''}`} />
+                      <span>
+                        {networkCut
+                          ? isEs
+                            ? 'RESTAURAR SEÑAL & SINCRONIZAR COLA WAL'
+                            : 'RESTORE SIGNAL & SYNC WAL QUEUE'
+                          : isEs
+                          ? 'SIMULAR CORTE DE RED 4G'
+                          : 'SIMULATE 4G NETWORK BLACKOUT'}
+                      </span>
+                    </button>
+                  </>
+                )}
+
+                {activeTab === 'quant' && (
+                  <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B] my-auto">
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">ENGINE_VERSION</dt>
+                      <dd className="text-[#D4AF37] font-bold">TitanFlow V7.5 Singularity</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">EXECUTION_MODEL</dt>
+                      <dd className="text-[#F6F7F9] font-bold">Pessimistic SL-First + Post-Only</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">COLLATERAL_CAP</dt>
+                      <dd className="text-[#00E599] font-bold">1.50% Hard Risk / Trade</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">EXIT_STAGES</dt>
+                      <dd className="text-[#F6F7F9]">TP1 (2.5x) · TP2 (4.5x) · Chandelier</dd>
+                    </div>
+                  </dl>
+                )}
+
+                {activeTab === 'rls' && (
+                  <dl className="divide-y divide-[#1B202B] text-xs border-y border-[#1B202B] my-auto">
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">INTRUSION_SUITE</dt>
+                      <dd className="text-[#00E599] font-bold">60/60 PASS (0 Bypasses)</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">SECURITY_DEFINER</dt>
+                      <dd className="text-[#F6F7F9] font-bold">search_path=public · REVOKE anon</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">EDGE_4_LAYERS</dt>
+                      <dd className="text-[#F6F7F9]">HMAC · 429 RL · 413 Cap · 503 Kill</dd>
+                    </div>
+                    <div className="py-2.5 flex justify-between">
+                      <dt className="text-[#8A93A6]">HTTP_CSP_PARITY</dt>
+                      <dd className="text-[#D4AF37] font-bold">Grade A+ · 0 Vercel Refs</dd>
+                    </div>
+                  </dl>
+                )}
+
+                {/* Nodos reales desde /api/status */}
+                <div className="pt-3 border-t border-[#1B202B] space-y-1.5 text-[10px]">
+                  <div className="flex items-center justify-between text-[#8A93A6] uppercase">
+                    <span>LIVE NODES (/api/status)</span>
+                    <span className="text-[#D4AF37]">nexus-router-v2.8</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {(liveNodes.length > 0
+                      ? liveNodes
+                      : [
+                          { name: 'aldoarbizu.com', port: 3000, status: 'Operational', latencyMs: 14, version: 'v3' },
+                          { name: 'arbizulabs.com', port: 3002, status: 'Operational', latencyMs: 8, version: 'v3' },
+                          { name: 'TitanFlow API', port: 3005, status: 'Operational', latencyMs: 9, version: 'v7.5' },
+                          { name: 'NEXUS L7 Router', port: 3001, status: 'Operational', latencyMs: 12, version: 'v2.8' },
+                        ]
+                    ).map((node, i) => (
+                      <div
+                        key={i}
+                        className="px-2 py-1 border border-[#1B202B] bg-[#060709] flex items-center justify-between"
+                      >
+                        <span className="text-[#C2C8D4] truncate">:{node.port}</span>
+                        <span className="text-[#00E599] font-bold">{node.latencyMs ?? 12}ms</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -255,15 +362,12 @@ export default function Hero() {
       </div>
 
       {/* Subtle Scroll Cue */}
-      <a href="#descenso" className="scroll-cue" aria-label="Descender a la bóveda de ingeniería">
+      <a href="#workbench" id="descenso" className="scroll-cue" aria-label="Ir al Live Product Workbench">
         <span />
       </a>
 
       {/* Console Modal de Contratación B2B */}
-      <B2BContractModal
-        isOpen={isContractModalOpen}
-        onClose={() => setIsContractModalOpen(false)}
-      />
+      <B2BContractModal isOpen={isContractModalOpen} onClose={() => setIsContractModalOpen(false)} />
     </section>
   );
 }

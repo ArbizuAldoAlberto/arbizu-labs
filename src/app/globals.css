@@ -1,22 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --font-cormorant: var(--font-cormorant), "Times New Roman", Times, serif;
-  --font-jetbrains: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-space: var(--font-space), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-inter: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-jetbrains: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-space: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* ==========================================================================
-   ARBIZU LABS — SISTEMA DE DISEÑO DUAL (V1 BÓVEDA PROFUNDA / V2 TURQUESA)
-   Arquitectura CSS blindada:
+   ARBIZU LABS — AXIOM SOVEREIGN INDUSTRIAL (v3.0-SOVEREIGN BI-LUMINANCE)
    - html, body, main, #main-content: overflow-x: clip; overflow-y: visible
    - CERO overflow: hidden / overflow-x: hidden en ancestros de .seq-sticky
-   - V1: Deep Vault Black (#03070e / #06101c)
-   - V2: Luminous Turquoise/Aquamarine Perimeter (#072a30 / #09353c) con centro
-         55%x55% de video/canvas 100% transparente e intacto
+   - Luminancia Dual: SOC Night Carbon (#060709 / #0B0D12) + Titanium Paper (#F2F0EA)
    ========================================================================== */
 
 :root,
@@ -24,87 +21,133 @@ html:not([data-theme="v2"]),
 html[data-theme="v1"] {
   color-scheme: dark;
 
-  /* Tokens Ejecutivos Unificados — Titanium & Warm Bronze (#070B12 / #D4AF37 / #F8FAFC) */
-  --color-space-black: #070B12;
-  --color-deep-space: #070B12;
-  --color-slate-black: #0A0F1A;
-  --color-mist-gray: #94A3B8;
-  --color-space-border: rgba(255, 255, 255, 0.08);
-  --color-space-border-hover: rgba(212, 175, 55, 0.42);
+  /* 1. Carrocería Primaria Axiom Sovereign Industrial */
+  --surface-void: #060709;
+  --surface-chassis: #0B0D12;
+  --surface-elevated: #11151D;
+  --surface-glass: rgba(11, 13, 18, 0.84);
+
+  /* 2. Papel Técnico de Titanio (Bi-Luminancia & Field Daylight) */
+  --surface-paper: #F2F0EA;
+  --surface-paper-card: #FFFFFF;
+  --ink-on-paper: #07080A;
+  --ink-muted-on-paper: #3E4552;
+  --border-on-paper: #D6D3C9;
+
+  /* 3. Acentos Funcionales & Dinastía */
+  --accent-signal: #FF4F00;
+  --accent-oxide-gold: #D4AF37;
+  --accent-telemetry: #00E599;
+  --accent-alert: #F43F5E;
+  --dynasty-quant: #D4AF37;
+  --dynasty-security: #00B4D8;
+  --dynasty-agtech: #10B981;
+  --dynasty-tactical: #FF4F00;
+  --grid-hairline: #1B202B;
+  --radius-chassis: 2px;
+
+  /* Compatibilidad estructural con tokens del sistema */
+  --color-space-black: #060709;
+  --color-deep-space: #0B0D12;
+  --color-slate-black: #11151D;
+  --color-mist-gray: #C2C8D4;
+  --color-space-border: #1B202B;
+  --color-space-border-hover: rgba(255, 79, 0, 0.55);
 
   --color-arbizu-teal: #D4AF37;
-  --color-arbizu-teal-glow: rgba(212, 175, 55, 0.22);
+  --color-arbizu-teal-glow: rgba(255, 79, 0, 0.24);
   --color-arbizu-purple: #8C6D46;
   --color-arbizu-gold: #D4AF37;
-  --color-arbizu-cyan: #E2E8F0;
+  --color-arbizu-cyan: #F2F0EA;
 
   --glass-blur: 16px;
-  --glass-bg: rgba(7, 11, 18, 0.78);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(11, 13, 18, 0.84);
+  --glass-border: #1B202B;
 
-  /* Paleta Ejecutiva — Obsidian Dark (#070B12) */
-  --bg-seam: #070B12;
-  --bg-deep: #070B12;
-  --bg-surface: #0A0F1A;
-  --bg-elevated: #0F172A;
-  --bg-card: rgba(7, 11, 18, 0.82);
-  --bg-card-solid: #070B12;
-  --bg-glass: rgba(7, 11, 18, 0.76);
-  --bg-btn: #0B111E;
+  --bg-seam: #060709;
+  --bg-deep: #060709;
+  --bg-surface: #0B0D12;
+  --bg-elevated: #11151D;
+  --bg-card: rgba(11, 13, 18, 0.88);
+  --bg-card-solid: #0B0D12;
+  --bg-glass: rgba(6, 7, 9, 0.82);
+  --bg-btn: #0B0D12;
 
-  /* Tipografía Platino & Acero (WCAG AAA >= 7:1 garantizado) */
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  /* Tipografía WCAG AAA */
+  --text-primary: #F6F7F9;
+  --text-secondary: #C2C8D4;
+  --text-muted: #8A93A6;
 
-  /* Acentos Oro Solar / Bronce Técnico (#D4AF37) */
-  --accent: #D4AF37;
-  --accent-brand: #8C6D46;
-  --accent-strong: #F8FAFC;
-  --accent-soft: rgba(212, 175, 55, 0.16);
-  --accent-border: rgba(255, 255, 255, 0.08);
-  --accent-border-strong: rgba(212, 175, 55, 0.48);
-  --grid-line: rgba(212, 175, 55, 0.055);
-  --ambient-glow-a: rgba(212, 175, 55, 0.16);
-  --ambient-glow-b: rgba(148, 163, 184, 0.10);
+  --accent: #FF4F00;
+  --accent-brand: #D4AF37;
+  --accent-strong: #F2F0EA;
+  --accent-soft: rgba(255, 79, 0, 0.16);
+  --accent-border: #1B202B;
+  --accent-border-strong: rgba(212, 175, 55, 0.55);
+  --grid-line: rgba(242, 240, 234, 0.045);
+  --ambient-glow-a: rgba(255, 79, 0, 0.12);
+  --ambient-glow-b: rgba(212, 175, 55, 0.10);
 
-  /* Fusión de bordes de video y canvas V1 (0%..18% top y bottom) */
   --fuse-edge-height: 18%;
   --fuse-top-gradient: linear-gradient(
     to bottom,
-    #03070e 0%,
-    rgba(3, 7, 14, 0.82) 32%,
-    rgba(3, 7, 14, 0.34) 68%,
+    #060709 0%,
+    rgba(6, 7, 9, 0.84) 32%,
+    rgba(6, 7, 9, 0.34) 68%,
     transparent 100%
   );
   --fuse-bottom-gradient: linear-gradient(
     to top,
-    #03070e 0%,
-    rgba(3, 7, 14, 0.86) 34%,
-    rgba(3, 7, 14, 0.38) 70%,
+    #060709 0%,
+    rgba(6, 7, 9, 0.88) 34%,
+    rgba(6, 7, 9, 0.38) 70%,
     transparent 100%
   );
-  /* Viñeta perimetral V1: centro 55%x55% 100% transparente */
   --perimeter-vignette:
-    linear-gradient(to right, rgba(3, 7, 14, 0.68) 0%, rgba(3, 7, 14, 0.24) 7%, transparent 15%),
-    linear-gradient(to left, rgba(3, 7, 14, 0.68) 0%, rgba(3, 7, 14, 0.24) 7%, transparent 15%);
+    linear-gradient(to right, rgba(6, 7, 9, 0.72) 0%, rgba(6, 7, 9, 0.24) 7%, transparent 15%),
+    linear-gradient(to left, rgba(6, 7, 9, 0.72) 0%, rgba(6, 7, 9, 0.24) 7%, transparent 15%);
 
-  /* Respaldo translúcido para beats sobre canvas (sin cajas opacas) */
   --beat-backdrop: radial-gradient(
     ellipse 72% 68% at 50% 50%,
-    rgba(3, 7, 14, 0.56) 0%,
-    rgba(3, 7, 14, 0.24) 62%,
+    rgba(6, 7, 9, 0.62) 0%,
+    rgba(6, 7, 9, 0.26) 62%,
     transparent 100%
   );
 
-  /* Familias tipográficas — Orbital CNC & Horological Telemetry */
-  --font-display: var(--font-geist-sans), var(--font-space), system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Familias tipográficas Unificadas */
+  --font-display: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-  /* Geometría y contenedor */
-  --container-max: 1360px;
-  --radius-arch: 10px;
-  --radius-card: 14px;
+  --container-max: 1440px;
+  --radius-arch: 2px;
+  --radius-card: 2px;
+}
+
+/* MODO FIELD DAYLIGHT PAPER (GAP-04 — Alto Contraste Solar Rural 18.4:1 AAA) */
+html[data-luminance="daylight"] {
+  color-scheme: light;
+  --bg-seam: #F2F0EA;
+  --bg-deep: #F2F0EA;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #EAE7DF;
+  --bg-card: #FFFFFF;
+  --bg-card-solid: #FFFFFF;
+  --bg-glass: rgba(242, 240, 234, 0.92);
+  --bg-btn: #FFFFFF;
+  --color-space-black: #F2F0EA;
+  --color-deep-space: #EAE7DF;
+  --color-slate-black: #FFFFFF;
+  --color-mist-gray: #3E4552;
+  --color-space-border: #D6D3C9;
+  --text-primary: #07080A;
+  --text-secondary: #3E4552;
+  --text-muted: #525B6C;
+  --accent-border: #D6D3C9;
+}
+
+html[data-luminance="daylight"] .site-header {
+  background: rgba(242, 240, 234, 0.94) !important;
+  border-bottom: 1px solid #D6D3C9 !important;
 }
 
 /* ==========================================================================

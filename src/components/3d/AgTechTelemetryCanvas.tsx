@@ -991,13 +991,13 @@ export default function AgTechTelemetryCanvas() {
                 setActiveModel('terminal');
                 if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_model', 'terminal');
               }}
-              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 activeModel === 'terminal'
-                  ? 'bg-[#D4AF37] text-[#070B12] font-bold shadow-[0_0_12px_rgba(212,175,55,0.3)]'
+                  ? 'bg-[#FF4F00] text-[#060709] font-bold shadow-[0_0_12px_rgba(255,79,0,0.3)]'
                   : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
             >
-              📟 Terminal IoT
+              [01 TERMINAL IoT]
             </button>
             <button
               type="button"
@@ -1007,13 +1007,13 @@ export default function AgTechTelemetryCanvas() {
                 setActiveModel('silo');
                 if (typeof window !== 'undefined') sessionStorage.setItem('webanti_hardware3d_model', 'silo');
               }}
-              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-mono rounded-[2px] transition-all cursor-pointer ${
                 activeModel === 'silo'
-                  ? 'bg-[#D4AF37] text-[#070B12] font-bold shadow-[0_0_12px_rgba(212,175,55,0.3)]'
+                  ? 'bg-[#FF4F00] text-[#060709] font-bold shadow-[0_0_12px_rgba(255,79,0,0.3)]'
                   : 'text-[#94A3B8] hover:text-[#F8FAFC]'
               }`}
             >
-              🏭 Silo AgTech
+              [02 SILO AGTECH]
             </button>
           </div>
 

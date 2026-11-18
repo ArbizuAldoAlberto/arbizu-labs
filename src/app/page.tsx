@@ -1,41 +1,28 @@
 import Hero from '@/components/sections/Hero';
-import VaultDiveSequence from '@/components/sections/VaultDiveSequence';
-import WhyEnterprise from '@/components/sections/WhyEnterprise';
-import SocialProof from '@/components/sections/SocialProof';
-import Telemetry3DSection from '@/components/sections/Telemetry3DSection';
 import ProductsBento from '@/components/sections/ProductsBento';
-import MobileAppShowcase from '@/components/sections/MobileAppShowcase';
-import Problems from '@/components/sections/Problems';
+import WhyEnterprise from '@/components/sections/WhyEnterprise';
+import Telemetry3DSection from '@/components/sections/Telemetry3DSection';
 import Services from '@/components/sections/Services';
-import DeveloperKits from '@/components/sections/DeveloperKits';
 import RoiCalculator from '@/components/sections/RoiCalculator';
-import Manifesto from '@/components/sections/Manifesto';
-import Process from '@/components/sections/Process';
-import EngineeringStandards from '@/components/sections/EngineeringStandards';
-import CaseStudies from '@/components/sections/CaseStudies';
 import ContactSection from '@/components/sections/ContactSection';
-import FinalCTA from '@/components/sections/FinalCTA';
 
 export default function Home() {
   return (
     <>
+      {/* Etapa 1: Command Hero 7:5 + Interactive Telemetry Tabs */}
       <Hero />
-      <VaultDiveSequence />
-      <WhyEnterprise />
-      <SocialProof />
-      <Telemetry3DSection />
+      {/* Etapa 2: Live Interactive Product Workbench (GAP-01) + Dynasty Catalog */}
       <ProductsBento />
-      <MobileAppShowcase />
-      <Problems />
+      {/* Etapa 3: Bi-Luminance Editorial Doctrine en Papel Titanio #F2F0EA */}
+      <WhyEnterprise />
+      {/* Etapa 4: Telemetría Física 3D WebGL 60 FPS (PBR / CAD 1.5px / FLIR) */}
+      <Telemetry3DSection />
+      {/* Etapa 5: Geo-Aware B2B Packaging en 3 Tiers (GAP-06) */}
       <Services />
-      <DeveloperKits />
+      {/* Etapa 6: Calculadora ROI & Instant Technical Dossier Engine (GAP-02) */}
       <RoiCalculator />
-      <Manifesto />
-      <Process />
-      <EngineeringStandards />
-      <CaseStudies />
+      {/* Etapa 7: Terminal de Contratación Idempotente + Verificador /security (GAP-07) */}
       <ContactSection />
-      <FinalCTA />
     </>
   );
 }
