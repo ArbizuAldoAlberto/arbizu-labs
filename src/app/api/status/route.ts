@@ -76,7 +76,7 @@ export async function GET() {
     {
       name: 'NEXUS L7 Host Router',
       port: 3001,
-      version: 'nexus-router-v2.2',
+      version: 'nexus-router-v2.8',
       status: routerProbe.up ? 'Operational' : 'Offline',
       uptime: '99.99%',
       latencyMs: routerProbe.latencyMs,
