@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {
   createMicroPebbleNormalTexture,
@@ -162,7 +164,7 @@ export default function AgTechTelemetryCanvas() {
       antialias: true,
       alpha: true,
       powerPreference: 'high-performance',
-      preserveDrawingBuffer: true,
+      preserveDrawingBuffer: false,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(container.clientWidth, container.clientHeight, false);
@@ -173,7 +175,9 @@ export default function AgTechTelemetryCanvas() {
     // 3. Entorno PBR de Estudio 100% Offline
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
-    const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    const roomEnv = new RoomEnvironment();
+    const envTarget = pmremGenerator.fromScene(roomEnv, 0.04);
+    const envTexture = envTarget.texture;
     scene.environment = envTexture;
 
     // 4. Iluminación Cinematográfica de Ingeniería (Titanium & Warm Bronze)
@@ -550,8 +554,12 @@ export default function AgTechTelemetryCanvas() {
       flirMaterial.userData.shader = shader;
     };
 
-    // 11. Carga de Modelos GLTF con Traversal de Nodos Corregido
+    // 11. Carga de Modelos GLTF con Decodificadores Locales Draco & Meshopt
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
     const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+    gltfLoader.setMeshoptDecoder(MeshoptDecoder);
     const loadedCache: Partial<Record<ModelKey, THREE.Group>> = {};
 
     function switchModel(key: ModelKey) {
@@ -844,6 +852,10 @@ export default function AgTechTelemetryCanvas() {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       ro.disconnect();
+      dracoLoader.dispose();
+      scene.environment = null;
+      roomEnv.dispose();
+      envTarget.dispose();
       pmremGenerator.dispose();
       envTexture.dispose();
       screenTexture.dispose();
@@ -863,7 +875,18 @@ export default function AgTechTelemetryCanvas() {
       Object.values(loadedCache).forEach((grp) => {
         grp?.traverse((c) => {
           if ((c as THREE.Mesh).isMesh) {
-            (c as THREE.Mesh).geometry?.dispose();
+            const mesh = c as THREE.Mesh;
+            mesh.geometry?.dispose();
+            const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            mats.forEach((mat) => {
+              if (!mat) return;
+              Object.values(mat).forEach((val) => {
+                if (val && typeof (val as THREE.Texture).dispose === 'function' && (val as THREE.Texture).isTexture) {
+                  (val as THREE.Texture).dispose();
+                }
+              });
+              mat.dispose();
+            });
           }
         });
       });

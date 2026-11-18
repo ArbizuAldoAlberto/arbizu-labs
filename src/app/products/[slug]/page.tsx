@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { 
   Bot, Shield, CreditCard, Check, ArrowRight, Star, Cpu, Lock, 
   Smartphone, Database, Code, Zap, DollarSign, Activity, AlertTriangle,
-  Leaf, Coins, ShoppingBag, Trees
+  Leaf, Coins, ShoppingBag
 } from "lucide-react";
 import ROICalculator from "@/components/ui/ROICalculator";
 
@@ -556,64 +556,6 @@ const PRODUCTS: Record<string, ProductContent> = {
       { q: "¿Es un protocolo custodial?", a: "No. Aureus opera sobre una arquitectura no custodial: usted mantiene el control absoluto de sus claves privadas en todo momento." },
       { q: "¿Cómo protege el capital ante caídas del mercado?", a: "El supervisor algorítmico opera en stablecoins de primera línea (USDC) y cuenta con un kill-switch automatizado que mueve fondos a bóvedas frías ante anomalías de volatilidad." },
       { q: "¿Qué rendimientos históricos se han obtenido?", a: "Nuestras estrategias de delta neutral y provisión de liquidez en Base L2 generan históricamente entre un 7.5% y un 14.2% APR neto." }
-    ]
-  },
-  sabiobosque: {
-    title: "Sabio Bosque",
-    subtitle: "Monitoreo Ambiental, Detección Temprana de Incendios y Eco-Turismo Asistido por IA",
-    themeColor: "from-emerald-500 to-green-600",
-    accentBg: "border-emerald-500/30 bg-emerald-950/20",
-    glowColor: "shadow-emerald-500/20",
-    icon: <Trees className="w-12 h-12 text-emerald-400" />,
-    heroBadge: "Eco-Preservation & Forest AI Sentinel",
-    problem: [
-      "Incendios forestales que se detectan demasiado tarde cuando ya son incontrolables.",
-      "Falta de guías interactivos e información botánica en senderos de reservas naturales remotas.",
-      "Dificultades en la administración de reservas ecológicas para financiar la preservación."
-    ],
-    solution: [
-      "Monitoreo térmico e infrarrojo satelital y de cámaras de campo con alertas inmediatas.",
-      "Guía botánico y ornitológico offline con IA para visitantes y senderistas en reservas.",
-      "Módulo de pases de acceso y micro-donaciones Web3 transparentes para conservación."
-    ],
-    features: [
-      { name: "Early Fire Detection", desc: "Detección de focos de calor satelitales (VIIRS/MODIS) con notificación a brigadistas en < 5 min." },
-      { name: "Offline Flora & Fauna AI", desc: "Reconocimiento de especies nativas mediante visión por computadora local en el teléfono." },
-      { name: "Trail Geolocation & Safety", desc: "Mapas topográficos offline con geolocalización de visitantes y botón SOS satelital/LoRa." },
-      { name: "Conservation Crowdfunding", desc: "Plataforma de apadrinamiento de hectáreas de bosque nativo con certificación digital." }
-    ],
-    useCases: [
-      { title: "Parques Nacionales y Reservas", scenario: "Control de senderistas, prevención de incendios y difusión educativa del ecosistema." },
-      { title: "Eco-Lodges y Hotelería Sustentable", scenario: "Experiencia enriquecida para huéspedes con guías de sendero autoguiadas por IA." },
-      { title: "Comunidades Rurales Boscosas", scenario: "Alerta temprana comunitaria contra quemas ilegales o avance del fuego." }
-    ],
-    tiers: [
-      {
-        name: "Reserva Comunitaria",
-        price: "$49",
-        desc: "Para reservas naturales pequeñas y proyectos educativos locales.",
-        features: ["Mapas offline de hasta 10 senderos", "Guía botánico asistido por IA", "Alertas de focos de calor satelitales", "Soporte por email"],
-        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-community"
-      },
-      {
-        name: "Parque / Eco-Lodge",
-        price: "$149",
-        desc: "Para complejos turísticos y reservas privadas con flujo constante de público.",
-        features: ["Senderos y hectáreas ilimitadas", "Módulo de venta de entradas y donaciones", "Monitoreo en vivo de visitantes en mapa", "Soporte prioritario"],
-        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-lodge"
-      },
-      {
-        name: "Provincial / Gubernamental",
-        price: "$490",
-        desc: "Para sistemas integrados de parques provinciales o consorcios de manejo de fuego.",
-        features: ["Integración con cámaras térmicas y torres de vigilancia", "Panel de comando para brigadas de bomberos", "Garantía de SLA 99.9%", "Capacitación técnica en terreno"],
-        checkoutUrl: "/api/warroom/checkout?product=sabiobosque-gov"
-      }
-    ],
-    faqs: [
-      { q: "¿La app requiere internet para identificar plantas y animales?", a: "No. El modelo de reconocimiento visual de especies está optimizado para ejecutarse localmente en el dispositivo sin necesidad de conexión móvil." },
-      { q: "¿Cómo avisa si hay un incendio?", a: "Se conecta automáticamente a los feeds de satélites meteorológicos y ambientales de la NASA y NOAA, enviando alertas por SMS y Telegram a los guardaparques al detectar anomalías térmicas." },
-      { q: "¿Los visitantes pueden descargar los mapas antes de ingresar?", a: "Sí, la app descarga automáticamente la cartografía en alta resolución con curvas de nivel antes de entrar a zonas sin cobertura." }
     ]
   }
 };

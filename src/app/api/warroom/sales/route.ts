@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { getDb } from '../../../../lib/db';
+import { CAREER_OPS_DIR, getDb } from '../../../../lib/db';
 import { verifyWarroomSession } from '@/lib/auth';
 
-const INVOICES_ROOT = 'e:/01_DESARROLLO/2026/01_ACTIVE/nexus/nexus/career-ops/output/invoices';
+const INVOICES_ROOT = process.env.NEXUS_INVOICES_DIR || path.join(CAREER_OPS_DIR, 'output', 'invoices');
 
 function checkAuth(req: NextRequest): boolean {
   const cookieValue = req.cookies.get('warroom_session')?.value;
@@ -17,8 +17,12 @@ function checkAuth(req: NextRequest): boolean {
 function verifyPaddleSignature(reqText: string, signatureHeader: string | null): boolean {
   const secret = process.env.PADDLE_WEBHOOK_SECRET;
   if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[SECURITY] PADDLE_WEBHOOK_SECRET is required in production.');
+      return false;
+    }
     console.warn("⚠️ PADDLE_WEBHOOK_SECRET not defined. Skipping verification in sandbox mode.");
-    return true; // Graceful sandbox fallback
+    return true;
   }
   if (!signatureHeader) return false;
 

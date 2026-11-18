@@ -1,33 +1,44 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Space_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, Geist, JetBrains_Mono, Space_Mono, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import FloatingExecutiveDock from "@/components/ui/FloatingExecutiveDock";
 import OfflineTelemetryHUD from "@/components/system/OfflineTelemetryHUD";
+import GlobalErrorBoundary from "@/components/system/GlobalErrorBoundary";
 import { LanguageProvider } from "@/context/LanguageContext";
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
+});
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
   variable: "--font-cormorant",
+  display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
+  display: "swap",
 });
 
 const space = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-space",
+  display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -89,7 +100,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-theme="v1" className={`${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="es" data-theme="v1" className={`${geistSans.variable} ${cormorant.variable} ${jetbrains.variable} ${space.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[var(--color-arbizu-teal)]/30" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID_ARBIZU &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("YYYY") &&
@@ -110,113 +121,149 @@ export default function RootLayout({
           </>
         )}
 
-        {/* Schema.org ProfessionalService & LocalBusiness Geo-Targeted JSON-LD (GAP 4) */}
+        {/* Schema.org Cross-Hub Graph JSON-LD (arbizulabs.com <-> aldoarbizu.com) */}
         <Script
           id="schema-professional-service"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": ["ProfessionalService", "LocalBusiness"],
-              "name": "Arbizu Labs — Boutique de Ingeniería de Software & Auditorías Térmicas",
-              "alternateName": "Arbizu Labs",
-              "url": "https://arbizulabs.com",
-              "logo": "https://arbizulabs.com/logo-arbizu.svg",
-              "image": "https://arbizulabs.com/api/og?title=Arbizu%20Labs&subtitle=Ingenieria%20de%20Software%20Resiliente",
-              "founder": {
-                "@type": "Person",
-                "name": "Aldo Alberto Arbizu",
-                "url": "https://aldoarbizu.com",
-                "taxID": "20-38362060-1",
-                "jobTitle": "Lead Systems Architect & Fundador"
-              },
-              "telephone": "+54 9 2314 489197",
-              "email": "aldo.arbizu@gmail.com",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "San Carlos de Bolívar",
-                "addressRegion": "Provincia de Buenos Aires",
-                "postalCode": "B6550",
-                "addressCountry": "AR"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": -36.2307,
-                "longitude": -61.1128
-              },
-              "areaServed": [
-                "San Carlos de Bolívar",
-                "Olavarría",
-                "Pehuajó",
-                "9 de Julio",
-                "Azul",
-                "Ciudad Autónoma de Buenos Aires",
-                "Provincia de Buenos Aires",
-                "Argentina"
-              ],
-              "priceRange": "$$$",
-              "currenciesAccepted": "ARS, USD, USDT",
-              "paymentAccepted": "Mercado Pago, Transferencia Bancaria Galicia, Cripto (Base L2 / BTC / SOL)",
-              "sameAs": [
-                "https://github.com/ArbizuAldoAlberto",
-                "https://linkedin.com/in/aldoarbizu",
-                "https://wa.me/5492314489197"
-              ],
-              "description": "Boutique de ingeniería de software de alta resiliencia fundada por Aldo Alberto Arbizu en San Carlos de Bolívar. Especialistas en aplicaciones móviles Offline-First, SaaS B2B, auditorías termográficas FLIR y ciberseguridad defensiva.",
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "Servicios B2B de Ingeniería & Auditoría",
-                "itemListElement": [
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Auditoría Termográfica FLIR Industrial",
-                      "description": "Inspección termográfica de tableros eléctricos, acopios y plantas industriales para detección preventiva de fallas y prevención de incendios."
-                    },
-                    "price": "150000",
-                    "priceCurrency": "ARS"
+              "@graph": [
+                {
+                  "@type": ["Organization", "ProfessionalService", "LocalBusiness"],
+                  "@id": "https://arbizulabs.com/#organization",
+                  "name": "Arbizu Labs — Boutique de Ingeniería de Software & Auditorías Térmicas",
+                  "alternateName": "Arbizu Labs",
+                  "url": "https://arbizulabs.com",
+                  "logo": "https://arbizulabs.com/logo-arbizu.svg",
+                  "image": "https://arbizulabs.com/api/og?title=Arbizu%20Labs&subtitle=Ingenieria%20de%20Software%20Resiliente",
+                  "founder": {
+                    "@type": "Person",
+                    "@id": "https://aldoarbizu.com/#person",
+                    "name": "Aldo Alberto Arbizu",
+                    "url": "https://aldoarbizu.com",
+                    "taxID": "20-38362060-1",
+                    "jobTitle": "Staff Site Reliability Engineer & Quantitative Systems Architect"
                   },
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Licencia Software Trazabilidad REPROCANN / Agro",
-                      "description": "Plataforma de software Offline-First con persistencia SQLite WAL y cumplimiento regulatorio SENASA / INASE."
-                    },
-                    "price": "75000",
-                    "priceCurrency": "ARS"
+                  "telephone": "+54 9 2314 489197",
+                  "email": "aldo@arbizulabs.com",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "San Carlos de Bolívar",
+                    "addressRegion": "Provincia de Buenos Aires",
+                    "postalCode": "B6550",
+                    "addressCountry": "AR"
                   },
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Hardening Linux VPS & Setup Zero-Downtime",
-                      "description": "Configuración perimetral de servidores, reverse proxy SSL A+, Cloudflare Tunnel y monitoreo SRE 24/7."
-                    },
-                    "price": "120000",
-                    "priceCurrency": "ARS"
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": -36.2307,
+                    "longitude": -61.1128
+                  },
+                  "areaServed": [
+                    "San Carlos de Bolívar",
+                    "Olavarría",
+                    "Pehuajó",
+                    "9 de Julio",
+                    "Azul",
+                    "Ciudad Autónoma de Buenos Aires",
+                    "Provincia de Buenos Aires",
+                    "Argentina"
+                  ],
+                  "priceRange": "$$$",
+                  "currenciesAccepted": "ARS, USD, USDT",
+                  "paymentAccepted": "Mercado Pago, Transferencia Bancaria Galicia, Cripto (Base L2 / BTC / SOL)",
+                  "sameAs": [
+                    "https://aldoarbizu.com",
+                    "https://github.com/ArbizuAldoAlberto",
+                    "https://www.linkedin.com/in/aldo-alberto-arbizu/",
+                    "https://wa.me/5492314489197"
+                  ],
+                  "description": "Boutique de ingeniería de software de alta resiliencia fundada por Aldo Alberto Arbizu en San Carlos de Bolívar. Especialistas en aplicaciones móviles Offline-First, SaaS B2B, auditorías termográficas FLIR y ciberseguridad defensiva.",
+                  "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Servicios B2B de Ingeniería & Auditoría",
+                    "itemListElement": [
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Auditoría Termográfica FLIR Industrial",
+                          "description": "Inspección termográfica de tableros eléctricos, acopios y plantas industriales para detección preventiva de fallas y prevención de incendios."
+                        },
+                        "price": "150000",
+                        "priceCurrency": "ARS"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Licencia Software Trazabilidad REPROCANN / Agro",
+                          "description": "Plataforma de software Offline-First con persistencia SQLite WAL y cumplimiento regulatorio SENASA / INASE."
+                        },
+                        "price": "75000",
+                        "priceCurrency": "ARS"
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Hardening Linux VPS & Setup Zero-Downtime",
+                          "description": "Configuración perimetral de servidores, reverse proxy SSL A+, Cloudflare Tunnel y monitoreo SRE 24/7."
+                        },
+                        "price": "120000",
+                        "priceCurrency": "ARS"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "name": "TitanFlow Quant Engine",
+                  "applicationCategory": "FinanceApplication",
+                  "operatingSystem": "Linux, Web",
+                  "url": "https://titanflow.aldoarbizu.com",
+                  "author": { "@id": "https://aldoarbizu.com/#person" },
+                  "publisher": { "@id": "https://arbizulabs.com/#organization" }
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "name": "SentinelOS Dispatch",
+                  "applicationCategory": "SecurityApplication",
+                  "operatingSystem": "Android, iOS, Web",
+                  "url": "https://sentinelos.aldoarbizu.com",
+                  "author": { "@id": "https://aldoarbizu.com/#person" },
+                  "publisher": { "@id": "https://arbizulabs.com/#organization" }
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "name": "AgroMarket Pro",
+                  "applicationCategory": "BusinessApplication",
+                  "operatingSystem": "Android, iOS, Web",
+                  "url": "https://agromarket.aldoarbizu.com",
+                  "author": { "@id": "https://aldoarbizu.com/#person" },
+                  "publisher": { "@id": "https://arbizulabs.com/#organization" }
+                }
+              ]
             })
           }}
         />
 
-        <LanguageProvider>
-          {/* WCAG 2.2 AA Skip to content link */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-[var(--bg-btn)] focus:text-[var(--text-primary)] focus:border focus:border-[var(--accent-border-strong)] focus:font-space focus:text-xs focus:font-bold focus:uppercase focus:rounded-lg focus:outline-none"
-          >
-            Saltar al contenido principal / Skip to content
-          </a>
-          <Navigation />
-          <main id="main-content">{children}</main>
-          <Footer />
-          <FloatingExecutiveDock />
-          <OfflineTelemetryHUD />
-        </LanguageProvider>
+        <GlobalErrorBoundary>
+          <LanguageProvider>
+            {/* WCAG 2.2 AA Skip to content link */}
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2.5 focus:bg-[var(--bg-btn)] focus:text-[var(--text-primary)] focus:border focus:border-[var(--accent-border-strong)] focus:font-space focus:text-xs focus:font-bold focus:uppercase focus:rounded-lg focus:outline-none"
+            >
+              Saltar al contenido principal / Skip to content
+            </a>
+            <Navigation />
+            <main id="main-content">{children}</main>
+            <Footer />
+            <FloatingExecutiveDock />
+            <OfflineTelemetryHUD />
+          </LanguageProvider>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );

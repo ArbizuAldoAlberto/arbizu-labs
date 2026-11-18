@@ -1,9 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { exec } from 'child_process';
-import { getDb } from '../../../lib/db';
+import { execFile } from 'child_process';
+import { CAREER_OPS_DIR, getDb } from '../../../lib/db';
 import { verifyWarroomSession } from '@/lib/auth';
 
-const SCRIPTS_CWD = 'e:/01_DESARROLLO/2026/01_ACTIVE/nexus/nexus/career-ops';
+const SCRIPTS_CWD = CAREER_OPS_DIR;
+const ALLOWED_SCRIPTS = new Set([
+  'scripts/interview-prep.mjs',
+  'scripts/auto-apply.mjs',
+  'scripts/job-scraper.mjs',
+]);
+
+function runWhitelistedScript(scriptRelPath: string, args: string[], label: string): void {
+  if (!ALLOWED_SCRIPTS.has(scriptRelPath)) {
+    throw new Error(`Script not allowed: ${scriptRelPath}`);
+  }
+  execFile(process.execPath, [scriptRelPath, ...args], { cwd: SCRIPTS_CWD, timeout: 120000 }, (err, stdout) => {
+    if (err) {
+      console.error(`Error running ${label}:`, err);
+    } else {
+      console.log(`${label} complete:`, stdout);
+    }
+  });
+}
 
 function checkAuth(req: NextRequest): boolean {
   const cookieValue = req.cookies.get('warroom_session')?.value;
@@ -133,8 +151,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing id or status' }, { status: 400 });
     }
 
+    const numericId = Number(id);
+    if (!Number.isInteger(numericId) || numericId <= 0 || typeof status !== 'string') {
+      return NextResponse.json({ error: 'Invalid id or status' }, { status: 400 });
+    }
+
     const db = getDb();
-    const current = await db.get('SELECT status, company, role FROM applications WHERE id = ?', [id]);
+    const current = await db.get('SELECT status, company, role FROM applications WHERE id = ?', [numericId]);
     
     await db.execute(`
       UPDATE applications 
@@ -143,18 +166,12 @@ export async function POST(req: NextRequest) {
           followup_stage = COALESCE(?, followup_stage),
           updated_at = CURRENT_TIMESTAMP 
       WHERE id = ?
-    `, [status, date_applied || null, followup_stage !== undefined ? followup_stage : null, id]);
+    `, [status, date_applied || null, followup_stage !== undefined ? followup_stage : null, numericId]);
 
     // Trigger interview prep script in background if status changed to 'Entrevista'
     if (status === 'Entrevista' && current && current.status !== 'Entrevista') {
-      console.log(`Moving ${current.company} to Entrevista. Launching interview-prep.mjs in background.`);
-      exec(`node scripts/interview-prep.mjs --job-id ${id}`, { cwd: SCRIPTS_CWD }, (err, stdout, stderr) => {
-        if (err) {
-          console.error('Error running interview prep script:', err);
-        } else {
-          console.log('Interview prep script output:', stdout);
-        }
-      });
+      console.log(`Moving ${current.company} to Entrevista. Launching interview-prep.mjs via execFile.`);
+      runWhitelistedScript('scripts/interview-prep.mjs', ['--job-id', String(numericId)], 'interview-prep');
     }
 
     return NextResponse.json({ success: true });
@@ -175,34 +192,23 @@ export async function PUT(req: NextRequest) {
     const { action, batch, minScore } = body;
 
     if (action === 'trigger-apply') {
-      const batchSize = batch || 10;
-      const scoreCutoff = minScore || 4.0;
-      const cmd = `node scripts/auto-apply.mjs --batch ${batchSize} --min-score ${scoreCutoff}`;
-      
-      console.log(`Executing Auto-Applier command: ${cmd}`);
-      
-      exec(cmd, { cwd: SCRIPTS_CWD }, (err, stdout, stderr) => {
-        if (err) {
-          console.error('Auto-apply command execution error:', err);
-        } else {
-          console.log('Auto-apply execution complete.');
-        }
-      });
+      const batchSize = Math.min(Math.max(Math.trunc(Number(batch) || 10), 1), 50);
+      const scoreCutoff = Math.min(Math.max(Number(minScore) || 4.0, 0), 10);
+      runWhitelistedScript(
+        'scripts/auto-apply.mjs',
+        ['--batch', String(batchSize), '--min-score', String(scoreCutoff)],
+        'auto-apply'
+      );
 
       return NextResponse.json({ success: true, message: 'Auto-apply process triggered in background.' });
     }
 
     if (action === 'trigger-scraper') {
-      const cmd = `node scripts/job-scraper.mjs --sources all --limit 50`;
-      console.log(`Executing Job Scraper command: ${cmd}`);
-      
-      exec(cmd, { cwd: SCRIPTS_CWD }, (err, stdout, stderr) => {
-        if (err) {
-          console.error('Job scraper execution error:', err);
-        } else {
-          console.log('Job scraper complete.');
-        }
-      });
+      runWhitelistedScript(
+        'scripts/job-scraper.mjs',
+        ['--sources', 'all', '--limit', '50'],
+        'job-scraper'
+      );
 
       return NextResponse.json({ success: true, message: 'Scraper triggered in background.' });
     }

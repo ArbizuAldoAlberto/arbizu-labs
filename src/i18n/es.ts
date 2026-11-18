@@ -117,15 +117,6 @@ export const es = {
         solution: "Caché de capas cartográficas offline y minteo instantáneo de certificados en Base L2.",
         btnCase: "Ver Caso Técnico"
       },
-      sabiobosque: {
-        title: "SabioBosque",
-        category: "E-Commerce & Compliance",
-        status: "Desplegado",
-        desc: "Plataforma de comercio electrónico con validación automatizada de prescripciones REPROCANN mediante IA.",
-        problem: "Fricción y riesgo regulatorio al auditar recetas médicas de derivados botánicos manualmente.",
-        solution: "Auditoría documental en tiempo real (< 800ms) con Gemini API y control estricto de cupos.",
-        btnCase: "Ver Caso Técnico"
-      },
       impresion3d: {
         title: "Impresión 3D P2P",
         category: "Manufactura 3D & Web3",

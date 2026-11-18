@@ -136,21 +136,6 @@ export default function ProductsBento() {
       data: t.products.items.aeroshot
     },
     {
-      id: "sabiobosque",
-      categoryFilter: "automation",
-      icon: Leaf,
-      accentColor: UNIFIED_ACCENT,
-      borderColor: UNIFIED_BORDER,
-      badgeColor: UNIFIED_BADGE,
-      stack: ["Next.js", "Gemini API", "Supabase", "Zustand"],
-      metrics: "Audit < 800ms",
-      liveUrl: "https://sabiobosque.aldoarbizu.com",
-      caseSlug: "sabiobosque",
-      imageFile: "sabiobosque.png",
-      span: "md:col-span-1 lg:col-span-1",
-      data: t.products.items.sabiobosque
-    },
-    {
       id: "impresion3d",
       categoryFilter: "manufacturing",
       icon: Boxes,

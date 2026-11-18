@@ -20,7 +20,6 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
     "sentinelos-security-dispatch": { image: "/projects/sentinelos.png", subDomain: "sentinelos.aldoarbizu.com" },
     "agromarket-pro": { image: "/projects/agromarket.png", subDomain: "agromarket.aldoarbizu.com" },
     "aeroshot-drone-marketplace": { image: "/projects/aeroshot.png", subDomain: "aeroshot.aldoarbizu.com" },
-    "sabiobosque": { image: "/projects/sabiobosque.png", subDomain: "sabiobosque.aldoarbizu.com" },
     "impresion-3d-p2p": { image: "/projects/impresion3d.png", subDomain: "impresion3d.aldoarbizu.com" },
     "nomad-tactical-hub": { image: "/projects/nomadhub.png", subDomain: "nomadhub.aldoarbizu.com" },
     "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", subDomain: "ecoconnect.aldoarbizu.com" },
@@ -70,15 +69,6 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
         { label: "Parcel Processing", value: "Offline Caching" },
         { label: "Web3 Licensing", value: "< 2s" },
         { label: "GIS Export", value: "GeoJSON / KML" }
-      ]
-    },
-    "sabiobosque": {
-      titleEn: "SabioBosque: Automated Verification of REPROCANN Prescriptions",
-      industryEn: "E-Commerce & Compliance",
-      metricsEn: [
-        { label: "Validation Time", value: "< 800ms" },
-        { label: "Legal Compliance", value: "100% Audited" },
-        { label: "Checkout", value: "Universal Cart" }
       ]
     },
     "impresion-3d-p2p": {

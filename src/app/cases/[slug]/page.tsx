@@ -13,7 +13,6 @@ const caseAssetMap: Record<string, { image: string; liveUrl?: string; subDomain?
   "sentinelos-security-dispatch": { image: "/projects/sentinelos.png", liveUrl: "https://sentinelos.aldoarbizu.com", subDomain: "sentinelos.aldoarbizu.com" },
   "agromarket-pro": { image: "/projects/agromarket.png", liveUrl: "https://agromarket.aldoarbizu.com", subDomain: "agromarket.aldoarbizu.com" },
   "aeroshot-drone-marketplace": { image: "/projects/aeroshot.png", liveUrl: "https://aeroshot.aldoarbizu.com", subDomain: "aeroshot.aldoarbizu.com" },
-  "sabiobosque": { image: "/projects/sabiobosque.png", liveUrl: "https://sabiobosque.aldoarbizu.com", subDomain: "sabiobosque.aldoarbizu.com" },
   "impresion-3d-p2p": { image: "/projects/impresion3d.png", liveUrl: "https://impresion3d.aldoarbizu.com", subDomain: "impresion3d.aldoarbizu.com" },
   "nomad-tactical-hub": { image: "/projects/nomadhub.png", liveUrl: "https://nomadhub.aldoarbizu.com", subDomain: "nomadhub.aldoarbizu.com" },
   "ecoconnect-esg-registry": { image: "/projects/ecoconnect.png", liveUrl: "https://ecoconnect.aldoarbizu.com", subDomain: "ecoconnect.aldoarbizu.com" },
