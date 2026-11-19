@@ -182,7 +182,7 @@ export default function MetricsPage() {
                     </span>
                     <span className="text-[var(--text-secondary)]">{node.uptime}</span>
                     <span
-                      className="px-2.5 py-0.5 rounded-[2px] font-bold uppercase text-[10px]"
+                      className="status-badge px-2.5 py-0.5 rounded-[2px] font-bold uppercase text-[10px]"
                       style={{
                         border: `1px solid ${node.telemetryHex}44`,
                         color: node.telemetryHex,
@@ -222,7 +222,7 @@ export default function MetricsPage() {
             </Link>
             <Link
               href="/security"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-[2px] bg-[#FF4F00] text-white font-mono text-xs font-bold hover:bg-[#e64600]"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-[2px] bg-[#FF4F00] text-[#07080A] font-mono font-extrabold text-xs font-bold hover:bg-[#e64600]"
             >
               /security <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>

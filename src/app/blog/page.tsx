@@ -283,7 +283,7 @@ export default function BlogPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-5 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap disabled:opacity-60"
+                className="px-5 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap disabled:opacity-60"
               >
                 {submitting ? '...' : isEs ? 'Registrar' : 'Register'}
               </button>

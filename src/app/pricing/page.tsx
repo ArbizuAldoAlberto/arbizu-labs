@@ -171,7 +171,7 @@ export default function PricingPage() {
           </div>
           <Link
             href="/#contact"
-            className="px-4 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-wider font-bold shrink-0 inline-flex items-center gap-2"
+            className="px-4 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider font-bold shrink-0 inline-flex items-center gap-2"
           >
             {isEs ? 'Cotizador Directo' : 'Direct Quote'} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -220,7 +220,7 @@ export default function PricingPage() {
                   <button
                     type="button"
                     onClick={() => openOfficialCheckout(kit.title, kit.price)}
-                    className="w-full py-3 px-4 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2"
+                    className="w-full py-3 px-4 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2"
                   >
                     <Lock className="w-3.5 h-3.5" />
                     {isEs ? 'Adquirir (MP / Galicia / Base)' : 'Acquire (Official Settlement)'}
@@ -270,7 +270,7 @@ export default function PricingPage() {
                       {s.badge}
                     </span>
                     {s.recommended && (
-                      <span className="px-2 py-0.5 rounded-[2px] bg-[#FF4F00] text-white font-mono text-[9px] font-bold uppercase">
+                      <span className="px-2 py-0.5 rounded-[2px] bg-[#FF4F00] text-[#07080A] font-mono font-extrabold text-[9px] font-bold uppercase">
                         {isEs ? 'Recomendado' : 'Recommended'}
                       </span>
                     )}
@@ -300,7 +300,7 @@ export default function PricingPage() {
                     onClick={() => openOfficialCheckout(s.title, s.price)}
                     className={`w-full py-3 px-4 rounded-[2px] font-mono text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2 ${
                       s.recommended
-                        ? 'bg-[#FF4F00] hover:bg-[#e64600] text-white'
+                        ? 'bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold'
                         : 'border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] hover:border-[#FF4F00]/50 text-[var(--text-primary)]'
                     }`}
                   >

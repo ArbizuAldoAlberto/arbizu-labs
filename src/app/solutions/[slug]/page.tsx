@@ -213,7 +213,7 @@ export default async function SolutionPage({
               href={`https://wa.me/5492314489197?text=${encodeURIComponent(`Hola Aldo, me interesa cotizar la solución: ${spec.headline}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-extrabold uppercase tracking-wider inline-flex items-center gap-2 transition-colors"
+              className="px-5 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-extrabold uppercase tracking-wider inline-flex items-center gap-2 transition-colors"
             >
               <span>Cotizar Implementación Directa</span>
               <ArrowRight className="w-4 h-4" />
@@ -262,12 +262,12 @@ export default async function SolutionPage({
             data-keep-paper="true"
             className="p-6 sm:p-8 border border-[#D6D3C9] bg-[#F2F0EA] text-[#07080A] rounded-[2px]"
           >
-            <h2 className="font-mono text-xs uppercase tracking-widest text-[#FF4F00] font-bold mb-4">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-[#B83800] font-extrabold mb-4">
               01 // PROBLEMAS INDUSTRIALES RESUELTOS
             </h2>
             <ul className="space-y-3 font-sans text-sm text-[#3E4552]">
               {spec.painPoints.map((p) => (
-                <li key={p} className="border-l-2 border-[#FF4F00] pl-3">
+                <li key={p} className="border-l-2 border-[#B83800] pl-3">
                   {p}
                 </li>
               ))}

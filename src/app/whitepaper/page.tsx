@@ -133,7 +133,7 @@ export default function WhitepaperPage() {
                 <button
                   type="button"
                   onClick={handleDownloadSpec}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-widest font-bold transition-colors"
                 >
                   <DownloadCloud className="w-4 h-4" />
                   {isEs ? 'Descargar Whitepaper (.MD)' : 'Download Whitepaper (.MD)'}

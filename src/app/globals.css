@@ -146,10 +146,21 @@ html[data-luminance="daylight"] {
   --color-space-border: #D6D3C9;
   --text-primary: #07080A;
   --text-secondary: #3E4552;
-  --text-muted: #525B6C;
+  --text-muted: #4B5565;
   --accent-border: #D6D3C9;
-  --accent-border-strong: rgba(212, 175, 55, 0.72);
+  --accent-border-strong: rgba(122, 92, 30, 0.72);
   --grid-line: rgba(7, 8, 10, 0.05);
+
+  /* Acentos de Alto Contraste Solar WCAG AAA (>= 4.5:1 sobre #F2F0EA y #FFFFFF) */
+  --accent: #B83800;
+  --accent-brand: #7A5C1E;
+  --accent-signal: #B83800;
+  --accent-oxide-gold: #7A5C1E;
+  --accent-telemetry: #065F46;
+  --dynasty-quant: #7A5C1E;
+  --dynasty-security: #0369A1;
+  --dynasty-agtech: #065F46;
+  --dynasty-tactical: #B83800;
 }
 
 html[data-luminance="daylight"] .site-header {
@@ -158,6 +169,26 @@ html[data-luminance="daylight"] .site-header {
 }
 
 /* Garantía global 0 bloques negros / 0 textos blancos invisibles en Field Daylight */
+html[data-luminance="daylight"] [class*="bg-[var(--surface-elevated"] {
+  background-color: #EAE7DF !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] [class*="bg-[var(--surface-chassis"] {
+  background-color: #FFFFFF !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] [class*="bg-[var(--bg-btn"] {
+  background-color: #FFFFFF !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] [class*="bg-[var(--surface-void"] {
+  background-color: #F2F0EA !important;
+  color: #07080A !important;
+}
+
 html[data-luminance="daylight"] :is(
   [class*="bg-[#060709]"],
   [class*="bg-[#0B0D12]"],
@@ -199,6 +230,7 @@ html[data-luminance="daylight"] :is(
 }
 
 html[data-luminance="daylight"] :is(
+  [class*="text-[#CBD5E1]"],
   [class*="text-[#C2C8D4]"],
   [class*="text-[#8A93A6]"],
   [class*="text-[#94A3B8]"],
@@ -210,6 +242,11 @@ html[data-luminance="daylight"] :is(
   color: #3E4552 !important;
 }
 
+html[data-luminance="daylight"] .status-badge {
+  color: #065F46 !important;
+  border-color: #065F46 !important;
+}
+
 html[data-luminance="daylight"] :is(
   [class*="border-[#1B202B]"],
   [class*="border-white/"],
@@ -217,6 +254,94 @@ html[data-luminance="daylight"] :is(
   .border-zinc-900
 ):not([data-keep-dark="true"]) {
   border-color: #D6D3C9 !important;
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="text-[#00E599]"],
+  [class*="text-[#00E599]"] *,
+  .text-emerald-400,
+  .text-emerald-400 *,
+  .text-teal-400,
+  .text-teal-400 *
+):not([data-keep-dark="true"] *) {
+  color: #065F46 !important;
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="text-[#D4AF37]"],
+  [class*="text-[#D4AF37]"] *,
+  .text-amber-400,
+  .text-amber-400 *,
+  .text-yellow-500,
+  .text-yellow-500 *
+):not([data-keep-dark="true"] *) {
+  color: #7A5C1E !important;
+}
+
+html[data-luminance="daylight"] :is(
+  [class*="text-[#FF4F00]"],
+  [class*="text-[#FF4F00]"] *,
+  .text-orange-500,
+  .text-orange-500 *
+):not([data-keep-dark="true"] *) {
+  color: #B83800 !important;
+}
+
+/* Botones de acción sólidos conservan texto oscuro en Daylight */
+html[data-luminance="daylight"] :is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not([class*="hover:"]),
+html[data-luminance="daylight"] :is(button, a)[class*="bg-[#D4AF37]"]:not([class*="/"]):not([class*="hover:"]),
+html[data-luminance="daylight"] :is(button, a)[class*="bg-[#00E599]"]:not([class*="/"]):not([class*="hover:"]) {
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] header,
+html[data-luminance="daylight"] .site-header,
+html[data-luminance="daylight"] nav,
+html[data-luminance="daylight"] #arbizu-os-command-bar {
+  background-color: rgba(242, 240, 234, 0.96) !important;
+  background-image: none !important;
+  border-color: #D6D3C9 !important;
+  color: #07080A !important;
+}
+
+/* En Daylight, el Workbench y sus tarjetas adoptan fondo claro #FFFFFF y texto #07080A */
+html[data-luminance="daylight"] #workbench :is([class*="bg-[#0B0D12]"], [class*="bg-[#11151D]"], [class*="bg-[#060709]"], [class*="bg-[var(--surface-"], button):not([class*="bg-[#FF4F00]"]) {
+  background-color: #FFFFFF !important;
+  border-color: #D6D3C9 !important;
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] #workbench [class*="text-[#F6F7F9]"],
+html[data-luminance="daylight"] #workbench [class*="text-[#F8FAFC]"],
+html[data-luminance="daylight"] #workbench [class*="text-[#F2F0EA]"],
+html[data-luminance="daylight"] #workbench .text-white {
+  color: #07080A !important;
+}
+
+html[data-luminance="daylight"] #workbench [class*="text-[#C2C8D4]"],
+html[data-luminance="daylight"] #workbench [class*="text-[#8A93A6]"],
+html[data-luminance="daylight"] #workbench [class*="text-[#94A3B8]"] {
+  color: #3E4552 !important;
+}
+
+/* Botones de acción Naranja Señal (#FF4F00) — Solo botones con fondo sólido (no semitransparentes /10 o /15) */
+:is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not([class*="hover:"]) {
+  color: #07080A !important;
+  font-weight: 700 !important;
+}
+
+:is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not([class*="hover:"]) :is(span, div, p, strong, b) {
+  color: #07080A !important;
+}
+
+:is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not([class*="hover:"]) svg {
+  stroke: #07080A !important;
+}
+
+/* Separadores de baja opacidad elevados a contraste WCAG >= 4.5:1 */
+span.opacity-30,
+span.opacity-40 {
+  opacity: 0.90 !important;
 }
 
 html[data-luminance="daylight"] .hero-media {
@@ -1103,12 +1228,51 @@ html[data-theme="v2"] .theme-switch a[data-theme-link="v2"],
 }
 
 /* ==========================================================================
+   CÁPSULA INVIOLABLE DE PAPEL TITANIO (BI-LUMINANCIA WCAG AAA 18.4:1)
+   Garantiza que la doctrina Bit-to-Atom jamás sufra colisión de contraste
+   en SOC Night ni en Field Daylight.
+   ========================================================================== */
+section#artefactos,
+section[data-section="artifacts"],
+section[data-paper="true"],
+section[data-keep-paper="true"],
+[data-keep-paper="true"],
+.paper-section {
+  background-color: #F2F0EA !important;
+  background-image: none !important;
+  color: #07080A !important;
+}
+
+section#artefactos .card,
+section#artefactos article,
+section#artefactos .bg-white,
+section[data-paper="true"] .bg-white,
+[data-keep-paper="true"] .bg-white,
+.paper-section .bg-white {
+  background-color: #FFFFFF !important;
+  border-color: #D6D3C9 !important;
+  color: #07080A !important;
+}
+
+section#artefactos h2,
+section#artefactos h3,
+section#artefactos h4,
+section#artefactos p,
+section[data-paper="true"] h2,
+section[data-paper="true"] p,
+[data-keep-paper="true"] h2,
+[data-keep-paper="true"] p,
+[data-keep-paper="true"] li {
+  /* Protegido contra cualquier override de fondo oscuro */
+}
+
+/* ==========================================================================
    SECCIONES DE SUPERFICIE Y AMBIENTACIÓN RADIAL SIN COSTURAS
    - Costuras exactas en --bg-seam arriba (0%) y abajo (100%)
    - Cero bandas monocolor > 400px gracias a la malla de telemetría 96px + luz radial
    ========================================================================== */
-section:not(.hero):not(.dive),
-.artifacts,
+section:not(.hero):not(.dive):not(#artefactos):not([data-section="artifacts"]):not([data-paper="true"]):not([data-keep-paper="true"]):not(.paper-section),
+.artifacts:not([data-paper="true"]):not(#artefactos),
 .depth,
 .cta,
 .surface-section {
