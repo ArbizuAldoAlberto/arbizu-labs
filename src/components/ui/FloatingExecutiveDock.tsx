@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Calendar, ArrowUp, X, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
+import { captureLeadAndProceed } from '@/lib/leadBeacon';
 
 export default function FloatingExecutiveDock() {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +68,14 @@ export default function FloatingExecutiveDock() {
               href="https://wa.me/5492314489197?text=Hola%20Aldo,%20deseo%20iniciar%20una%20consulta%20t%C3%A9cnica%20con%20Arbizu%20Labs"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                captureLeadAndProceed({
+                  label: 'FloatingExecutiveDock WhatsApp Direct',
+                  service: 'Consulta Técnica Directa',
+                  targetUrl: 'https://wa.me/5492314489197',
+                  channel: 'floating_dock_wa',
+                })
+              }
               className="flex items-center gap-3 p-2.5 rounded-xl bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 border border-[#D4AF37]/30 text-[#F3E5AB] font-space text-xs font-bold transition-colors group"
             >
               <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] shrink-0">

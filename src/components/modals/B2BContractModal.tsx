@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { X, Copy, Check, ShieldCheck, ArrowRight, MessageSquare, CreditCard, Building2, Wallet, ArrowDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { captureLeadAndProceed } from '@/lib/leadBeacon';
 
 export interface B2BContractModalProps {
   isOpen: boolean;
@@ -417,7 +418,16 @@ export default function B2BContractModal({
               href={getWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => playChime(880, 1760, 0.08)}
+              onClick={() => {
+                playChime(880, 1760, 0.08);
+                captureLeadAndProceed({
+                  label: `B2BContractModal WA: ${currentService.title}`,
+                  service: currentService.title,
+                  price: currentService.priceUSD,
+                  targetUrl: getWhatsAppLink(),
+                  channel: 'b2b_contract_modal_wa',
+                });
+              }}
               className="flex-1 px-5 py-3 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
             >
               <MessageSquare className="w-4 h-4" strokeWidth={1.5} />
