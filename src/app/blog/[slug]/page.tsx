@@ -136,7 +136,7 @@ export default async function BlogSlugPage({
             </Link>
             <Link
               href="/booking"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs font-bold uppercase tracking-wider"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs font-bold uppercase tracking-wider"
             >
               <span>Agendar Auditoría</span>
               <ArrowRight className="w-3.5 h-3.5" />

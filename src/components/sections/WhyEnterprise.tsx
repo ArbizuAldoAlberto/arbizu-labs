@@ -76,7 +76,8 @@ export default function WhyEnterprise() {
     <section
       id="artefactos"
       data-section="artifacts"
-      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24"
+      data-paper="true"
+      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24 paper-section"
       style={{ overflowX: 'clip' }}
     >
       <div id="standards" className="scroll-mt-24" />
@@ -84,7 +85,7 @@ export default function WhyEnterprise() {
         {/* Encabezado Bi-Luminance Editorial */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#D6D3C9] mb-12">
           <div className="max-w-3xl">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold block mb-3">
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#B83800] font-extrabold block mb-3">
               [03 // BI-LUMINANCE DOCTRINE · TITANIUM PAPER BRIEF]
             </span>
             <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[#07080A] mb-4">
@@ -96,7 +97,7 @@ export default function WhyEnterprise() {
               {t.whyEnterprise.subheading}
             </p>
           </div>
-          <div className="font-mono text-xs text-[#3E4552] tabular-nums shrink-0 border-l-2 border-[#FF4F00] pl-4">
+          <div className="font-mono text-xs text-[#3E4552] tabular-nums shrink-0 border-l-2 border-[#B83800] pl-4">
             <div className="font-bold text-[#07080A]">CERTIFIED VERIFICATION BASELINE</div>
             <div>contrast_ratio: 18.4:1 AAA · rls_audit: 60/60 PASS</div>
           </div>
@@ -115,7 +116,7 @@ export default function WhyEnterprise() {
             >
               <div>
                 <div className="flex items-center justify-between mb-5 font-mono text-xs">
-                  <span className="uppercase tracking-widest text-[#FF4F00] font-bold">{pillar.tag}</span>
+                  <span className="uppercase tracking-widest text-[#B83800] font-extrabold">{pillar.tag}</span>
                   <span className="text-[#3E4552] font-bold">{pillar.num}</span>
                 </div>
                 <div className="w-10 h-10 border border-[#D6D3C9] bg-[#F2F0EA] flex items-center justify-center mb-4">
@@ -137,7 +138,7 @@ export default function WhyEnterprise() {
           </h3>
           <div className="overflow-x-auto border border-[#D6D3C9] bg-[#FFFFFF]">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-[#07080A] text-[#F2F0EA] uppercase text-[10px] tracking-wider">
+              <thead data-keep-dark="true" className="bg-[#07080A] text-[#F2F0EA] uppercase text-[10px] tracking-wider">
                 <tr>
                   <th className="p-4">{isEs ? 'Vector Técnico' : 'Engineering Vector'}</th>
                   <th className="p-4">{isEs ? 'Agencia Cloud-Only' : 'Cloud-Only Agency'}</th>
@@ -173,7 +174,7 @@ export default function WhyEnterprise() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-[#D6D3C9] bg-[#FFFFFF] font-mono tabular-nums mb-10">
           {t.standards.items.slice(0, 6).map((std, idx) => (
             <div key={std.title} className="p-4 border-b lg:border-b-0 border-r last:border-r-0 border-[#D6D3C9]">
-              <div className="text-[10px] text-[#FF4F00] font-bold">STD-0{idx + 1}</div>
+              <div className="text-[10px] text-[#B83800] font-extrabold">STD-0{idx + 1}</div>
               <div className="font-sans text-xs font-extrabold text-[#07080A] mt-1">{std.title}</div>
               <div className="text-[10px] text-[#3E4552] mt-1">{std.tag}</div>
             </div>

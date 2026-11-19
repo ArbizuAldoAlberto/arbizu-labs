@@ -196,7 +196,7 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
                     href={asset.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-[11px] font-bold transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-[11px] font-bold transition-colors"
                   >
                     <span>Abrir En Vivo</span>
                     <ExternalLink className="w-3 h-3" />
@@ -238,7 +238,7 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
           <div className="flex flex-wrap gap-3">
             <Link
               href="/booking"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-wider font-bold whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider font-bold whitespace-nowrap"
             >
               <span>Consultar Viabilidad</span>
               <ArrowRight className="w-4 h-4" />

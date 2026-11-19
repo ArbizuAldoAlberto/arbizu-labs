@@ -669,7 +669,7 @@ export default function ProductDetailPage({
             <button
               type="button"
               onClick={() => openModalWithTier(product.tiers[0])}
-              className="px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-bold uppercase tracking-wider text-[10px]"
+              className="px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold uppercase tracking-wider text-[10px]"
             >
               {isEs ? 'Contratar / Solicitar' : 'Deploy / License'}
             </button>
@@ -726,10 +726,10 @@ export default function ProductDetailPage({
           <button
             type="button"
             onClick={() => openModalWithTier(product.tiers[0])}
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-widest font-bold transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-mono text-xs uppercase tracking-widest font-extrabold transition-colors"
           >
             {isEs ? `Solicitar ${product.tiers[0].name}` : `Request ${product.tiers[0].name}`}
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-[#07080A]" />
           </button>
 
           {product.liveUrl && (
@@ -838,9 +838,9 @@ export default function ProductDetailPage({
               <button
                 type="button"
                 onClick={() => openModalWithTier(tier)}
-                className={`w-full py-3.5 px-5 rounded-[2px] font-mono text-xs uppercase tracking-widest font-bold transition-colors flex items-center justify-center gap-2 ${
+                className={`w-full py-3.5 px-5 rounded-[2px] font-mono text-xs uppercase tracking-widest font-extrabold transition-colors flex items-center justify-center gap-2 ${
                   tier.highlighted
-                    ? 'bg-[#FF4F00] hover:bg-[#e64600] text-white'
+                    ? 'bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A]'
                     : 'border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] hover:border-[#FF4F00]/50 text-[var(--text-primary)]'
                 }`}
               >

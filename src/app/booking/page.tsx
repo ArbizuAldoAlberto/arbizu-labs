@@ -311,7 +311,7 @@ export default function BookingPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 px-6 rounded-[2px] bg-[#FF4F00] hover:bg-[#e64600] text-white font-mono text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-60"
+                  className="w-full py-3.5 px-6 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
                   {loading
