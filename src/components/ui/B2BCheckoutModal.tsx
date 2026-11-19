@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, Copy, ShieldCheck, QrCode, CreditCard, MessageSquare, ArrowRight, ExternalLink } from 'lucide-react';
+import { captureLeadAndProceed } from '@/lib/leadBeacon';
 
 export interface B2BServiceItem {
   id: string;
@@ -269,6 +270,15 @@ export default function B2BCheckoutModal({ isOpen, onClose, service }: B2BChecko
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  captureLeadAndProceed({
+                    label: `B2BCheckoutModal WA: ${service.title}`,
+                    service: service.title,
+                    price: service.priceUsd,
+                    targetUrl: whatsappUrl,
+                    channel: 'b2b_checkout_modal_wa',
+                  })
+                }
                 className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-space text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
               >
                 <span>Confirmar por WhatsApp</span>

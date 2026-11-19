@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Check, Lock } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, Lock, Zap } from 'lucide-react';
 import RoiCalculator from '@/components/sections/RoiCalculator';
 import { useLanguage } from '@/context/LanguageContext';
 import B2BContractModal from '@/components/modals/B2BContractModal';
+import { captureLeadAndProceed } from '@/lib/leadBeacon';
 
 export default function PricingPage() {
   const { locale, t } = useLanguage();
@@ -25,6 +26,8 @@ export default function PricingPage() {
       slug: 'offline-starter',
       title: 'React Native Offline-First Starter',
       price: '$29 USD / $45.000 ARS',
+      gumroadUrl: 'https://arbizualdo.gumroad.com/l/offline-starter',
+      gumroadPrice: '$29 USD',
       period: isEs ? 'Pago único / Licencia perpetua' : 'One-time purchase / Perpetual license',
       desc: isEs
         ? 'Boilerplate de producción para apps móviles que deben funcionar sin internet. SQLite con WAL mode y cola de sincronización.'
@@ -48,6 +51,8 @@ export default function PricingPage() {
       slug: 'n8n-crm',
       title: 'n8n WhatsApp AI & CRM Pack',
       price: '$49 USD / $75.000 ARS',
+      gumroadUrl: 'https://arbizualdo.gumroad.com/l/n8n-crm',
+      gumroadPrice: '$49 USD',
       period: isEs ? 'Pago único / Despliegue self-hosted' : 'One-time purchase / Self-hosted pack',
       desc: isEs
         ? 'Workflows JSON productivos para calificación B2B, alertas operativas WhatsApp/Telegram y resguardo SQLite sin depender de Zapier.'
@@ -69,6 +74,8 @@ export default function PricingPage() {
       slug: 'titan-alerts',
       title: 'TitanFlow Signal Bridge SDK',
       price: '$99 USD / $140.000 ARS',
+      gumroadUrl: 'https://arbizualdo.gumroad.com/l/titan-alerts',
+      gumroadPrice: '$99 USD',
       period: isEs ? 'Licencia comercial + calculador ATR' : 'Commercial SDK license',
       desc: isEs
         ? 'Módulo TypeScript/Node.js con cálculo dinámico ATR (TP1, TP2, SL, Trailing) y alertas Telegram cuantitativas.'
@@ -217,17 +224,40 @@ export default function PricingPage() {
                 </div>
 
                 <div className="space-y-2">
+                  <a
+                    href={kit.gumroadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() =>
+                      captureLeadAndProceed({
+                        label: `Gumroad 1-Click: ${kit.title}`,
+                        service: kit.title,
+                        price: kit.gumroadPrice,
+                        targetUrl: kit.gumroadUrl,
+                        channel: 'gumroad_checkout',
+                      })
+                    }
+                    className="w-full py-3 px-4 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>
+                      {isEs
+                        ? `Checkout 1-Clic Gumroad (${kit.gumroadPrice})`
+                        : `1-Click Checkout Gumroad (${kit.gumroadPrice})`}
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
                   <button
                     type="button"
                     onClick={() => openOfficialCheckout(kit.title, kit.price)}
-                    className="w-full py-3 px-4 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider font-bold flex items-center justify-center gap-2"
+                    className="w-full py-2.5 px-4 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] hover:border-[#D4AF37] font-mono text-[11px] font-bold uppercase tracking-wider text-[var(--text-primary)] flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
-                    <Lock className="w-3.5 h-3.5" />
-                    {isEs ? 'Adquirir (MP / Galicia / Base)' : 'Acquire (Official Settlement)'}
+                    <Lock className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    {isEs ? 'Pagar en ARS / MP / Base L2' : 'Pay via Bank / MP / Base L2'}
                   </button>
                   <Link
                     href={`/products/${kit.slug}`}
-                    className="w-full py-2.5 px-4 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-elevated)] font-mono text-[11px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1"
+                    className="w-full py-2 px-4 rounded-[2px] border border-[var(--grid-hairline)]/60 font-mono text-[11px] uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center gap-1"
                   >
                     {isEs ? 'Ver Especificación Completa' : 'Inspect Full Spec'}{' '}
                     <ArrowUpRight className="w-3.5 h-3.5" />

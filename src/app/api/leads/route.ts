@@ -13,6 +13,49 @@ const IDEMPOTENCY_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const ipBuckets = new Map<string, number[]>();
 const recentIdempotency = new Map<string, { leadId: string; expiresAt: number }>();
 
+const ALLOWED_EXACT_ORIGINS = new Set([
+  'https://arbizulabs.com',
+  'https://www.arbizulabs.com',
+  'https://aldoarbizu.com',
+  'https://www.aldoarbizu.com',
+]);
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_EXACT_ORIGINS.has(origin)) return true;
+  return /^https:\/\/[a-z0-9-]+\.aldoarbizu\.com$/i.test(origin);
+}
+
+function getCorsHeaders(req: NextRequest): Record<string, string> {
+  const origin = req.headers.get('origin');
+  const headers: Record<string, string> = {
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Idempotency-Key, X-Idempotency-Key',
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
+  };
+  if (origin && isAllowedOrigin(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin;
+  } else {
+    headers['Access-Control-Allow-Origin'] = 'https://arbizulabs.com';
+  }
+  return headers;
+}
+
+function jsonWithCors(req: NextRequest, data: unknown, init?: ResponseInit): NextResponse {
+  const cors = getCorsHeaders(req);
+  const existingHeaders = new Headers(init?.headers);
+  Object.entries(cors).forEach(([k, v]) => existingHeaders.set(k, v));
+  return NextResponse.json(data, { ...init, headers: existingHeaders });
+}
+
+export async function OPTIONS(req: NextRequest) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: getCorsHeaders(req),
+  });
+}
+
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get('x-forwarded-for');
   if (forwarded) return forwarded.split(',')[0].trim();
@@ -48,7 +91,7 @@ export async function GET(req: NextRequest) {
   try {
     const code = (req.nextUrl.searchParams.get('code') || '').trim().toUpperCase();
     if (!code || !/^ARB-[A-Z0-9-]{4,24}$/.test(code)) {
-      return NextResponse.json({ verified: false, error: 'Código inválido' }, { status: 400 });
+      return jsonWithCors(req, { verified: false, error: 'Código inválido' }, { status: 400 });
     }
 
     try {
@@ -63,7 +106,7 @@ export async function GET(req: NextRequest) {
           .update(`${code}|${row.company || ''}|${row.total || 0}|${row.created_at || ''}`)
           .digest('hex')
           .slice(0, 32);
-        return NextResponse.json({
+        return jsonWithCors(req, {
           verified: true,
           source: 'sqlite_wal',
           code,
@@ -92,7 +135,7 @@ export async function GET(req: NextRequest) {
             .update(`${code}|${found.company || ''}|${found.total || 0}|${found.timestamp || ''}`)
             .digest('hex')
             .slice(0, 32);
-          return NextResponse.json({
+          return jsonWithCors(req, {
             verified: true,
             source: 'json_atomic_ledger',
             code,
@@ -105,10 +148,10 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ verified: false, code });
+    return jsonWithCors(req, { verified: false, code });
   } catch (err) {
     console.error('Error verifying ARB code:', err);
-    return NextResponse.json({ verified: false, error: 'Error verificando código' }, { status: 500 });
+    return jsonWithCors(req, { verified: false, error: 'Error verificando código' }, { status: 500 });
   }
 }
 
@@ -117,14 +160,15 @@ export async function POST(req: NextRequest) {
     // 1. Payload size cap (16KB)
     const rawBody = await req.text();
     if (Buffer.byteLength(rawBody, 'utf8') > MAX_PAYLOAD_BYTES) {
-      return NextResponse.json({ error: 'Payload Too Large (max 16KB)' }, { status: 413 });
+      return jsonWithCors(req, { error: 'Payload Too Large (max 16KB)' }, { status: 413 });
     }
 
     // 2. Per-IP Rate Limiting
     const clientIp = getClientIp(req);
     const rate = checkIpRateLimit(clientIp);
     if (!rate.allowed) {
-      return NextResponse.json(
+      return jsonWithCors(
+        req,
         { error: 'Demasiadas solicitudes. Intenta nuevamente en unos minutos.' },
         { status: 429, headers: { 'Retry-After': String(rate.retryAfterSec) } }
       );
@@ -134,20 +178,20 @@ export async function POST(req: NextRequest) {
     try {
       body = rawBody ? JSON.parse(rawBody) : {};
     } catch {
-      return NextResponse.json({ error: 'JSON inválido' }, { status: 400 });
+      return jsonWithCors(req, { error: 'JSON inválido' }, { status: 400 });
     }
 
-    const { name, email, company, services, total, message, bot_field, b_company_url } = body;
+    const { name, email, company, services, total, message, source, bot_field, b_company_url } = body;
 
     // Honeypot check for bots
     if (bot_field || b_company_url) {
-      return NextResponse.json({ success: true, message: '¡Mensaje enviado! Te contactaré en breve' }, { status: 200 });
+      return jsonWithCors(req, { success: true, message: '¡Mensaje enviado! Te contactaré en breve' }, { status: 200 });
     }
 
     // Strict email validation
     const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
     if (!normalizedEmail || normalizedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
-      return NextResponse.json({ error: 'Email inválido o incompleto' }, { status: 400 });
+      return jsonWithCors(req, { error: 'Email inválido o incompleto' }, { status: 400 });
     }
 
     const safeName = String(name || 'Anónimo').trim().slice(0, 120);
@@ -157,6 +201,13 @@ export async function POST(req: NextRequest) {
       : ['general_inquiry'];
     const safeTotal = Number.isFinite(Number(total)) ? Math.max(0, Number(total)) : 0;
     const safeMessage = String(message || 'N/A').trim().slice(0, 4000);
+    const originHeader = req.headers.get('origin');
+    const originHost = originHeader && isAllowedOrigin(originHeader)
+      ? originHeader.replace(/^https?:\/\//i, '')
+      : 'arbizulabs.com';
+    const safeSource = (typeof source === 'string' && source.trim())
+      ? source.trim().slice(0, 120)
+      : originHost;
 
     // 3. Idempotency Guard (header or deterministic payload fingerprint)
     const now = Date.now();
@@ -174,7 +225,8 @@ export async function POST(req: NextRequest) {
 
     const cached = recentIdempotency.get(idempotencyKey);
     if (cached && cached.expiresAt > now) {
-      return NextResponse.json(
+      return jsonWithCors(
+        req,
         {
           success: true,
           deduplicated: true,
@@ -195,7 +247,7 @@ export async function POST(req: NextRequest) {
       services: safeServices,
       total: safeTotal,
       message: safeMessage,
-      source: 'arbizulabs.com',
+      source: safeSource,
     };
 
     // 4. Atomic Persistence in SQLite WAL (warroom.db)
@@ -220,7 +272,8 @@ export async function POST(req: NextRequest) {
       const existing = await db.get('SELECT id FROM b2b_leads WHERE idempotency_key = ?', [idempotencyKey]);
       if (existing) {
         recentIdempotency.set(idempotencyKey, { leadId: existing.id, expiresAt: now + IDEMPOTENCY_TTL_MS });
-        return NextResponse.json(
+        return jsonWithCors(
+          req,
           {
             success: true,
             deduplicated: true,
@@ -320,7 +373,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json(
+    return jsonWithCors(
+      req,
       {
         success: true,
         lead_id: lead.id,
@@ -330,6 +384,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error('Error procesando lead:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return jsonWithCors(req, { error: 'Internal Server Error' }, { status: 500 });
   }
 }

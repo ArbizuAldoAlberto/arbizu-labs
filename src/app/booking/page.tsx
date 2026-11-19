@@ -13,6 +13,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { captureLeadAndProceed } from '@/lib/leadBeacon';
 
 export default function BookingPage() {
   const { locale } = useLanguage();
@@ -180,6 +181,14 @@ export default function BookingPage() {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  captureLeadAndProceed({
+                    label: `Booking WA Direct: ${selectedTopic}`,
+                    service: selectedTopic,
+                    targetUrl: 'https://wa.me/5492314489197',
+                    channel: 'booking_wa_direct',
+                  })
+                }
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[2px] bg-[#00E599] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider hover:opacity-90"
               >
                 {isEs ? 'Abrir WhatsApp Ahora' : 'Open WhatsApp Direct'}{' '}
