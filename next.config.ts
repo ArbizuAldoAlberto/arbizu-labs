@@ -47,6 +47,14 @@ const nextConfig: NextConfig = {
         source: "/compare.html",
         destination: "/compare",
       },
+      {
+        source: "/api/v1/health",
+        destination: "http://127.0.0.1:3070/health",
+      },
+      {
+        source: "/api/v1/:path*",
+        destination: "http://127.0.0.1:3070/v1/:path*",
+      },
     ];
   },
 };
