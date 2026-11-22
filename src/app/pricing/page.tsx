@@ -72,25 +72,25 @@ export default function PricingPage() {
     },
     {
       slug: 'titan-alerts',
-      title: 'TitanFlow Signal Bridge SDK',
-      price: '$99 USD / $140.000 ARS',
+      title: 'TitanFlow Alerts Lite (Python)',
+      price: '$14 USD / $25.000 ARS',
       gumroadUrl: 'https://arbizualdo.gumroad.com/l/titan-alerts',
-      gumroadPrice: '$99 USD',
-      period: isEs ? 'Licencia comercial + calculador ATR' : 'Commercial SDK license',
+      gumroadPrice: '$14 USD',
+      period: isEs ? 'Pago único / Script Python open-source' : 'One-time purchase / Python CLI monitor',
       desc: isEs
-        ? 'Módulo TypeScript/Node.js con cálculo dinámico ATR (TP1, TP2, SL, Trailing) y alertas Telegram cuantitativas.'
-        : 'TypeScript/Node.js connector with dynamic ATR calculation (TP1, TP2, SL, Trailing) and quantitative Telegram alerts.',
-      badge: 'KIT-03 // QUANT BRIDGE',
+        ? 'Script Python listo para correr en VPS o local que consulta precios en Binance API y dispara alertas instantáneas en Telegram por umbrales configurables.'
+        : 'Ready-to-run Python monitor querying Binance spot tickers with instant configurable upper/lower Telegram alerts.',
+      badge: 'KIT-03 // PYTHON ALERTS',
       features: isEs
         ? [
-            'Motor ATR + tabla cuantitativa automática',
-            'WebSocket listener sin polling REST',
-            'Integración lista para Telegram ops',
+            'Monitor continuo Binance API + variables .env',
+            'Alertas instantáneas de ruptura por Telegram Bot',
+            'Cero custodia de API keys de trading ni retiros',
           ]
         : [
-            'Dynamic ATR engine + automated telemetry table',
-            'WebSocket stream without REST polling',
-            'Ready Telegram ops integration',
+            'Continuous Binance ticker monitor + .env thresholds',
+            'Instant upper/lower Telegram Bot breach alerts',
+            'Zero exchange trading or withdrawal keys required',
           ],
     },
   ];
