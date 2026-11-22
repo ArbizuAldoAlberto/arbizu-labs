@@ -302,8 +302,8 @@ export const en: typeof es = {
       {
         title: "TitanFlow Alerts Lite (Python)",
         price: "$14 USD",
-        badge: "Python WebSockets",
-        desc: "Real-time WebSocket monitoring script for Binance Futures with instant Telegram volatility alerts.",
+        badge: "Python Monitor CLI",
+        desc: "Lightweight Python ticker monitor for Binance public API with instant upper/lower price alerts to Telegram.",
         url: "https://arbizualdo.gumroad.com/l/titan-alerts"
       }
     ]
