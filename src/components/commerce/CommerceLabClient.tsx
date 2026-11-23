@@ -47,6 +47,15 @@ export interface LabPayload {
   products: LabProduct[];
 }
 
+const SKU_IMAGE_MAP: Record<string, string> = {
+  'ARB-CAB-AGRO3D': '/assets/brand-v2/skus/arb-cab-agro3d.webp',
+  'ARB-IR-THERM550': '/assets/brand-v2/skus/arb-ir-therm550.webp',
+  'ARB-LINT-PRO2K': '/assets/brand-v2/skus/arb-lint-pro2k.webp',
+  'ARB-MATE-PICKUP': '/assets/brand-v2/skus/arb-mate-pickup.webp',
+  'ARB-OBD2-PRO3D': '/assets/brand-v2/skus/arb-obd2-pro3d.webp',
+  'ARB-TOOL-BAT4X': '/assets/brand-v2/skus/arb-tool-bat4x.webp',
+};
+
 export default function CommerceLabClient({ initialLab }: { initialLab: LabPayload | null }) {
   const lab = initialLab || {
     fx: { rate_ars: 1380, source: 'fallback' },
@@ -199,8 +208,18 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
               {lab.products.map((p) => (
                 <tr key={p.sku} className="hover:bg-white/[0.02]">
                   <td className="py-2.5 pr-3">
-                    <div className="font-bold text-[#F2F0EA]">{p.sku}</div>
-                    <div className="text-[11px] text-[#94A3B8] max-w-[240px] truncate">{p.title}</div>
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={SKU_IMAGE_MAP[p.sku.toUpperCase()] || '/assets/brand-v2/b2b-field-telemetry.webp'}
+                        alt={p.title}
+                        className="w-10 h-10 object-cover border border-white/15 shrink-0 bg-[#060709]"
+                        loading="lazy"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-bold text-[#F2F0EA]">{p.sku}</div>
+                        <div className="text-[11px] text-[#94A3B8] max-w-[210px] truncate">{p.title}</div>
+                      </div>
+                    </div>
                   </td>
                   <td className="py-2.5 pr-3 text-[#F2F0EA]">
                     ${Math.round(p.retail_pvp_ars).toLocaleString('es-AR')}
@@ -269,7 +288,7 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
                 type="button"
                 onClick={runSimulation}
                 disabled={simLoading}
-                className="inline-flex items-center gap-1.5 bg-[#FF4F00] text-white font-bold uppercase px-3 py-2"
+                className="inline-flex items-center gap-1.5 bg-[#FF4F00] text-[#060709] font-extrabold uppercase px-3 py-2 cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5" />
                 <span>{simLoading ? 'Simulando...' : 'Simular Impacto'}</span>

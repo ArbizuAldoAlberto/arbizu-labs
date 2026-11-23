@@ -85,9 +85,8 @@ export default function Navigation() {
       style={{
         background:
           luminance === 'daylight'
-            ? 'rgba(242, 240, 234, 0.94)'
-            : 'linear-gradient(to bottom, rgba(6, 7, 9, 0.96) 0%, rgba(11, 13, 18, 0.88) 100%)',
-        backdropFilter: 'blur(14px)',
+            ? '#F2F0EA'
+            : '#060709',
       }}
     >
       <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-5 xl:px-8 flex items-center justify-between gap-2 xl:gap-4">
@@ -182,7 +181,7 @@ export default function Navigation() {
             {soundMuted ? (
               <VolumeX className="w-3.5 h-3.5 text-[var(--text-muted)]" />
             ) : (
-              <Volume2 className="w-3.5 h-3.5 text-[#00E599] animate-pulse" />
+              <Volume2 className="w-3.5 h-3.5 text-[#00E599]" />
             )}
           </button>
 
