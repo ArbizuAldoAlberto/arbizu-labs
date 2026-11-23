@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     locale: "es_ES",
     images: [
       {
-        url: "/api/og?title=Software%20de%20Alta%20Resiliencia&subtitle=Offline-First%20%7C%20SaaS%20B2B%20%7C%20Zero-Downtime",
+        url: "https://arbizulabs.com/assets/brand-v2/hero-studio-workbench.webp",
         width: 1200,
         height: 630,
         alt: "Arbizu Labs — Enterprise Software Engineering",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     title: "Arbizu Labs — High-Resiliency Software Engineering & FLIR Audits",
     description: "Sistemas móviles Offline-First, SaaS B2B y automatización inteligente.",
     creator: "@ArbizuAldo",
-    images: ["/api/og?title=High-Resiliency%20Software%20Engineering&subtitle=Offline-First%20Mobile%20%26%20Enterprise%20SaaS"],
+    images: ["https://arbizulabs.com/assets/brand-v2/hero-studio-workbench.webp"],
   },
 };
 
@@ -118,7 +118,7 @@ export default function RootLayout({
                   "alternateName": "Arbizu Labs",
                   "url": "https://arbizulabs.com",
                   "logo": "https://arbizulabs.com/logo-arbizu.svg",
-                  "image": "https://arbizulabs.com/api/og?title=Arbizu%20Labs&subtitle=Ingenieria%20de%20Software%20Resiliente",
+                  "image": "https://arbizulabs.com/assets/brand-v2/hero-studio-workbench.webp",
                   "founder": {
                     "@type": "Person",
                     "@id": "https://aldoarbizu.com/#person",

@@ -33,3 +33,11 @@
 - [Algorithmic Binance Futures Trading Architecture](https://arbizulabs.com/solutions/desarrollo-bots-trading-algoritmico-binance-futures)
 - [Full Technical Ontology](/llms-full.txt)
 - [Security & Quote Verifier](https://arbizulabs.com/security)
+
+## Ring 1 Hybrid Commerce & Play Store Legal Endpoints
+- [Tienda Híbrida Minorista/Mayorista](https://arbizulabs.com/tienda): Dynamic FX pricing (`fxPricingEngine.mjs`), 4 Argentine logistics tiers, 1-click structured WhatsApp orders.
+- [Laboratorio Pre-Validación On-Demand](/tienda/lab): Hardware & 3D SKU validation telemetry (`PRE_VALIDATE_ON_DEMAND`) and read-only MercadoLibre/Meta feeds.
+- [Privacy Policy — AgroMarket Pro](https://arbizulabs.com/privacy/agromarket)
+- [Privacy Policy — SentinelOS](https://arbizulabs.com/privacy/sentinelos)
+- [Privacy Policy — NOMAD Tactical Hub](https://arbizulabs.com/privacy/nomadhub)
+- [Account & Data Deletion Request](https://arbizulabs.com/delete-account)
