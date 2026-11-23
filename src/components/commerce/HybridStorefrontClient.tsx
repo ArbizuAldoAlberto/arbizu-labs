@@ -78,6 +78,18 @@ interface CartLine {
 
 const formatArs = (n: number) => `$${Math.round(Number(n) || 0).toLocaleString('es-AR')}`;
 
+const SKU_IMAGE_MAP: Record<string, string> = {
+  'ARB-CAB-AGRO3D': '/assets/brand-v2/skus/arb-cab-agro3d.webp',
+  'ARB-IR-THERM550': '/assets/brand-v2/skus/arb-ir-therm550.webp',
+  'ARB-LINT-PRO2K': '/assets/brand-v2/skus/arb-lint-pro2k.webp',
+  'ARB-MATE-PICKUP': '/assets/brand-v2/skus/arb-mate-pickup.webp',
+  'ARB-OBD2-PRO3D': '/assets/brand-v2/skus/arb-obd2-pro3d.webp',
+  'ARB-TOOL-BAT4X': '/assets/brand-v2/skus/arb-tool-bat4x.webp',
+};
+
+const resolveSkuImage = (sku: string) =>
+  SKU_IMAGE_MAP[(sku || '').trim().toUpperCase()] || '/assets/brand-v2/b2b-field-telemetry.webp';
+
 export default function HybridStorefrontClient({ initialCatalog }: { initialCatalog: CatalogPayload | null }) {
   const catalog = initialCatalog || {
     fx: { rate_ars: 1380, source: 'fallback' },
@@ -414,7 +426,26 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   data-testid={`product-card-${product.sku}`}
                   className="border border-white/15 bg-[#0B0D12] p-4 flex flex-col justify-between gap-4 hover:border-[#00E599]/50 transition-colors"
                 >
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
+                    <div className="relative aspect-[5/4] w-full overflow-hidden border border-[#1B202B] bg-[#060709]">
+                      <img
+                        src={resolveSkuImage(product.sku)}
+                        alt={product.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          const img = e.currentTarget;
+                          if (!img.dataset.fallback) {
+                            img.dataset.fallback = '1';
+                            img.src = '/assets/brand-v2/b2b-field-telemetry.webp';
+                          }
+                        }}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#060709]/95 border border-[#1B202B] font-mono text-[10px] uppercase tracking-wider text-[#F2F0EA]">
+                        {product.category}
+                      </span>
+                    </div>
+
                     <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase">
                       <span className="text-[#94A3B8] truncate">{product.sku}</span>
                       <span

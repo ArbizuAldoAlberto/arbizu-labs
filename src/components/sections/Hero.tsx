@@ -97,7 +97,7 @@ export default function Hero() {
 
       {/* ETAPA 1: Command Hero Split 7:5 (Axiom Sovereign Industrial) */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]/92 backdrop-blur-md p-6 sm:p-10 lg:p-12 shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <div className="relative border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] p-6 sm:p-10 lg:p-12">
           {/* Crosshairs CNC de registro */}
           <span className="absolute -top-2.5 -left-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
           <span className="absolute -top-2.5 -right-1.5 font-mono text-xs text-[#D4AF37] select-none" aria-hidden="true">+</span>
@@ -107,7 +107,7 @@ export default function Hero() {
           {/* Barra superior de telemetría viva */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-5 mb-8 border-b border-[var(--grid-hairline,#1B202B)] font-mono text-[11px] tracking-[0.14em] uppercase tabular-nums">
             <div className="flex items-center gap-2.5 text-[var(--text-primary)]">
-              <span className="h-2 w-2 rounded-full bg-[#00E599] animate-pulse shadow-[0_0_8px_#00E599]" />
+              <span className="h-2 w-2 bg-[#00E599]" />
               <span className="text-[#00E599] font-bold">LIVE TELEMETRY</span>
               <span className="opacity-30">/</span>
               <span className="text-[var(--text-secondary)]">
@@ -182,6 +182,18 @@ export default function Hero() {
 
             {/* Columna Derecha (5 cols): Instrumento Interactivo Conmutable en Tiempo Real */}
             <div className="lg:col-span-5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] flex flex-col justify-between font-mono tabular-nums">
+              {/* Fotografía Real del Workbench (Nano Banana · Estudio Industrial Bolívar) */}
+              <div className="relative w-full aspect-[16/7] overflow-hidden border-b border-[var(--grid-hairline,#1B202B)] bg-[#060709]">
+                <img
+                  src="/assets/brand-v2/hero-studio-workbench.webp"
+                  alt={isEs ? 'Laboratorio industrial y workbench bare-metal de Arbizu Labs en San Carlos de Bolívar' : 'Arbizu Labs bare-metal hardware workbench and field telemetry studio'}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="absolute bottom-2 left-2 bg-[#060709]/95 border border-[#1B202B] px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-[#F2F0EA]">
+                  BOLÍVAR LAB // BARE-METAL &amp; FLIR STUDIO
+                </div>
+              </div>
               {/* Tabs del Instrumento */}
               <div className="grid grid-cols-3 border-b border-[var(--grid-hairline,#1B202B)] text-[10px] uppercase tracking-wider">
                 <button

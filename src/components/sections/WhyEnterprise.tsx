@@ -103,6 +103,40 @@ export default function WhyEnterprise() {
           </div>
         </div>
 
+        {/* Evidencia Fotográfica Bit-to-Atom */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[#D6D3C9] bg-[#FFFFFF] mb-10">
+          <div className="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-[#D6D3C9] bg-[#07080A]">
+            <img
+              src="/assets/brand-v2/b2b-field-telemetry.webp"
+              alt={isEs ? 'Telemetría de campo con tableta industrial offline y silobolsas rurales' : 'Rural field telemetry terminal measuring industrial silos offline'}
+              className="w-full h-56 lg:h-full max-h-[260px] object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div className="lg:col-span-7 p-6 flex flex-col justify-between gap-4">
+            <div>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#B83800] font-extrabold block mb-2">
+                FIELD HARDWARE // TELEMETRÍA RURAL + TERMOGRAFÍA FLIR
+              </span>
+              <h3 className="font-sans text-xl font-extrabold text-[#07080A] mb-2">
+                {isEs
+                  ? 'Software diseñado donde fallan el 4G, el polvo y la red eléctrica'
+                  : 'Engineered where 4G networks, dust, and mains power fail'}
+              </h3>
+              <p className="font-sans text-sm text-[#3E4552] leading-relaxed">
+                {isEs
+                  ? 'Probado en plantas de acopio de San Carlos de Bolívar, drones GIS, rondas nocturnas NFC y terminales Android offline. Cada captura térmica y ticket de balanza se firma y persiste localmente antes de tocar la nube.'
+                  : 'Field-validated across grain silos, GIS drones, NFC night patrols, and offline Android terminals. Every thermal plate and weighbridge event commits locally before touching cloud APIs.'}
+              </p>
+            </div>
+            <div className="pt-3 border-t border-[#D6D3C9] flex flex-wrap gap-4 font-mono text-[11px] text-[#07080A]">
+              <span><strong>PERSISTENCE:</strong> SQLite WAL Local</span>
+              <span><strong>OPTICS:</strong> FLIR Ironbow · LiDAR</span>
+              <span><strong>VERIFIED:</strong> 60/60 RLS Isolation</span>
+            </div>
+          </div>
+        </div>
+
         {/* 4 Pilares Doctrinales (Sin tarjetas clonadas flotantes: Grilla Suiza de 1px) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-[#D6D3C9] bg-[#FFFFFF] mb-14">
           {t.whyEnterprise.moats.slice(0, 4).map((pillar, i) => (
