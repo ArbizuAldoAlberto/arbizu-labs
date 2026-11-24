@@ -275,20 +275,20 @@ export default function ContactSection() {
     <section
       id="contact"
       data-section="contact"
-      className="py-24 bg-[var(--surface-void,#060709)] border-t border-[var(--grid-hairline,#1B202B)] relative overflow-x-clip scroll-mt-24"
+      className="py-14 sm:py-16 bg-[#F2F0EA] text-[#07080A] border-t border-[#D6D3C9] relative overflow-x-clip scroll-mt-24"
     >
       <div id="contacto" className="scroll-mt-24" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-3xl mb-12 text-left">
-          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold inline-flex items-center gap-2 mb-3">
+        <div className="max-w-3xl mb-10 text-left">
+          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#B83800] font-bold inline-flex items-center gap-2 mb-3">
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>[07 // TERMINAL DE CONTRATACIÓN IDEMPOTENTE · VERIFIER]</span>
+            <span>{isEs ? 'CONTRATACIÓN DIRECTA · CONSULTA IDEMPOTENTE' : 'DIRECT INQUIRY · IDEMPOTENT'}</span>
           </span>
-          <h2 className="font-sans text-3xl sm:text-5xl text-[var(--text-primary)] font-extrabold tracking-[-0.03em] mb-4">
+          <h2 className="font-sans text-3xl sm:text-5xl text-[#07080A] font-extrabold tracking-[-0.03em] mb-4">
             {isEs ? 'Inicia una Conversación de Ingeniería' : 'Start an Engineering Conversation'}
           </h2>
-          <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          <p className="font-mono text-xs sm:text-sm text-[#3E4552] leading-relaxed">
             {isEs
               ? 'Cuéntanos los cuellos de botella de tu arquitectura. Respuesta técnica en menos de 12 hs o verificación directa en /security.'
               : 'Describe your architectural bottlenecks. Initial technical assessment under 12 hours.'}
@@ -297,7 +297,7 @@ export default function ContactSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Form */}
-          <div className="lg:col-span-7 bg-[var(--surface-chassis,#0B0D12)] p-6 sm:p-8 rounded-[2px] border border-[var(--grid-hairline,#1B202B)]">
+          <div className="lg:col-span-7 bg-[#FFFFFF] p-6 sm:p-8 rounded-[2px] border border-[#D6D3C9]">
             {success ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.98 }}
@@ -430,7 +430,7 @@ export default function ContactSection() {
                 <button
                   disabled={loading}
                   type="submit"
-                  className="w-full bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] rounded-[2px] flex justify-center items-center h-12 mt-4 font-extrabold text-xs uppercase tracking-wider cursor-pointer transition-colors"
+                  className="w-full bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] rounded-[2px] flex justify-center items-center h-12 mt-4 font-extrabold text-xs uppercase tracking-wider cursor-pointer transition-colors"
                 >
                   <Send className="w-4 h-4 mr-2" />
                   <span>
@@ -446,8 +446,8 @@ export default function ContactSection() {
               </form>
             )}
 
-            <div className="mt-6 pt-4 border-t border-[var(--grid-hairline,#1B202B)] flex items-center gap-2 text-[11px] font-mono text-[var(--text-muted)]">
-              <ShieldCheck className="w-4 h-4 text-[#00E599] shrink-0" />
+            <div className="mt-6 pt-4 border-t border-[#D6D3C9] flex items-center gap-2 text-[11px] font-mono text-[#3E4552]">
+              <ShieldCheck className="w-4 h-4 text-[#1F4E3D] shrink-0" />
               <span>
                 {isEs
                   ? 'Persistencia atómica en SQLite WAL + Idempotency-Key · SLA de respuesta < 12 horas.'
@@ -458,7 +458,27 @@ export default function ContactSection() {
 
           {/* Right Column: Authority Card + Live Code Verifier */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-[var(--surface-chassis,#0B0D12)] p-6 sm:p-8 rounded-[2px] border border-[var(--grid-hairline,#1B202B)]">
+            <figure
+              data-slot="ventana2-arbizu-roi-field-ops"
+              className="border border-[#D6D3C9] bg-[#FFFFFF] rounded-[2px] overflow-hidden"
+            >
+              <img
+                src="/assets/brand-v2/hero-studio-workbench.webp"
+                data-ventana2-src="/assets/brand-v2/arbizu-roi-field-ops.webp"
+                alt={isEs ? 'Ingeniería de campo Arbizu Labs — diagnóstico térmico FLIR y telemetría industrial' : 'Arbizu Labs field engineering — FLIR thermal audit and industrial telemetry'}
+                width={1200}
+                height={675}
+                loading="lazy"
+                decoding="async"
+                className="w-full aspect-[16/9] object-cover block"
+              />
+              <figcaption className="px-4 py-2.5 border-t border-[#D6D3C9] bg-[#F8F7F3] font-mono text-[10px] uppercase tracking-wider text-[#3E4552] flex items-center justify-between">
+                <span>{isEs ? 'BIT-TO-ATOM // CAMPO + PLANTA' : 'BIT-TO-ATOM // FIELD + PLANT'}</span>
+                <span className="text-[#1F4E3D] font-bold">SLA &lt; 12H</span>
+              </figcaption>
+            </figure>
+
+            <div className="bg-[#FFFFFF] p-6 sm:p-8 rounded-[2px] border border-[#D6D3C9]">
               <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold block mb-2">
                 PRINCIPAL SYSTEMS ARCHITECT · DIRECT
               </span>

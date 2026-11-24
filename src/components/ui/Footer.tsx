@@ -16,11 +16,11 @@ export default function Footer() {
   return (
     <footer
       data-section="footer"
-      className="site-footer py-16 text-[var(--text-secondary)] border-t border-[var(--grid-hairline,#1B202B)]"
+      className="site-footer py-14 bg-[#EAE7DF] text-[#3E4552] border-t border-[#D6D3C9]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top footer grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
@@ -203,11 +203,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-xs text-[var(--text-secondary)] border-t border-[var(--grid-hairline,#1B202B)]">
+        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-xs text-[#3E4552] border-t border-[#D6D3C9]">
           <p>{t.footer.rights}</p>
           <div className="flex flex-wrap items-center gap-5">
-            <Link href="/security" className="inline-flex items-center gap-1 hover:text-[var(--text-primary)] transition-colors">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#00E599]" />
+            <Link href="/tienda" className="inline-flex items-center gap-1 hover:text-[#07080A] font-semibold transition-colors">
+              <span>Tienda</span>
+            </Link>
+            <Link href="/security" className="inline-flex items-center gap-1 hover:text-[#07080A] transition-colors">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#1F4E3D]" />
               <span>{t.footer.security}</span>
             </Link>
             <Link href="/status" className="hover:text-[var(--text-primary)] transition-colors">

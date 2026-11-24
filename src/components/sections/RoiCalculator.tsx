@@ -100,27 +100,28 @@ export default function RoiCalculator() {
     <section
       id="roi"
       data-section="roi"
-      className="py-24 bg-[var(--surface-chassis,#0B0D12)] border-b border-[var(--grid-hairline,#1B202B)] relative scroll-mt-24"
+      data-paper="true"
+      className="py-14 sm:py-16 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24 paper-section"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold inline-flex items-center gap-2 mb-3">
+        <div className="max-w-3xl mb-8">
+          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#B83800] font-extrabold inline-flex items-center gap-2 mb-2">
             <Calculator className="w-3.5 h-3.5" />
-            <span>[06 // INSTANT TECHNICAL DOSSIER &amp; ROI ENGINE · GAP-02]</span>
+            <span>{isEs ? 'CÁLCULO DE RETORNO & DOSSIER' : 'TECHNICAL DOSSIER & ROI'}</span>
           </span>
-          <h2 className="font-sans text-3xl sm:text-5xl text-[var(--text-primary)] font-extrabold tracking-[-0.03em] mb-4">
+          <h2 className="font-sans text-2xl sm:text-4xl text-[#07080A] font-extrabold tracking-[-0.03em] mb-3">
             {t.roi.heading}
           </h2>
-          <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-[#3E4552] leading-relaxed">
             {t.roi.subheading}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[#D6D3C9] bg-[#FFFFFF]">
           {/* Panel Izquierdo: Parámetros & Presets */}
-          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[var(--grid-hairline,#1B202B)] space-y-6">
-            <div className="pb-4 border-b border-[var(--grid-hairline,#1B202B)]">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-bold block mb-3">
+          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[#D6D3C9] space-y-6">
+            <div className="pb-4 border-b border-[#D6D3C9]">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#3E4552] font-bold block mb-3">
                 {isEs ? 'PERFILES OPERATIVOS PRE-CALIBRADOS:' : 'PRE-CALIBRATED INDUSTRY PROFILES:'}
               </span>
               <div className="flex flex-wrap gap-2">
@@ -145,8 +146,8 @@ export default function RoiCalculator() {
                       }}
                       className={`px-3 py-1.5 rounded-[2px] text-xs font-mono transition-colors cursor-pointer border ${
                         isActive
-                          ? 'bg-[#FF4F00] text-[#060709] border-[#FF4F00] font-bold'
-                          : 'bg-[var(--surface-chassis,#0B0D12)] text-[var(--text-secondary)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]'
+                          ? 'bg-[#07080A] text-[#F2F0EA] border-[#07080A] font-bold'
+                          : 'bg-[#F2F0EA] text-[#07080A] border-[#D6D3C9] hover:border-[#07080A]'
                       }`}
                     >
                       {preset.name}
@@ -159,8 +160,8 @@ export default function RoiCalculator() {
             <div className="space-y-5 font-mono text-xs tabular-nums">
               <label className="block">
                 <div className="flex justify-between mb-2">
-                  <span className="text-[var(--text-secondary)]">{t.roi.labels.teamSize}</span>
-                  <span className="text-base font-bold text-[#D4AF37]">{teamSize}</span>
+                  <span className="text-[#3E4552]">{t.roi.labels.teamSize}</span>
+                  <span className="text-base font-bold text-[#07080A]">{teamSize}</span>
                 </div>
                 <input
                   type="range"
@@ -174,8 +175,8 @@ export default function RoiCalculator() {
 
               <label className="block">
                 <div className="flex justify-between mb-2">
-                  <span className="text-[var(--text-secondary)]">{t.roi.labels.downtimeHours}</span>
-                  <span className="text-base font-bold text-[#D4AF37]">{downtimeHours}h / mes</span>
+                  <span className="text-[#3E4552]">{t.roi.labels.downtimeHours}</span>
+                  <span className="text-base font-bold text-[#07080A]">{downtimeHours}h / mes</span>
                 </div>
                 <input
                   type="range"
@@ -189,8 +190,8 @@ export default function RoiCalculator() {
 
               <label className="block">
                 <div className="flex justify-between mb-2">
-                  <span className="text-[var(--text-secondary)]">{t.roi.labels.hourlyRate}</span>
-                  <span className="text-base font-bold text-[#D4AF37]">${hourlyRate} USD/h</span>
+                  <span className="text-[#3E4552]">{t.roi.labels.hourlyRate}</span>
+                  <span className="text-base font-bold text-[#07080A]">${hourlyRate} USD/h</span>
                 </div>
                 <input
                   type="range"
@@ -205,29 +206,29 @@ export default function RoiCalculator() {
           </div>
 
           {/* Panel Derecho: Dossier Instantáneo & Verificación Criptográfica */}
-          <div className="lg:col-span-5 p-6 sm:p-8 bg-[var(--surface-elevated,#11151D)] flex flex-col justify-between font-mono tabular-nums">
+          <div className="lg:col-span-5 p-6 sm:p-8 bg-[#F2F0EA] flex flex-col justify-between font-mono tabular-nums">
             <div>
-              <div className="flex items-center justify-between text-[11px] pb-3 mb-4 border-b border-[var(--grid-hairline,#1B202B)]">
-                <span className="text-[#D4AF37] font-bold uppercase">QUOTE CODE: {quoteCode}</span>
-                <span className="text-[#00E599] font-bold">82% RECOVERY</span>
+              <div className="flex items-center justify-between text-[11px] pb-3 mb-4 border-b border-[#D6D3C9]">
+                <span className="text-[#B83800] font-bold uppercase">QUOTE: {quoteCode}</span>
+                <span className="text-[#1F4E3D] font-bold">82% RECOVERY</span>
               </div>
 
-              <span className="text-[11px] uppercase tracking-wider text-[var(--text-muted)] block mb-1">
+              <span className="text-[11px] uppercase tracking-wider text-[#3E4552] block mb-1">
                 {t.roi.labels.netSavings}
               </span>
-              <div className="font-sans text-4xl sm:text-5xl font-extrabold text-[var(--text-primary)] mb-2" suppressHydrationWarning>
+              <div className="font-sans text-4xl sm:text-5xl font-extrabold text-[#07080A] mb-2" suppressHydrationWarning>
                 ${estimatedSavings.toLocaleString('en-US')}{' '}
-                <span className="text-sm font-mono text-[#D4AF37] font-normal">USD/YR</span>
+                <span className="text-sm font-mono text-[#B83800] font-bold">USD/YR</span>
               </div>
 
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6">
+              <p className="font-sans text-xs sm:text-sm text-[#3E4552] leading-relaxed mb-6">
                 {isEs
-                  ? 'Descarga al instante un Dossier Técnico Ejecutivo con arquitectura propuesta, cronograma de 14 días, coordenadas oficiales de liquidación y código verificable en /security y SQLite WAL.'
+                  ? 'Descarga al instante un Dossier Técnico Ejecutivo con arquitectura propuesta, cronograma de 14 días, coordenadas oficiales de liquidación y código verificable.'
                   : 'Download an Executive Technical Dossier with architecture breakdown, 14-day schedule, and verifiable quote code.'}
               </p>
 
               {dossierGenerated && (
-                <div className="mb-4 p-3 border border-[#00E599]/50 bg-[#00E599]/10 text-xs text-[#00E599] flex items-center justify-between gap-2">
+                <div className="mb-4 p-3 border border-[#1F4E3D] bg-[#FFFFFF] text-xs text-[#1F4E3D] flex items-center justify-between gap-2">
                   <span className="inline-flex items-center gap-1.5 font-bold">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
                     Dossier {dossierGenerated} emitido
@@ -243,19 +244,19 @@ export default function RoiCalculator() {
               <button
                 type="button"
                 onClick={handleGenerateDossier}
-                className="w-full py-3.5 px-4 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full py-3.5 px-4 min-h-[44px] rounded-[2px] bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <FileDown className="w-4 h-4" />
                 <span>
-                  {isEs ? 'Descargar Dossier Técnico Ejecutivo (.MD)' : 'Download Executive Tech Dossier (.MD)'}
+                  {isEs ? 'Descargar Dossier Técnico (.MD)' : 'Download Technical Dossier (.MD)'}
                 </span>
               </button>
 
               <Link
                 href={`/security?code=${quoteCode}`}
-                className="w-full py-3 px-4 rounded-[2px] border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] hover:border-[#00E599] text-[var(--text-primary)] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-3 px-4 min-h-[44px] rounded-[2px] border border-[#07080A] bg-[#FFFFFF] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
               >
-                <ShieldCheck className="w-4 h-4 text-[#00E599]" />
+                <ShieldCheck className="w-4 h-4 text-[#1F4E3D]" />
                 <span>{isEs ? `Verificar Código ${quoteCode}` : `Verify Code ${quoteCode}`}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>

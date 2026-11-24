@@ -288,29 +288,29 @@ export default function ProductsBento() {
     <section
       id="workbench"
       data-section="workbench"
-      className="py-24 bg-[var(--surface-void,#060709)] border-t border-b border-[var(--grid-hairline,#1B202B)] relative scroll-mt-24"
+      className="py-14 sm:py-16 bg-[#F2F0EA] text-[#07080A] border-t border-b border-[#D6D3C9] relative scroll-mt-24"
     >
       <div id="systems" className="scroll-mt-24" />
       <div id="ecosystem" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         {/* Encabezado de Sección */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-8 border-b border-[var(--grid-hairline,#1B202B)]">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 pb-6 border-b border-[#D6D3C9]">
           <div>
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold block mb-2">
-              [02 // LIVE PRODUCT WORKBENCH — TRY BEFORE YOU TALK · GAP-01]
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#B83800] font-bold block mb-2">
+              {isEs ? 'SISTEMAS EN VIVO · PRUEBA OPERATIVA' : 'LIVE PRODUCT WORKBENCH'}
             </span>
-            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[var(--text-primary)]">
+            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[#07080A]">
               {isEs ? 'Dinastía de Sistemas en Producción' : 'Production Systems Dynasty'}
             </h2>
           </div>
-          <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl leading-relaxed">
+          <p className="font-mono text-xs sm:text-sm text-[#3E4552] max-w-xl leading-relaxed">
             {isEs
-              ? 'Opera instrumentos reales de nuestra ingeniería directamente en el navegador antes de agendar una llamada. Mismo chasis octagonal, misma garantía v2.1.0-ironclad.'
+              ? 'Opera instrumentos reales de nuestra ingeniería directamente en el navegador antes de agendar una llamada. Mismo estándar operativo, arquitectura verificable.'
               : 'Test live slices of our production engineering right inside the browser before scheduling a discovery call.'}
           </p>
         </div>
 
         {/* Selector de los 4 Sistemas Insignia */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {(['SYS-01', 'SYS-02', 'SYS-03', 'SYS-04'] as FlagshipCode[]).map((code) => {
             const item = FLAGSHIP_META[code];
             const active = selectedSys === code;
@@ -323,18 +323,18 @@ export default function ProductsBento() {
                   playModeSwitch('wireframe');
                   setSelectedSys(code);
                 }}
-                className={`p-4 text-left border rounded-[2px] transition-all flex items-center gap-3 cursor-pointer ${
+                className={`p-4 text-left border rounded-[2px] transition-colors flex items-center gap-3 cursor-pointer ${
                   active
-                    ? 'bg-[var(--surface-elevated,#11151D)] border-[#FF4F00] shadow-[0_0_24px_rgba(255,79,0,0.16)]'
-                    : 'bg-[var(--surface-chassis,#0B0D12)] border-[var(--grid-hairline,#1B202B)] hover:border-[#D4AF37]/60'
+                    ? 'bg-[#FFFFFF] border-[#FF4F00] shadow-sm'
+                    : 'bg-[#F8F7F3] border-[#D6D3C9] hover:border-[#07080A]'
                 }`}
               >
                 <ProductDynastyBadge code={code} className="w-10 h-10 shrink-0" />
                 <div className="min-w-0">
-                  <div className="font-mono text-[10px] text-[#D4AF37] font-bold uppercase tracking-wider">
+                  <div className={`font-mono text-[10px] font-bold uppercase tracking-wider ${active ? 'text-[#B83800]' : 'text-[#5C6470]'}`}>
                     {code}
                   </div>
-                  <div className="font-sans text-sm sm:text-base font-bold text-[var(--text-primary)] truncate">
+                  <div className="font-sans text-sm sm:text-base font-bold text-[#07080A] truncate">
                     {item.title}
                   </div>
                 </div>
@@ -344,15 +344,15 @@ export default function ProductsBento() {
         </div>
 
         {/* WORKBENCH INTERACTIVO (IZQUIERDA: INSTRUMENTO VIVO | DERECHA: FICHA B2B) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 border border-[#D6D3C9] bg-[#FFFFFF] rounded-[2px]">
           {/* Panel Izquierdo (7 cols): Visor Operativo Ejecutable */}
-          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[var(--grid-hairline,#1B202B)] font-mono">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[var(--grid-hairline,#1B202B)] text-[11px]">
-              <span className="text-[#00E599] font-bold flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
-                INTERACTIVE SLICE // {selectedSys}
+          <div className="lg:col-span-7 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-[#D6D3C9] font-mono bg-[#FFFFFF] text-[#07080A]">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[#D6D3C9] text-[11px]">
+              <span className="text-[#1F4E3D] font-bold flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#1F4E3D]" />
+                SLICE ACTIVO // {selectedSys}
               </span>
-              <span className="text-[var(--text-muted)] uppercase">{meta.deployment}</span>
+              <span className="text-[#5C6470] uppercase">{meta.deployment}</span>
             </div>
 
             {selectedSys === 'SYS-01' && (
@@ -405,9 +405,9 @@ export default function ProductsBento() {
                   </label>
                 </div>
 
-                <div className="overflow-x-auto border border-[var(--grid-hairline,#1B202B)]">
+                <div className="overflow-x-auto border border-[#D6D3C9]">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[var(--surface-elevated,#11151D)] text-[var(--text-muted)] uppercase text-[10px]">
+                    <thead className="bg-[#F8F7F3] text-[#5C6470] uppercase text-[10px]">
                       <tr>
                         <th className="p-2.5">Nivel</th>
                         <th className="p-2.5">Precio</th>
@@ -415,30 +415,30 @@ export default function ProductsBento() {
                         <th className="p-2.5">Regla Slot</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[var(--grid-hairline,#1B202B)] text-[var(--text-primary)]">
+                    <tbody className="divide-y divide-[#D6D3C9] text-[#07080A]">
                       <tr>
-                        <td className="p-2.5 text-[#F43F5E] font-bold">SL (Hard Cap)</td>
+                        <td className="p-2.5 text-[#B91C1C] font-bold">SL (Hard Cap)</td>
                         <td className="p-2.5 font-bold">${slPrice.toLocaleString('en-US')}</td>
-                        <td className="p-2.5 text-[#F43F5E]">{(((-riskDist) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[var(--text-muted)]">1.50x ATR · INITIAL</td>
+                        <td className="p-2.5 text-[#B91C1C]">{(((-riskDist) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#5C6470]">1.50x ATR · INITIAL</td>
                       </tr>
                       <tr>
-                        <td className="p-2.5 text-[#00E599] font-bold">TP1 (2.50x ATR)</td>
+                        <td className="p-2.5 text-[#1F4E3D] font-bold">TP1 (2.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp1Price.toLocaleString('en-US')}</td>
-                        <td className="p-2.5 text-[#00E599]">+{(((atrValue * 2.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[var(--text-muted)]">Cierra 60% + Mueve SL a BE</td>
+                        <td className="p-2.5 text-[#1F4E3D]">+{(((atrValue * 2.5) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#5C6470]">Cierra 60% + Mueve SL a BE</td>
                       </tr>
                       <tr>
-                        <td className="p-2.5 text-[#D4AF37] font-bold">TP2 (4.50x ATR)</td>
+                        <td className="p-2.5 text-[#92400E] font-bold">TP2 (4.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp2Price.toLocaleString('en-US')}</td>
-                        <td className="p-2.5 text-[#D4AF37]">+{(((atrValue * 4.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[var(--text-muted)]">Runner 40% Restante</td>
+                        <td className="p-2.5 text-[#92400E]">+{(((atrValue * 4.5) / entryPrice) * 100).toFixed(2)}%</td>
+                        <td className="p-2.5 text-[#5C6470]">Runner 40% Restante</td>
                       </tr>
                       <tr>
-                        <td className="p-2.5 text-[var(--text-secondary)] font-bold">Trailing Chandelier</td>
+                        <td className="p-2.5 text-[#3E4552] font-bold">Trailing Chandelier</td>
                         <td className="p-2.5">${trailPrice.toLocaleString('en-US')}</td>
-                        <td className="p-2.5 text-[#00E599]">+0.20% Buffer</td>
-                        <td className="p-2.5 text-[var(--text-muted)]">Lock-In Autónomo</td>
+                        <td className="p-2.5 text-[#1F4E3D]">+0.20% Buffer</td>
+                        <td className="p-2.5 text-[#5C6470]">Lock-In Autónomo</td>
                       </tr>
                     </tbody>
                   </table>
@@ -449,26 +449,26 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-02' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-xs font-bold text-[var(--text-primary)]">
+                  <span className="text-xs font-bold text-[#07080A]">
                     GUARD PATROL NODE · ANTI-SPOOFING &amp; SOS GATEWAY
                   </span>
-                  <span className="px-2.5 py-1 text-[10px] font-bold border border-[#00B4D8]/50 text-[#00B4D8] bg-[#00B4D8]/10">
+                  <span className="px-2.5 py-1 text-[10px] font-bold border border-[#0369A1]/40 text-[#0369A1] bg-[#F0F9FF]">
                     RLS TENANT ISOLATION 60/60
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">RONDAS NFC SELLADAS</div>
-                    <div className="text-2xl font-bold text-[#00E599] mt-1">{checkpointsDone}</div>
+                  <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
+                    <div className="text-[#5C6470] text-[10px]">RONDAS NFC SELLADAS</div>
+                    <div className="text-2xl font-bold text-[#1F4E3D] mt-1">{checkpointsDone}</div>
                   </div>
-                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">HMAC-SHA256 PAYLOAD</div>
-                    <div className="text-xs font-bold text-[var(--text-primary)] mt-2 truncate">{lastHmac}</div>
+                  <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
+                    <div className="text-[#5C6470] text-[10px]">HMAC-SHA256 PAYLOAD</div>
+                    <div className="text-xs font-bold text-[#07080A] mt-2 truncate">{lastHmac}</div>
                   </div>
-                  <div className="p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">ESTADO SOS SOC</div>
-                    <div className={`text-xs font-bold mt-2 ${sosTriggered ? 'text-[#F43F5E]' : 'text-[#00E599]'}`}>
+                  <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
+                    <div className="text-[#5C6470] text-[10px]">ESTADO SOS SOC</div>
+                    <div className={`text-xs font-bold mt-2 ${sosTriggered ? 'text-[#B91C1C]' : 'text-[#1F4E3D]'}`}>
                       {sosTriggered ? 'CRITICAL SOS ENVIADO' : 'PERÍMETRO NORMAL'}
                     </div>
                   </div>
@@ -478,17 +478,17 @@ export default function ProductsBento() {
                   <button
                     type="button"
                     onClick={handleScanCheckpoint}
-                    className="px-4 py-2.5 bg-[#00B4D8] text-[#060709] text-xs font-bold uppercase tracking-wider rounded-[2px] cursor-pointer"
+                    className="px-4 py-2.5 bg-[#07080A] hover:bg-[#1F4E3D] text-[#FFFFFF] text-xs font-bold uppercase tracking-wider rounded-[2px] cursor-pointer transition-colors"
                   >
                     + Fichar Checkpoint NFC / Mock-GPS Check
                   </button>
                   <button
                     type="button"
                     onClick={() => setSosTriggered((s) => !s)}
-                    className={`px-4 py-2.5 border text-xs font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-2 cursor-pointer ${
+                    className={`px-4 py-2.5 border text-xs font-bold uppercase tracking-wider rounded-[2px] flex items-center gap-2 cursor-pointer transition-colors ${
                       sosTriggered
-                        ? 'bg-[#00E599] text-[#060709] border-[#00E599]'
-                        : 'border-[#F43F5E] text-[#F43F5E] bg-[#F43F5E]/10'
+                        ? 'bg-[#1F4E3D] text-[#FFFFFF] border-[#1F4E3D]'
+                        : 'border-[#B91C1C] text-[#B91C1C] bg-[#FEF2F2]'
                     }`}
                   >
                     <ShieldAlert className="w-3.5 h-3.5" />
@@ -501,8 +501,8 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-03' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[var(--text-primary)]">
-                    <Scale className="w-4 h-4 text-[#10B981]" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#07080A]">
+                    <Scale className="w-4 h-4 text-[#1F4E3D]" />
                     <span>BALANZA SILOBOLSA &amp; STOCK SENASA (SQLITE WAL)</span>
                   </div>
                   <button
@@ -510,8 +510,8 @@ export default function ProductsBento() {
                     onClick={() => setAgroOffline((v) => !v)}
                     className={`px-3 py-1 text-[10px] font-bold border flex items-center gap-1.5 cursor-pointer ${
                       agroOffline
-                        ? 'border-[#FF4F00] text-[#FF4F00] bg-[#FF4F00]/10'
-                        : 'border-[#00E599] text-[#00E599] bg-[#00E599]/10'
+                        ? 'border-[#B83800] text-[#B83800] bg-[#FFF7ED]'
+                        : 'border-[#1F4E3D] text-[#1F4E3D] bg-[#ECFDF5]'
                     }`}
                   >
                     {agroOffline ? <WifiOff className="w-3 h-3" /> : <Wifi className="w-3 h-3" />}
@@ -520,35 +520,35 @@ export default function ProductsBento() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div className="p-3.5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <span className="text-[var(--text-muted)] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
-                    <span className="text-2xl font-bold text-[var(--text-primary)]">{siloWeightKg.toLocaleString('en-US')} kg</span>
+                  <div className="p-3.5 border border-[#D6D3C9] bg-[#F8F7F3]">
+                    <span className="text-[#5C6470] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
+                    <span className="text-2xl font-bold text-[#07080A]">{siloWeightKg.toLocaleString('en-US')} kg</span>
                   </div>
-                  <div className="p-3.5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] flex items-center justify-between">
+                  <div className="p-3.5 border border-[#D6D3C9] bg-[#F8F7F3] flex items-center justify-between">
                     <div>
-                      <span className="text-[var(--text-muted)] text-[10px] block">COLA TRANSACCIONAL WAL</span>
-                      <span className="text-sm font-bold text-[#00E599]">0 bytes perdidos</span>
+                      <span className="text-[#5C6470] text-[10px] block">COLA TRANSACCIONAL WAL</span>
+                      <span className="text-sm font-bold text-[#1F4E3D]">0 bytes perdidos</span>
                     </div>
                     <button
                       type="button"
                       onClick={handleRecordWeighbridge}
-                      className="px-3.5 py-2 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] text-[11px] font-bold uppercase cursor-pointer"
+                      className="px-3.5 py-2 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] text-[11px] font-bold uppercase cursor-pointer transition-colors"
                     >
                       + Registrar Camión
                     </button>
                   </div>
                 </div>
 
-                <div className="border border-[var(--grid-hairline,#1B202B)] divide-y divide-[var(--grid-hairline,#1B202B)] text-xs">
+                <div className="border border-[#D6D3C9] divide-y divide-[#D6D3C9] text-xs">
                   {walBuffer.map((row) => (
-                    <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[var(--surface-void,#060709)]">
-                      <span className="text-[var(--text-primary)] font-bold">{row.ticket} · Soja/Maíz</span>
-                      <span className="text-[var(--text-secondary)]">{row.kg.toLocaleString('en-US')} kg</span>
+                    <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[#F8F7F3]">
+                      <span className="text-[#07080A] font-bold">{row.ticket} · Soja/Maíz</span>
+                      <span className="text-[#3E4552]">{row.kg.toLocaleString('en-US')} kg</span>
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 border ${
                           row.status === 'PENDING_SYNC'
-                            ? 'text-[#FF4F00] border-[#FF4F00]/40'
-                            : 'text-[#00E599] border-[#00E599]/40'
+                            ? 'text-[#B83800] border-[#B83800]/40 bg-[#FFF7ED]'
+                            : 'text-[#1F4E3D] border-[#1F4E3D]/40 bg-[#ECFDF5]'
                         }`}
                       >
                         {row.status}
@@ -562,11 +562,11 @@ export default function ProductsBento() {
             {selectedSys === 'SYS-04' && (
               <div className="space-y-5 tabular-nums">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-[var(--text-primary)] flex items-center gap-2">
-                    <Radio className="w-4 h-4 text-[#FF4F00]" />
+                  <span className="font-bold text-[#07080A] flex items-center gap-2">
+                    <Radio className="w-4 h-4 text-[#B83800]" />
                     CALCULADORA OFF-GRID AUTONOMÍA SOLAR + MÓDEM AFSK 800Hz
                   </span>
-                  <span className="text-[#00E599] font-bold">PAR2 USB RECOVERY: OK</span>
+                  <span className="text-[#1F4E3D] font-bold">PAR2 USB RECOVERY: OK</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -615,38 +615,38 @@ export default function ProductsBento() {
           </div>
 
           {/* Panel Derecho (5 cols): Ficha de Ingeniería & Conversión B2B */}
-          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-[var(--surface-elevated,#11151D)]">
+          <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-[#F8F7F3] text-[#07080A]">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <ProductDynastyBadge code={selectedSys} className="w-11 h-11 shrink-0" />
                 <div>
-                  <span className="font-mono text-[10px] text-[#FF4F00] font-bold uppercase tracking-widest block">
+                  <span className="font-mono text-[10px] text-[#B83800] font-bold uppercase tracking-widest block">
                     {selectedSys} // SOVEREIGN DIVISION
                   </span>
-                  <h3 className="font-sans text-2xl font-extrabold text-[var(--text-primary)]">{meta.title}</h3>
+                  <h3 className="font-sans text-2xl font-extrabold text-[#07080A]">{meta.title}</h3>
                 </div>
               </div>
 
-              <p className="font-sans text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
+              <p className="font-sans text-sm text-[#3E4552] leading-relaxed mb-5">
                 {isEs ? meta.subtitleEs : meta.subtitleEn}
               </p>
 
-              <div className="space-y-3 border-y border-[var(--grid-hairline,#1B202B)] py-4 mb-6 font-mono text-xs">
+              <div className="space-y-3 border-y border-[#D6D3C9] py-4 mb-6 font-mono text-xs">
                 <div>
-                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">
+                  <span className="text-[#5C6470] uppercase block text-[10px]">
                     {isEs ? 'PROBLEMA ELIMINADO:' : 'ELIMINATED BOTTLENECK:'}
                   </span>
-                  <span className="text-[var(--text-primary)]">{isEs ? meta.problemEs : meta.problemEn}</span>
+                  <span className="text-[#07080A]">{isEs ? meta.problemEs : meta.problemEn}</span>
                 </div>
                 <div>
-                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">ARCHITECTURE STACK:</span>
-                  <span className="text-[#00E599] font-bold">{meta.arch}</span>
+                  <span className="text-[#5C6470] uppercase block text-[10px]">ARCHITECTURE STACK:</span>
+                  <span className="text-[#1F4E3D] font-bold">{meta.arch}</span>
                 </div>
                 <div>
-                  <span className="text-[var(--text-muted)] uppercase block text-[10px]">
+                  <span className="text-[#5C6470] uppercase block text-[10px]">
                     {isEs ? 'MODALIDAD B2B:' : 'LICENSING TIER:'}
                   </span>
-                  <span className="text-[#D4AF37] font-bold">{meta.quotePrice}</span>
+                  <span className="text-[#B83800] font-bold">{meta.quotePrice}</span>
                 </div>
               </div>
             </div>
@@ -655,7 +655,7 @@ export default function ProductsBento() {
               <button
                 type="button"
                 onClick={() => openQuoteModal(meta.quoteTitle, meta.quotePrice, selectedSys)}
-                className="flex-1 py-3 px-4 bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
+                className="flex-1 py-3 px-4 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
               >
                 {isEs ? 'Cotizar Despliegue →' : 'Configure Deployment →'}
               </button>
@@ -663,28 +663,28 @@ export default function ProductsBento() {
                 href={meta.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 px-4 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)] hover:border-[#D4AF37] text-[var(--text-primary)] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center justify-center gap-1.5"
+                className="py-3 px-4 border border-[#07080A] bg-[#FFFFFF] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] font-mono text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center justify-center gap-1.5 transition-colors"
               >
                 <span>{isEs ? 'Abrir Sistema' : 'Open Live'}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#FF4F00]" />
               </a>
             </div>
           </div>
         </div>
 
         {/* Toggle para inspeccionar las 8 Verticales Especializadas SYS-05..12 */}
-        <div className="mt-8">
+        <div className="mt-6">
           <button
             type="button"
             onClick={() => setShowFullDynasty((s) => !s)}
-            className="w-full py-4 px-6 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] hover:border-[#D4AF37] flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="w-full py-4 px-6 border border-[#D6D3C9] bg-[#FFFFFF] hover:border-[#07080A] flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[#07080A] rounded-[2px] transition-colors cursor-pointer"
           >
             <span>
               {isEs
                 ? 'INSPECCIONAR CATÁLOGO COMPLETO DE LA DINASTÍA (SYS-05 .. SYS-12)'
                 : 'INSPECT FULL DYNASTY CATALOG (SYS-05 .. SYS-12)'}
             </span>
-            {showFullDynasty ? <ChevronUp className="w-4 h-4 text-[#FF4F00]" /> : <ChevronDown className="w-4 h-4 text-[#D4AF37]" />}
+            {showFullDynasty ? <ChevronUp className="w-4 h-4 text-[#FF4F00]" /> : <ChevronDown className="w-4 h-4 text-[#07080A]" />}
           </button>
 
           {showFullDynasty && (
