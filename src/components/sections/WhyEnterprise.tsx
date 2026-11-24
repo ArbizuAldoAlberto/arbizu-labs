@@ -77,28 +77,28 @@ export default function WhyEnterprise() {
       id="artefactos"
       data-section="artifacts"
       data-paper="true"
-      className="py-24 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24 paper-section"
+      className="py-14 sm:py-16 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24 paper-section"
       style={{ overflowX: 'clip' }}
     >
       <div id="standards" className="scroll-mt-24" />
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Encabezado Bi-Luminance Editorial */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-10 border-b border-[#D6D3C9] mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[#D6D3C9] mb-8">
           <div className="max-w-3xl">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#B83800] font-extrabold block mb-3">
-              [03 // BI-LUMINANCE DOCTRINE · TITANIUM PAPER BRIEF]
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#B83800] font-extrabold block mb-2">
+              {isEs ? 'DOCTRINA DE INGENIERÍA BIT-TO-ATOM' : 'BIT-TO-ATOM ENGINEERING DOCTRINE'}
             </span>
-            <h2 className="font-sans text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] text-[#07080A] mb-4">
+            <h2 className="font-sans text-2xl sm:text-4xl font-extrabold tracking-[-0.03em] text-[#07080A] mb-3">
               {isEs
-                ? 'La Doctrina Bit-to-Atom: Por Qué el Software Convencional Colapsa en el Terreno'
-                : 'The Bit-to-Atom Doctrine: Why Conventional Software Collapses in the Field'}
+                ? 'Por qué el software convencional colapsa en el terreno'
+                : 'Why conventional software collapses in the field'}
             </h2>
-            <p className="font-sans text-base text-[#3E4552] leading-relaxed">
+            <p className="font-sans text-sm sm:text-base text-[#3E4552] leading-relaxed">
               {t.whyEnterprise.subheading}
             </p>
           </div>
           <div className="font-mono text-xs text-[#3E4552] tabular-nums shrink-0 border-l-2 border-[#B83800] pl-4">
-            <div className="font-bold text-[#07080A]">CERTIFIED VERIFICATION BASELINE</div>
+            <div className="font-bold text-[#07080A]">VERIFICATION BASELINE</div>
             <div>contrast_ratio: 18.4:1 AAA · rls_audit: 60/60 PASS</div>
           </div>
         </div>
@@ -177,7 +177,7 @@ export default function WhyEnterprise() {
                   <th className="p-4">{isEs ? 'Vector Técnico' : 'Engineering Vector'}</th>
                   <th className="p-4">{isEs ? 'Agencia Cloud-Only' : 'Cloud-Only Agency'}</th>
                   <th className="p-4">{isEs ? 'SaaS Genérico' : 'Generic SaaS'}</th>
-                  <th className="p-4 text-[#00E599]">{isEs ? 'Arquitectura Soberana Arbizu Labs' : 'Arbizu Labs Sovereign Architecture'}</th>
+                  <th className="p-4 text-[#F2F0EA]">{isEs ? 'Arquitectura Arbizu Labs' : 'Arbizu Labs Architecture'}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#D6D3C9]">

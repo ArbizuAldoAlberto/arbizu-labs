@@ -79,16 +79,35 @@ interface CartLine {
 const formatArs = (n: number) => `$${Math.round(Number(n) || 0).toLocaleString('es-AR')}`;
 
 const SKU_IMAGE_MAP: Record<string, string> = {
+  'ARB-NVME-CNC-10G': '/assets/brand-v2/skus/arb-nvme-cnc-10g.webp',
+  'ARB-USBC-240W-DUO': '/assets/brand-v2/skus/arb-usbc-240w-duo.webp',
   'ARB-CAB-AGRO3D': '/assets/brand-v2/skus/arb-cab-agro3d.webp',
   'ARB-IR-THERM550': '/assets/brand-v2/skus/arb-ir-therm550.webp',
   'ARB-LINT-PRO2K': '/assets/brand-v2/skus/arb-lint-pro2k.webp',
   'ARB-MATE-PICKUP': '/assets/brand-v2/skus/arb-mate-pickup.webp',
   'ARB-OBD2-PRO3D': '/assets/brand-v2/skus/arb-obd2-pro3d.webp',
   'ARB-TOOL-BAT4X': '/assets/brand-v2/skus/arb-tool-bat4x.webp',
+  // 12/12 SKUs con foto WebP de estudio unica (Nano Banana Ventana 1 + Ventana 2):
+  'ARB-DRIVER-S2-PRO': '/assets/brand-v2/skus/arb-driver-s2-pro.webp',
+  'ARB-S0-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-CLIP-EID': '/assets/brand-v2/skus/arb-3d-clip-eid.webp',
+  'ARB-3D-VESA-DOCK': '/assets/brand-v2/skus/arb-3d-vesa-dock.webp',
+};
+
+const VENTANA2_SKU_IMAGE_MAP: Record<string, string> = {
+  'ARB-DRIVER-S2-PRO': '/assets/brand-v2/skus/arb-driver-s2-pro.webp',
+  'ARB-S0-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-CLIP-EID': '/assets/brand-v2/skus/arb-3d-clip-eid.webp',
+  'ARB-3D-VESA-DOCK': '/assets/brand-v2/skus/arb-3d-vesa-dock.webp',
 };
 
 const resolveSkuImage = (sku: string) =>
-  SKU_IMAGE_MAP[(sku || '').trim().toUpperCase()] || '/assets/brand-v2/b2b-field-telemetry.webp';
+  SKU_IMAGE_MAP[(sku || '').trim().toUpperCase()] || '/assets/brand-v2/arbizu-bit-to-atom-workshop.webp';
+
+const resolveVentana2SkuImage = (sku: string) =>
+  VENTANA2_SKU_IMAGE_MAP[(sku || '').trim().toUpperCase()];
 
 export default function HybridStorefrontClient({ initialCatalog }: { initialCatalog: CatalogPayload | null }) {
   const catalog = initialCatalog || {
@@ -197,8 +216,8 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
         keepalive: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sku, event_type: eventType, meta: { list_mode: listMode } }),
-      }).catch(() => {});
-    } catch {}
+      }).catch(() => { });
+    } catch { }
   };
 
   const addToCart = (product: StoreProduct, qtyStep?: number) => {
@@ -317,24 +336,24 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
   };
 
   return (
-    <div className="min-h-screen bg-[#060709] text-[#F2F0EA] pt-24 pb-20 overflow-x-clip">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 space-y-8">
+    <div className="min-h-screen bg-[#F2F0EA] text-[#07080A] pt-24 pb-16 overflow-x-clip">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 space-y-6">
         {/* TOP HEADER & TELEMETRY STRIP */}
-        <div className="border border-white/15 bg-[#0B0D12] p-5 sm:p-6 space-y-4">
+        <div className="border border-[#D6D3C9] bg-[#FFFFFF] p-5 sm:p-6 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider">
-                <span className="px-2 py-0.5 bg-[#00E599]/15 border border-[#00E599]/40 text-[#00E599]">
+                <span className="px-2 py-0.5 bg-[#1F4E3D] text-[#F2F0EA] font-bold">
                   ARBIZU LABS // MOTOR HÍBRIDO
                 </span>
-                <span className="px-2 py-0.5 bg-white/5 border border-white/10 text-[#D4AF37] tabular-nums">
+                <span className="px-2 py-0.5 bg-[#F2F0EA] border border-[#D6D3C9] text-[#07080A] font-semibold tabular-nums">
                   FX DolarAPI: ${Math.round(catalog.fx.rate_ars).toLocaleString('es-AR')} ARS ({catalog.fx.source})
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#F2F0EA]">
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#07080A]">
                 Tienda Híbrida · Minorista &amp; Mayorista (Bolívar / País)
               </h1>
-              <p className="text-xs sm:text-sm text-[#94A3B8] max-w-3xl">
+              <p className="text-xs sm:text-sm text-[#3E4552] max-w-3xl">
                 Catálogo agnóstico con doble lista dinámica por volumen, escudo de margen en tiempo real, descuento
                 del 10% por transferencia y envío coordinado por comisionistas regionales o correo nacional.
               </p>
@@ -343,14 +362,14 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <Link
                 href="/tienda/lab"
-                className="inline-flex items-center gap-2 px-3.5 py-2 border border-[#D4AF37]/50 bg-[#D4AF37]/10 text-[#D4AF37] hover:bg-[#D4AF37]/20 font-mono text-xs uppercase transition-colors"
+                className="inline-flex items-center gap-2 px-3.5 py-2 min-h-[40px] border border-[#D6D3C9] bg-[#F2F0EA] text-[#07080A] hover:border-[#07080A] font-mono text-xs font-bold uppercase transition-colors"
               >
-                <FlaskConical className="w-4 h-4" />
+                <FlaskConical className="w-4 h-4 text-[#B83800]" />
                 <span>Lab &amp; Feeds</span>
               </Link>
               <a
                 href="#carrito-hibrido"
-                className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#00E599] text-[#060709] font-mono font-bold text-xs uppercase"
+                className="inline-flex items-center gap-2 px-4 py-2 min-h-[40px] bg-[#07080A] hover:bg-[#FF4F00] text-[#F2F0EA] hover:text-[#07080A] font-mono font-bold text-xs uppercase transition-colors"
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="tabular-nums">Carrito ({cart.reduce((a, b) => a + b.qty, 0)})</span>
@@ -359,14 +378,14 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
           </div>
 
           {/* CONTROLS BAR: RETAIL / WHOLESALE SWITCH + SEARCH + CATEGORIES */}
-          <div className="pt-4 border-t border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-            <div className="inline-flex border border-white/20 bg-[#060709] p-1 self-start">
+          <div className="pt-4 border-t border-[#D6D3C9] flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+            <div className="inline-flex border border-[#D6D3C9] bg-[#F2F0EA] p-1 self-start">
               <button
                 type="button"
                 data-testid="mode-minorista"
                 onClick={() => setListMode('minorista')}
-                className={`px-3.5 py-2 font-mono text-xs uppercase font-bold transition-all ${
-                  listMode === 'minorista' ? 'bg-[#00E599] text-[#060709]' : 'text-[#94A3B8] hover:text-white'
+                className={`px-3.5 py-2 font-mono text-xs uppercase font-bold transition-colors cursor-pointer ${
+                  listMode === 'minorista' ? 'bg-[#07080A] text-[#F2F0EA]' : 'text-[#3E4552] hover:text-[#07080A]'
                 }`}
               >
                 Modo Minorista
@@ -375,8 +394,8 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 type="button"
                 data-testid="mode-mayorista"
                 onClick={() => setListMode('mayorista')}
-                className={`px-3.5 py-2 font-mono text-xs uppercase font-bold transition-all ${
-                  listMode === 'mayorista' ? 'bg-[#D4AF37] text-[#060709]' : 'text-[#94A3B8] hover:text-white'
+                className={`px-3.5 py-2 font-mono text-xs uppercase font-bold transition-colors cursor-pointer ${
+                  listMode === 'mayorista' ? 'bg-[#FF4F00] text-[#07080A]' : 'text-[#3E4552] hover:text-[#07080A]'
                 }`}
               >
                 Modo Mayorista (Volumen)
@@ -385,20 +404,20 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
 
             <div className="flex flex-col sm:flex-row gap-2.5 flex-1 lg:max-w-xl">
               <div className="relative flex-1">
-                <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#3E4552] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar por nombre, SKU o rubro..."
-                  className="w-full bg-[#060709] border border-white/15 pl-9 pr-3 py-2 text-xs text-[#F2F0EA] font-mono focus:outline-none focus:border-[#00E599]"
+                  className="w-full bg-[#F2F0EA] border border-[#D6D3C9] pl-9 pr-3 py-2 text-xs text-[#07080A] font-mono focus:outline-none focus:border-[#07080A]"
                 />
               </div>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 aria-label="Filtrar categoría"
-                className="bg-[#060709] border border-white/15 px-3 py-2 text-xs text-[#F2F0EA] font-mono focus:outline-none focus:border-[#00E599]"
+                className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-xs text-[#07080A] font-mono focus:outline-none focus:border-[#07080A]"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -424,35 +443,29 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 <article
                   key={product.id}
                   data-testid={`product-card-${product.sku}`}
-                  className="border border-white/15 bg-[#0B0D12] p-4 flex flex-col justify-between gap-4 hover:border-[#00E599]/50 transition-colors"
+                  className="border border-[#D6D3C9] bg-[#FFFFFF] p-4 flex flex-col justify-between gap-4 hover:border-[#07080A] transition-colors"
                 >
                   <div className="space-y-3">
-                    <div className="relative aspect-[5/4] w-full overflow-hidden border border-[#1B202B] bg-[#060709]">
+                    <div className="relative aspect-[5/4] w-full overflow-hidden border border-[#D6D3C9] bg-[#F2F0EA]">
                       <img
                         src={resolveSkuImage(product.sku)}
+                        data-ventana2-src={resolveVentana2SkuImage(product.sku)}
                         alt={product.title}
                         loading="lazy"
-                        onError={(e) => {
-                          const img = e.currentTarget;
-                          if (!img.dataset.fallback) {
-                            img.dataset.fallback = '1';
-                            img.src = '/assets/brand-v2/b2b-field-telemetry.webp';
-                          }
-                        }}
                         className="w-full h-full object-cover"
                       />
-                      <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#060709]/95 border border-[#1B202B] font-mono text-[10px] uppercase tracking-wider text-[#F2F0EA]">
+                      <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#FFFFFF]/95 border border-[#D6D3C9] font-mono text-[10px] uppercase tracking-wider text-[#07080A] font-bold">
                         {product.category}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase">
-                      <span className="text-[#94A3B8] truncate">{product.sku}</span>
+                      <span className="text-[#3E4552] truncate">{product.sku}</span>
                       <span
-                        className={`px-2 py-0.5 border shrink-0 ${
+                        className={`px-2 py-0.5 border shrink-0 font-bold ${
                           product.stock_mode === 'LOCAL_STOCK'
-                            ? 'border-[#00E599]/40 text-[#00E599] bg-[#00E599]/10'
-                            : 'border-[#FF4F00]/40 text-[#FF4F00] bg-[#FF4F00]/10'
+                            ? 'border-[#1F4E3D] text-[#1F4E3D] bg-[#F2F0EA]'
+                            : 'border-[#D6D3C9] text-[#B83800] bg-[#F2F0EA]'
                         }`}
                       >
                         {product.stock_mode === 'LOCAL_STOCK'
@@ -461,37 +474,37 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       </span>
                     </div>
 
-                    <h2 className="text-base font-bold text-[#F2F0EA] leading-snug">{product.title}</h2>
-                    <p className="text-xs text-[#94A3B8] leading-relaxed">{product.description}</p>
+                    <h2 className="text-base font-bold text-[#07080A] leading-snug">{product.title}</h2>
+                    <p className="text-xs text-[#3E4552] leading-relaxed">{product.description}</p>
 
-                    <div className="border-t border-white/10 pt-3 space-y-1 font-mono">
+                    <div className="border-t border-[#D6D3C9] pt-3 space-y-1 font-mono">
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[11px] uppercase text-[#94A3B8]">
+                        <span className="text-[11px] uppercase text-[#3E4552]">
                           {listMode === 'mayorista' ? 'Desde Bulto Mayorista' : 'Precio Lista / MP'}
                         </span>
                         <span
                           data-testid={`price-${product.sku}`}
-                          className="text-xl font-bold text-[#F2F0EA] tabular-nums"
+                          className="text-xl font-extrabold text-[#07080A] tabular-nums"
                         >
                           {formatArs(displayUnit)} ARS
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs text-[#00E599] tabular-nums">
+                      <div className="flex items-center justify-between text-xs text-[#1F4E3D] tabular-nums">
                         <span>Transferencia / Efectivo (-10%)</span>
                         <strong className="font-bold">{formatArs(transferUnit)} ARS</strong>
                       </div>
 
                       {listMode === 'minorista' ? (
-                        <div className="text-[11px] text-[#94A3B8] tabular-nums">
+                        <div className="text-[11px] text-[#3E4552] tabular-nums">
                           3 cuotas MP de {formatArs(product.mp_3cuotas_installment_ars)} ARS · Peso {product.weight_grams}g
                         </div>
                       ) : (
-                        <div className="mt-2 bg-[#060709] border border-[#D4AF37]/30 p-2 space-y-1">
+                        <div className="mt-2 bg-[#F2F0EA] border border-[#D6D3C9] p-2 space-y-1">
                           {(product.wholesale_tiers || []).map((t) => (
                             <div
                               key={t.min_qty}
-                              className="flex items-center justify-between text-[11px] text-[#D4AF37] tabular-nums"
+                              className="flex items-center justify-between text-[11px] text-[#07080A] tabular-nums"
                             >
                               <span>{t.min_qty}+ unidades (-{t.effective_discount_pct}%)</span>
                               <strong>{formatArs(t.unit_price_ars)} c/u</strong>
@@ -502,12 +515,13 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                     </div>
                   </div>
 
+                  {/* Sistema de Botones de Autor: Carbón Primario Sobrio + Outline WhatsApp */}
                   <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <button
                       type="button"
                       data-testid={`add-cart-${product.sku}`}
                       onClick={() => addToCart(product)}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#00E599] hover:bg-[#00E599]/90 text-[#060709] font-mono font-bold text-xs uppercase py-2.5 px-3"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#07080A] hover:bg-[#FF4F00] text-[#F2F0EA] hover:text-[#07080A] font-mono font-bold text-xs uppercase py-2.5 px-3 min-h-[40px] rounded-[2px] transition-colors cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>
@@ -521,9 +535,9 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => trackDemandEvent(product.sku, 'wa_intent_click')}
-                      className="inline-flex items-center justify-center gap-1.5 border border-[#00E599]/50 text-[#00E599] hover:bg-[#00E599]/10 font-mono font-bold text-xs uppercase py-2.5 px-3"
+                      className="inline-flex items-center justify-center gap-1.5 border border-[#D6D3C9] bg-[#F2F0EA] hover:border-[#07080A] text-[#07080A] font-mono font-bold text-xs uppercase py-2.5 px-3 min-h-[40px] rounded-[2px] transition-colors"
                     >
-                      <MessageCircle className="w-3.5 h-3.5" />
+                      <MessageCircle className="w-3.5 h-3.5 text-[#1F4E3D]" />
                       <span>WA 1-Clic</span>
                     </a>
                   </div>
@@ -535,22 +549,22 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
           {/* STICKY CART + LOGISTICS 4 MODALITIES + MIXED CHECKOUT */}
           <aside
             id="carrito-hibrido"
-            className="lg:col-span-5 border border-white/15 bg-[#0B0D12] p-5 space-y-5 lg:sticky lg:top-24"
+            className="lg:col-span-5 border border-[#D6D3C9] bg-[#FFFFFF] p-5 space-y-5 lg:sticky lg:top-24"
           >
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between border-b border-[#D6D3C9] pb-3">
               <div className="flex items-center gap-2">
-                <ShoppingCart className="w-4 h-4 text-[#00E599]" />
-                <h2 className="font-mono text-sm font-bold uppercase text-[#F2F0EA]">
+                <ShoppingCart className="w-4 h-4 text-[#B83800]" />
+                <h2 className="font-mono text-sm font-extrabold uppercase text-[#07080A]">
                   Pedido Híbrido ({listMode})
                 </h2>
               </div>
-              <span className="font-mono text-[11px] text-[#94A3B8] tabular-nums">
+              <span className="font-mono text-[11px] text-[#3E4552] tabular-nums">
                 Peso: {totals.weightKg} kg
               </span>
             </div>
 
             {cart.length === 0 ? (
-              <div className="py-6 text-center border border-dashed border-white/15 text-xs text-[#94A3B8] font-mono">
+              <div className="py-6 text-center border border-dashed border-[#D6D3C9] bg-[#F2F0EA] text-xs text-[#3E4552] font-mono px-3">
                 Tu carrito está vacío. Agregá un producto del catálogo para calcular envío y descuento.
               </div>
             ) : (
@@ -560,11 +574,11 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   return (
                     <div
                       key={line.product.sku}
-                      className="border border-white/10 bg-[#060709] p-3 flex items-center justify-between gap-2"
+                      className="border border-[#D6D3C9] bg-[#F2F0EA] p-3 flex items-center justify-between gap-2"
                     >
                       <div className="min-w-0">
-                        <div className="text-xs font-bold text-[#F2F0EA] truncate">{line.product.title}</div>
-                        <div className="font-mono text-[11px] text-[#00E599] tabular-nums">
+                        <div className="text-xs font-bold text-[#07080A] truncate">{line.product.title}</div>
+                        <div className="font-mono text-[11px] text-[#1F4E3D] font-bold tabular-nums">
                           {line.product.sku} · {formatArs(unit)} c/u
                         </div>
                       </div>
@@ -573,16 +587,16 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                           type="button"
                           aria-label="Restar cantidad"
                           onClick={() => updateCartQty(line.product.sku, line.qty - 1)}
-                          className="w-7 h-7 border border-white/20 flex items-center justify-center hover:border-white"
+                          className="w-7 h-7 border border-[#D6D3C9] bg-[#FFFFFF] text-[#07080A] flex items-center justify-center hover:border-[#07080A] cursor-pointer"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
-                        <span className="w-7 text-center text-xs font-bold tabular-nums">{line.qty}</span>
+                        <span className="w-7 text-center text-xs font-bold tabular-nums text-[#07080A]">{line.qty}</span>
                         <button
                           type="button"
                           aria-label="Sumar cantidad"
                           onClick={() => updateCartQty(line.product.sku, line.qty + 1)}
-                          className="w-7 h-7 border border-white/20 flex items-center justify-center hover:border-white"
+                          className="w-7 h-7 border border-[#D6D3C9] bg-[#FFFFFF] text-[#07080A] flex items-center justify-center hover:border-[#07080A] cursor-pointer"
                         >
                           <Plus className="w-3 h-3" />
                         </button>
@@ -590,7 +604,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                           type="button"
                           aria-label="Eliminar ítem"
                           onClick={() => updateCartQty(line.product.sku, 0)}
-                          className="w-7 h-7 border border-red-500/30 text-red-400 flex items-center justify-center hover:bg-red-500/10"
+                          className="w-7 h-7 border border-red-300 bg-[#FFFFFF] text-red-700 flex items-center justify-center hover:bg-red-50 cursor-pointer"
                         >
                           <Trash2 className="w-3 h-3" />
                         </button>
@@ -602,9 +616,9 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             )}
 
             {/* 4-MODALITY LOGISTICS */}
-            <div className="space-y-2.5 border-t border-white/10 pt-4">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#D4AF37]">
-                <Truck className="w-4 h-4" />
+            <div className="space-y-2.5 border-t border-[#D6D3C9] pt-4">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#07080A] font-bold">
+                <Truck className="w-4 h-4 text-[#B83800]" />
                 <span>Modalidad de Entrega (4 Zonas Reales)</span>
               </div>
 
@@ -620,10 +634,10 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                     type="button"
                     data-testid={`ship-${opt.id}`}
                     onClick={() => setShippingMode(opt.id as any)}
-                    className={`px-2.5 py-2 border text-left uppercase transition-colors ${
+                    className={`px-2.5 py-2 border text-left uppercase cursor-pointer transition-colors ${
                       shippingMode === opt.id
-                        ? 'border-[#00E599] bg-[#00E599]/10 text-[#00E599] font-bold'
-                        : 'border-white/15 bg-[#060709] text-[#94A3B8] hover:text-white'
+                        ? 'border-[#07080A] bg-[#07080A] text-[#F2F0EA] font-bold'
+                        : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552] hover:border-[#07080A]'
                     }`}
                   >
                     {opt.label}
@@ -640,7 +654,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                     const found = comisionistaZones.find((z) => z.code === e.target.value);
                     if (found) setCustomerLocality(found.locality);
                   }}
-                  className="w-full bg-[#060709] border border-[#D4AF37]/40 px-3 py-2 text-xs font-mono text-[#F2F0EA]"
+                  className="w-full bg-[#F2F0EA] border border-[#07080A] px-3 py-2 text-xs font-mono text-[#07080A]"
                 >
                   {comisionistaZones.map((z) => (
                     <option key={z.code} value={z.code}>
@@ -652,34 +666,34 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
 
               {shippingMode === 'CORREO_NACIONAL' && (
                 <div className="flex items-center gap-2 font-mono text-xs">
-                  <label htmlFor="cp-input" className="text-[#94A3B8] shrink-0">C. Postal:</label>
+                  <label htmlFor="cp-input" className="text-[#3E4552] shrink-0">C. Postal:</label>
                   <input
                     id="cp-input"
                     type="text"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    className="w-full bg-[#060709] border border-white/15 px-3 py-1.5 text-xs text-[#F2F0EA]"
+                    className="w-full bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-1.5 text-xs text-[#07080A]"
                   />
                 </div>
               )}
 
-              <div className="bg-[#060709] border border-white/10 p-3 text-[11px] font-mono space-y-1 text-[#94A3B8]">
-                <div className="flex justify-between text-[#F2F0EA]">
+              <div className="bg-[#F2F0EA] border border-[#D6D3C9] p-3 text-[11px] font-mono space-y-1 text-[#3E4552]">
+                <div className="flex justify-between text-[#07080A]">
                   <span>{selectedZone.carrier_name}</span>
-                  <strong className="text-[#00E599] tabular-nums">{formatArs(Number(selectedZone.base_cost_ars))} ARS</strong>
+                  <strong className="text-[#1F4E3D] tabular-nums">{formatArs(Number(selectedZone.base_cost_ars))} ARS</strong>
                 </div>
                 <div>
-                  Salida: <span className="text-[#F2F0EA]">{selectedZone.departure_days}</span> · Corte:{' '}
-                  <span className="text-[#D4AF37]">{selectedZone.cutoff_time}</span>
+                  Salida: <span className="text-[#07080A] font-semibold">{selectedZone.departure_days}</span> · Corte:{' '}
+                  <span className="text-[#B83800] font-bold">{selectedZone.cutoff_time}</span>
                 </div>
                 <div>Plazo estimado: {selectedZone.eta_label}</div>
               </div>
             </div>
 
             {/* PAYMENT METHOD */}
-            <div className="space-y-2.5 border-t border-white/10 pt-4">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#00E599]">
-                <CreditCard className="w-4 h-4" />
+            <div className="space-y-2.5 border-t border-[#D6D3C9] pt-4">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#07080A] font-bold">
+                <CreditCard className="w-4 h-4 text-[#1F4E3D]" />
                 <span>Medio de Pago</span>
               </div>
 
@@ -688,10 +702,10 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   type="button"
                   data-testid="pay-transfer"
                   onClick={() => setPaymentMethod('transfer_cash')}
-                  className={`p-2 border text-left uppercase ${
+                  className={`p-2 border text-left uppercase cursor-pointer ${
                     paymentMethod === 'transfer_cash'
-                      ? 'border-[#00E599] bg-[#00E599]/10 text-[#00E599] font-bold'
-                      : 'border-white/15 bg-[#060709] text-[#94A3B8]'
+                      ? 'border-[#1F4E3D] bg-[#1F4E3D] text-[#F2F0EA] font-bold'
+                      : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
                   Transfer / Efectivo (-10%)
@@ -700,10 +714,10 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   type="button"
                   data-testid="pay-mp-contado"
                   onClick={() => setPaymentMethod('mercadopago_contado')}
-                  className={`p-2 border text-left uppercase ${
+                  className={`p-2 border text-left uppercase cursor-pointer ${
                     paymentMethod === 'mercadopago_contado'
-                      ? 'border-[#009ee3] bg-[#009ee3]/10 text-[#009ee3] font-bold'
-                      : 'border-white/15 bg-[#060709] text-[#94A3B8]'
+                      ? 'border-[#07080A] bg-[#07080A] text-[#F2F0EA] font-bold'
+                      : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
                   MP Contado
@@ -712,10 +726,10 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   type="button"
                   data-testid="pay-mp-3cuotas"
                   onClick={() => setPaymentMethod('mercadopago_3cuotas')}
-                  className={`p-2 border text-left uppercase ${
+                  className={`p-2 border text-left uppercase cursor-pointer ${
                     paymentMethod === 'mercadopago_3cuotas'
-                      ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37] font-bold'
-                      : 'border-white/15 bg-[#060709] text-[#94A3B8]'
+                      ? 'border-[#07080A] bg-[#07080A] text-[#F2F0EA] font-bold'
+                      : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
                   MP 3 Cuotas
@@ -723,14 +737,14 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
               </div>
 
               {paymentMethod === 'transfer_cash' && (
-                <div className="bg-[#060709] border border-[#00E599]/30 p-3 font-mono text-[11px] space-y-1 text-[#CBD5E1]">
-                  <div className="flex items-center gap-1.5 text-[#00E599] font-bold">
+                <div className="bg-[#F2F0EA] border border-[#1F4E3D]/40 p-3 font-mono text-[11px] space-y-1 text-[#3E4552]">
+                  <div className="flex items-center gap-1.5 text-[#1F4E3D] font-bold">
                     <Landmark className="w-3.5 h-3.5" />
                     <span>Coordenadas Oficiales ({catalog.payment_coordinates.holder} · CUIT {catalog.payment_coordinates.cuit})</span>
                   </div>
-                  <div>Alias MP: <strong className="text-white">{catalog.payment_coordinates.alias_mp}</strong></div>
-                  <div>Alias Galicia: <strong className="text-white">{catalog.payment_coordinates.alias_galicia}</strong></div>
-                  <div>CBU: <strong className="text-white">{catalog.payment_coordinates.cbu_galicia}</strong></div>
+                  <div>Alias MP: <strong className="text-[#07080A]">{catalog.payment_coordinates.alias_mp}</strong></div>
+                  <div>Alias Galicia: <strong className="text-[#07080A]">{catalog.payment_coordinates.alias_galicia}</strong></div>
+                  <div>CBU: <strong className="text-[#07080A]">{catalog.payment_coordinates.cbu_galicia}</strong></div>
                 </div>
               )}
             </div>
@@ -742,47 +756,49 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 placeholder="Tu nombre / Comercio"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="bg-[#060709] border border-white/15 px-3 py-2 text-[#F2F0EA]"
+                className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-[#07080A]"
               />
               <input
                 type="text"
                 placeholder="Localidad"
                 value={customerLocality}
                 onChange={(e) => setCustomerLocality(e.target.value)}
-                className="bg-[#060709] border border-white/15 px-3 py-2 text-[#F2F0EA]"
+                className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-[#07080A]"
               />
             </div>
 
-            <div className="border-t border-white/15 pt-3 space-y-1.5 font-mono text-xs tabular-nums">
-              <div className="flex justify-between text-[#94A3B8]">
+            <div className="border-t border-[#D6D3C9] pt-3 space-y-1.5 font-mono text-xs tabular-nums">
+              <div className="flex justify-between text-[#3E4552]">
                 <span>Subtotal Lista ({listMode})</span>
-                <span>{formatArs(totals.subtotal)} ARS</span>
+                <span className="text-[#07080A] font-semibold">{formatArs(totals.subtotal)} ARS</span>
               </div>
               {totals.discountArs > 0 && (
-                <div className="flex justify-between text-[#00E599]">
+                <div className="flex justify-between text-[#1F4E3D] font-bold">
                   <span>Descuento Transferencia (-10%)</span>
                   <span>-{formatArs(totals.discountArs)} ARS</span>
                 </div>
               )}
-              <div className="flex justify-between text-[#94A3B8]">
+              <div className="flex justify-between text-[#3E4552]">
                 <span>Logística ({selectedZone.locality})</span>
-                <span data-testid="shipping-cost-display">{formatArs(totals.shippingCost)} ARS</span>
+                <span data-testid="shipping-cost-display" className="text-[#07080A] font-semibold">
+                  {formatArs(totals.shippingCost)} ARS
+                </span>
               </div>
-              <div className="flex justify-between text-base font-bold text-[#F2F0EA] pt-2 border-t border-white/10">
+              <div className="flex justify-between text-base font-extrabold text-[#07080A] pt-2 border-t border-[#D6D3C9]">
                 <span>TOTAL FINAL</span>
-                <span data-testid="order-total-display" className="text-[#00E599]">{formatArs(totals.total)} ARS</span>
+                <span data-testid="order-total-display" className="text-[#B83800]">{formatArs(totals.total)} ARS</span>
               </div>
             </div>
 
             {errorMsg && (
-              <div className="p-2.5 border border-red-500/40 bg-red-500/10 text-red-300 font-mono text-xs">
+              <div className="p-2.5 border border-red-400 bg-red-50 text-red-800 font-mono text-xs">
                 {errorMsg}
               </div>
             )}
 
             {orderFeedback && (
-              <div className="p-3 border border-[#00E599]/50 bg-[#00E599]/10 font-mono text-xs space-y-1.5">
-                <div className="flex items-center gap-1.5 text-[#00E599] font-bold">
+              <div className="p-3 border border-[#1F4E3D] bg-[#F2F0EA] font-mono text-xs space-y-1.5">
+                <div className="flex items-center gap-1.5 text-[#1F4E3D] font-bold">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>Orden {orderFeedback.code} registrada en PostgreSQL 16</span>
                 </div>
@@ -790,20 +806,21 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   href={orderFeedback.checkout_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block underline text-white"
+                  className="inline-block underline text-[#07080A] font-bold"
                 >
                   Abrir enlace de confirmación / pago →
                 </a>
               </div>
             )}
 
+            {/* 1 CTA Primario Dominante (#FF4F00) + 1 Secundario */}
             <div className="flex flex-col gap-2">
               <a
                 data-testid="wa-order-link"
                 href={liveWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#00E599] hover:bg-[#00E599]/90 text-[#060709] font-mono font-bold text-xs uppercase py-3 px-4"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA] font-mono font-extrabold text-xs uppercase py-3.5 px-4 min-h-[44px] rounded-[2px] transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Enviar Pedido Estructurado por WhatsApp</span>
@@ -814,15 +831,15 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 data-testid="confirm-order-btn"
                 disabled={cart.length === 0 || submitting}
                 onClick={handleConfirmOrder}
-                className="w-full inline-flex items-center justify-center gap-2 border border-white/25 hover:border-[#00E599] disabled:opacity-40 text-[#F2F0EA] font-mono font-bold text-xs uppercase py-2.5 px-4"
+                className="w-full inline-flex items-center justify-center gap-2 border border-[#07080A] bg-[#FFFFFF] hover:bg-[#07080A] disabled:opacity-40 text-[#07080A] hover:text-[#F2F0EA] font-mono font-bold text-xs uppercase py-2.5 px-4 min-h-[40px] rounded-[2px] transition-colors cursor-pointer"
               >
                 <PackageCheck className="w-4 h-4" />
                 <span>{submitting ? 'Registrando en DB...' : 'Registrar Pre-Orden + Generar Checkout'}</span>
               </button>
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] font-mono text-[#94A3B8]">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#00E599] shrink-0" />
+            <div className="flex items-center gap-2 text-[10px] font-mono text-[#3E4552]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#1F4E3D] shrink-0" />
               <span>Coordinación transparente sin stock ficticio · Soporte directo +54 9 2314 489197</span>
             </div>
           </aside>

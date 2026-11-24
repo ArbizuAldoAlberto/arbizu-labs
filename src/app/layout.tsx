@@ -4,8 +4,6 @@ import Script from "next/script";
 import "./globals.css";
 import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
-import FloatingExecutiveDock from "@/components/ui/FloatingExecutiveDock";
-import OfflineTelemetryHUD from "@/components/system/OfflineTelemetryHUD";
 import GlobalErrorBoundary from "@/components/system/GlobalErrorBoundary";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -48,6 +46,14 @@ export const metadata: Metadata = {
   creator: "Aldo Alberto Arbizu",
   publisher: "Arbizu Labs",
   metadataBase: new URL("https://arbizulabs.com"),
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   alternates: {
     canonical: "https://arbizulabs.com",
   },
@@ -82,8 +88,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-theme="v1" data-luminance="soc" className={`${geistSans.variable} ${jetbrains.variable}`} suppressHydrationWarning>
-      <body className="bg-[var(--bg-seam)] text-[var(--text-primary)] antialiased selection:bg-[#FF4F00]/30 selection:text-white" suppressHydrationWarning>
+    <html lang="es" data-theme="v1" data-luminance="daylight" className={`${geistSans.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+      <body className="bg-[#F2F0EA] text-[#07080A] antialiased selection:bg-[#FF4F00]/20 selection:text-[#07080A]" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID_ARBIZU &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("YYYY") &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("XXXX") && (
@@ -242,8 +248,6 @@ export default function RootLayout({
             <Navigation />
             <main id="main-content">{children}</main>
             <Footer />
-            <FloatingExecutiveDock />
-            <OfflineTelemetryHUD />
           </LanguageProvider>
         </GlobalErrorBoundary>
       </body>

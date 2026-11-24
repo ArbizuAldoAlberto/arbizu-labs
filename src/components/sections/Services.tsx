@@ -136,61 +136,74 @@ export default function Services() {
     <section
       id="services"
       data-section="services"
-      className="py-24 bg-[var(--surface-void,#060709)] border-b border-[var(--grid-hairline,#1B202B)] relative scroll-mt-24"
+      data-paper="true"
+      className="py-14 sm:py-16 bg-[#F2F0EA] text-[#07080A] border-b border-[#D6D3C9] relative scroll-mt-24 paper-section"
     >
       <div id="pricing" className="scroll-mt-24" />
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Encabezado Packaging B2B Geo-Aware */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 pb-8 border-b border-[var(--grid-hairline,#1B202B)]">
-          <div className="max-w-3xl">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#FF4F00] font-bold block mb-2">
-              [05 // GEO-AWARE B2B PACKAGING · {isEs ? 'ARS REGIONAL + USD ENTERPRISE' : 'GLOBAL USD ENTERPRISE'} · GAP-06]
+        {/* Encabezado Packaging B2B Geo-Aware + Fotografía de Auditoría FLIR */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-10 pb-8 border-b border-[#D6D3C9]">
+          <div className="lg:col-span-7 space-y-3">
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#B83800] font-extrabold block">
+              {isEs ? 'SERVICIOS B2B · ARS REGIONAL & USD ENTERPRISE' : 'B2B ENGAGEMENT TIERS · REGIONAL & GLOBAL'}
             </span>
-            <h2 className="font-sans text-3xl sm:text-5xl text-[var(--text-primary)] font-extrabold tracking-[-0.03em] mb-3">
+            <h2 className="font-sans text-2xl sm:text-4xl text-[#07080A] font-extrabold tracking-[-0.03em]">
               {isEs ? 'Arquitectura de Contratación en 3 Tiers' : 'Three-Tier Enterprise Engagement'}
             </h2>
-            <p className="font-mono text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+            <p className="font-sans text-xs sm:text-sm text-[#3E4552] leading-relaxed max-w-2xl">
               {isEs
-                ? 'Separación nítida entre servicios tácticos regionales (FLIR / Licencias locales en ARS) y sprints de ingeniería corporativa internacional con código 100% propietario.'
-                : 'Clear separation between architecture security audits, full turnkey deployments, and ongoing Principal SRE retainers with 100% IP transfer.'}
+                ? 'Separación nítida entre auditorías termográficas FLIR, licencias regionales en ARS y sprints de ingeniería con código 100% propietario.'
+                : 'Clear separation between architecture security audits, turnkey deployments, and ongoing Principal SRE retainers with full IP transfer.'}
             </p>
+            <div className="inline-block font-mono text-[11px] text-[#07080A] border border-[#D6D3C9] bg-[#FFFFFF] px-3.5 py-2 font-semibold">
+              Liquidación: {isEs ? 'Galicia / MercadoPago / USDC Base L2' : 'ACH US / Wire / USDC Base L2'}
+            </div>
           </div>
-          <div className="font-mono text-xs text-[#D4AF37] border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] px-4 py-2.5 shrink-0">
-            SETTLEMENT: {isEs ? 'Galicia / MercadoPago / USDC Base L2' : 'ACH US (Belo/Takenos) / Wire / USDC Base L2'}
-          </div>
+
+          <figure
+            className="lg:col-span-5 border border-[#D6D3C9] bg-[#FFFFFF] overflow-hidden"
+            data-slot="arbizu-tiers-flir-audit"
+          >
+            <img
+              src="/assets/brand-v2/arbizu-tiers-flir-audit.webp"
+              alt={isEs ? 'Inspección termográfica industrial con cámara FLIR' : 'Industrial FLIR thermal inspection'}
+              className="w-full aspect-[16/9] max-h-[210px] object-cover block"
+              loading="lazy"
+            />
+          </figure>
         </div>
 
         {/* Matriz 3 Tiers */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 border border-[#D6D3C9] bg-[#FFFFFF]">
           {activePackages.map((pkg) => (
             <article
               key={pkg.tierCode}
-              className={`p-7 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r last:border-r-0 border-[var(--grid-hairline,#1B202B)] ${
-                pkg.highlight ? 'bg-[var(--surface-elevated,#11151D)] relative' : 'bg-[var(--surface-chassis,#0B0D12)]'
+              className={`p-6 sm:p-7 flex flex-col justify-between border-b lg:border-b-0 lg:border-r last:border-r-0 border-[#D6D3C9] ${
+                pkg.highlight ? 'bg-[#FFFFFF] ring-1 ring-inset ring-[#FF4F00]' : 'bg-[#FFFFFF]'
               }`}
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-5 font-mono text-[10px]">
-                  <span className="text-[#D4AF37] font-bold tracking-wider uppercase">{pkg.tierCode}</span>
-                  <span className="px-2 py-0.5 border border-[#FF4F00]/40 text-[#FF4F00] font-bold">
+                <div className="flex items-center justify-between gap-2 mb-4 font-mono text-[10px]">
+                  <span className="text-[#3E4552] font-bold tracking-wider uppercase">{pkg.tierCode}</span>
+                  <span className="px-2 py-0.5 border border-[#B83800] text-[#B83800] font-bold bg-[#F2F0EA]">
                     {pkg.tag}
                   </span>
                 </div>
 
-                <h3 className="font-sans text-xl sm:text-2xl font-extrabold text-[var(--text-primary)] mb-4 leading-snug">
+                <h3 className="font-sans text-xl font-extrabold text-[#07080A] mb-3 leading-snug">
                   {pkg.title}
                 </h3>
 
-                <div className="pb-5 mb-5 border-b border-[var(--grid-hairline,#1B202B)] font-mono tabular-nums">
-                  <div className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)]">{pkg.price}</div>
-                  <div className="text-xs text-[#D4AF37] mt-1">{pkg.subPrice}</div>
-                  <div className="text-[11px] text-[#00E599] font-bold mt-2">SLA // {pkg.sla}</div>
+                <div className="pb-4 mb-4 border-b border-[#D6D3C9] font-mono tabular-nums">
+                  <div className="text-3xl font-extrabold text-[#07080A]">{pkg.price}</div>
+                  <div className="text-xs text-[#3E4552] mt-1">{pkg.subPrice}</div>
+                  <div className="text-[11px] text-[#1F4E3D] font-bold mt-2">SLA // {pkg.sla}</div>
                 </div>
 
-                <ul className="space-y-2.5 font-mono text-xs text-[var(--text-secondary)] mb-8">
+                <ul className="space-y-2 font-sans text-xs text-[#3E4552] mb-6">
                   {pkg.deliverables.map((d) => (
-                    <li key={d} className="flex items-start gap-2.5">
-                      <Check className="w-3.5 h-3.5 text-[#00E599] shrink-0 mt-0.5" strokeWidth={2} />
+                    <li key={d} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#1F4E3D] shrink-0 mt-0.5" strokeWidth={2} />
                       <span>{d}</span>
                     </li>
                   ))}
@@ -200,10 +213,10 @@ export default function Services() {
               <button
                 type="button"
                 onClick={() => handleOpenCheckout(pkg)}
-                className={`w-full py-3.5 px-4 rounded-[2px] font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+                className={`w-full py-3.5 px-4 min-h-[44px] rounded-[2px] font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer ${
                   pkg.highlight
-                    ? 'bg-[#FF4F00] hover:bg-[#D4AF37] text-[#060709]'
-                    : 'bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)] text-[var(--text-primary)] hover:border-[#FF4F00] hover:text-[#FF4F00]'
+                    ? 'bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA]'
+                    : 'bg-[#F2F0EA] border border-[#07080A] text-[#07080A] hover:bg-[#07080A] hover:text-[#F2F0EA]'
                 }`}
               >
                 <span>{isEs ? 'Reservar & Checkout Oficial' : 'Reserve Sprint & Settlement'}</span>
@@ -214,10 +227,10 @@ export default function Services() {
         </div>
 
         {/* Enlace rápido a Kits para Desarrolladores / Boilerplates */}
-        <div className="mt-8 p-5 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-chassis,#0B0D12)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs">
+        <div className="mt-6 p-4 border border-[#D6D3C9] bg-[#FFFFFF] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs">
           <div>
-            <span className="text-[#D4AF37] font-bold uppercase">[BOILERPLATES &amp; KITS DE CÓDIGO]:</span>{' '}
-            <span className="text-[var(--text-secondary)]">
+            <span className="text-[#B83800] font-bold uppercase">Boilerplates &amp; Kits:</span>{' '}
+            <span className="text-[#3E4552]">
               {t.kits.items.map((k) => `${k.title} (${k.price})`).join(' · ')}
             </span>
           </div>
@@ -225,7 +238,7 @@ export default function Services() {
             href="https://arbizualdo.gumroad.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#FF4F00] font-bold hover:underline shrink-0 inline-flex items-center gap-1"
+            className="text-[#B83800] font-bold hover:underline shrink-0 inline-flex items-center gap-1"
           >
             <span>Gumroad / USDC Base L2</span>
             <ArrowRight className="w-3.5 h-3.5" />

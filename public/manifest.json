@@ -1,0 +1,21 @@
+{
+  "name": "Arbizu Labs — Ingeniería & Hardware B2B",
+  "short_name": "Arbizu Labs",
+  "description": "Sistemas Offline-First, Auditorías FLIR y Hardware de Campo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F0EA",
+  "theme_color": "#FF4F00",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
