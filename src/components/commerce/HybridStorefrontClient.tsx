@@ -87,12 +87,12 @@ const SKU_IMAGE_MAP: Record<string, string> = {
   'ARB-MATE-PICKUP': '/assets/brand-v2/skus/arb-mate-pickup.webp',
   'ARB-OBD2-PRO3D': '/assets/brand-v2/skus/arb-obd2-pro3d.webp',
   'ARB-TOOL-BAT4X': '/assets/brand-v2/skus/arb-tool-bat4x.webp',
-  // Slots preparados para Ventana 2 (sirven asset real sin 404 hasta generación Nano Banana):
-  'ARB-DRIVER-S2-PRO': '/assets/brand-v2/arbizu-bit-to-atom-workshop.webp',
-  'ARB-S0-FLIR-SHIELD': '/assets/brand-v2/hero-studio-workbench.webp',
-  'ARB-3D-FLIR-SHIELD': '/assets/brand-v2/hero-studio-workbench.webp',
-  'ARB-3D-CLIP-EID': '/assets/brand-v2/b2b-field-telemetry.webp',
-  'ARB-3D-VESA-DOCK': '/assets/brand-v2/hero-studio-workbench.webp',
+  // 12/12 SKUs con foto WebP de estudio unica (Nano Banana Ventana 1 + Ventana 2):
+  'ARB-DRIVER-S2-PRO': '/assets/brand-v2/skus/arb-driver-s2-pro.webp',
+  'ARB-S0-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-FLIR-SHIELD': '/assets/brand-v2/skus/arb-s0-flir-shield.webp',
+  'ARB-3D-CLIP-EID': '/assets/brand-v2/skus/arb-3d-clip-eid.webp',
+  'ARB-3D-VESA-DOCK': '/assets/brand-v2/skus/arb-3d-vesa-dock.webp',
 };
 
 const VENTANA2_SKU_IMAGE_MAP: Record<string, string> = {

@@ -459,12 +459,11 @@ export default function ContactSection() {
           {/* Right Column: Authority Card + Live Code Verifier */}
           <div className="lg:col-span-5 space-y-6">
             <figure
-              data-slot="ventana2-arbizu-roi-field-ops"
+              data-slot="arbizu-roi-field-ops"
               className="border border-[#D6D3C9] bg-[#FFFFFF] rounded-[2px] overflow-hidden"
             >
               <img
-                src="/assets/brand-v2/hero-studio-workbench.webp"
-                data-ventana2-src="/assets/brand-v2/arbizu-roi-field-ops.webp"
+                src="/assets/brand-v2/arbizu-roi-field-ops.webp"
                 alt={isEs ? 'Ingeniería de campo Arbizu Labs — diagnóstico térmico FLIR y telemetría industrial' : 'Arbizu Labs field engineering — FLIR thermal audit and industrial telemetry'}
                 width={1200}
                 height={675}

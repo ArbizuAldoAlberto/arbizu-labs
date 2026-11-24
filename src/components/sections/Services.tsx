@@ -162,11 +162,10 @@ export default function Services() {
 
           <figure
             className="lg:col-span-5 border border-[#D6D3C9] bg-[#FFFFFF] overflow-hidden"
-            data-slot="ventana2-arbizu-tiers-flir-audit"
+            data-slot="arbizu-tiers-flir-audit"
           >
             <img
-              src="/assets/brand-v2/b2b-field-telemetry.webp"
-              data-ventana2-src="/assets/brand-v2/arbizu-tiers-flir-audit.webp"
+              src="/assets/brand-v2/arbizu-tiers-flir-audit.webp"
               alt={isEs ? 'Inspección termográfica industrial con cámara FLIR' : 'Industrial FLIR thermal inspection'}
               className="w-full aspect-[16/9] max-h-[210px] object-cover block"
               loading="lazy"
