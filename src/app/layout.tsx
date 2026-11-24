@@ -123,7 +123,7 @@ export default function RootLayout({
                   "name": "Arbizu Labs — Boutique de Ingeniería de Software & Auditorías Térmicas",
                   "alternateName": "Arbizu Labs",
                   "url": "https://arbizulabs.com",
-                  "logo": "https://arbizulabs.com/logo-arbizu.svg",
+                  "logo": "https://arbizulabs.com/favicon.svg",
                   "image": "https://arbizulabs.com/assets/brand-v2/hero-studio-workbench.webp",
                   "founder": {
                     "@type": "Person",
