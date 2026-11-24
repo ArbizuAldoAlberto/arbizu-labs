@@ -213,6 +213,7 @@ html[data-luminance="daylight"] [data-keep-dark="true"] * {
 html[data-luminance="daylight"] :is([class*="text-[#F6F7F9]"],
   [class*="text-[#F8FAFC]"],
   [class*="text-[#F2F0EA]"],
+  [class*="text-[#E2E8F0]"],
   .text-white,
   .text-slate-100,
   .text-slate-200):not([data-keep-dark="true"]):not([data-keep-dark="true"] *):not([class*="bg-[#FF4F00]"]):not([class*="bg-[#D4AF37]"]):not([class*="bg-[#00E599]"]):not([class*="bg-[#07080A]"]):not([class*="bg-[#07080A]"] *):not([class*="bg-[#1F4E3D]"]):not([class*="bg-[#1F4E3D]"] *) {

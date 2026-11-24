@@ -8,22 +8,22 @@ export const metadata: Metadata = {
 
 export default function NomadHubPrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#060709] text-[#F2F0EA] px-6 py-16">
+    <div className="min-h-screen bg-[#F2F0EA] text-[#07080A] px-6 pt-28 pb-16">
       <div className="max-w-3xl mx-auto space-y-8 font-sans">
-        <div className="border-b border-white/15 pb-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#00E599]">
+        <div className="border-b border-[#D6D3C9] pb-6">
+          <p className="font-mono text-xs font-bold uppercase tracking-widest text-[#065F46]">
             ARBIZU LABS · GOOGLE PLAY &amp; OFFLINE-FIRST COMPLIANCE
           </p>
-          <h1 className="text-3xl md:text-4xl font-bold mt-2 text-[#F2F0EA]">
+          <h1 className="text-3xl md:text-4xl font-bold mt-2 text-[#07080A]">
             Política de Privacidad / Privacy Policy — NOMAD Tactical Hub
           </h1>
-          <p className="font-mono text-xs text-[#94A3B8] mt-2">
-            Titular: Aldo Alberto Arbizu (ARBIZU LABS, CUIT 20-38362060-1) · Actualizado: 2026-11-21
+          <p className="font-mono text-xs text-[#3E4552] mt-2">
+            Titular: Aldo Alberto Arbizu (ARBIZU LABS, CUIT 20-38362060-1) · Actualizado: 2026-11-24
           </p>
         </div>
 
-        <section className="space-y-3 text-sm leading-relaxed text-[#E2E8F0]">
-          <h2 className="text-lg font-semibold text-[#D4AF37]">
+        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
+          <h2 className="text-lg font-bold text-[#07080A]">
             1. Arquitectura Offline-First y Datos Procesados (ES / EN)
           </h2>
           <p>
@@ -39,8 +39,8 @@ export default function NomadHubPrivacyPage() {
           </p>
         </section>
 
-        <section className="space-y-3 text-sm leading-relaxed text-[#E2E8F0]">
-          <h2 className="text-lg font-semibold text-[#D4AF37]">
+        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
+          <h2 className="text-lg font-bold text-[#07080A]">
             2. Permisos Just-In-Time (Cero Rastreo en Segundo Plano)
           </h2>
           <p>
@@ -56,15 +56,15 @@ export default function NomadHubPrivacyPage() {
           </p>
         </section>
 
-        <section className="space-y-3 text-sm leading-relaxed text-[#E2E8F0]">
-          <h2 className="text-lg font-semibold text-[#D4AF37]">
+        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
+          <h2 className="text-lg font-bold text-[#07080A]">
             3. Cero Publicidad, Compras Google Play y Eliminación de Datos
           </h2>
           <p>
             <strong>No vendemos datos ni incluimos SDKs publicitarios de terceros.</strong> Las funciones Pro opcionales
             distribuidas mediante Google Play se procesan exclusivamente mediante <strong>Google Play Billing / RevenueCat</strong>.
             Puedes eliminar todos tus registros locales en cualquier momento desde la app o solicitar eliminación de cuenta asociada en{" "}
-            <a href="/delete-account" className="text-[#00E599] underline">
+            <a href="/delete-account" className="text-[#065F46] font-semibold underline">
               arbizulabs.com/delete-account
             </a>
             . Contacto: <span className="font-mono">arbizualdoalberto@gmail.com</span> · WhatsApp{" "}
@@ -72,6 +72,6 @@ export default function NomadHubPrivacyPage() {
           </p>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
