@@ -19,16 +19,58 @@ import { useLanguage } from '@/context/LanguageContext';
 
 const CONTACT_DRAFT_KEY = 'arbizu_contact_draft_v2';
 
-const SERVICE_OPTIONS = [
-  'SYS-01 // TitanFlow Quant Architecture ($4,500 USD)',
-  'SYS-02 // SentinelOS Dispatch & Security ($120.000 ARS / $1,800 USD)',
-  'SYS-03 // AgroMarket Pro Acopio Offline ($75.000 ARS / $1,500 USD)',
-  'SYS-04 // NOMAD Tactical Hub Off-Grid ($4,500 USD)',
-  'SYS-05 // Verify Cryptographic Trust Portal',
-  'SYS-06 // Simulador Software B2B REPROCANN ($75.000 ARS)',
-  'TIER 01 // Auditoría Termográfica FLIR Industrial ($150.000 ARS)',
-  'TIER 02 // Hardening VPS + SQLite WAL + RLS 60/60 ($120.000 ARS)',
-  'TIER 03 // Enterprise Sprint / Arquitectura a Medida ($4,500 USD)',
+interface ServiceOptionItem {
+  id: string;
+  es: string;
+  en: string;
+}
+
+const SERVICE_OPTIONS: ServiceOptionItem[] = [
+  {
+    id: 'SYS-01',
+    es: 'SYS-01 // Arquitectura Quant TitanFlow ($4,500 USD)',
+    en: 'SYS-01 // TitanFlow Quant Architecture ($4,500 USD)',
+  },
+  {
+    id: 'SYS-02',
+    es: 'SYS-02 // Despacho y Seguridad SentinelOS ($120.000 ARS / $1,800 USD)',
+    en: 'SYS-02 // SentinelOS Dispatch & Security ($120,000 ARS / $1,800 USD)',
+  },
+  {
+    id: 'SYS-03',
+    es: 'SYS-03 // AgroMarket Pro Acopio Offline ($75.000 ARS / $1,500 USD)',
+    en: 'SYS-03 // AgroMarket Pro Offline Grain Intake ($75,000 ARS / $1,500 USD)',
+  },
+  {
+    id: 'SYS-04',
+    es: 'SYS-04 // NOMAD Tactical Hub Off-Grid ($4,500 USD)',
+    en: 'SYS-04 // NOMAD Tactical Hub Off-Grid ($4,500 USD)',
+  },
+  {
+    id: 'SYS-05',
+    es: 'SYS-05 // Portal Verify de Confianza Criptográfica',
+    en: 'SYS-05 // Verify Cryptographic Trust Portal',
+  },
+  {
+    id: 'SYS-06',
+    es: 'SYS-06 // Simulador Software B2B REPROCANN ($75.000 ARS)',
+    en: 'SYS-06 // REPROCANN B2B Software Simulator ($75,000 ARS)',
+  },
+  {
+    id: 'TIER 01',
+    es: 'TIER 01 // Auditoría Termográfica FLIR Industrial ($150.000 ARS)',
+    en: 'TIER 01 // Industrial FLIR Thermographic Audit ($150,000 ARS / $1,500 USD)',
+  },
+  {
+    id: 'TIER 02',
+    es: 'TIER 02 // Hardening VPS + SQLite WAL + RLS 60/60 ($120.000 ARS)',
+    en: 'TIER 02 // VPS Hardening + SQLite WAL + 60/60 RLS ($120,000 ARS / $1,200 USD)',
+  },
+  {
+    id: 'TIER 03',
+    es: 'TIER 03 // Enterprise Sprint / Arquitectura a Medida ($4,500 USD)',
+    en: 'TIER 03 // Enterprise Sprint / Custom Architecture ($4,500 USD)',
+  },
 ];
 
 export default function ContactSection() {
@@ -36,7 +78,7 @@ export default function ContactSection() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [isOffline, setIsOffline] = useState(false);
-  const [selectedService, setSelectedService] = useState(SERVICE_OPTIONS[2]);
+  const [selectedService, setSelectedService] = useState(SERVICE_OPTIONS[2].id);
   const [draft, setDraft] = useState({
     name: '',
     email: '',
@@ -70,30 +112,32 @@ export default function ContactSection() {
       const matched =
         SERVICE_OPTIONS.find((opt) =>
           lower.includes('titanflow')
-            ? opt.includes('SYS-01')
+            ? opt.id === 'SYS-01'
             : lower.includes('sentinel')
-            ? opt.includes('SYS-02')
+            ? opt.id === 'SYS-02'
             : lower.includes('agro')
-            ? opt.includes('SYS-03')
+            ? opt.id === 'SYS-03'
             : lower.includes('nomad')
-            ? opt.includes('SYS-04')
+            ? opt.id === 'SYS-04'
             : lower.includes('verify')
-            ? opt.includes('SYS-05')
+            ? opt.id === 'SYS-05'
             : lower.includes('cannasavias') || lower.includes('reprocann')
-            ? opt.includes('SYS-06')
+            ? opt.id === 'SYS-06'
             : lower.includes('flir')
-            ? opt.includes('TIER 01')
+            ? opt.id === 'TIER 01'
             : lower.includes('hardening') || lower.includes('vps')
-            ? opt.includes('TIER 02')
-            : opt.includes('TIER 03')
-        ) || `${title}${price ? ` (${price})` : ''}`;
+            ? opt.id === 'TIER 02'
+            : opt.id === 'TIER 03'
+        )?.id || `${title}${price ? ` (${price})` : ''}`;
 
       setSelectedService(matched);
       setDraft((prev) => ({
         ...prev,
         message: prev.message.trim()
           ? prev.message
-          : `Solicito cotización y plan técnico para: ${title}${price ? ` (${price})` : ''}.`,
+          : (isEs
+              ? `Solicito cotización y plan técnico para: ${title}${price ? ` (${price})` : ''}.`
+              : `Requesting technical roadmap and quote for: ${title}${price ? ` (${price})` : ''}.`),
       }));
     };
 
@@ -163,7 +207,9 @@ export default function ContactSection() {
       setVerifyState({
         checked: true,
         valid: true,
-        detail: `${clean} certificado activo · Ver detalles completos en /security.`,
+        detail: isEs
+          ? `${clean} certificado activo · Ver detalles completos en /security.`
+          : `${clean} active certificate · View full dossier at /security.`,
       });
       return;
     }
@@ -176,7 +222,9 @@ export default function ContactSection() {
           setVerifyState({
             checked: true,
             valid: true,
-            detail: `CÓDIGO VÁLIDO EN SQLITE WAL · ${data.project_type} ($${Number(data.estimated_savings || 0).toLocaleString('en-US')} USD ahorro est.).`,
+            detail: isEs
+              ? `CÓDIGO VÁLIDO EN SQLITE WAL · ${data.project_type} ($${Number(data.estimated_savings || 0).toLocaleString('en-US')} USD ahorro est.).`
+              : `VALID RECORD IN SQLITE WAL · ${data.project_type} ($${Number(data.estimated_savings || 0).toLocaleString('en-US')} USD est. savings).`,
           });
           return;
         }
@@ -193,7 +241,9 @@ export default function ContactSection() {
           setVerifyState({
             checked: true,
             valid: true,
-            detail: `CÓDIGO VÁLIDO EMITIDO EN VIVO · ${map[clean].vertical} ($${map[clean].savings.toLocaleString('en-US')} USD).`,
+            detail: isEs
+              ? `CÓDIGO VÁLIDO EMITIDO EN VIVO · ${map[clean].vertical} ($${map[clean].savings.toLocaleString('en-US')} USD).`
+              : `LIVE ISSUED VALID CODE · ${map[clean].vertical} ($${map[clean].savings.toLocaleString('en-US')} USD).`,
           });
           return;
         }
@@ -205,7 +255,9 @@ export default function ContactSection() {
     setVerifyState({
       checked: true,
       valid: false,
-      detail: 'Código no registrado aún en SQLite WAL ni en caché local.',
+      detail: isEs
+        ? 'Código no registrado aún en SQLite WAL ni en caché local.'
+        : 'Code not yet registered in SQLite WAL or local browser cache.',
     });
   };
 
@@ -345,12 +397,12 @@ export default function ContactSection() {
                     onChange={(e) => setSelectedService(e.target.value)}
                     className="w-full bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)] rounded-[2px] p-3 text-[var(--text-primary)] focus:border-[#FF4F00] outline-none transition-colors"
                   >
-                    {!SERVICE_OPTIONS.includes(selectedService) && (
+                    {!SERVICE_OPTIONS.some((opt) => opt.id === selectedService) && (
                       <option value={selectedService}>{selectedService}</option>
                     )}
                     {SERVICE_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
+                      <option key={opt.id} value={opt.id}>
+                        {isEs ? opt.es : opt.en}
                       </option>
                     ))}
                   </select>
@@ -542,10 +594,10 @@ export default function ContactSection() {
             <div className="bg-[var(--surface-chassis,#0B0D12)] p-6 rounded-[2px] border border-[var(--grid-hairline,#1B202B)] text-xs font-mono space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[#D4AF37] font-bold uppercase tracking-wider">
-                  VERIFICADOR RÁPIDO ARB-2026
+                  {isEs ? 'VERIFICADOR RÁPIDO ARB-2026' : 'ARB-2026 QUICK VERIFIER'}
                 </span>
                 <Link href="/security" className="text-[#00E599] font-bold hover:underline">
-                  Portal Completo ↗
+                  {isEs ? 'Portal Completo ↗' : 'Full Portal ↗'}
                 </Link>
               </div>
               <form onSubmit={handleQuickVerify} className="flex gap-2">
@@ -553,17 +605,17 @@ export default function ContactSection() {
                   type="text"
                   value={verifyCode}
                   onChange={(e) => setVerifyCode(e.target.value)}
-                  aria-label="Código de dossier o auditoría"
+                  aria-label={isEs ? 'Código de dossier o auditoría' : 'Dossier or audit verification code'}
                   placeholder="ARB-2026-XXXX"
                   className="flex-1 px-3 py-2 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)] rounded-[2px] text-[var(--text-primary)] uppercase outline-none focus:border-[#FF4F00]"
                 />
                 <button
                   type="submit"
-                  aria-label="Verificar código ARB"
+                  aria-label={isEs ? 'Verificar código ARB' : 'Verify ARB code'}
                   className="px-3.5 py-2 bg-[#D4AF37] hover:bg-[#FF4F00] text-[#060709] font-bold rounded-[2px] cursor-pointer inline-flex items-center gap-1"
                 >
                   <Search className="w-3.5 h-3.5" />
-                  <span>Check</span>
+                  <span>{isEs ? 'Verificar' : 'Verify'}</span>
                 </button>
               </form>
               {verifyState.checked && (

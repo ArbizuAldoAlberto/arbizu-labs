@@ -1,8 +1,11 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ComparePage() {
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
   const [layout, setLayout] = useState<'split' | 'side'>('split');
   const [viewport, setViewport] = useState<'desktop' | 'mobile'>('desktop');
   const [splitPct, setSplitPct] = useState<number>(50);
@@ -71,59 +74,61 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="grid grid-rows-[auto_1fr] w-full h-screen bg-[#03070e] text-[#ecf8f8] overflow-clip">
-      <header className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 bg-[#05101c] border-b border-[rgba(94,242,224,0.28)] z-20">
+    <div className="grid grid-rows-[auto_1fr] w-full h-screen pt-16 bg-[var(--surface-void)] text-[var(--text-primary)] overflow-clip">
+      <header className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 bg-[var(--surface-chassis)] border-b border-[var(--grid-hairline)] z-20">
         <div className="flex items-center gap-3">
-          <h1 className="font-space text-xs sm:text-sm font-bold tracking-wider uppercase text-[#ecf8f8]">
-            Arbizu Labs · Comparador Cromático
+          <h1 className="font-sans text-xs sm:text-sm font-bold tracking-wider uppercase text-[var(--text-primary)]">
+            {isEs ? 'Arbizu Labs · Comparador Cromático' : 'Arbizu Labs · Theme Comparator'}
           </h1>
-          <span className="hidden md:inline text-xs text-[#9ec5cf]">
-            V1 Bóveda Profunda (#03070e) vs V2 Luz Turquesa Perimetral (#072a30)
+          <span className="hidden md:inline font-mono text-xs text-[var(--text-secondary)]">
+            {isEs
+              ? 'V1 Papel Titanio / Obsidiana vs V2 Luz Perimetral'
+              : 'V1 Titanium Paper / Obsidian vs V2 Perimeter Edition'}
           </span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           {/* Layout Mode */}
           <div
-            className="inline-flex items-center gap-1 p-1 bg-[#03070e] border border-[rgba(94,242,224,0.28)] rounded-[10px]"
+            className="inline-flex items-center gap-1 p-1 bg-[var(--surface-void)] border border-[var(--grid-hairline)] rounded-[4px]"
             role="group"
-            aria-label="Modo de visualización"
+            aria-label={isEs ? 'Modo de visualización' : 'Display mode'}
           >
             <button
               type="button"
               onClick={() => setLayout('split')}
               aria-pressed={layout === 'split'}
-              className={`px-3 py-1.5 rounded-[7px] text-xs font-semibold cursor-pointer transition ${
+              className={`px-3 py-1.5 rounded-[2px] text-xs font-mono font-semibold cursor-pointer transition ${
                 layout === 'split'
-                  ? 'bg-[rgba(94,242,224,0.16)] text-[#ecf8f8] border border-[rgba(94,242,224,0.62)]'
-                  : 'text-[#9ec5cf] hover:text-[#ecf8f8]'
+                  ? 'bg-[#FF4F00]/15 text-[var(--text-primary)] border border-[#FF4F00]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              Cortina 50/50
+              {isEs ? 'Cortina 50/50' : '50/50 Split'}
             </button>
             <button
               type="button"
               onClick={() => setLayout('side')}
               aria-pressed={layout === 'side'}
-              className={`px-3 py-1.5 rounded-[7px] text-xs font-semibold cursor-pointer transition ${
+              className={`px-3 py-1.5 rounded-[2px] text-xs font-mono font-semibold cursor-pointer transition ${
                 layout === 'side'
-                  ? 'bg-[rgba(94,242,224,0.16)] text-[#ecf8f8] border border-[rgba(94,242,224,0.62)]'
-                  : 'text-[#9ec5cf] hover:text-[#ecf8f8]'
+                  ? 'bg-[#FF4F00]/15 text-[var(--text-primary)] border border-[#FF4F00]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              Lado a lado
+              {isEs ? 'Lado a lado' : 'Side by side'}
             </button>
             {layout === 'split' && (
-              <label className="inline-flex items-center gap-2 px-2 text-xs text-[#9ec5cf]">
-                <span>Corte</span>
+              <label className="inline-flex items-center gap-2 px-2 text-xs font-mono text-[var(--text-secondary)]">
+                <span>{isEs ? 'Corte' : 'Split'}</span>
                 <input
                   type="range"
                   min={5}
                   max={95}
                   value={splitPct}
                   onChange={(e) => setSplitPct(Number(e.target.value))}
-                  aria-label="Porcentaje de cortina V1 vs V2"
-                  className="w-24 accent-[#5ef2e0] cursor-pointer"
+                  aria-label={isEs ? 'Porcentaje de cortina V1 vs V2' : 'V1 vs V2 split ratio'}
+                  className="w-24 accent-[#FF4F00] cursor-pointer"
                 />
               </label>
             )}
@@ -131,18 +136,18 @@ export default function ComparePage() {
 
           {/* Viewport Switch */}
           <div
-            className="inline-flex items-center gap-1 p-1 bg-[#03070e] border border-[rgba(94,242,224,0.28)] rounded-[10px]"
+            className="inline-flex items-center gap-1 p-1 bg-[var(--surface-void)] border border-[var(--grid-hairline)] rounded-[4px]"
             role="group"
-            aria-label="Tamaño de viewport"
+            aria-label={isEs ? 'Tamaño de viewport' : 'Viewport size'}
           >
             <button
               type="button"
               onClick={() => setViewport('desktop')}
               aria-pressed={viewport === 'desktop'}
-              className={`px-3 py-1.5 rounded-[7px] text-xs font-semibold cursor-pointer transition ${
+              className={`px-3 py-1.5 rounded-[2px] text-xs font-mono font-semibold cursor-pointer transition ${
                 viewport === 'desktop'
-                  ? 'bg-[rgba(94,242,224,0.16)] text-[#ecf8f8] border border-[rgba(94,242,224,0.62)]'
-                  : 'text-[#9ec5cf] hover:text-[#ecf8f8]'
+                  ? 'bg-[#FF4F00]/15 text-[var(--text-primary)] border border-[#FF4F00]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               Desktop
@@ -151,77 +156,77 @@ export default function ComparePage() {
               type="button"
               onClick={() => setViewport('mobile')}
               aria-pressed={viewport === 'mobile'}
-              className={`px-3 py-1.5 rounded-[7px] text-xs font-semibold cursor-pointer transition ${
+              className={`px-3 py-1.5 rounded-[2px] text-xs font-mono font-semibold cursor-pointer transition ${
                 viewport === 'mobile'
-                  ? 'bg-[rgba(94,242,224,0.16)] text-[#ecf8f8] border border-[rgba(94,242,224,0.62)]'
-                  : 'text-[#9ec5cf] hover:text-[#ecf8f8]'
+                  ? 'bg-[#FF4F00]/15 text-[var(--text-primary)] border border-[#FF4F00]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              Móvil 390×844
+              {isEs ? 'Móvil 390×844' : 'Mobile 390×844'}
             </button>
           </div>
 
           {/* Quick Section Jumps */}
           <div
-            className="hidden lg:inline-flex items-center gap-1 p-1 bg-[#03070e] border border-[rgba(94,242,224,0.28)] rounded-[10px]"
+            className="hidden lg:inline-flex items-center gap-1 p-1 bg-[var(--surface-void)] border border-[var(--grid-hairline)] rounded-[4px]"
             role="group"
-            aria-label="Saltos rápidos de sección"
+            aria-label={isEs ? 'Saltos rápidos de sección' : 'Quick section jumps'}
           >
             <button
               type="button"
               onClick={() => jumpToRatio(0)}
-              className="px-2.5 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8] cursor-pointer"
+              className="px-2.5 py-1.5 rounded-[2px] text-xs font-mono font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
             >
-              Héroe
+              {isEs ? 'Héroe' : 'Hero'}
             </button>
             <button
               type="button"
               onClick={() => jumpToRatio(0.18)}
-              className="px-2.5 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8] cursor-pointer"
+              className="px-2.5 py-1.5 rounded-[2px] text-xs font-mono font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
             >
-              Descenso
+              {isEs ? 'Descenso' : 'Architecture'}
             </button>
             <button
               type="button"
               onClick={() => jumpToRatio(0.45)}
-              className="px-2.5 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8] cursor-pointer"
+              className="px-2.5 py-1.5 rounded-[2px] text-xs font-mono font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
             >
-              Artefactos
+              {isEs ? 'Artefactos' : 'Systems'}
             </button>
             <button
               type="button"
               onClick={() => jumpToRatio(0.92)}
-              className="px-2.5 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8] cursor-pointer"
+              className="px-2.5 py-1.5 rounded-[2px] text-xs font-mono font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
             >
               CTA
             </button>
           </div>
 
           {/* Direct Links */}
-          <div className="inline-flex items-center gap-1 p-1 bg-[#03070e] border border-[rgba(94,242,224,0.28)] rounded-[10px]">
+          <div className="inline-flex items-center gap-1 p-1 bg-[var(--surface-void)] border border-[var(--grid-hairline)] rounded-[4px] font-mono">
             <Link
               href="/"
-              className="px-3 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8]"
+              className="px-3 py-1.5 rounded-[2px] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
-              Abrir V1
+              {isEs ? 'Abrir V1' : 'Open V1'}
             </Link>
             <Link
               href="/v2"
-              className="px-3 py-1.5 rounded-[7px] text-xs font-semibold text-[#9ec5cf] hover:text-[#ecf8f8]"
+              className="px-3 py-1.5 rounded-[2px] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
-              Abrir V2
+              {isEs ? 'Abrir V2' : 'Open V2'}
             </Link>
           </div>
         </div>
       </header>
 
-      <div className="relative w-full h-full flex items-center justify-center bg-[#03070e] overflow-clip">
+      <div className="relative w-full h-full flex items-center justify-center bg-[var(--surface-void)] overflow-clip">
         <div
           className={`relative transition-all duration-300 ${
             viewport === 'mobile'
               ? layout === 'side'
-                ? 'w-[min(820px,96vw)] h-[min(844px,calc(100vh-4.5rem))] border border-[rgba(94,242,224,0.62)] rounded-2xl overflow-clip shadow-2xl'
-                : 'w-[390px] h-[min(844px,calc(100vh-4.5rem))] border border-[rgba(94,242,224,0.62)] rounded-2xl overflow-clip shadow-2xl'
+                ? 'w-[min(820px,96vw)] h-[min(844px,calc(100vh-8rem))] border border-[#FF4F00]/60 rounded-xl overflow-clip shadow-2xl'
+                : 'w-[390px] h-[min(844px,calc(100vh-8rem))] border border-[#FF4F00]/60 rounded-xl overflow-clip shadow-2xl'
               : 'w-full h-full'
           }`}
         >
@@ -232,62 +237,62 @@ export default function ComparePage() {
                 className="absolute inset-0 w-full h-full z-20"
                 style={{ clipPath: `inset(0 calc(100% - ${splitPct}%) 0 0)` }}
               >
-                <span className="absolute bottom-4 left-4 z-30 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#03070e]/90 text-[#ecf8f8] border border-[rgba(94,242,224,0.62)] pointer-events-none">
-                  V1 · Bóveda Profunda (#03070e)
+                <span className="absolute bottom-4 left-4 z-30 px-3 py-1.5 rounded-[2px] text-xs font-mono font-bold bg-[#060709]/90 text-[#F2F0EA] border border-[#D4AF37]/60 pointer-events-none">
+                  {isEs ? 'V1 · Edición Soberana' : 'V1 · Sovereign Edition'}
                 </span>
                 <iframe
                   ref={frameV1Ref}
                   src="/?force3d=1"
-                  title="Versión V1 Bóveda Profunda"
-                  className="w-full h-full border-0 block bg-[#03070e]"
+                  title={isEs ? 'Versión V1' : 'V1 Version'}
+                  className="w-full h-full border-0 block bg-[var(--surface-void)]"
                 />
               </div>
 
               {/* V2 Pane */}
               <div className="absolute inset-0 w-full h-full z-10">
-                <span className="absolute bottom-4 right-4 z-30 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#072a30]/90 text-[#f0fdfa] border border-[rgba(111,255,233,0.68)] pointer-events-none">
-                  V2 · Luz Turquesa Perimetral (#072a30)
+                <span className="absolute bottom-4 right-4 z-30 px-3 py-1.5 rounded-[2px] text-xs font-mono font-bold bg-[#072a30]/90 text-[#f0fdfa] border border-[#00E599]/60 pointer-events-none">
+                  {isEs ? 'V2 · Luz Perimetral' : 'V2 · Perimeter Edition'}
                 </span>
                 <iframe
                   ref={frameV2Ref}
                   src="/v2?force3d=1"
-                  title="Versión V2 Luz Turquesa Perimetral"
+                  title={isEs ? 'Versión V2' : 'V2 Version'}
                   className="w-full h-full border-0 block bg-[#072a30]"
                 />
               </div>
 
               {/* Split Curtain Divider */}
               <div
-                className="absolute top-0 bottom-0 w-[2px] bg-[#5ef2e0] -translate-x-1/2 z-30 pointer-events-none shadow-[0_0_16px_rgba(94,242,224,0.8)]"
+                className="absolute top-0 bottom-0 w-[2px] bg-[#FF4F00] -translate-x-1/2 z-30 pointer-events-none"
                 style={{ left: `${splitPct}%` }}
                 aria-hidden="true"
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-[10px] bg-[#051624] border border-[rgba(94,242,224,0.62)] text-[#ecf8f8] flex items-center justify-center text-sm font-bold shadow-xl">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-[2px] bg-[#060709] border border-[#FF4F00] text-[#F2F0EA] flex items-center justify-center text-sm font-bold shadow-xl">
                   ⇄
                 </div>
               </div>
             </div>
           ) : (
             <div className="grid grid-cols-2 w-full h-full">
-              <div className="relative w-full h-full border-r border-[rgba(94,242,224,0.62)]">
-                <span className="absolute bottom-4 left-4 z-30 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#03070e]/90 text-[#ecf8f8] border border-[rgba(94,242,224,0.62)] pointer-events-none">
-                  V1 · Bóveda Profunda (#03070e)
+              <div className="relative w-full h-full border-r border-[var(--grid-hairline)]">
+                <span className="absolute bottom-4 left-4 z-30 px-3 py-1.5 rounded-[2px] text-xs font-mono font-bold bg-[#060709]/90 text-[#F2F0EA] border border-[#D4AF37]/60 pointer-events-none">
+                  {isEs ? 'V1 · Edición Soberana' : 'V1 · Sovereign Edition'}
                 </span>
                 <iframe
                   ref={frameV1Ref}
                   src="/?force3d=1"
-                  title="Versión V1 Bóveda Profunda"
-                  className="w-full h-full border-0 block bg-[#03070e]"
+                  title={isEs ? 'Versión V1' : 'V1 Version'}
+                  className="w-full h-full border-0 block bg-[var(--surface-void)]"
                 />
               </div>
               <div className="relative w-full h-full">
-                <span className="absolute bottom-4 right-4 z-30 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#072a30]/90 text-[#f0fdfa] border border-[rgba(111,255,233,0.68)] pointer-events-none">
-                  V2 · Luz Turquesa Perimetral (#072a30)
+                <span className="absolute bottom-4 right-4 z-30 px-3 py-1.5 rounded-[2px] text-xs font-mono font-bold bg-[#072a30]/90 text-[#f0fdfa] border border-[#00E599]/60 pointer-events-none">
+                  {isEs ? 'V2 · Luz Perimetral' : 'V2 · Perimeter Edition'}
                 </span>
                 <iframe
                   ref={frameV2Ref}
                   src="/v2?force3d=1"
-                  title="Versión V2 Luz Turquesa Perimetral"
+                  title={isEs ? 'Versión V2' : 'V2 Version'}
                   className="w-full h-full border-0 block bg-[#072a30]"
                 />
               </div>

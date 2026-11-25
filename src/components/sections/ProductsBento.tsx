@@ -25,7 +25,9 @@ interface VerticalCatalogItem {
   id: string;
   title: string;
   domain: string;
+  domainEn?: string;
   status: string;
+  statusEn?: string;
   summaryEs: string;
   summaryEn: string;
   liveUrl: string;
@@ -109,7 +111,9 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     id: 'verify',
     title: 'Verify Cryptographic Trust',
     domain: 'Audits & Attestation',
-    status: 'LIVE VERIFIER',
+    domainEn: 'Audits & Attestation',
+    status: 'VERIFICADOR EN VIVO',
+    statusEn: 'LIVE VERIFIER',
     summaryEs: 'Portal de verificación inmutable para informes técnicos FLIR, auditorías OWASP y cotizaciones.',
     summaryEn: 'Tamper-proof verification ledger for FLIR audits, OWASP reports, and signed quotes.',
     liveUrl: 'https://verify.aldoarbizu.com',
@@ -120,8 +124,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-06',
     id: 'cannasavias',
     title: 'CannaSavias REPROCANN Sim',
-    domain: 'B2B Software Simulator',
+    domain: 'Simulador Software B2B',
+    domainEn: 'B2B Software Simulator',
     status: 'SIMULADOR B2B ($75K ARS)',
+    statusEn: 'B2B SIMULATOR ($75K ARS)',
     summaryEs: 'DEMOSTRACIÓN DE SOFTWARE B2B / Simulador de trazabilidad y cupos para clubes autorizados.',
     summaryEn: 'B2B SOFTWARE DEMONSTRATION / Traceability compliance simulator for licensed clubs.',
     liveUrl: 'https://cannasavias.aldoarbizu.com',
@@ -132,8 +138,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-07',
     id: 'aeroshot',
     title: 'AeroShot Drones GIS',
-    domain: 'Multispectral AgTech',
+    domain: 'AgTech Multiespectral',
+    domainEn: 'Multispectral AgTech',
     status: 'REGIONAL $60K ARS',
+    statusEn: 'REGIONAL $60K ARS',
     summaryEs: 'Relevamiento aéreo 4K, índice NDVI y peritaje geoespacial para explotaciones agropecuarias.',
     summaryEn: '4K aerial surveys, NDVI crop vigor maps, and geospatial loss appraisal.',
     liveUrl: 'https://aeroshot.aldoarbizu.com',
@@ -144,8 +152,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-08',
     id: 'impresion3d',
     title: 'ab3d-forge // Impresión 3D',
-    domain: 'Bit-to-Atom Hardware',
+    domain: 'Hardware Bit-to-Atom',
+    domainEn: 'Bit-to-Atom Hardware',
     status: 'MANUFACTURA ACTIVA',
+    statusEn: 'ACTIVE MANUFACTURING',
     summaryEs: 'Modelado paramétrico en Blender + slicer STL y fabricación aditiva de repuestos funcionales.',
     summaryEn: 'Parametric CAD in Blender, client STL slicing, and functional FDM prototyping.',
     liveUrl: 'https://impresion3d.aldoarbizu.com',
@@ -157,7 +167,9 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     id: 'habitat',
     title: 'Hábitat Lease Engine',
     domain: 'PropTech & Smart Contracts',
+    domainEn: 'PropTech & Smart Contracts',
     status: 'DESPLEGADO',
+    statusEn: 'DEPLOYED',
     summaryEs: 'Contratos directos y acuerdos de explotación de tierras firmados con personal_sign en Base L2.',
     summaryEn: 'Direct leasing agreements cryptographically notarized on Base L2.',
     liveUrl: 'https://habitat.aldoarbizu.com',
@@ -168,8 +180,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-10',
     id: 'ecoconnect',
     title: 'EcoConnect ESG',
-    domain: 'Satellite Telemetry',
-    status: 'LIVE TELEMETRY',
+    domain: 'Telemetría Satelital',
+    domainEn: 'Satellite Telemetry',
+    status: 'TELEMETRÍA EN VIVO',
+    statusEn: 'LIVE TELEMETRY',
     summaryEs: 'Monitoreo forestal mediante imágenes Sentinel-2 (NDVI) y certificación on-chain.',
     summaryEn: 'Forest canopy verification using Sentinel-2 NDVI and on-chain certificates.',
     liveUrl: 'https://ecoconnect.aldoarbizu.com',
@@ -180,8 +194,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-11',
     id: 'aureus',
     title: 'Aureus Wealth OS',
-    domain: 'Private Wealth ERP',
-    status: 'INTERNAL / LIVE',
+    domain: 'ERP Patrimonial Privado',
+    domainEn: 'Private Wealth ERP',
+    status: 'INTERNO / EN VIVO',
+    statusEn: 'INTERNAL / LIVE',
     summaryEs: 'Consolidación patrimonial multimoneda con streaming sub-120ms y motor WASM.',
     summaryEn: 'Multi-currency wealth management with sub-120ms streaming and WASM.',
     liveUrl: 'https://aureus.aldoarbizu.com',
@@ -192,8 +208,10 @@ const SECONDARY_VERTICALS: VerticalCatalogItem[] = [
     code: 'SYS-12',
     id: 'marketingadvisor',
     title: 'Smart Marketing AI',
-    domain: 'Autonomous n8n Pipelines',
+    domain: 'Pipelines Autónomos n8n',
+    domainEn: 'Autonomous n8n Pipelines',
     status: 'DESPLEGADO',
+    statusEn: 'DEPLOYED',
     summaryEs: 'Orquestador n8n + LLMs locales/Gemini para generación y calificación estructurada de demanda.',
     summaryEn: 'Autonomous n8n + structured LLM pipeline for B2B demand orchestration.',
     liveUrl: 'https://marketingadvisor.aldoarbizu.com',
@@ -350,7 +368,7 @@ export default function ProductsBento() {
             <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-[#D6D3C9] text-[11px]">
               <span className="text-[#1F4E3D] font-bold flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#1F4E3D]" />
-                SLICE ACTIVO // {selectedSys}
+                {isEs ? 'SLICE ACTIVO' : 'ACTIVE SLICE'} // {selectedSys}
               </span>
               <span className="text-[#5C6470] uppercase">{meta.deployment}</span>
             </div>
@@ -380,7 +398,9 @@ export default function ProductsBento() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <span className="text-[var(--text-muted)] block mb-1">ENTRY PRICE (USDT): ${entryPrice}</span>
+                    <span className="text-[var(--text-muted)] block mb-1">
+                      {isEs ? 'PRECIO ENTRADA (USDT)' : 'ENTRY PRICE (USDT)'}: ${entryPrice}
+                    </span>
                     <input
                       type="range"
                       min={20000}
@@ -392,7 +412,9 @@ export default function ProductsBento() {
                     />
                   </label>
                   <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <span className="text-[var(--text-muted)] block mb-1">ATR 1H VOLATILITY: ${atrValue}</span>
+                    <span className="text-[var(--text-muted)] block mb-1">
+                      {isEs ? 'VOLATILIDAD ATR 1H' : 'ATR 1H VOLATILITY'}: ${atrValue}
+                    </span>
                     <input
                       type="range"
                       min={250}
@@ -409,10 +431,10 @@ export default function ProductsBento() {
                   <table className="w-full text-left text-xs">
                     <thead className="bg-[#F8F7F3] text-[#5C6470] uppercase text-[10px]">
                       <tr>
-                        <th className="p-2.5">Nivel</th>
-                        <th className="p-2.5">Precio</th>
-                        <th className="p-2.5">Distancia %</th>
-                        <th className="p-2.5">Regla Slot</th>
+                        <th className="p-2.5">{isEs ? 'Nivel' : 'Level'}</th>
+                        <th className="p-2.5">{isEs ? 'Precio' : 'Price'}</th>
+                        <th className="p-2.5">{isEs ? 'Distancia %' : 'Distance %'}</th>
+                        <th className="p-2.5">{isEs ? 'Regla Slot' : 'Slot Rule'}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#D6D3C9] text-[#07080A]">
@@ -426,19 +448,19 @@ export default function ProductsBento() {
                         <td className="p-2.5 text-[#1F4E3D] font-bold">TP1 (2.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp1Price.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#1F4E3D]">+{(((atrValue * 2.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[#5C6470]">Cierra 60% + Mueve SL a BE</td>
+                        <td className="p-2.5 text-[#5C6470]">{isEs ? 'Cierra 60% + Mueve SL a BE' : 'Close 60% + Move SL to BE'}</td>
                       </tr>
                       <tr>
                         <td className="p-2.5 text-[#92400E] font-bold">TP2 (4.50x ATR)</td>
                         <td className="p-2.5 font-bold">${tp2Price.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#92400E]">+{(((atrValue * 4.5) / entryPrice) * 100).toFixed(2)}%</td>
-                        <td className="p-2.5 text-[#5C6470]">Runner 40% Restante</td>
+                        <td className="p-2.5 text-[#5C6470]">{isEs ? 'Runner 40% Restante' : '40% Runner Remaining'}</td>
                       </tr>
                       <tr>
                         <td className="p-2.5 text-[#3E4552] font-bold">Trailing Chandelier</td>
                         <td className="p-2.5">${trailPrice.toLocaleString('en-US')}</td>
                         <td className="p-2.5 text-[#1F4E3D]">+0.20% Buffer</td>
-                        <td className="p-2.5 text-[#5C6470]">Lock-In Autónomo</td>
+                        <td className="p-2.5 text-[#5C6470]">{isEs ? 'Lock-In Autónomo' : 'Autonomous Lock-In'}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -459,7 +481,7 @@ export default function ProductsBento() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                   <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
-                    <div className="text-[#5C6470] text-[10px]">RONDAS NFC SELLADAS</div>
+                    <div className="text-[#5C6470] text-[10px]">{isEs ? 'RONDAS NFC SELLADAS' : 'SEALED NFC PATROLS'}</div>
                     <div className="text-2xl font-bold text-[#1F4E3D] mt-1">{checkpointsDone}</div>
                   </div>
                   <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
@@ -467,9 +489,11 @@ export default function ProductsBento() {
                     <div className="text-xs font-bold text-[#07080A] mt-2 truncate">{lastHmac}</div>
                   </div>
                   <div className="p-3 border border-[#D6D3C9] bg-[#F8F7F3]">
-                    <div className="text-[#5C6470] text-[10px]">ESTADO SOS SOC</div>
+                    <div className="text-[#5C6470] text-[10px]">{isEs ? 'ESTADO SOS SOC' : 'SOC SOS STATUS'}</div>
                     <div className={`text-xs font-bold mt-2 ${sosTriggered ? 'text-[#B91C1C]' : 'text-[#1F4E3D]'}`}>
-                      {sosTriggered ? 'CRITICAL SOS ENVIADO' : 'PERÍMETRO NORMAL'}
+                      {sosTriggered
+                        ? isEs ? 'CRITICAL SOS ENVIADO' : 'CRITICAL SOS DISPATCHED'
+                        : isEs ? 'PERÍMETRO NORMAL' : 'PERIMETER NORMAL'}
                     </div>
                   </div>
                 </div>
@@ -480,7 +504,7 @@ export default function ProductsBento() {
                     onClick={handleScanCheckpoint}
                     className="px-4 py-2.5 bg-[#07080A] hover:bg-[#1F4E3D] text-[#FFFFFF] text-xs font-bold uppercase tracking-wider rounded-[2px] cursor-pointer transition-colors"
                   >
-                    + Fichar Checkpoint NFC / Mock-GPS Check
+                    {isEs ? '+ Fichar Checkpoint NFC / Mock-GPS Check' : '+ Log NFC Patrol / Mock-GPS Check'}
                   </button>
                   <button
                     type="button"
@@ -492,7 +516,11 @@ export default function ProductsBento() {
                     }`}
                   >
                     <ShieldAlert className="w-3.5 h-3.5" />
-                    <span>{sosTriggered ? 'Limpiar Alerta SOC' : 'Probar Disparo SOS (< 250ms)'}</span>
+                    <span>
+                      {sosTriggered
+                        ? isEs ? 'Limpiar Alerta SOC' : 'Clear SOC Alert'
+                        : isEs ? 'Probar Disparo SOS (< 250ms)' : 'Test SOS Dispatch (< 250ms)'}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -503,7 +531,7 @@ export default function ProductsBento() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2 text-xs font-bold text-[#07080A]">
                     <Scale className="w-4 h-4 text-[#1F4E3D]" />
-                    <span>BALANZA SILOBOLSA &amp; STOCK SENASA (SQLITE WAL)</span>
+                    <span>{isEs ? 'BALANZA SILOBOLSA & STOCK SENASA (SQLITE WAL)' : 'SILO WEIGHBRIDGE & COMPLIANCE (SQLITE WAL)'}</span>
                   </div>
                   <button
                     type="button"
@@ -515,26 +543,30 @@ export default function ProductsBento() {
                     }`}
                   >
                     {agroOffline ? <WifiOff className="w-3 h-3" /> : <Wifi className="w-3 h-3" />}
-                    <span>{agroOffline ? 'ZONA RURAL: 0% SEÑAL 4G' : 'ENLACE NUBE ACTIVO'}</span>
+                    <span>
+                      {agroOffline
+                        ? isEs ? 'ZONA RURAL: 0% SEÑAL 4G' : 'RURAL ZONE: 0% 4G SIGNAL'
+                        : isEs ? 'ENLACE NUBE ACTIVO' : 'CLOUD SYNC ACTIVE'}
+                    </span>
                   </button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div className="p-3.5 border border-[#D6D3C9] bg-[#F8F7F3]">
-                    <span className="text-[#5C6470] text-[10px] block">ÚLTIMO PESO NETO REGISTRADO</span>
+                    <span className="text-[#5C6470] text-[10px] block">{isEs ? 'ÚLTIMO PESO NETO REGISTRADO' : 'LAST NET WEIGHT RECORDED'}</span>
                     <span className="text-2xl font-bold text-[#07080A]">{siloWeightKg.toLocaleString('en-US')} kg</span>
                   </div>
                   <div className="p-3.5 border border-[#D6D3C9] bg-[#F8F7F3] flex items-center justify-between">
                     <div>
-                      <span className="text-[#5C6470] text-[10px] block">COLA TRANSACCIONAL WAL</span>
-                      <span className="text-sm font-bold text-[#1F4E3D]">0 bytes perdidos</span>
+                      <span className="text-[#5C6470] text-[10px] block">{isEs ? 'COLA TRANSACCIONAL WAL' : 'TRANSACTIONAL WAL QUEUE'}</span>
+                      <span className="text-sm font-bold text-[#1F4E3D]">{isEs ? '0 bytes perdidos' : '0 bytes lost'}</span>
                     </div>
                     <button
                       type="button"
                       onClick={handleRecordWeighbridge}
                       className="px-3.5 py-2 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] text-[11px] font-bold uppercase cursor-pointer transition-colors"
                     >
-                      + Registrar Camión
+                      {isEs ? '+ Registrar Camión' : '+ Record Truck'}
                     </button>
                   </div>
                 </div>
@@ -542,7 +574,7 @@ export default function ProductsBento() {
                 <div className="border border-[#D6D3C9] divide-y divide-[#D6D3C9] text-xs">
                   {walBuffer.map((row) => (
                     <div key={row.ticket} className="p-2.5 flex items-center justify-between bg-[#F8F7F3]">
-                      <span className="text-[#07080A] font-bold">{row.ticket} · Soja/Maíz</span>
+                      <span className="text-[#07080A] font-bold">{row.ticket} · {isEs ? 'Soja/Maíz' : 'Soy/Corn'}</span>
                       <span className="text-[#3E4552]">{row.kg.toLocaleString('en-US')} kg</span>
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 border ${
@@ -564,14 +596,16 @@ export default function ProductsBento() {
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-[#07080A] flex items-center gap-2">
                     <Radio className="w-4 h-4 text-[#B83800]" />
-                    CALCULADORA OFF-GRID AUTONOMÍA SOLAR + MÓDEM AFSK 800Hz
+                    {isEs ? 'CALCULADORA OFF-GRID AUTONOMÍA SOLAR + MÓDEM AFSK 800Hz' : 'OFF-GRID SOLAR AUTONOMY + AFSK 800Hz MODEM'}
                   </span>
                   <span className="text-[#1F4E3D] font-bold">PAR2 USB RECOVERY: OK</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <span className="text-[var(--text-muted)] block mb-1">PANEL SOLAR PORTÁTIL: {solarWatts}W</span>
+                    <span className="text-[var(--text-muted)] block mb-1">
+                      {isEs ? 'PANEL SOLAR PORTÁTIL' : 'PORTABLE SOLAR PANEL'}: {solarWatts}W
+                    </span>
                     <input
                       type="range"
                       min={15}
@@ -583,7 +617,9 @@ export default function ProductsBento() {
                     />
                   </label>
                   <label className="block p-3 border border-[var(--grid-hairline,#1B202B)] bg-[var(--surface-void,#060709)]">
-                    <span className="text-[var(--text-muted)] block mb-1">BANCO LiFePO4: {batteryWh}Wh</span>
+                    <span className="text-[var(--text-muted)] block mb-1">
+                      {isEs ? 'BANCO LiFePO4' : 'LiFePO4 BANK'}: {batteryWh}Wh
+                    </span>
                     <input
                       type="range"
                       min={100}
@@ -598,15 +634,15 @@ export default function ProductsBento() {
 
                 <div className="grid grid-cols-3 gap-3 text-xs border-t border-[var(--grid-hairline,#1B202B)] pt-4">
                   <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">RECARGA COMPLETA</div>
-                    <div className="text-lg font-bold text-[var(--text-primary)]">{(batteryWh / (solarWatts * 0.78)).toFixed(1)} hs sol</div>
+                    <div className="text-[var(--text-muted)] text-[10px]">{isEs ? 'RECARGA COMPLETA' : 'FULL RECHARGE'}</div>
+                    <div className="text-lg font-bold text-[var(--text-primary)]">{(batteryWh / (solarWatts * 0.78)).toFixed(1)} {isEs ? 'hs sol' : 'sun hrs'}</div>
                   </div>
                   <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">OPERACIÓN TABLET/LoRa</div>
-                    <div className="text-lg font-bold text-[#00E599]">{Math.round(batteryWh / 12)} días</div>
+                    <div className="text-[var(--text-muted)] text-[10px]">{isEs ? 'OPERACIÓN TABLET/LoRa' : 'TABLET/LoRa RUNTIME'}</div>
+                    <div className="text-lg font-bold text-[#00E599]">{Math.round(batteryWh / 12)} {isEs ? 'días' : 'days'}</div>
                   </div>
                   <div className="p-3 bg-[var(--surface-void,#060709)] border border-[var(--grid-hairline,#1B202B)]">
-                    <div className="text-[var(--text-muted)] text-[10px]">ALCANCE RF / LORA</div>
+                    <div className="text-[var(--text-muted)] text-[10px]">{isEs ? 'ALCANCE RF / LORA' : 'RF / LORA RANGE'}</div>
                     <div className="text-lg font-bold text-[#D4AF37]">8 – 22 km LoS</div>
                   </div>
                 </div>
@@ -654,7 +690,19 @@ export default function ProductsBento() {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
-                onClick={() => openQuoteModal(meta.quoteTitle, meta.quotePrice, selectedSys)}
+                onClick={() =>
+                  openQuoteModal(
+                    selectedSys === 'SYS-01'
+                      ? isEs ? 'Licencia / Despliegue Arquitectura Quant TitanFlow' : 'TitanFlow Quant Architecture Deployment'
+                      : selectedSys === 'SYS-02'
+                      ? isEs ? 'Licencia Multi-Tenant SentinelOS SOC & App Guardias' : 'SentinelOS Multi-Tenant SOC & Guard Suite'
+                      : selectedSys === 'SYS-03'
+                      ? isEs ? 'Licencia AgroMarket Pro Acopio & Trazabilidad Offline' : 'AgroMarket Pro Grain Intake & Offline Suite'
+                      : isEs ? 'Arquitectura Custom Off-Grid / NOMAD Engine' : 'Custom Off-Grid Architecture / NOMAD Engine',
+                    meta.quotePrice,
+                    selectedSys
+                  )
+                }
                 className="flex-1 py-3 px-4 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#FFFFFF] font-mono text-xs font-extrabold uppercase tracking-wider rounded-[2px] transition-colors cursor-pointer"
               >
                 {isEs ? 'Cotizar Despliegue →' : 'Configure Deployment →'}
@@ -698,11 +746,11 @@ export default function ProductsBento() {
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <ProductDynastyBadge code={v.code} className="w-8 h-8" />
                       <span className="font-mono text-[9px] px-2 py-0.5 border border-[#D4AF37]/40 text-[#D4AF37] font-bold">
-                        {v.status}
+                        {isEs ? v.status : v.statusEn || v.status}
                       </span>
                     </div>
                     <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">
-                      {v.code} · {v.domain}
+                      {v.code} · {isEs ? v.domain : v.domainEn || v.domain}
                     </span>
                     <h4 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5 mb-2">{v.title}</h4>
                     <p className="font-mono text-[11px] text-[var(--text-secondary)] leading-relaxed mb-4">

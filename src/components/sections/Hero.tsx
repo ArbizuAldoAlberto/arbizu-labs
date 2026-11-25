@@ -51,7 +51,9 @@ export default function Hero() {
             <div className="flex items-center gap-2 text-[#1F4E3D] font-bold">
               <span>
                 {liveNodes.length > 0
-                  ? `${operationalCount}/${liveNodes.length} NODOS EN PRODUCCIÓN`
+                  ? isEs
+                    ? `${operationalCount}/${liveNodes.length} NODOS EN PRODUCCIÓN`
+                    : `${operationalCount}/${liveNodes.length} PRODUCTION NODES`
                   : isEs
                   ? 'SISTEMAS EN PRODUCCIÓN ACTIVA'
                   : 'PRODUCTION SYSTEMS ACTIVE'}
@@ -128,22 +130,22 @@ export default function Hero() {
                   fetchPriority="high"
                 />
                 <figcaption className="px-3.5 py-2.5 bg-[#FFFFFF] border-t border-[#D6D3C9] font-mono text-[10px] uppercase tracking-wider text-[#3E4552] flex items-center justify-between">
-                  <span>BOLÍVAR LAB // SOFTWARE + HARDWARE 3D</span>
+                  <span>{isEs ? 'BOLÍVAR LAB // SOFTWARE + HARDWARE 3D' : 'BOLÍVAR LAB // SOFTWARE + 3D HARDWARE'}</span>
                   <span className="text-[#1F4E3D] font-bold">SQLite WAL</span>
                 </figcaption>
               </figure>
 
               <dl className="grid grid-cols-3 border border-[#D6D3C9] bg-[#F2F0EA] font-mono text-xs tabular-nums">
                 <div className="p-3 border-r border-[#D6D3C9]">
-                  <dt className="text-[10px] text-[#3E4552] uppercase">Persistencia</dt>
-                  <dd className="font-bold text-[#07080A] mt-0.5">0% Pérdida</dd>
+                  <dt className="text-[10px] text-[#3E4552] uppercase">{isEs ? 'Persistencia' : 'Persistence'}</dt>
+                  <dd className="font-bold text-[#07080A] mt-0.5">{isEs ? '0% Pérdida' : '0% Loss'}</dd>
                 </div>
                 <div className="p-3 border-r border-[#D6D3C9]">
-                  <dt className="text-[10px] text-[#3E4552] uppercase">Aislamiento</dt>
+                  <dt className="text-[10px] text-[#3E4552] uppercase">{isEs ? 'Aislamiento' : 'Isolation'}</dt>
                   <dd className="font-bold text-[#1F4E3D] mt-0.5">60/60 RLS</dd>
                 </div>
                 <div className="p-3">
-                  <dt className="text-[10px] text-[#3E4552] uppercase">Latencia</dt>
+                  <dt className="text-[10px] text-[#3E4552] uppercase">{isEs ? 'Latencia' : 'Latency'}</dt>
                   <dd className="font-bold text-[#07080A] mt-0.5">&lt; 10ms</dd>
                 </div>
               </dl>

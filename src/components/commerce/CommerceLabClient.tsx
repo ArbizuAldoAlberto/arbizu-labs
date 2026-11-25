@@ -12,12 +12,14 @@ import {
   CheckCircle2,
   Play,
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface LabProduct {
   sku: string;
   title: string;
   category: string;
   stock_mode: string;
+  lead_time_days?: number;
   status: 'ACTIVE' | 'MARGIN_LOCKED' | 'PAUSED';
   retail_pvp_ars: number;
   meli_adjusted_pvp_ars: number;
@@ -72,6 +74,8 @@ const VENTANA2_SKU_IMAGE_MAP: Record<string, string> = {
 };
 
 export default function CommerceLabClient({ initialLab }: { initialLab: LabPayload | null }) {
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
   const lab = initialLab || {
     fx: { rate_ars: 1380, source: 'fallback' },
     summary: { total_skus: 0, active_skus: 0, margin_locked_skus: 0, pre_validate_skus: 0 },
@@ -104,10 +108,12 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase text-[#B83800] font-bold">
               <FlaskConical className="w-4 h-4" />
-              <span>LABORATORIO PRODUCTO ESTRELLA ($0 STOCK MUERTO)</span>
+              <span>{isEs ? 'LABORATORIO VALIDACIÓN & FABRICACIÓN ($0 STOCK MUERTO)' : 'VALIDATION & MADE-TO-ORDER LAB ($0 DEAD STOCK)'}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#07080A]">
-              Demanda Pre-Validada, Feeds Omnicanal &amp; Escudo Anti-Pérdida
+              {isEs
+                ? 'Demanda Pre-Validada, Feeds Omnicanal & Escudo Anti-Pérdida'
+                : 'Pre-Validated Demand, Omnichannel Feeds & Anti-Loss Shield'}
             </h1>
           </div>
           <Link
@@ -115,7 +121,7 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
             className="inline-flex items-center gap-2 border border-[#07080A] bg-[#F2F0EA] px-4 py-2 font-mono text-xs font-bold uppercase text-[#07080A] hover:bg-[#07080A] hover:text-[#F2F0EA] shrink-0 self-start transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Volver a Tienda</span>
+            <span>{isEs ? 'Volver a Tienda' : 'Back to Store'}</span>
           </Link>
         </div>
 
@@ -128,21 +134,21 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
             </div>
           </div>
           <div className="border border-[#D6D3C9] bg-[#FFFFFF] p-4">
-            <div className="text-[11px] text-[#3E4552] uppercase">SKUs Activos</div>
+            <div className="text-[11px] text-[#3E4552] uppercase">{isEs ? 'SKUs Activos' : 'Active SKUs'}</div>
             <div className="text-2xl font-extrabold text-[#07080A] tabular-nums mt-1">
               {lab.summary.active_skus} / {lab.summary.total_skus}
             </div>
           </div>
           <div className="border border-[#D6D3C9] bg-[#FFFFFF] p-4">
-            <div className="text-[11px] text-[#3E4552] uppercase">Bloqueados (Margin Lock)</div>
+            <div className="text-[11px] text-[#3E4552] uppercase">{isEs ? 'Bloqueados (Margin Lock)' : 'Margin Locked SKUs'}</div>
             <div className="text-2xl font-extrabold text-[#B83800] tabular-nums mt-1">
               {lab.summary.margin_locked_skus}
             </div>
           </div>
           <div className="border border-[#D6D3C9] bg-[#FFFFFF] p-4">
-            <div className="text-[11px] text-[#3E4552] uppercase">Pre-Validación On-Demand</div>
+            <div className="text-[11px] text-[#3E4552] uppercase">{isEs ? 'Reserva / A Pedido' : 'Quote-on-Demand'}</div>
             <div className="text-2xl font-extrabold text-[#07080A] tabular-nums mt-1">
-              {lab.summary.pre_validate_skus} ($0 muerto)
+              {lab.summary.pre_validate_skus} ($0 {isEs ? 'muerto' : 'dead'})
             </div>
           </div>
         </div>
@@ -152,10 +158,12 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#1F4E3D] font-bold">
               <FileSpreadsheet className="w-4 h-4" />
-              <span>Feeds Omnicanal Read-Only (0 Publicación Automática sin HITL)</span>
+              <span>{isEs ? 'Feeds Omnicanal Read-Only (0 Publicación Automática sin HITL)' : 'Read-Only Omnichannel Feeds (Zero Auto-Publish Without HITL)'}</span>
             </div>
             <span className="font-mono text-[11px] text-[#3E4552]">
-              Excluye automáticamente SKUs en MARGIN_LOCKED · PVP ML recalibrado post-14.5% + IIBB
+              {isEs
+                ? 'Excluye automáticamente SKUs en MARGIN_LOCKED · PVP ML recalibrado post-14.5% + IIBB'
+                : 'Auto-excludes MARGIN_LOCKED SKUs · Mercado Libre PVP calibrated after fees + taxes'}
             </span>
           </div>
 
@@ -203,20 +211,21 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
         <div className="border border-[#D6D3C9] bg-[#FFFFFF] p-5 space-y-4 overflow-x-auto">
           <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#B83800] font-bold">
             <TrendingUp className="w-4 h-4" />
-            <span>Ranking de Validación de Demanda (conversion_score)</span>
+            <span>{isEs ? 'Ranking de Validación de Demanda (conversion_score)' : 'Demand Validation Ranking (conversion_score)'}</span>
           </div>
 
           <table className="w-full text-left border-collapse font-mono text-xs min-w-[780px]">
             <thead>
               <tr className="border-b border-[#D6D3C9] text-[#3E4552] text-[11px] uppercase">
                 <th className="py-2 pr-3">SKU</th>
-                <th className="py-2 pr-3">PVP Lista</th>
-                <th className="py-2 pr-3">Márgenes Netos (Transf / MP3 / ML)</th>
-                <th className="py-2 pr-3">Vistas</th>
+                <th className="py-2 pr-3">{isEs ? 'PVP Lista' : 'List Price'}</th>
+                <th className="py-2 pr-3">{isEs ? 'Plazo' : 'Lead'}</th>
+                <th className="py-2 pr-3">{isEs ? 'Márgenes Netos (Transf / MP3 / ML)' : 'Net Margins (Wire / MP3 / ML)'}</th>
+                <th className="py-2 pr-3">{isEs ? 'Vistas' : 'Views'}</th>
                 <th className="py-2 pr-3">WA</th>
-                <th className="py-2 pr-3">Carrito</th>
+                <th className="py-2 pr-3">{isEs ? 'Reserva' : 'Quote'}</th>
                 <th className="py-2 pr-3">Score</th>
-                <th className="py-2">Estado / Señal</th>
+                <th className="py-2">{isEs ? 'Estado / Señal' : 'Status / Signal'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#D6D3C9] tabular-nums">
@@ -239,6 +248,9 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
                   </td>
                   <td className="py-2.5 pr-3 text-[#07080A] font-semibold">
                     ${Math.round(p.retail_pvp_ars).toLocaleString('es-AR')}
+                  </td>
+                  <td className="py-2.5 pr-3 text-[#3E4552] font-bold">
+                    {p.lead_time_days || (p.category?.toLowerCase().includes('3d') ? 2 : 7)}d
                   </td>
                   <td className="py-2.5 pr-3">
                     <span className="text-[#1F4E3D] font-bold">{p.unit_economics.web_transfer.net_margin_pct}%</span>
@@ -277,15 +289,27 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
             <div className="space-y-1">
               <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#B83800] font-bold">
                 <ShieldAlert className="w-4 h-4" />
-                <span>Simulador Red-Team Escudo Anti-Pérdida (Dry-Run Sin Mutar DB)</span>
+                <span>
+                  {isEs
+                    ? 'Simulador Red-Team Escudo Anti-Pérdida (Dry-Run Sin Mutar DB)'
+                    : 'Red-Team Anti-Loss Margin Shield Simulator (Dry-Run)'}
+                </span>
               </div>
               <p className="text-xs text-[#3E4552]">
-                Evaluá instantáneamente qué SKUs quedarían en <code>MARGIN_LOCKED</code> ante una suba de proveedor (+18%).
+                {isEs ? (
+                  <>
+                    Evaluá instantáneamente qué SKUs quedarían en <code>MARGIN_LOCKED</code> ante una suba de proveedor (+18%).
+                  </>
+                ) : (
+                  <>
+                    Instantly stress-test which SKUs would enter <code>MARGIN_LOCKED</code> under a supplier cost spike (+18%).
+                  </>
+                )}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
-              <label className="text-[#3E4552]">Suba %:</label>
+              <label className="text-[#3E4552]">{isEs ? 'Suba %:' : 'Cost Bump %:'}</label>
               <input
                 type="number"
                 value={simPct}
@@ -307,7 +331,11 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
                 className="inline-flex items-center gap-1.5 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA] font-extrabold uppercase px-3 py-2 cursor-pointer transition-colors"
               >
                 <Play className="w-3.5 h-3.5" />
-                <span>{simLoading ? 'Simulando...' : 'Simular Impacto'}</span>
+                <span>
+                  {simLoading
+                    ? isEs ? 'Simulando...' : 'Simulating...'
+                    : isEs ? 'Simular Impacto' : 'Run Stress Test'}
+                </span>
               </button>
             </div>
           </div>
@@ -315,8 +343,12 @@ export default function CommerceLabClient({ initialLab }: { initialLab: LabPaylo
           {simResult && (
             <div className="bg-[#F2F0EA] border border-[#D6D3C9] p-3 font-mono text-xs space-y-2">
               <div className="text-[#B83800] font-bold">
-                Resultado Dry-Run (+{simResult.inflation_pct}%, auto_reprice={String(simResult.auto_reprice)}):{' '}
-                <strong>{simResult.would_lock_count} SKUs bloqueados</strong> si no se reprecian.
+                {isEs
+                  ? `Resultado Dry-Run (+${simResult.inflation_pct}%, auto_reprice=${String(simResult.auto_reprice)}): `
+                  : `Dry-Run Output (+${simResult.inflation_pct}%, auto_reprice=${String(simResult.auto_reprice)}): `}
+                <strong>
+                  {simResult.would_lock_count} {isEs ? 'SKUs bloqueados si no se reprecian.' : 'SKUs locked unless repriced.'}
+                </strong>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {(simResult.items || []).map((it: any) => (

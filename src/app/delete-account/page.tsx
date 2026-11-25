@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 type AuthMode = "password" | "oauth";
 type Feedback = { type: "error" | "success" | "info"; text: string } | null;
 
 export default function DeleteAccountPage() {
+  const { locale } = useLanguage();
+  const isEs = locale === "es";
   const [mode, setMode] = useState<AuthMode>("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +36,9 @@ export default function DeleteAccountPage() {
           setPassword("");
           setFeedback({
             type: "info",
-            text: "Esta cuenta utiliza Google OAuth (sin contraseña local). Completa la verificación OAuth aquí debajo para eliminarla / This account uses Google OAuth; complete OAuth deletion below.",
+            text: isEs
+              ? "Esta cuenta utiliza Google OAuth (sin contraseña local). Completa la verificación OAuth aquí debajo para eliminarla."
+              : "This account uses Google OAuth without a local password. Complete the OAuth verification below to delete it.",
           });
           setLoading(false);
           return;
@@ -43,7 +48,9 @@ export default function DeleteAccountPage() {
       if (!loginRes.ok) {
         setFeedback({
           type: "error",
-          text: "Credenciales inválidas / Invalid credentials. Verifica tu email y contraseña o escribe a arbizualdoalberto@gmail.com.",
+          text: isEs
+            ? "Credenciales inválidas. Verifica tu email y contraseña o escribe a arbizualdoalberto@gmail.com."
+            : "Invalid credentials. Check your email and password or email arbizualdoalberto@gmail.com.",
         });
         setLoading(false);
         return;
@@ -59,7 +66,9 @@ export default function DeleteAccountPage() {
       if (delRes.ok) {
         setFeedback({
           type: "success",
-          text: "Cuenta y datos personales eliminados definitivamente / Account permanently deleted.",
+          text: isEs
+            ? "Cuenta y datos personales eliminados definitivamente."
+            : "Account and personal data permanently deleted.",
         });
         setEmail("");
         setPassword("");
@@ -67,13 +76,17 @@ export default function DeleteAccountPage() {
       } else {
         setFeedback({
           type: "error",
-          text: "No se pudo completar la eliminación. Contacta a arbizualdoalberto@gmail.com.",
+          text: isEs
+            ? "No se pudo completar la eliminación. Contacta a arbizualdoalberto@gmail.com."
+            : "Could not complete deletion. Contact arbizualdoalberto@gmail.com.",
         });
       }
     } catch {
       setFeedback({
         type: "error",
-        text: "Error de conexión con el servidor. Escribe a arbizualdoalberto@gmail.com para eliminación asistida en <24h.",
+        text: isEs
+          ? "Error de conexión con el servidor. Escribe a arbizualdoalberto@gmail.com para eliminación asistida en <24h."
+          : "Server connection error. Email arbizualdoalberto@gmail.com for assisted deletion within <24h.",
       });
     } finally {
       setLoading(false);
@@ -98,7 +111,9 @@ export default function DeleteAccountPage() {
         if (res.ok && data?.deleted) {
           setFeedback({
             type: "success",
-            text: "Cuenta Google OAuth eliminada definitivamente / Google OAuth account permanently deleted.",
+            text: isEs
+              ? "Cuenta Google OAuth eliminada definitivamente."
+              : "Google OAuth account permanently deleted.",
           });
           setGoogleIdToken("");
           setConfirmation("");
@@ -108,7 +123,9 @@ export default function DeleteAccountPage() {
         }
         setFeedback({
           type: "error",
-          text: data?.error || "Token Google ID inválido o cuenta inexistente.",
+          text:
+            data?.error ||
+            (isEs ? "Token Google ID inválido o cuenta inexistente." : "Invalid Google ID token or account not found."),
         });
         return;
       }
@@ -126,7 +143,9 @@ export default function DeleteAccountPage() {
       if (reqRes.ok || reqRes.status === 202) {
         setFeedback({
           type: "success",
-          text: `Solicitud registrada (${reqData?.ticket_id || "OAUTH-OK"}). ${reqData?.message || "Procesamiento garantizado en <24h."}`,
+          text: isEs
+            ? `Solicitud registrada (${reqData?.ticket_id || "OAUTH-OK"}). ${reqData?.message || "Procesamiento garantizado en <24h."}`
+            : `Request logged (${reqData?.ticket_id || "OAUTH-OK"}). Guaranteed processing in <24h.`,
         });
         setConfirmation("");
         setReason("");
@@ -134,23 +153,33 @@ export default function DeleteAccountPage() {
         setMode("password");
         setFeedback({
           type: "error",
-          text: "Esta cuenta tiene contraseña local. Inicia sesión con Email + Contraseña arriba para eliminarla.",
+          text: isEs
+            ? "Esta cuenta tiene contraseña local. Inicia sesión con Email + Contraseña arriba para eliminarla."
+            : "This account uses a local password. Sign in with Email + Password above to delete it.",
         });
       } else {
         setFeedback({
           type: "error",
           text:
             reqData?.error === "CONFIRMATION_PHRASE_REQUIRED"
-              ? "Debes escribir ELIMINAR en el campo de confirmación."
+              ? isEs
+                ? "Debes escribir ELIMINAR en el campo de confirmación."
+                : "Please type ELIMINAR (or DELETE) in the confirmation field."
               : reqData?.error === "ACCOUNT_NOT_FOUND"
-              ? "No encontramos una cuenta Google OAuth activa con ese correo."
-              : "No se pudo validar la solicitud OAuth. Escribe a arbizualdoalberto@gmail.com.",
+              ? isEs
+                ? "No encontramos una cuenta Google OAuth activa con ese correo."
+                : "No active Google OAuth account found for that email address."
+              : isEs
+              ? "No se pudo validar la solicitud OAuth. Escribe a arbizualdoalberto@gmail.com."
+              : "Could not validate OAuth deletion request. Email arbizualdoalberto@gmail.com.",
         });
       }
     } catch {
       setFeedback({
         type: "error",
-        text: "Error de conexión al procesar eliminación OAuth. Escribe a arbizualdoalberto@gmail.com.",
+        text: isEs
+          ? "Error de conexión al procesar eliminación OAuth. Escribe a arbizualdoalberto@gmail.com."
+          : "Network error processing OAuth deletion. Email arbizualdoalberto@gmail.com.",
       });
     } finally {
       setLoading(false);
@@ -164,12 +193,20 @@ export default function DeleteAccountPage() {
           ARBIZU LABS · DATA SAFETY &amp; ACCOUNT DELETION
         </p>
         <h1 className="text-3xl font-bold text-[#07080A]">
-          Eliminar Cuenta / Delete Account
+          {isEs ? "Eliminar Cuenta y Datos" : "Delete Account & Data"}
         </h1>
         <p className="text-sm leading-relaxed text-[#3E4552]">
-          Aplica a <strong>AgroMarket Pro</strong>, <strong>SentinelOS</strong> y{" "}
-          <strong>NOMAD Tactical Hub</strong>. Al confirmar, tu usuario y datos
-          personales asociados se borran de forma permanente de PostgreSQL.
+          {isEs ? (
+            <>
+              Aplica a <strong>AgroMarket Pro</strong>, <strong>SentinelOS</strong> y{" "}
+              <strong>NOMAD Tactical Hub</strong>. Al confirmar, tu usuario y datos personales asociados se borran de forma permanente de PostgreSQL.
+            </>
+          ) : (
+            <>
+              Applies to <strong>AgroMarket Pro</strong>, <strong>SentinelOS</strong>, and{" "}
+              <strong>NOMAD Tactical Hub</strong>. Once confirmed, your user profile and personal records are permanently removed from PostgreSQL.
+            </>
+          )}
         </p>
 
         <div className="flex gap-2 border-b border-[#D6D3C9] pb-3">
@@ -185,7 +222,7 @@ export default function DeleteAccountPage() {
                 : "bg-white text-[#3E4552] border-[#CBD5E1] hover:border-[#07080A]"
             }`}
           >
-            Email + Password
+            {isEs ? "Email + Contraseña" : "Email + Password"}
           </button>
           <button
             type="button"
@@ -199,7 +236,7 @@ export default function DeleteAccountPage() {
                 : "bg-white text-[#3E4552] border-[#CBD5E1] hover:border-[#07080A]"
             }`}
           >
-            Google OAuth (sin clave)
+            {isEs ? "Google OAuth (sin clave)" : "Google OAuth (No Password)"}
           </button>
         </div>
 
@@ -222,7 +259,7 @@ export default function DeleteAccountPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border-2 border-[#94A3B8] focus:border-[#FF4F00] focus:outline-none rounded-[2px] text-[#07080A] placeholder:text-[#64748B]"
-                placeholder="usuario@empresa.com"
+                placeholder={isEs ? "usuario@empresa.com" : "user@company.com"}
               />
             </div>
             <div>
@@ -230,7 +267,7 @@ export default function DeleteAccountPage() {
                 htmlFor="del-pass"
                 className="block text-xs font-mono font-bold uppercase text-[#07080A] mb-1.5"
               >
-                Password
+                {isEs ? "Contraseña" : "Password"}
               </label>
               <input
                 id="del-pass"
@@ -247,7 +284,7 @@ export default function DeleteAccountPage() {
                 htmlFor="del-reason"
                 className="block text-xs font-mono font-bold uppercase text-[#07080A] mb-1.5"
               >
-                Motivo / Reason (opcional)
+                {isEs ? "Motivo (opcional)" : "Reason (optional)"}
               </label>
               <input
                 id="del-reason"
@@ -255,17 +292,17 @@ export default function DeleteAccountPage() {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border-2 border-[#94A3B8] focus:border-[#FF4F00] focus:outline-none rounded-[2px] text-[#07080A] placeholder:text-[#64748B]"
-                placeholder="Motivo de baja"
+                placeholder={isEs ? "Motivo de baja" : "Deletion reason"}
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-[2px] font-mono text-xs uppercase tracking-wider font-bold bg-[#FF4F00] text-[#FFFFFF] hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 rounded-[2px] font-mono text-xs uppercase tracking-wider font-extrabold bg-[#FF4F00] text-[#07080A] hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {loading
-                ? "Procesando..."
-                : "Eliminar Cuenta Permanentemente / Permanently Delete Account"}
+                ? isEs ? "Procesando..." : "Processing..."
+                : isEs ? "Eliminar Cuenta Permanentemente" : "Permanently Delete Account"}
             </button>
           </form>
         ) : (
@@ -274,17 +311,24 @@ export default function DeleteAccountPage() {
             className="space-y-4 bg-[#FFFFFF] border border-[#CBD5E1] p-6 rounded-[2px] shadow-sm"
           >
             <p className="text-xs leading-relaxed text-[#3E4552]">
-              Si creaste tu cuenta con <strong>Google Sign-In</strong>, puedes
-              registrar la solicitud verificada aquí (escribiendo{" "}
-              <code className="font-mono font-bold text-[#07080A]">ELIMINAR</code>
-              ) o ejecutar el borrado desde los ajustes de la app móvil.
+              {isEs ? (
+                <>
+                  Si creaste tu cuenta con <strong>Google Sign-In</strong>, puedes registrar la solicitud verificada aquí (escribiendo{" "}
+                  <code className="font-mono font-bold text-[#07080A]">ELIMINAR</code>) o ejecutar el borrado desde los ajustes de la app móvil.
+                </>
+              ) : (
+                <>
+                  If you signed up with <strong>Google Sign-In</strong>, submit your verified request below (type{" "}
+                  <code className="font-mono font-bold text-[#07080A]">ELIMINAR</code>) or delete directly from the mobile app settings.
+                </>
+              )}
             </p>
             <div>
               <label
                 htmlFor="oauth-email"
                 className="block text-xs font-mono font-bold uppercase text-[#07080A] mb-1.5"
               >
-                Email de tu cuenta Google
+                {isEs ? "Email de tu cuenta Google" : "Google Account Email"}
               </label>
               <input
                 id="oauth-email"
@@ -293,7 +337,7 @@ export default function DeleteAccountPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border-2 border-[#94A3B8] focus:border-[#FF4F00] focus:outline-none rounded-[2px] text-[#07080A] placeholder:text-[#64748B]"
-                placeholder="usuario@gmail.com"
+                placeholder="user@gmail.com"
               />
             </div>
             <div>
@@ -301,7 +345,7 @@ export default function DeleteAccountPage() {
                 htmlFor="oauth-confirm"
                 className="block text-xs font-mono font-bold uppercase text-[#07080A] mb-1.5"
               >
-                Escribe ELIMINAR para confirmar
+                {isEs ? "Escribe ELIMINAR para confirmar" : "Type ELIMINAR to confirm"}
               </label>
               <input
                 id="oauth-confirm"
@@ -318,7 +362,7 @@ export default function DeleteAccountPage() {
                 htmlFor="oauth-token"
                 className="block text-xs font-mono font-bold uppercase text-[#3E4552] mb-1.5"
               >
-                Google ID Token JWT (opcional, borrado inmediato)
+                {isEs ? "Google ID Token JWT (opcional, borrado inmediato)" : "Google ID Token JWT (optional, instant deletion)"}
               </label>
               <input
                 id="oauth-token"
@@ -335,8 +379,8 @@ export default function DeleteAccountPage() {
               className="w-full py-3 rounded-[2px] font-mono text-xs uppercase tracking-wider font-bold bg-[#B91C1C] text-[#FFFFFF] hover:opacity-90 disabled:opacity-50 cursor-pointer"
             >
               {loading
-                ? "Procesando..."
-                : "Solicitar / Ejecutar Eliminación Google OAuth"}
+                ? isEs ? "Procesando..." : "Processing..."
+                : isEs ? "Solicitar / Ejecutar Eliminación Google OAuth" : "Request / Execute Google OAuth Deletion"}
             </button>
           </form>
         )}

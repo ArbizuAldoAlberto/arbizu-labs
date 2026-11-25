@@ -53,7 +53,7 @@ export default function Telemetry3DSection() {
               loading="lazy"
             />
             <figcaption className="px-4 py-2.5 bg-[#FFFFFF] border-t border-[#D6D3C9] font-mono text-[10px] uppercase tracking-wider text-[#3E4552] flex items-center justify-between">
-              <span>SAN CARLOS DE BOLÍVAR · TALLER BIT-TO-ATOM</span>
+              <span>{isEs ? 'SAN CARLOS DE BOLÍVAR · TALLER BIT-TO-ATOM' : 'SAN CARLOS DE BOLÍVAR · BIT-TO-ATOM WORKSHOP'}</span>
               <span className="text-[#1F4E3D] font-bold">PETG / ASA / FLIR</span>
             </figcaption>
           </figure>
@@ -73,38 +73,38 @@ export default function Telemetry3DSection() {
                   role="img"
                   aria-label={isEs ? 'Diagrama técnico de flujo Bit-to-Atom' : 'Bit-to-Atom pipeline diagram'}
                 >
-                  <rect x="8" y="24" width="110" height="72" fill="#FFFFFF" stroke="#07080A" strokeWidth="1.5" />
-                  <text x="63" y="54" textAnchor="middle" fill="#07080A" fontSize="10" fontFamily="monospace" fontWeight="700">
-                    CAMPO / FLIR
+                  <rect x="8" y="24" width="110" height="72" fill="var(--surface-chassis)" stroke="var(--text-primary)" strokeWidth="1.5" />
+                  <text x="63" y="54" textAnchor="middle" fill="var(--text-primary)" fontSize="10" fontFamily="monospace" fontWeight="700">
+                    {isEs ? 'CAMPO / FLIR' : 'FIELD / FLIR'}
                   </text>
-                  <text x="63" y="72" textAnchor="middle" fill="#3E4552" fontSize="9" fontFamily="monospace">
+                  <text x="63" y="72" textAnchor="middle" fill="var(--text-secondary)" fontSize="9" fontFamily="monospace">
                     BLE · NFC · 3D
                   </text>
 
-                  <path d="M118 60 H152" stroke="#FF4F00" strokeWidth="1.75" />
-                  <polygon points="150,55 158,60 150,65" fill="#FF4F00" />
+                  <path d="M118 60 H152" stroke="var(--accent-signal)" strokeWidth="1.75" />
+                  <polygon points="150,55 158,60 150,65" fill="var(--accent-signal)" />
 
-                  <rect x="158" y="24" width="110" height="72" fill="#FFFFFF" stroke="#FF4F00" strokeWidth="1.75" />
-                  <text x="213" y="54" textAnchor="middle" fill="#07080A" fontSize="10" fontFamily="monospace" fontWeight="700">
+                  <rect x="158" y="24" width="110" height="72" fill="var(--surface-chassis)" stroke="var(--accent-signal)" strokeWidth="1.75" />
+                  <text x="213" y="54" textAnchor="middle" fill="var(--text-primary)" fontSize="10" fontFamily="monospace" fontWeight="700">
                     SQLITE WAL
                   </text>
-                  <text x="213" y="72" textAnchor="middle" fill="#B83800" fontSize="9" fontFamily="monospace">
+                  <text x="213" y="72" textAnchor="middle" fill="var(--accent-signal)" fontSize="9" fontFamily="monospace">
                     SHA-256 LOCAL
                   </text>
 
-                  <path d="M268 60 H302" stroke="#07080A" strokeWidth="1.75" />
-                  <polygon points="300,55 308,60 300,65" fill="#07080A" />
+                  <path d="M268 60 H302" stroke="var(--text-primary)" strokeWidth="1.75" />
+                  <polygon points="300,55 308,60 300,65" fill="var(--text-primary)" />
 
-                  <rect x="308" y="24" width="104" height="72" fill="#FFFFFF" stroke="#1F4E3D" strokeWidth="1.5" />
-                  <text x="360" y="54" textAnchor="middle" fill="#07080A" fontSize="10" fontFamily="monospace" fontWeight="700">
+                  <rect x="308" y="24" width="104" height="72" fill="var(--surface-chassis)" stroke="var(--accent-telemetry)" strokeWidth="1.5" />
+                  <text x="360" y="54" textAnchor="middle" fill="var(--text-primary)" fontSize="10" fontFamily="monospace" fontWeight="700">
                     VPS RLS
                   </text>
-                  <text x="360" y="72" textAnchor="middle" fill="#1F4E3D" fontSize="9" fontFamily="monospace">
+                  <text x="360" y="72" textAnchor="middle" fill="var(--accent-telemetry)" fontSize="9" fontFamily="monospace">
                     60/60 AUDIT
                   </text>
 
-                  <line x1="8" y1="118" x2="412" y2="118" stroke="#D6D3C9" strokeWidth="1" />
-                  <text x="8" y="132" fill="#3E4552" fontSize="8.5" fontFamily="monospace">
+                  <line x1="8" y1="118" x2="412" y2="118" stroke="var(--grid-hairline)" strokeWidth="1" />
+                  <text x="8" y="132" fill="var(--text-secondary)" fontSize="8.5" fontFamily="monospace">
                     36.23° S, 61.11° W · ZERO DATA LOSS IN 0% SIGNAL ZONES
                   </text>
                 </svg>
@@ -112,15 +112,15 @@ export default function Telemetry3DSection() {
 
               <dl className="divide-y divide-[#D6D3C9] border-y border-[#D6D3C9] font-mono text-xs">
                 <div className="py-2.5 flex justify-between gap-2">
-                  <dt className="text-[#3E4552]">Manufactura PETG/ASA</dt>
-                  <dd className="font-bold text-[#07080A]">Soportes IP67 &amp; VESA</dd>
+                  <dt className="text-[#3E4552]">{isEs ? 'Manufactura PETG/ASA' : 'PETG/ASA Manufacturing'}</dt>
+                  <dd className="font-bold text-[#07080A]">{isEs ? 'Soportes IP67 & VESA' : 'IP67 & VESA Mounts'}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between gap-2">
-                  <dt className="text-[#3E4552]">Termografía Industrial</dt>
-                  <dd className="font-bold text-[#07080A]">FLIR Tableros &amp; Silobolsas</dd>
+                  <dt className="text-[#3E4552]">{isEs ? 'Termografía Industrial' : 'Industrial Thermography'}</dt>
+                  <dd className="font-bold text-[#07080A]">{isEs ? 'FLIR Tableros & Silobolsas' : 'FLIR Panels & Grain Bags'}</dd>
                 </div>
                 <div className="py-2.5 flex justify-between gap-2">
-                  <dt className="text-[#3E4552]">Persistencia Local</dt>
+                  <dt className="text-[#3E4552]">{isEs ? 'Persistencia Local' : 'Local Persistence'}</dt>
                   <dd className="font-bold text-[#1F4E3D]">SQLite WAL + HMAC</dd>
                 </div>
               </dl>

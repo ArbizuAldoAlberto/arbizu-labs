@@ -4,10 +4,14 @@ import matter from 'gray-matter';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { ProductDynastyBadge, type DynastySystemCode } from '@/components/ui/SovereignBrandMark';
+import {
+  CaseDetailTopNav,
+  CaseDetailIndustryTag,
+  CaseDetailLiveBar,
+  CaseDetailGuaranteeFooter,
+} from '@/components/cases/CaseDetailChrome';
 
 const CASE_ASSET_MAP: Record<
   string,
@@ -120,30 +124,12 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
   return (
     <div className="pt-28 pb-24 min-h-screen bg-[var(--surface-void)] text-[var(--text-primary)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <Link
-            href="/cases"
-            className="inline-flex items-center text-[var(--text-muted)] hover:text-[#FF4F00] font-mono text-xs uppercase tracking-widest transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" /> Volver al catálogo de casos
-          </Link>
-          {asset?.productSlug && (
-            <Link
-              href={`/products/${asset.productSlug}`}
-              className="font-mono text-xs uppercase tracking-wider text-[#D4AF37] hover:underline"
-            >
-              Ver Ficha Comercial →
-            </Link>
-          )}
-        </div>
+        <CaseDetailTopNav productSlug={asset?.productSlug} />
 
         <header className="mb-12 border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] p-6 sm:p-8 rounded-[2px]">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             {asset?.code && <ProductDynastyBadge code={asset.code} className="w-9 h-9 shrink-0" />}
-            <span className="px-2.5 py-1 rounded-[2px] border border-[#FF4F00]/40 bg-[#FF4F00]/10 text-[#FF4F00] font-mono text-[10px] uppercase tracking-widest font-bold">
-              {asset?.code ? `${asset.code} // ` : ''}
-              {data.industry || 'Ingeniería de Software B2B'}
-            </span>
+            <CaseDetailIndustryTag code={asset?.code} industry={data.industry} />
             <span className="font-mono text-[11px] text-[#00E599] font-bold">
               ARBIZU LABS // v3.1.0-sovereign
             </span>
@@ -184,26 +170,7 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
 
         {asset && (
           <div className="mb-12 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 bg-[var(--surface-elevated)] border-b border-[var(--grid-hairline)] text-xs font-mono text-[var(--text-secondary)]">
-              <span className="truncate">https://{asset.subDomain || 'arbizulabs.com'}</span>
-              <div className="flex items-center gap-4 shrink-0">
-                <span className="flex items-center gap-1.5 text-[#00E599] font-bold text-[11px]">
-                  <span className="w-2 h-2 rounded-full bg-[#00E599]" />
-                  PRODUCCIÓN
-                </span>
-                {asset.liveUrl && (
-                  <a
-                    href={asset.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-[11px] font-bold transition-colors"
-                  >
-                    <span>Abrir En Vivo</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
-            </div>
+            <CaseDetailLiveBar subDomain={asset.subDomain} liveUrl={asset.liveUrl} />
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--surface-void)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -221,30 +188,7 @@ export default async function CaseSlugPage({ params }: { params: Promise<{ slug:
           </ReactMarkdown>
         </article>
 
-        <div className="mt-14 p-6 sm:p-8 rounded-[2px] border border-[var(--grid-hairline)] bg-[var(--surface-chassis)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#00E599] font-bold mb-2">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Garantía de Arquitectura Arbizu Labs</span>
-            </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] mb-2">
-              ¿Requieres un sistema con estos estándares de resiliencia?
-            </h3>
-            <p className="font-mono text-xs text-[var(--text-secondary)] max-w-xl leading-relaxed">
-              Adaptamos esta arquitectura y motor SQLite WAL / RLS a los requerimientos de tu operación.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/booking"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-[2px] bg-[#FF4F00] hover:bg-[#D4AF37] text-[#07080A] font-extrabold font-mono text-xs uppercase tracking-wider font-bold whitespace-nowrap"
-            >
-              <span>Consultar Viabilidad</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
+        <CaseDetailGuaranteeFooter />
       </div>
     </div>
   );

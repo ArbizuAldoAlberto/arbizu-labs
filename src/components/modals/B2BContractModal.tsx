@@ -65,7 +65,7 @@ export default function B2BContractModal({
             title: initialServiceTitle,
             desc: locale === 'es' ? 'Sistema / Tier seleccionado en vivo para cotización inmediata.' : 'Live-selected system or tier ready for deployment settlement.',
             priceARS: initialServicePrice || '$75.000 ARS',
-            priceUSD: 'B2B Verified Rate',
+            priceUSD: locale === 'es' ? 'Tarifa B2B Verificada' : 'B2B Verified Rate',
           },
         ]
       : []),
@@ -87,8 +87,8 @@ export default function B2BContractModal({
       id: 'sovereign-platform',
       title: t.b2bModal.service3Title,
       desc: t.b2bModal.service3Desc,
-      priceARS: 'Desde $250.000 ARS',
-      priceUSD: 'Desde $500 - $4,500 USD',
+      priceARS: locale === 'es' ? 'Desde $250.000 ARS' : 'From $250,000 ARS',
+      priceUSD: locale === 'es' ? 'Desde $500 - $4,500 USD' : 'From $500 - $4,500 USD',
     },
   ];
 
@@ -289,7 +289,9 @@ export default function B2BContractModal({
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4 text-[#D4AF37] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">Alias Mercado Pago</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">
+                  {locale === 'es' ? 'Alias Mercado Pago' : 'Mercado Pago Alias'}
+                </span>
                 <span className="font-mono text-sm font-bold text-[var(--text-primary)] tracking-wider">aldoarbizu</span>
               </div>
             </div>
@@ -317,7 +319,9 @@ export default function B2BContractModal({
             <div className="flex items-center gap-3">
               <Building2 className="w-4 h-4 text-[#FF4F00] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">Alias Banco Galicia</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">
+                  {locale === 'es' ? 'Alias Banco Galicia' : 'Galicia Bank Alias'}
+                </span>
                 <span className="font-mono text-sm font-bold text-[var(--text-primary)] tracking-wider">ALDO.ARBIZU.GALICIA</span>
               </div>
             </div>
@@ -345,7 +349,9 @@ export default function B2BContractModal({
             <div className="flex items-center gap-3">
               <Building2 className="w-4 h-4 text-[var(--text-secondary)] shrink-0" strokeWidth={1.5} />
               <div>
-                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">CBU Banco Galicia</span>
+                <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block">
+                  {locale === 'es' ? 'CBU Banco Galicia' : 'Galicia Bank CBU'}
+                </span>
                 <span className="font-mono text-xs sm:text-sm font-bold text-[var(--text-primary)] tracking-wider">0070149130004016919618</span>
               </div>
             </div>
