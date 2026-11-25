@@ -340,6 +340,189 @@ html[data-luminance="daylight"] .hero-media {
   opacity: 0.14;
 }
 
+/* MODO OBSIDIAN DARK (Oscuro Obsidiana #0B0D12 · WCAG AA/AAA) */
+html[data-luminance="obsidian"] {
+  color-scheme: dark;
+  --surface-void: #0B0D12;
+  --surface-chassis: #12161F;
+  --surface-elevated: #171C27;
+  --surface-glass: rgba(11, 13, 18, 0.94);
+  --grid-hairline: #252D3D;
+  --bg-seam: #0B0D12;
+  --bg-deep: #0B0D12;
+  --bg-surface: #12161F;
+  --bg-elevated: #171C27;
+  --bg-card: #12161F;
+  --bg-card-solid: #12161F;
+  --bg-glass: rgba(11, 13, 18, 0.92);
+  --bg-btn: #171C27;
+  --color-space-black: #0B0D12;
+  --color-deep-space: #12161F;
+  --color-slate-black: #171C27;
+  --color-mist-gray: #C7CDD9;
+  --color-space-border: #252D3D;
+  --text-primary: #F2F0EA;
+  --text-secondary: #C7CDD9;
+  --text-muted: #9BA4B5;
+  --accent-border: #252D3D;
+  --accent-border-strong: rgba(212, 175, 55, 0.65);
+  --grid-line: rgba(242, 240, 234, 0.045);
+
+  --accent: #FF6B35;
+  --accent-brand: #E5C158;
+  --accent-signal: #FF6B35;
+  --accent-oxide-gold: #E5C158;
+  --accent-telemetry: #34D399;
+  --dynasty-quant: #E5C158;
+  --dynasty-security: #38BDF8;
+  --dynasty-agtech: #34D399;
+  --dynasty-tactical: #FF6B35;
+}
+
+html[data-luminance="obsidian"] body,
+html[data-luminance="obsidian"] main,
+html[data-luminance="obsidian"] #main-content {
+  background-color: #0B0D12 !important;
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] section[id]:not([data-keep-paper="true"]),
+html[data-luminance="obsidian"] section.paper-section,
+html[data-luminance="obsidian"] section[data-paper="true"] {
+  background-color: #0B0D12 !important;
+  background-image: none !important;
+  color: #F2F0EA !important;
+  border-color: #252D3D !important;
+}
+
+html[data-luminance="obsidian"] header,
+html[data-luminance="obsidian"] .site-header,
+html[data-luminance="obsidian"] .site-footer {
+  background-color: #0B0D12 !important;
+  background-image: none !important;
+  border-color: #252D3D !important;
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="bg-[#F2F0EA]"],
+  [class*="bg-[#F8F7F3]"],
+  [class*="bg-[#EAE7DF]"],
+  [class*="bg-[#FFFFFF]"],
+  [class*="bg-[#FFF7ED]"],
+  [class*="bg-[#ECFDF5]"],
+  [class*="bg-[#F0F9FF]"],
+  .bg-white):not([data-keep-paper="true"]):not([class*="bg-[#FF4F00]"]):not([class*="bg-[#D4AF37]"]):not([class*="bg-[#00E599]"]) {
+  background-color: #12161F !important;
+  background-image: none !important;
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] [class*="bg-[#FFFFFF]/95"] {
+  background-color: rgba(18, 22, 31, 0.94) !important;
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] [class*="bg-[#F2F0EA]"] {
+  background-color: #0B0D12 !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="bg-[#EAE7DF]"],
+  [class*="bg-[#F8F7F3]"]) {
+  background-color: #171C27 !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="bg-[#07080A]"]):not([class*="bg-[#FF4F00]"]) {
+  background-color: #1D2534 !important;
+  color: #F2F0EA !important;
+  border-color: #384459 !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="text-[#07080A]"],
+  [class*="text-[#1A1D1F]"]):not([class*="bg-[#FF4F00]"]):not([class*="bg-[#D4AF37]"]):not([class*="bg-[#00E599]"]) {
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="text-[#1E2430]"],
+  [class*="text-[#3E4552]"],
+  [class*="text-[#5C6470]"],
+  [class*="text-[#64748B]"]) {
+  color: #C7CDD9 !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="text-[#B83800]"],
+  [class*="text-[#FF4F00]"]):not([class*="bg-[#FF4F00]"]) {
+  color: #FF7847 !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="text-[#1F4E3D]"],
+  [class*="text-[#065F46]"]) {
+  color: #34D399 !important;
+}
+
+html[data-luminance="obsidian"] [class*="text-[#92400E]"] {
+  color: #E5C158 !important;
+}
+
+html[data-luminance="obsidian"] [class*="text-[#0369A1]"] {
+  color: #38BDF8 !important;
+}
+
+html[data-luminance="obsidian"] [class*="text-[#B91C1C]"] {
+  color: #FCA5A5 !important;
+}
+
+html[data-luminance="obsidian"] [class*="bg-[#FEF2F2]"] {
+  background-color: rgba(127, 29, 29, 0.35) !important;
+  border-color: #F87171 !important;
+  color: #FCA5A5 !important;
+}
+
+html[data-luminance="obsidian"] [class*="bg-[#FFFBEB]"] {
+  background-color: rgba(120, 53, 15, 0.35) !important;
+  border-color: #FBBF24 !important;
+  color: #FDE68A !important;
+}
+
+html[data-luminance="obsidian"] :is([class*="border-[#D6D3C9]"],
+  [class*="border-[#CBD5E1]"],
+  [class*="border-[#94A3B8]"],
+  [class*="border-[#07080A]"]):not([class*="border-[#FF4F00]"]) {
+  border-color: #252D3D !important;
+}
+
+html[data-luminance="obsidian"] :is(input, select, textarea) {
+  background-color: #0B0D12 !important;
+  color: #F2F0EA !important;
+  border-color: #384459 !important;
+}
+
+html[data-luminance="obsidian"] :is(input, textarea)::placeholder {
+  color: #9BA4B5 !important;
+}
+
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not([class*="hover:bg-[#FF4F00]"]):not(:hover),
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#D4AF37]"]:not([class*="/"]):not([class*="hover:bg-[#D4AF37]"]):not(:hover),
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#00E599]"]:not([class*="/"]):not([class*="hover:bg-[#00E599]"]):not(:hover) {
+  color: #07080A !important;
+}
+
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#FF4F00]"]:not([class*="/"]):not(:hover) :is(span, svg),
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#D4AF37]"]:not([class*="/"]):not(:hover) :is(span, svg) {
+  color: #07080A !important;
+  stroke: #07080A !important;
+}
+
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#07080A]"]:not([class*="hover:bg-[#07080A]"]),
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#1F4E3D]"] {
+  color: #F2F0EA !important;
+}
+
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#07080A]"]:not([class*="hover:bg-[#07080A]"]) :is(span, svg),
+html[data-luminance="obsidian"] :is(button, a)[class*="bg-[#1F4E3D]"] :is(span, svg) {
+  color: #F2F0EA !important;
+  stroke: #F2F0EA !important;
+}
+
 /* ==========================================================================
    TEMA V2 — LUZ TURQUESA / AGUAMARINA EN BORDES Y SUPERFICIES
    Regla crítica: el 55%x55% central del video Hero y <canvas id="seq-canvas">
@@ -1234,23 +1417,22 @@ html[data-theme="v2"] .theme-switch a[data-theme-link="v2"],
    Garantiza que la doctrina Bit-to-Atom jamás sufra colisión de contraste
    en SOC Night ni en Field Daylight.
    ========================================================================== */
-section#artefactos,
-section[data-section="artifacts"],
-section[data-paper="true"],
-section[data-keep-paper="true"],
+html[data-luminance="daylight"] section#artefactos,
+html[data-luminance="daylight"] section[data-section="artifacts"],
+html[data-luminance="daylight"] section[data-paper="true"],
 [data-keep-paper="true"],
-.paper-section {
+html[data-luminance="daylight"] .paper-section {
   background-color: #F2F0EA !important;
   background-image: none !important;
   color: #07080A !important;
 }
 
-section#artefactos .card,
-section#artefactos article,
-section#artefactos .bg-white,
-section[data-paper="true"] .bg-white,
+html[data-luminance="daylight"] section#artefactos .card,
+html[data-luminance="daylight"] section#artefactos article,
+html[data-luminance="daylight"] section#artefactos .bg-white,
+html[data-luminance="daylight"] section[data-paper="true"] .bg-white,
 [data-keep-paper="true"] .bg-white,
-.paper-section .bg-white {
+html[data-luminance="daylight"] .paper-section .bg-white {
   background-color: #FFFFFF !important;
   border-color: #D6D3C9 !important;
   color: #07080A !important;

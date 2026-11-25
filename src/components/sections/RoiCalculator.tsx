@@ -27,30 +27,55 @@ export default function RoiCalculator() {
   const handleGenerateDossier = () => {
     playEngagePulse();
     const issuedAt = new Date().toISOString();
-    const content = [
-      `# ARBIZU LABS // DOSSIER TÉCNICO EJECUTIVO & PROPUESTA B2B`,
-      `- **Código de Cotización Verificable:** \`${quoteCode}\``,
-      `- **Fecha de Emisión:** ${issuedAt}`,
-      `- **Vertical Seleccionada:** ${vertical}`,
-      `- **Parámetros Operativos:** ${teamSize} operarios/usuarios · ${downtimeHours} hs/mes de falla o latencia · $${hourlyRate} USD/h`,
-      `- **Pérdida Operativa Actual Estimada:** $${annualLoss.toLocaleString('en-US')} USD / año`,
-      `- **Ahorro Anual Proyectado (82% Mitigación Offline-First / RLS):** **$${estimatedSavings.toLocaleString('en-US')} USD / año**`,
-      ``,
-      `## ARQUITECTURA PROPUESTA (AXIOM SOVEREIGN INDUSTRIAL)`,
-      `1. **Persistencia Offline-First:** SQLite WAL (\`journal_mode = WAL\`) con colas criptográficas sin pérdida de registros.`,
-      `2. **Blindaje de Seguridad (\`v2.1.0-ironclad\`):** Políticas PostgreSQL RLS 60/60 verificadas, Edge Shield de 4 capas y backups con \`SHA256SUMS\`.`,
-      `3. **Cronograma de Despliegue:** 14 días (Sprint 1: Núcleo WAL + RLS · Sprint 2: UI/Telemetría + Deploy Zero-Downtime).`,
-      ``,
-      `## COORDENADAS FINANCIERAS OFICIALES DE LIQUIDACIÓN`,
-      `- **Titular:** Aldo Alberto Arbizu (CUIT: 20-38362060-1)`,
-      `- **Alias Mercado Pago:** \`aldoarbizu\``,
-      `- **Alias Banco Galicia:** \`ALDO.ARBIZU.GALICIA\` | **CBU:** \`0070149130004016919618\``,
-      `- **USDC / ETH / Base L2 / BSC:** \`0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718\``,
-      `- **Bitcoin (BTC SegWit):** \`bc1qmd23nj6tn48ujy0gdwnjhv4j337yymp7gaduy8\``,
-      `- **Solana (SOL):** \`7kM37FUAMujSEs8iGwDbB9jceRdqxSpwKy1ckmoG2Hmd\``,
-      `- **WhatsApp Directo:** +54 9 2314 489197 (https://wa.me/5492314489197)`,
-      `- **Verificación Criptográfica Online:** https://arbizulabs.com/security?code=${quoteCode}`,
-    ].join('\n');
+    const content = isEs
+      ? [
+          `# ARBIZU LABS // DOSSIER TÉCNICO EJECUTIVO & PROPUESTA B2B`,
+          `- **Código de Cotización Verificable:** \`${quoteCode}\``,
+          `- **Fecha de Emisión:** ${issuedAt}`,
+          `- **Vertical Seleccionada:** ${vertical}`,
+          `- **Parámetros Operativos:** ${teamSize} operarios/usuarios · ${downtimeHours} hs/mes de falla o latencia · $${hourlyRate} USD/h`,
+          `- **Pérdida Operativa Actual Estimada:** $${annualLoss.toLocaleString('en-US')} USD / año`,
+          `- **Ahorro Anual Proyectado (82% Mitigación Offline-First / RLS):** **$${estimatedSavings.toLocaleString('en-US')} USD / año**`,
+          ``,
+          `## ARQUITECTURA PROPUESTA (AXIOM SOVEREIGN INDUSTRIAL)`,
+          `1. **Persistencia Offline-First:** SQLite WAL (\`journal_mode = WAL\`) con colas criptográficas sin pérdida de registros.`,
+          `2. **Blindaje de Seguridad (\`v2.1.0-ironclad\`):** Políticas PostgreSQL RLS 60/60 verificadas, Edge Shield de 4 capas y backups con \`SHA256SUMS\`.`,
+          `3. **Cronograma de Despliegue:** 14 días (Sprint 1: Núcleo WAL + RLS · Sprint 2: UI/Telemetría + Deploy Zero-Downtime).`,
+          ``,
+          `## COORDENADAS FINANCIERAS OFICIALES DE LIQUIDACIÓN`,
+          `- **Titular:** Aldo Alberto Arbizu (CUIT: 20-38362060-1)`,
+          `- **Alias Mercado Pago:** \`aldoarbizu\``,
+          `- **Alias Banco Galicia:** \`ALDO.ARBIZU.GALICIA\` | **CBU:** \`0070149130004016919618\``,
+          `- **USDC / ETH / Base L2 / BSC:** \`0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718\``,
+          `- **Bitcoin (BTC SegWit):** \`bc1qmd23nj6tn48ujy0gdwnjhv4j337yymp7gaduy8\``,
+          `- **Solana (SOL):** \`7kM37FUAMujSEs8iGwDbB9jceRdqxSpwKy1ckmoG2Hmd\``,
+          `- **WhatsApp Directo:** +54 9 2314 489197 (https://wa.me/5492314489197)`,
+          `- **Verificación Criptográfica Online:** https://arbizulabs.com/security?code=${quoteCode}`,
+        ].join('\n')
+      : [
+          `# ARBIZU LABS // EXECUTIVE TECHNICAL DOSSIER & B2B PROPOSAL`,
+          `- **Verifiable Quote Code:** \`${quoteCode}\``,
+          `- **Issued At:** ${issuedAt}`,
+          `- **Selected Vertical:** ${vertical}`,
+          `- **Operational Parameters:** ${teamSize} operators/users · ${downtimeHours} hrs/mo outage or latency · $${hourlyRate} USD/h`,
+          `- **Estimated Annual Operational Loss:** $${annualLoss.toLocaleString('en-US')} USD / yr`,
+          `- **Projected Annual Savings (82% Offline-First / RLS Mitigation):** **$${estimatedSavings.toLocaleString('en-US')} USD / yr**`,
+          ``,
+          `## PROPOSED ARCHITECTURE (AXIOM SOVEREIGN INDUSTRIAL)`,
+          `1. **Offline-First Persistence:** SQLite WAL (\`journal_mode = WAL\`) with cryptographic queues and zero record loss.`,
+          `2. **Security Hardening (\`v2.1.0-ironclad\`):** Verified 60/60 PostgreSQL RLS isolation, 4-layer Edge Shield, and \`SHA256SUMS\` backups.`,
+          `3. **Deployment Timeline:** 14 days (Sprint 1: WAL Core + RLS · Sprint 2: UI/Telemetry + Zero-Downtime Rollout).`,
+          ``,
+          `## OFFICIAL SETTLEMENT COORDINATES`,
+          `- **Beneficiary:** Aldo Alberto Arbizu (CUIT: 20-38362060-1)`,
+          `- **Mercado Pago Alias:** \`aldoarbizu\``,
+          `- **Banco Galicia Alias:** \`ALDO.ARBIZU.GALICIA\` | **CBU:** \`0070149130004016919618\``,
+          `- **USDC / ETH / Base L2 / BSC:** \`0xb73ca1C37e9aA57F3051A0E8381Ca9CBA772A718\``,
+          `- **Bitcoin (BTC SegWit):** \`bc1qmd23nj6tn48ujy0gdwnjhv4j337yymp7gaduy8\``,
+          `- **Solana (SOL):** \`7kM37FUAMujSEs8iGwDbB9jceRdqxSpwKy1ckmoG2Hmd\``,
+          `- **Direct WhatsApp:** +54 9 2314 489197 (https://wa.me/5492314489197)`,
+          `- **Online Cryptographic Verification:** https://arbizulabs.com/security?code=${quoteCode}`,
+        ].join('\n');
 
     try {
       const existingRaw = localStorage.getItem('arbizu_verified_quotes');
@@ -126,9 +151,9 @@ export default function RoiCalculator() {
               </span>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { name: 'Acopio Silobolsas (AgroMarket)', team: 12, downtime: 18, rate: 35 },
-                  { name: 'Seguridad Privada (SentinelOS)', team: 30, downtime: 24, rate: 40 },
-                  { name: 'Infraestructura & Quant (TitanFlow)', team: 8, downtime: 14, rate: 75 },
+                  { name: isEs ? 'Acopio Silobolsas (AgroMarket)' : 'Grain Storage (AgroMarket)', team: 12, downtime: 18, rate: 35 },
+                  { name: isEs ? 'Seguridad Privada (SentinelOS)' : 'Physical Security (SentinelOS)', team: 30, downtime: 24, rate: 40 },
+                  { name: isEs ? 'Infraestructura & Quant (TitanFlow)' : 'Quant & SRE Infra (TitanFlow)', team: 8, downtime: 14, rate: 75 },
                 ].map((preset) => {
                   const isActive =
                     teamSize === preset.team && downtimeHours === preset.downtime && hourlyRate === preset.rate;
@@ -176,7 +201,7 @@ export default function RoiCalculator() {
               <label className="block">
                 <div className="flex justify-between mb-2">
                   <span className="text-[#3E4552]">{t.roi.labels.downtimeHours}</span>
-                  <span className="text-base font-bold text-[#07080A]">{downtimeHours}h / mes</span>
+                  <span className="text-base font-bold text-[#07080A]">{downtimeHours} {isEs ? 'h / mes' : 'hrs / mo'}</span>
                 </div>
                 <input
                   type="range"
@@ -209,8 +234,8 @@ export default function RoiCalculator() {
           <div className="lg:col-span-5 p-6 sm:p-8 bg-[#F2F0EA] flex flex-col justify-between font-mono tabular-nums">
             <div>
               <div className="flex items-center justify-between text-[11px] pb-3 mb-4 border-b border-[#D6D3C9]">
-                <span className="text-[#B83800] font-bold uppercase">QUOTE: {quoteCode}</span>
-                <span className="text-[#1F4E3D] font-bold">82% RECOVERY</span>
+                <span className="text-[#B83800] font-bold uppercase">{isEs ? 'COTIZACIÓN' : 'QUOTE'}: {quoteCode}</span>
+                <span className="text-[#1F4E3D] font-bold">{isEs ? '82% RECUPERACIÓN' : '82% RECOVERY'}</span>
               </div>
 
               <span className="text-[11px] uppercase tracking-wider text-[#3E4552] block mb-1">
@@ -231,10 +256,10 @@ export default function RoiCalculator() {
                 <div className="mb-4 p-3 border border-[#1F4E3D] bg-[#FFFFFF] text-xs text-[#1F4E3D] flex items-center justify-between gap-2">
                   <span className="inline-flex items-center gap-1.5 font-bold">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    Dossier {dossierGenerated} emitido
+                    {isEs ? `Dossier ${dossierGenerated} emitido` : `Dossier ${dossierGenerated} issued`}
                   </span>
                   <Link href={`/security?code=${dossierGenerated}`} className="underline font-bold">
-                    Verificar ↗
+                    {isEs ? 'Verificar ↗' : 'Verify ↗'}
                   </Link>
                 </div>
               )}

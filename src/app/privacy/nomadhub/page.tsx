@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PrivacyPolicyView from "@/components/legal/PrivacyPolicyView";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — NOMAD Tactical Hub | ARBIZU LABS",
@@ -8,70 +9,38 @@ export const metadata: Metadata = {
 
 export default function NomadHubPrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#F2F0EA] text-[#07080A] px-6 pt-28 pb-16">
-      <div className="max-w-3xl mx-auto space-y-8 font-sans">
-        <div className="border-b border-[#D6D3C9] pb-6">
-          <p className="font-mono text-xs font-bold uppercase tracking-widest text-[#065F46]">
-            ARBIZU LABS · GOOGLE PLAY &amp; OFFLINE-FIRST COMPLIANCE
-          </p>
-          <h1 className="text-3xl md:text-4xl font-bold mt-2 text-[#07080A]">
-            Política de Privacidad / Privacy Policy — NOMAD Tactical Hub
-          </h1>
-          <p className="font-mono text-xs text-[#3E4552] mt-2">
-            Titular: Aldo Alberto Arbizu (ARBIZU LABS, CUIT 20-38362060-1) · Actualizado: 2026-11-24
-          </p>
-        </div>
-
-        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
-          <h2 className="text-lg font-bold text-[#07080A]">
-            1. Arquitectura Offline-First y Datos Procesados (ES / EN)
-          </h2>
-          <p>
-            <strong>ES:</strong> NOMAD Tactical Hub opera 100% <strong>Offline-First</strong> sobre base local cifrable
-            (SQLite Room en tu dispositivo). Los checklists de emergencia, bitácora médica, cálculos de potabilización,
-            telemetría de sensores (barómetro, brújula, acelerómetro) y marcadores tácticos permanecen exclusivamente en tu
-            teléfono.
-          </p>
-          <p>
-            <strong>EN:</strong> NOMAD Tactical Hub operates 100% <strong>Offline-First</strong> using local Room SQLite
-            storage on your device. Emergency checklists, triage calculations, hardware sensor readings (barometer, compass,
-            accelerometer), and tactical pins remain strictly on your device.
-          </p>
-        </section>
-
-        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
-          <h2 className="text-lg font-bold text-[#07080A]">
-            2. Permisos Just-In-Time (Cero Rastreo en Segundo Plano)
-          </h2>
-          <p>
-            <strong>ES:</strong> El acceso a Ubicación GNSS (únicamente en primer plano durante uso activo, nunca{" "}
-            <code>ACCESS_BACKGROUND_LOCATION</code>), Cámara/Linterna (baliza Morse/PPG), Micrófono (módem acústico AFSK/SSTV)
-            y Bluetooth BLE (<code>neverForLocation</code> para puentes Meshtastic/LoRa) se procesa localmente en memoria sin
-            grabación oculta ni carga automática a terceros.
-          </p>
-          <p>
-            <strong>EN:</strong> Foreground-only GNSS location (never background location), camera/flashlight (Morse optical
-            beacon), microphone (AFSK/SSTV acoustic modem), and Bluetooth BLE (<code>neverForLocation</code> for LoRa beacons)
-            are processed locally on-device with zero hidden recording or third-party uploads.
-          </p>
-        </section>
-
-        <section className="space-y-3 text-sm leading-relaxed text-[#1E2430]">
-          <h2 className="text-lg font-bold text-[#07080A]">
-            3. Cero Publicidad, Compras Google Play y Eliminación de Datos
-          </h2>
-          <p>
-            <strong>No vendemos datos ni incluimos SDKs publicitarios de terceros.</strong> Las funciones Pro opcionales
-            distribuidas mediante Google Play se procesan exclusivamente mediante <strong>Google Play Billing / RevenueCat</strong>.
-            Puedes eliminar todos tus registros locales en cualquier momento desde la app o solicitar eliminación de cuenta asociada en{" "}
-            <a href="/delete-account" className="text-[#065F46] font-semibold underline">
-              arbizulabs.com/delete-account
-            </a>
-            . Contacto: <span className="font-mono">arbizualdoalberto@gmail.com</span> · WhatsApp{" "}
-            <span className="font-mono">+54 9 2314 489197</span>.
-          </p>
-        </section>
-      </div>
-    </div>
+    <PrivacyPolicyView
+      config={{
+        sysCode: "SYS-04",
+        appName: "NOMAD Tactical Hub",
+        updatedAt: "2026-11-24",
+        sections: [
+          {
+            headingEs: "1. Arquitectura Offline-First y Datos Procesados",
+            headingEn: "1. Offline-First Architecture & Local Data",
+            bodyEs:
+              "NOMAD Tactical Hub opera 100% Offline-First sobre base local cifrable (SQLite Room en tu dispositivo). Los checklists de emergencia, bitácora médica, cálculos de potabilización, telemetría de sensores (barómetro, brújula, acelerómetro) y marcadores tácticos permanecen exclusivamente en tu teléfono.",
+            bodyEn:
+              "NOMAD Tactical Hub operates 100% Offline-First using encrypted-capable local Room SQLite storage on your device. Emergency checklists, triage logs, water purification calculations, sensor telemetry (barometer, compass, accelerometer), and tactical pins remain strictly on your device.",
+          },
+          {
+            headingEs: "2. Permisos Just-In-Time (Cero Rastreo en Segundo Plano)",
+            headingEn: "2. Just-In-Time Permissions (Zero Background Tracking)",
+            bodyEs:
+              "El acceso a Ubicación GNSS (únicamente en primer plano durante uso activo, nunca ACCESS_BACKGROUND_LOCATION), Cámara/Linterna (baliza Morse/PPG), Micrófono (módem acústico AFSK/SSTV) y Bluetooth BLE (neverForLocation para puentes Meshtastic/LoRa) se procesa localmente en memoria sin grabación oculta ni carga automática a terceros.",
+            bodyEn:
+              "Foreground-only GNSS location (never background location), camera/flashlight (Morse optical beacon), microphone (AFSK/SSTV acoustic modem), and Bluetooth BLE (neverForLocation for Meshtastic/LoRa beacons) are processed strictly in local memory with zero hidden recording or third-party uploads.",
+          },
+          {
+            headingEs: "3. Cero Publicidad y Compras Google Play",
+            headingEn: "3. Zero Advertising & Google Play Billing",
+            bodyEs:
+              "No vendemos datos ni incluimos SDKs publicitarios de terceros. Las funciones Pro opcionales distribuidas mediante Google Play se procesan exclusivamente mediante Google Play Billing / RevenueCat.",
+            bodyEn:
+              "We do not sell user data or embed third-party ad SDKs. Optional Pro features distributed via Google Play are processed exclusively via Google Play Billing / RevenueCat.",
+          },
+        ],
+      }}
+    />
   );
 }

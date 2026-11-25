@@ -7,6 +7,7 @@ import { ArbizuLabsMark } from '@/components/ui/SovereignBrandMark';
 
 export default function Footer() {
   const { locale, toggleLanguage, t } = useLanguage();
+  const isEs = locale === 'es';
   const pathname = usePathname();
 
   if (pathname?.startsWith('/compare')) {
@@ -186,7 +187,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/compare" className="hover:text-[var(--text-primary)] transition-colors">
-                  Comparador V1 / V2
+                  {isEs ? 'Comparador V1 / V2' : 'V1 / V2 Comparator'}
                 </Link>
               </li>
               <li>
@@ -207,7 +208,7 @@ export default function Footer() {
           <p>{t.footer.rights}</p>
           <div className="flex flex-wrap items-center gap-5">
             <Link href="/tienda" className="inline-flex items-center gap-1 hover:text-[#07080A] font-semibold transition-colors">
-              <span>Tienda</span>
+              <span>{isEs ? 'Tienda' : 'Store'}</span>
             </Link>
             <Link href="/security" className="inline-flex items-center gap-1 hover:text-[#07080A] transition-colors">
               <ShieldCheck className="w-3.5 h-3.5 text-[#1F4E3D]" />

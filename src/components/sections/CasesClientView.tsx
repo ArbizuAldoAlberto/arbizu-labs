@@ -243,13 +243,13 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
                           </span>
                         )}
                         <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37] font-bold truncate">
-                          {meta?.code ? `${meta.code} // ` : 'FILANTRÓPICO // '}
+                          {meta?.code ? `${meta.code} // ` : isEs ? 'FILANTRÓPICO // ' : 'NON-PROFIT // '}
                           {displayIndustry}
                         </span>
                       </div>
                       {meta?.nonProfit && (
                         <span className="px-2 py-0.5 rounded-[2px] border border-[#00E599]/40 text-[#00E599] font-mono text-[9px] uppercase font-bold shrink-0">
-                          0% LUCRO
+                          {isEs ? '0% LUCRO' : '0% PROFIT'}
                         </span>
                       )}
                     </div>
@@ -296,8 +296,10 @@ export default function CasesClientView({ cases }: { cases: CaseItem[] }) {
                       <button
                         type="button"
                         onClick={() => {
-                          setModalTitle(`Arquitectura similar a ${displayTitle}`);
-                          setModalPrice('Cotización B2B / Sprint');
+                          setModalTitle(
+                            isEs ? `Arquitectura similar a ${displayTitle}` : `Architecture similar to ${displayTitle}`
+                          );
+                          setModalPrice(isEs ? 'Cotización B2B / Sprint' : 'B2B Quote / Sprint');
                           setModalOpen(true);
                         }}
                         className="text-[#FF4F00] hover:underline font-bold"

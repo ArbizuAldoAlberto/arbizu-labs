@@ -156,7 +156,7 @@ export default function Services() {
                 : 'Clear separation between architecture security audits, turnkey deployments, and ongoing Principal SRE retainers with full IP transfer.'}
             </p>
             <div className="inline-block font-mono text-[11px] text-[#07080A] border border-[#D6D3C9] bg-[#FFFFFF] px-3.5 py-2 font-semibold">
-              Liquidación: {isEs ? 'Galicia / MercadoPago / USDC Base L2' : 'ACH US / Wire / USDC Base L2'}
+              {isEs ? 'Liquidación:' : 'Settlement:'} {isEs ? 'Galicia / MercadoPago / USDC Base L2' : 'ACH US / Wire / USDC Base L2'}
             </div>
           </div>
 

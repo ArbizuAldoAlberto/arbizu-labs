@@ -2,23 +2,49 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Sun, Moon } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { ArbizuLabsMark } from '@/components/ui/SovereignBrandMark';
 import B2BContractModal from '@/components/ui/B2BContractModal';
+
+type LuminanceMode = 'daylight' | 'obsidian';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isContractOpen, setIsContractOpen] = useState(false);
+  const [luminance, setLuminance] = useState<LuminanceMode>('daylight');
   const pathname = usePathname();
   const { locale, toggleLanguage, setLocale } = useLanguage();
   const isEs = locale === 'es';
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', 'v1');
-    document.documentElement.setAttribute('data-luminance', 'daylight');
+    try {
+      const saved = localStorage.getItem('arbizu_labs_luminance');
+      const domLum = document.documentElement.getAttribute('data-luminance');
+      const resolved: LuminanceMode =
+        saved === 'obsidian' || saved === 'dark' || domLum === 'obsidian' ? 'obsidian' : 'daylight';
+      setLuminance(resolved);
+      document.documentElement.setAttribute('data-theme', 'v1');
+      document.documentElement.setAttribute('data-luminance', resolved);
+      document.documentElement.style.colorScheme = resolved === 'obsidian' ? 'dark' : 'light';
+    } catch {
+      document.documentElement.setAttribute('data-theme', 'v1');
+    }
   }, [pathname]);
+
+  const toggleLuminance = () => {
+    const next: LuminanceMode = luminance === 'daylight' ? 'obsidian' : 'daylight';
+    setLuminance(next);
+    document.documentElement.setAttribute('data-theme', 'v1');
+    document.documentElement.setAttribute('data-luminance', next);
+    document.documentElement.style.colorScheme = next === 'obsidian' ? 'dark' : 'light';
+    try {
+      localStorage.setItem('arbizu_labs_luminance', next);
+    } catch {}
+  };
+
+  const isDark = luminance === 'obsidian';
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -62,8 +88,8 @@ export default function Navigation() {
           </div>
         </Link>
 
-        {/* Clean 6-item Navigation (Incluye Tienda arriba, 0 prefijos técnicos) */}
-        <nav className="hidden lg:flex items-center gap-6 whitespace-nowrap" aria-label="Navegación principal">
+        {/* Clean 6-item Navigation */}
+        <nav className="hidden lg:flex items-center gap-6 whitespace-nowrap" aria-label={isEs ? 'Navegación principal' : 'Primary navigation'}>
           {navLinks.map((item) => {
             const active = item.href === '/tienda' && pathname?.startsWith('/tienda');
             return (
@@ -84,10 +110,24 @@ export default function Navigation() {
           })}
         </nav>
 
-        {/* Controls: ES/EN + 1 Primary CTA */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Controls: Theme Switcher + ES/EN + 1 Primary CTA */}
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
+            data-testid="theme-toggle"
+            aria-label={isDark ? (isEs ? 'Cambiar a modo claro' : 'Switch to light mode') : (isEs ? 'Cambiar a modo oscuro' : 'Switch to dark mode')}
+            aria-pressed={isDark}
+            onClick={toggleLuminance}
+            className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-[2px] bg-[#FFFFFF] border border-[#D6D3C9] hover:border-[#07080A] text-[11px] font-mono font-bold tracking-wider text-[#07080A] cursor-pointer"
+            title={isDark ? (isEs ? 'Modo Claro Papel Titanio' : 'Light Titanium Paper') : (isEs ? 'Modo Oscuro Obsidiana' : 'Dark Obsidian Mode')}
+          >
+            {isDark ? <Sun className="w-3.5 h-3.5 text-[#D4AF37]" /> : <Moon className="w-3.5 h-3.5 text-[#3E4552]" />}
+            <span className="hidden xl:inline">{isDark ? (isEs ? 'Claro' : 'Light') : (isEs ? 'Oscuro' : 'Dark')}</span>
+          </button>
+
+          <button
+            type="button"
+            data-testid="lang-toggle"
             aria-label={isEs ? 'Switch language to English' : 'Cambiar idioma a Español'}
             onClick={toggleLanguage}
             className="hidden sm:inline-flex items-center gap-1 px-2.5 py-2 rounded-[2px] bg-[#FFFFFF] border border-[#D6D3C9] hover:border-[#07080A] text-[11px] font-mono tracking-wider text-[#07080A] cursor-pointer"
@@ -109,7 +149,7 @@ export default function Navigation() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-[2px] bg-[#FFFFFF] border border-[#D6D3C9] text-[#07080A] hover:border-[#07080A]"
-            aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-label={mobileMenuOpen ? (isEs ? 'Cerrar menú' : 'Close menu') : (isEs ? 'Abrir menú' : 'Open menu')}
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -138,7 +178,15 @@ export default function Navigation() {
             <span>{isEs ? 'Aldo Arbizu (Arquitecto)' : 'Aldo Arbizu (Architect)'}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
-          <div className="pt-2 flex items-center gap-2 border-t border-[#D6D3C9]">
+          <div className="pt-2 flex flex-wrap items-center gap-2 border-t border-[#D6D3C9]">
+            <button
+              type="button"
+              onClick={toggleLuminance}
+              className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-[2px] border border-[#D6D3C9] font-mono text-xs font-bold text-[#07080A]"
+            >
+              {isDark ? <Sun className="w-3.5 h-3.5 text-[#D4AF37]" /> : <Moon className="w-3.5 h-3.5 text-[#3E4552]" />}
+              <span>{isDark ? (isEs ? 'Claro' : 'Light') : (isEs ? 'Oscuro' : 'Dark')}</span>
+            </button>
             <button
               type="button"
               onClick={() => setLocale(locale === 'es' ? 'en' : 'es')}

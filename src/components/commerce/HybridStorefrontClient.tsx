@@ -6,7 +6,6 @@ import {
   ShoppingCart,
   MessageCircle,
   Truck,
-  Store,
   ShieldCheck,
   Search,
   Plus,
@@ -17,7 +16,9 @@ import {
   Landmark,
   CheckCircle2,
   PackageCheck,
+  Clock,
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface WholesaleTier {
   min_qty: number;
@@ -37,6 +38,9 @@ export interface StoreProduct {
   dimensions_cm: string;
   stock_mode: 'PRE_VALIDATE_ON_DEMAND' | 'LOCAL_STOCK' | 'SUPPLIER_SYNC';
   stock_qty: number;
+  lead_time_days?: number;
+  supplier_name?: string;
+  availability_mode?: string;
   retail_pvp_ars: number;
   transfer_pvp_ars: number;
   transfer_discount_pct: number;
@@ -109,7 +113,15 @@ const resolveSkuImage = (sku: string) =>
 const resolveVentana2SkuImage = (sku: string) =>
   VENTANA2_SKU_IMAGE_MAP[(sku || '').trim().toUpperCase()];
 
+const resolveLeadDays = (p: StoreProduct) => {
+  const n = Number(p.lead_time_days || 0);
+  if (n > 0) return n;
+  return String(p.category || '').toLowerCase().includes('3d') ? 2 : 7;
+};
+
 export default function HybridStorefrontClient({ initialCatalog }: { initialCatalog: CatalogPayload | null }) {
+  const { locale } = useLanguage();
+  const isEs = locale === 'es';
   const catalog = initialCatalog || {
     fx: { rate_ars: 1380, source: 'fallback' },
     payment_coordinates: {
@@ -162,6 +174,26 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
     [catalog.shipping_zones]
   );
 
+  const sanitizeEtaLabel = (rawEta: string, mode: ShippingZone['mode']) => {
+    const clean = String(rawEta || '');
+    if (/(hoy|en el d[ií]a|mismo d[ií]a)/i.test(clean)) {
+      if (mode === 'PICKUP_BOLIVAR') {
+        return isEs
+          ? 'Retiro coordinado tras confirmación (2d 3D / 7d courier)'
+          : 'Coordinated pickup after confirmation (2d 3D / 7d courier)';
+      }
+      if (mode === 'REGIONAL_COMISIONISTA') {
+        return isEs
+          ? 'Despacho en próxima salida tras confirmación de lote'
+          : 'Next regional departure after batch confirmation';
+      }
+      return isEs
+        ? 'Coordinado tras confirmación de fabricación / courier'
+        : 'Scheduled upon manufacturing / courier confirmation';
+    }
+    return clean;
+  };
+
   const selectedZone: ShippingZone = useMemo(() => {
     const zones = catalog.shipping_zones;
     if (shippingMode === 'REGIONAL_COMISIONISTA') {
@@ -170,14 +202,16 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
         comisionistaZones[0] || {
           mode: 'REGIONAL_COMISIONISTA',
           code: 'COM_OLAVARRIA',
-          label: 'Comisionista Bolívar ↔ Olavarría',
+          label: isEs ? 'Comisionista Bolívar ↔ Olavarría' : 'Regional Carrier Bolívar ↔ Olavarría',
           locality: 'Olavarría',
-          carrier_name: 'Transporte Regional',
-          departure_days: 'Lunes, Miércoles y Viernes',
+          carrier_name: isEs ? 'Transporte Regional' : 'Regional Carrier',
+          departure_days: isEs ? 'Lunes, Miércoles y Viernes' : 'Mon, Wed & Fri',
           cutoff_time: '11:30',
           base_cost_ars: 4800,
           per_kg_ars: 0,
-          eta_label: 'Mismo día',
+          eta_label: isEs
+            ? 'Despacho en próxima salida tras confirmación de lote'
+            : 'Next regional departure after batch confirmation',
         }
       );
     }
@@ -185,17 +219,19 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
       zones.find((z) => z.mode === shippingMode) || {
         mode: shippingMode,
         code: 'PICKUP_BOL',
-        label: 'Retiro en Taller Bolívar',
+        label: isEs ? 'Retiro en Taller Bolívar' : 'Bolívar Workshop Pickup',
         locality: 'San Carlos de Bolívar',
-        carrier_name: 'Retiro en Taller',
-        departure_days: 'Lunes a Sábado',
+        carrier_name: isEs ? 'Retiro en Taller' : 'Workshop Pickup',
+        departure_days: isEs ? 'Lunes a Sábado' : 'Monday to Saturday',
         cutoff_time: '18:00',
         base_cost_ars: 0,
         per_kg_ars: 0,
-        eta_label: 'Hoy',
+        eta_label: isEs
+          ? 'Retiro coordinado tras confirmación (2d 3D / 7d courier)'
+          : 'Coordinated pickup after confirmation (2d 3D / 7d courier)',
       }
     );
-  }, [catalog.shipping_zones, shippingMode, comisionistaCode, comisionistaZones]);
+  }, [catalog.shipping_zones, shippingMode, comisionistaCode, comisionistaZones, isEs]);
 
   const resolveUnitPrice = (product: StoreProduct, qty: number) => {
     if (listMode === 'mayorista') {
@@ -344,18 +380,21 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-wider">
                 <span className="px-2 py-0.5 bg-[#1F4E3D] text-[#F2F0EA] font-bold">
-                  ARBIZU LABS // MOTOR HÍBRIDO
+                  {isEs ? 'ARBIZU LABS // VALIDACIÓN & FABRICACIÓN A PEDIDO' : 'ARBIZU LABS // VALIDATION & MADE-TO-ORDER'}
                 </span>
                 <span className="px-2 py-0.5 bg-[#F2F0EA] border border-[#D6D3C9] text-[#07080A] font-semibold tabular-nums">
                   FX DolarAPI: ${Math.round(catalog.fx.rate_ars).toLocaleString('es-AR')} ARS ({catalog.fx.source})
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#07080A]">
-                Tienda Híbrida · Minorista &amp; Mayorista (Bolívar / País)
+                {isEs
+                  ? 'Catálogo de Validación · Fabricación a Pedido (Bolívar / País)'
+                  : 'Validation Catalog · Made-to-Order (Bolívar / Nationwide)'}
               </h1>
               <p className="text-xs sm:text-sm text-[#3E4552] max-w-3xl">
-                Catálogo agnóstico con doble lista dinámica por volumen, escudo de margen en tiempo real, descuento
-                del 10% por transferencia y envío coordinado por comisionistas regionales o correo nacional.
+                {isEs
+                  ? 'Catálogo transparente bajo modalidad Reserva / Bajo Cotización: fabricación 3D en 2 días hábiles o despacho courier en 7 días tras confirmación, 10% de descuento por transferencia y logística coordinada.'
+                  : 'Transparent reservation and made-to-order catalog: 2-day local 3D manufacturing or 7-day courier fulfillment after batch confirmation, 10% wire transfer discount, and nationwide shipping.'}
               </p>
             </div>
 
@@ -365,14 +404,16 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 className="inline-flex items-center gap-2 px-3.5 py-2 min-h-[40px] border border-[#D6D3C9] bg-[#F2F0EA] text-[#07080A] hover:border-[#07080A] font-mono text-xs font-bold uppercase transition-colors"
               >
                 <FlaskConical className="w-4 h-4 text-[#B83800]" />
-                <span>Lab &amp; Feeds</span>
+                <span>{isEs ? 'Lab & Feeds' : 'Demand Lab & Feeds'}</span>
               </Link>
               <a
                 href="#carrito-hibrido"
                 className="inline-flex items-center gap-2 px-4 py-2 min-h-[40px] bg-[#07080A] hover:bg-[#FF4F00] text-[#F2F0EA] hover:text-[#07080A] font-mono font-bold text-xs uppercase transition-colors"
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span className="tabular-nums">Carrito ({cart.reduce((a, b) => a + b.qty, 0)})</span>
+                <span className="tabular-nums">
+                  {isEs ? 'Reserva' : 'Quote Cart'} ({cart.reduce((a, b) => a + b.qty, 0)})
+                </span>
               </a>
             </div>
           </div>
@@ -388,7 +429,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   listMode === 'minorista' ? 'bg-[#07080A] text-[#F2F0EA]' : 'text-[#3E4552] hover:text-[#07080A]'
                 }`}
               >
-                Modo Minorista
+                {isEs ? 'Lista Minorista' : 'Retail Tier'}
               </button>
               <button
                 type="button"
@@ -398,7 +439,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   listMode === 'mayorista' ? 'bg-[#FF4F00] text-[#07080A]' : 'text-[#3E4552] hover:text-[#07080A]'
                 }`}
               >
-                Modo Mayorista (Volumen)
+                {isEs ? 'Lista Mayorista (Volumen)' : 'Wholesale Tier (Volume)'}
               </button>
             </div>
 
@@ -409,19 +450,19 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar por nombre, SKU o rubro..."
+                  placeholder={isEs ? 'Buscar por nombre, SKU o rubro...' : 'Search by name, SKU, or category...'}
                   className="w-full bg-[#F2F0EA] border border-[#D6D3C9] pl-9 pr-3 py-2 text-xs text-[#07080A] font-mono focus:outline-none focus:border-[#07080A]"
                 />
               </div>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                aria-label="Filtrar categoría"
+                aria-label={isEs ? 'Filtrar categoría' : 'Filter category'}
                 className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-xs text-[#07080A] font-mono focus:outline-none focus:border-[#07080A]"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
-                    {c === 'ALL' ? 'Todos los rubros' : c}
+                    {c === 'ALL' ? (isEs ? 'Todos los rubros' : 'All categories') : c}
                   </option>
                 ))}
               </select>
@@ -436,8 +477,12 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             {filteredProducts.map((product) => {
               const displayUnit = resolveUnitPrice(product, listMode === 'mayorista' ? product.wholesale_tiers?.[0]?.min_qty || 5 : 1);
               const transferUnit = Math.round(displayUnit * 0.9);
+              const leadDays = resolveLeadDays(product);
+              const isInStock = product.stock_qty > 0 && product.stock_mode === 'LOCAL_STOCK';
               const singleWaText = encodeURIComponent(
-                `Hola Aldo, quiero consultar / pedir [${product.sku}] ${product.title} en lista ${listMode.toUpperCase()} (${formatArs(displayUnit)} ARS c/u).`
+                isEs
+                  ? `Hola Aldo, quiero solicitar Reserva / Cotización [${product.sku}] ${product.title} en lista ${listMode.toUpperCase()} (${formatArs(displayUnit)} ARS c/u, plazo ${leadDays}d).`
+                  : `Hello Aldo, requesting Reservation / Quote for [${product.sku}] ${product.title} (${listMode.toUpperCase()} tier, ${formatArs(displayUnit)} ARS, ${leadDays}d lead time).`
               );
               return (
                 <article
@@ -462,25 +507,39 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                     <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase">
                       <span className="text-[#3E4552] truncate">{product.sku}</span>
                       <span
+                        data-testid="sku-availability-badge"
                         className={`px-2 py-0.5 border shrink-0 font-bold ${
-                          product.stock_mode === 'LOCAL_STOCK'
+                          isInStock
                             ? 'border-[#1F4E3D] text-[#1F4E3D] bg-[#F2F0EA]'
-                            : 'border-[#D6D3C9] text-[#B83800] bg-[#F2F0EA]'
+                            : 'border-[#B83800]/50 text-[#B83800] bg-[#FFF7ED]'
                         }`}
                       >
-                        {product.stock_mode === 'LOCAL_STOCK'
+                        {isInStock
                           ? `Stock: ${product.stock_qty}u`
-                          : 'Por Encargo · Validación'}
+                          : isEs
+                          ? 'Reserva / Bajo Cotización'
+                          : 'Reservation / Quote-on-Demand'}
                       </span>
                     </div>
 
                     <h2 className="text-base font-bold text-[#07080A] leading-snug">{product.title}</h2>
                     <p className="text-xs text-[#3E4552] leading-relaxed">{product.description}</p>
 
+                    <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#3E4552] bg-[#F2F0EA] border border-[#D6D3C9] px-2.5 py-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#B83800] shrink-0" />
+                      <span>
+                        {isEs
+                          ? `Plazo estimado: ${leadDays} días (${leadDays <= 2 ? 'Taller 3D Bolívar' : 'Courier'})`
+                          : `Lead time: ${leadDays} days (${leadDays <= 2 ? '3D Lab Bolívar' : 'Courier'})`}
+                      </span>
+                    </div>
+
                     <div className="border-t border-[#D6D3C9] pt-3 space-y-1 font-mono">
                       <div className="flex items-baseline justify-between gap-2">
                         <span className="text-[11px] uppercase text-[#3E4552]">
-                          {listMode === 'mayorista' ? 'Desde Bulto Mayorista' : 'Precio Lista / MP'}
+                          {listMode === 'mayorista'
+                            ? isEs ? 'Desde Bulto Mayorista' : 'Wholesale Unit Base'
+                            : isEs ? 'Precio Ref. / MP' : 'List / MP Price'}
                         </span>
                         <span
                           data-testid={`price-${product.sku}`}
@@ -491,13 +550,15 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       </div>
 
                       <div className="flex items-center justify-between text-xs text-[#1F4E3D] tabular-nums">
-                        <span>Transferencia / Efectivo (-10%)</span>
+                        <span>{isEs ? 'Transferencia / Efectivo (-10%)' : 'Wire / Cash (-10%)'}</span>
                         <strong className="font-bold">{formatArs(transferUnit)} ARS</strong>
                       </div>
 
                       {listMode === 'minorista' ? (
                         <div className="text-[11px] text-[#3E4552] tabular-nums">
-                          3 cuotas MP de {formatArs(product.mp_3cuotas_installment_ars)} ARS · Peso {product.weight_grams}g
+                          {isEs
+                            ? `3 cuotas MP de ${formatArs(product.mp_3cuotas_installment_ars)} ARS · Peso ${product.weight_grams}g`
+                            : `3x MP installments of ${formatArs(product.mp_3cuotas_installment_ars)} ARS · Weight ${product.weight_grams}g`}
                         </div>
                       ) : (
                         <div className="mt-2 bg-[#F2F0EA] border border-[#D6D3C9] p-2 space-y-1">
@@ -506,8 +567,12 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                               key={t.min_qty}
                               className="flex items-center justify-between text-[11px] text-[#07080A] tabular-nums"
                             >
-                              <span>{t.min_qty}+ unidades (-{t.effective_discount_pct}%)</span>
-                              <strong>{formatArs(t.unit_price_ars)} c/u</strong>
+                              <span>
+                                {t.min_qty}+ {isEs ? 'unidades' : 'units'} (-{t.effective_discount_pct}%)
+                              </span>
+                              <strong>
+                                {formatArs(t.unit_price_ars)} {isEs ? 'c/u' : 'ea'}
+                              </strong>
                             </div>
                           ))}
                         </div>
@@ -526,8 +591,8 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       <Plus className="w-3.5 h-3.5" />
                       <span>
                         {listMode === 'mayorista'
-                          ? `Sumar x${product.wholesale_tiers?.[0]?.min_qty || 5}`
-                          : 'Agregar'}
+                          ? `${isEs ? 'Cotizar' : 'Quote'} x${product.wholesale_tiers?.[0]?.min_qty || 5}`
+                          : isEs ? 'Reservar' : 'Reserve'}
                       </span>
                     </button>
                     <a
@@ -555,17 +620,19 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
               <div className="flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4 text-[#B83800]" />
                 <h2 className="font-mono text-sm font-extrabold uppercase text-[#07080A]">
-                  Pedido Híbrido ({listMode})
+                  {isEs ? 'Reserva / Pedido' : 'Reservation / Quote'} ({listMode})
                 </h2>
               </div>
               <span className="font-mono text-[11px] text-[#3E4552] tabular-nums">
-                Peso: {totals.weightKg} kg
+                {isEs ? 'Peso' : 'Weight'}: {totals.weightKg} kg
               </span>
             </div>
 
             {cart.length === 0 ? (
               <div className="py-6 text-center border border-dashed border-[#D6D3C9] bg-[#F2F0EA] text-xs text-[#3E4552] font-mono px-3">
-                Tu carrito está vacío. Agregá un producto del catálogo para calcular envío y descuento.
+                {isEs
+                  ? 'Tu lista de reserva está vacía. Agregá un SKU para calcular envío, plazo (2d/7d) y descuento.'
+                  : 'Your reservation list is empty. Add an SKU to calculate lead time (2d/7d), shipping, and discount.'}
               </div>
             ) : (
               <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
@@ -579,13 +646,13 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-[#07080A] truncate">{line.product.title}</div>
                         <div className="font-mono text-[11px] text-[#1F4E3D] font-bold tabular-nums">
-                          {line.product.sku} · {formatArs(unit)} c/u
+                          {line.product.sku} · {formatArs(unit)} {isEs ? 'c/u' : 'ea'} · {resolveLeadDays(line.product)}d
                         </div>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0 font-mono">
                         <button
                           type="button"
-                          aria-label="Restar cantidad"
+                          aria-label={isEs ? 'Restar cantidad' : 'Decrease quantity'}
                           onClick={() => updateCartQty(line.product.sku, line.qty - 1)}
                           className="w-7 h-7 border border-[#D6D3C9] bg-[#FFFFFF] text-[#07080A] flex items-center justify-center hover:border-[#07080A] cursor-pointer"
                         >
@@ -594,7 +661,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                         <span className="w-7 text-center text-xs font-bold tabular-nums text-[#07080A]">{line.qty}</span>
                         <button
                           type="button"
-                          aria-label="Sumar cantidad"
+                          aria-label={isEs ? 'Sumar cantidad' : 'Increase quantity'}
                           onClick={() => updateCartQty(line.product.sku, line.qty + 1)}
                           className="w-7 h-7 border border-[#D6D3C9] bg-[#FFFFFF] text-[#07080A] flex items-center justify-center hover:border-[#07080A] cursor-pointer"
                         >
@@ -602,7 +669,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                         </button>
                         <button
                           type="button"
-                          aria-label="Eliminar ítem"
+                          aria-label={isEs ? 'Eliminar ítem' : 'Remove item'}
                           onClick={() => updateCartQty(line.product.sku, 0)}
                           className="w-7 h-7 border border-red-300 bg-[#FFFFFF] text-red-700 flex items-center justify-center hover:bg-red-50 cursor-pointer"
                         >
@@ -619,15 +686,15 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             <div className="space-y-2.5 border-t border-[#D6D3C9] pt-4">
               <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#07080A] font-bold">
                 <Truck className="w-4 h-4 text-[#B83800]" />
-                <span>Modalidad de Entrega (4 Zonas Reales)</span>
+                <span>{isEs ? 'Modalidad de Entrega (4 Zonas)' : 'Delivery Mode (4 Zones)'}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
                 {[
-                  { id: 'PICKUP_BOLIVAR', label: 'Retiro Bolívar ($0)' },
-                  { id: 'LOCAL_CITY', label: 'Urbano Bolívar' },
-                  { id: 'REGIONAL_COMISIONISTA', label: 'Comisionista Zona' },
-                  { id: 'CORREO_NACIONAL', label: 'Correo Nacional' },
+                  { id: 'PICKUP_BOLIVAR', label: isEs ? 'Retiro Bolívar ($0)' : 'Bolívar Pickup ($0)' },
+                  { id: 'LOCAL_CITY', label: isEs ? 'Urbano Bolívar' : 'Bolívar Urban' },
+                  { id: 'REGIONAL_COMISIONISTA', label: isEs ? 'Comisionista Zona' : 'Regional Carrier' },
+                  { id: 'CORREO_NACIONAL', label: isEs ? 'Correo Nacional' : 'National Courier' },
                 ].map((opt) => (
                   <button
                     key={opt.id}
@@ -666,7 +733,9 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
 
               {shippingMode === 'CORREO_NACIONAL' && (
                 <div className="flex items-center gap-2 font-mono text-xs">
-                  <label htmlFor="cp-input" className="text-[#3E4552] shrink-0">C. Postal:</label>
+                  <label htmlFor="cp-input" className="text-[#3E4552] shrink-0">
+                    {isEs ? 'C. Postal:' : 'Postal Code:'}
+                  </label>
                   <input
                     id="cp-input"
                     type="text"
@@ -683,10 +752,13 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   <strong className="text-[#1F4E3D] tabular-nums">{formatArs(Number(selectedZone.base_cost_ars))} ARS</strong>
                 </div>
                 <div>
-                  Salida: <span className="text-[#07080A] font-semibold">{selectedZone.departure_days}</span> · Corte:{' '}
+                  {isEs ? 'Salida:' : 'Dispatch:'}{' '}
+                  <span className="text-[#07080A] font-semibold">{selectedZone.departure_days}</span> · {isEs ? 'Corte:' : 'Cutoff:'}{' '}
                   <span className="text-[#B83800] font-bold">{selectedZone.cutoff_time}</span>
                 </div>
-                <div>Plazo estimado: {selectedZone.eta_label}</div>
+                <div>
+                  {isEs ? 'Coordinación:' : 'Fulfillment:'} {sanitizeEtaLabel(selectedZone.eta_label, selectedZone.mode)}
+                </div>
               </div>
             </div>
 
@@ -694,7 +766,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             <div className="space-y-2.5 border-t border-[#D6D3C9] pt-4">
               <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#07080A] font-bold">
                 <CreditCard className="w-4 h-4 text-[#1F4E3D]" />
-                <span>Medio de Pago</span>
+                <span>{isEs ? 'Medio de Pago' : 'Payment Method'}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-[11px]">
@@ -708,7 +780,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
-                  Transfer / Efectivo (-10%)
+                  {isEs ? 'Transfer / Efectivo (-10%)' : 'Wire / Cash (-10%)'}
                 </button>
                 <button
                   type="button"
@@ -720,7 +792,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
-                  MP Contado
+                  {isEs ? 'MP Contado' : 'MP 1x'}
                 </button>
                 <button
                   type="button"
@@ -732,7 +804,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                       : 'border-[#D6D3C9] bg-[#F2F0EA] text-[#3E4552]'
                   }`}
                 >
-                  MP 3 Cuotas
+                  {isEs ? 'MP 3 Cuotas' : 'MP 3x'}
                 </button>
               </div>
 
@@ -740,7 +812,9 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 <div className="bg-[#F2F0EA] border border-[#1F4E3D]/40 p-3 font-mono text-[11px] space-y-1 text-[#3E4552]">
                   <div className="flex items-center gap-1.5 text-[#1F4E3D] font-bold">
                     <Landmark className="w-3.5 h-3.5" />
-                    <span>Coordenadas Oficiales ({catalog.payment_coordinates.holder} · CUIT {catalog.payment_coordinates.cuit})</span>
+                    <span>
+                      {isEs ? 'Coordenadas Oficiales' : 'Official Settlement'} ({catalog.payment_coordinates.holder} · CUIT {catalog.payment_coordinates.cuit})
+                    </span>
                   </div>
                   <div>Alias MP: <strong className="text-[#07080A]">{catalog.payment_coordinates.alias_mp}</strong></div>
                   <div>Alias Galicia: <strong className="text-[#07080A]">{catalog.payment_coordinates.alias_galicia}</strong></div>
@@ -753,14 +827,14 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
               <input
                 type="text"
-                placeholder="Tu nombre / Comercio"
+                placeholder={isEs ? 'Tu nombre / Comercio' : 'Your name / Company'}
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-[#07080A]"
               />
               <input
                 type="text"
-                placeholder="Localidad"
+                placeholder={isEs ? 'Localidad' : 'City / Town'}
                 value={customerLocality}
                 onChange={(e) => setCustomerLocality(e.target.value)}
                 className="bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 text-[#07080A]"
@@ -769,23 +843,23 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
 
             <div className="border-t border-[#D6D3C9] pt-3 space-y-1.5 font-mono text-xs tabular-nums">
               <div className="flex justify-between text-[#3E4552]">
-                <span>Subtotal Lista ({listMode})</span>
+                <span>{isEs ? 'Subtotal Lista' : 'Tier Subtotal'} ({listMode})</span>
                 <span className="text-[#07080A] font-semibold">{formatArs(totals.subtotal)} ARS</span>
               </div>
               {totals.discountArs > 0 && (
                 <div className="flex justify-between text-[#1F4E3D] font-bold">
-                  <span>Descuento Transferencia (-10%)</span>
+                  <span>{isEs ? 'Descuento Transferencia (-10%)' : 'Wire Discount (-10%)'}</span>
                   <span>-{formatArs(totals.discountArs)} ARS</span>
                 </div>
               )}
               <div className="flex justify-between text-[#3E4552]">
-                <span>Logística ({selectedZone.locality})</span>
+                <span>{isEs ? 'Logística' : 'Shipping'} ({selectedZone.locality})</span>
                 <span data-testid="shipping-cost-display" className="text-[#07080A] font-semibold">
                   {formatArs(totals.shippingCost)} ARS
                 </span>
               </div>
               <div className="flex justify-between text-base font-extrabold text-[#07080A] pt-2 border-t border-[#D6D3C9]">
-                <span>TOTAL FINAL</span>
+                <span>{isEs ? 'TOTAL ESTIMADO' : 'ESTIMATED TOTAL'}</span>
                 <span data-testid="order-total-display" className="text-[#B83800]">{formatArs(totals.total)} ARS</span>
               </div>
             </div>
@@ -800,7 +874,11 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
               <div className="p-3 border border-[#1F4E3D] bg-[#F2F0EA] font-mono text-xs space-y-1.5">
                 <div className="flex items-center gap-1.5 text-[#1F4E3D] font-bold">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Orden {orderFeedback.code} registrada en PostgreSQL 16</span>
+                  <span>
+                    {isEs
+                      ? `Reserva ${orderFeedback.code} registrada en PostgreSQL 16`
+                      : `Reservation ${orderFeedback.code} logged in PostgreSQL 16`}
+                  </span>
                 </div>
                 <a
                   href={orderFeedback.checkout_url}
@@ -808,7 +886,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                   rel="noopener noreferrer"
                   className="inline-block underline text-[#07080A] font-bold"
                 >
-                  Abrir enlace de confirmación / pago →
+                  {isEs ? 'Abrir enlace de confirmación / pago →' : 'Open confirmation / payment link →'}
                 </a>
               </div>
             )}
@@ -823,7 +901,7 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#FF4F00] hover:bg-[#07080A] text-[#07080A] hover:text-[#F2F0EA] font-mono font-extrabold text-xs uppercase py-3.5 px-4 min-h-[44px] rounded-[2px] transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>Enviar Pedido Estructurado por WhatsApp</span>
+                <span>{isEs ? 'Solicitar Reserva / Cotización por WhatsApp' : 'Request Reservation / Quote via WhatsApp'}</span>
               </a>
 
               <button
@@ -834,13 +912,21 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
                 className="w-full inline-flex items-center justify-center gap-2 border border-[#07080A] bg-[#FFFFFF] hover:bg-[#07080A] disabled:opacity-40 text-[#07080A] hover:text-[#F2F0EA] font-mono font-bold text-xs uppercase py-2.5 px-4 min-h-[40px] rounded-[2px] transition-colors cursor-pointer"
               >
                 <PackageCheck className="w-4 h-4" />
-                <span>{submitting ? 'Registrando en DB...' : 'Registrar Pre-Orden + Generar Checkout'}</span>
+                <span>
+                  {submitting
+                    ? isEs ? 'Registrando en DB...' : 'Saving to DB...'
+                    : isEs ? 'Registrar Reserva + Generar Cotización' : 'Log Reservation + Generate Quote'}
+                </span>
               </button>
             </div>
 
             <div className="flex items-center gap-2 text-[10px] font-mono text-[#3E4552]">
               <ShieldCheck className="w-3.5 h-3.5 text-[#1F4E3D] shrink-0" />
-              <span>Coordinación transparente sin stock ficticio · Soporte directo +54 9 2314 489197</span>
+              <span>
+                {isEs
+                  ? 'Fabricación a pedido (2d 3D / 7d courier) · Soporte directo +54 9 2314 489197'
+                  : 'Made-to-order fulfillment (2d 3D / 7d courier) · Direct support +54 9 2314 489197'}
+              </span>
             </div>
           </aside>
         </div>

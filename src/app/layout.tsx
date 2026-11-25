@@ -89,7 +89,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" data-theme="v1" data-luminance="daylight" className={`${geistSans.variable} ${jetbrains.variable}`} suppressHydrationWarning>
-      <body className="bg-[#F2F0EA] text-[#07080A] antialiased selection:bg-[#FF4F00]/20 selection:text-[#07080A]" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{
+              var lum=localStorage.getItem('arbizu_labs_luminance');
+              var mode=(lum==='obsidian'||lum==='dark')?'obsidian':'daylight';
+              document.documentElement.setAttribute('data-theme','v1');
+              document.documentElement.setAttribute('data-luminance',mode);
+              document.documentElement.style.colorScheme=mode==='obsidian'?'dark':'light';
+              var loc=localStorage.getItem('arbizu_labs_locale');
+              if(loc==='es'||loc==='en'){document.documentElement.lang=loc;}
+            }catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="bg-[var(--surface-void)] text-[var(--text-primary)] antialiased selection:bg-[#FF4F00]/20 selection:text-[var(--text-primary)]" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID_ARBIZU &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("YYYY") &&
           !process.env.NEXT_PUBLIC_GA_ID_ARBIZU.includes("XXXX") && (
