@@ -46,7 +46,7 @@ const MODELS: Record<ModelKey, ModelConfig> = {
   silo: {
     url: '/models/agtech-silos.desktop.glb',
     title: 'SILO INDUSTRIAL AGROMARKET PRO',
-    subtitle: 'Acopio inteligente con telemetría LiDAR ToF, sensor FLIR térmico y celdas de carga',
+    subtitle: 'Acopio inteligente con telemetría LiDAR ToF, termografía radiométrica (compatible FLIR®) y celdas de carga',
     badge: 'AGTECH AUTOMATION',
     scale: 0.82,
     targetY: -1.3,
@@ -1066,7 +1066,7 @@ export default function AgTechTelemetryCanvas() {
                   ? 'bg-[#FF4F00] text-[#060709] font-bold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
-              title="Cámara Termográfica FLIR Ironbow"
+              title="Modo Termografía Radiométrica (Ironbow — compatible FLIR®)"
             >
               {t.hardware3d.modeFlir}
             </button>

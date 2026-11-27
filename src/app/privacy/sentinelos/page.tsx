@@ -12,15 +12,15 @@ export default function SentinelOSPrivacyPage() {
       config={{
         sysCode: "SYS-02",
         appName: "SentinelOS",
-        updatedAt: "2026-11-24",
+        updatedAt: "2026-11-27",
         sections: [
           {
-            headingEs: "1. Datos que recopilamos",
-            headingEn: "1. Data We Collect",
+            headingEs: "1. Datos y Permisos del Dispositivo",
+            headingEn: "1. Data & Device Permissions",
             bodyEs:
-              "SentinelOS procesa datos operativos de seguridad física bajo arquitectura Offline-First: correo de cuenta, identificador de agencia (tenant), checkpoints de ronda (NFC/QR), reportes diarios DAR con firma criptográfica, incidentes fotográficos tomados por el guardia y ubicación GPS exclusivamente durante turnos activos o alertas SOS/Man-Down autorizadas con divulgación explícita previa.",
+              "SentinelOS procesa datos operativos de seguridad física bajo arquitectura Offline-First: correo de cuenta, identificador de agencia (tenant), checkpoints de ronda (NFC/QR), reportes diarios DAR con firma criptográfica, evidencias fotográficas capturadas por el guardia (CAMERA) y ubicación GPS exclusivamente en primer plano durante turnos activos o alertas SOS autorizadas (sin rastreo oculto en segundo plano). Además declara estrictamente bajo demanda: RECORD_AUDIO (audio PTT local y registro de incidentes bajo acción expresa del operador sin escucha continua), USE_BIOMETRIC / USE_FINGERPRINT (validación local en el enclave seguro Android BiometricPrompt; ninguna plantilla biométrica sale del dispositivo) y POST_NOTIFICATIONS (alertas de turno y emergencias).",
             bodyEn:
-              "SentinelOS processes physical security telemetry under an Offline-First architecture: account email, agency tenant identifier, NFC/QR patrol checkpoints, cryptographically signed Daily Activity Reports (DAR), guard-captured incident photos, and GPS location strictly during active guard shifts or authorized SOS/Man-Down alerts following explicit in-app disclosure.",
+              "SentinelOS processes physical security telemetry under an Offline-First architecture: account email, agency tenant identifier, NFC/QR patrol checkpoints, cryptographically signed Daily Activity Reports (DAR), guard-captured incident photos (CAMERA), and foreground-only GPS location strictly during active shifts or authorized SOS alerts (zero hidden background tracking). On-demand permissions include: RECORD_AUDIO (user-triggered local PTT/incident audio with zero continuous listening), USE_BIOMETRIC / USE_FINGERPRINT (delegated locally to Android BiometricPrompt hardware; biometric templates never leave the device), and POST_NOTIFICATIONS (shift and emergency alerts).",
           },
           {
             headingEs: "2. Seguridad, Aislamiento y Pagos",
