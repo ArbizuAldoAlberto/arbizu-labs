@@ -893,6 +893,11 @@ export default function HybridStorefrontClient({ initialCatalog }: { initialCata
 
             {/* 1 CTA Primario Dominante (#FF4F00) + 1 Secundario */}
             <div className="flex flex-col gap-2">
+              <p data-testid="tienda-ley24240-notice" className="text-[11px] font-mono font-bold text-[#07080A] bg-[#F2F0EA] border border-[#D6D3C9] px-3 py-2 rounded-[2px]">
+                {isEs
+                  ? 'Sin cobro online inmediato — Reserva / Solicitud de Cotización (Ley 24.240)'
+                  : 'No immediate online charge — Reservation / Quote Request (Law 24.240)'}
+              </p>
               <a
                 data-testid="wa-order-link"
                 href={liveWhatsappUrl}

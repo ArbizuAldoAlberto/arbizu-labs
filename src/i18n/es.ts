@@ -130,7 +130,7 @@ export const es = {
         title: "NOMAD Tactical Hub & Solidarity Network",
         category: "100% Humanitario · RF & Supervivencia Off-Grid",
         status: "OMEGA v2.0 Activo",
-        desc: "Ecosistema pentadimensional de supervivencia civil: App Android Sensores 360°, PWA Offline-First, Suite USB Ark 128GB (exFAT + PAR2 + Kindle EPUB3), Módem Radio AFSK/SSTV/Morse 800Hz, LoRa Meshtastic y Enrutador IA 4 Anillos (NAIR).",
+        desc: "Ecosistema pentadimensional de supervivencia civil: App Android Sensores 360°, PWA Offline-First, Suite USB Ark 128GB (exFAT + PAR2 + manuales EPUB3 abiertos), Módem Radio AFSK/SSTV/Morse 800Hz, LoRa Meshtastic y Enrutador IA 4 Anillos (NAIR).",
         problem: "Colapso total de redes celulares, energía y servidores en catástrofes naturales o zonas aisladas.",
         solution: "5 vectores 100% desconectados con 14 calculadoras médicas/solares/RF, autorreparación PAR2 en USB y transmisión de coordenadas/mapas por radio analógica y LoRa.",
         btnCase: "Ver Caso Técnico"
@@ -465,7 +465,7 @@ export const es = {
     siloBadge: "AGTECH AUTOMATION",
     modePbr: "01 CHASIS PBR",
     modeWire: "02 PLANO CAD 1.5px",
-    modeFlir: "03 TERMOGRAFÍA FLIR",
+    modeFlir: "03 TERMOGRAFÍA RADIOMÉTRICA",
     exploded: "Despiece CAD",
     collapsed: "Ensamblado CAD"
   },
